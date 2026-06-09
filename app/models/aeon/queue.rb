@@ -62,8 +62,8 @@ module Aeon
       cancelled_by_user_queue_name == queue_name
     end
 
-    def draft?
-      draft_queue_names&.include?(queue_name)
+    def saved_for_later?
+      saved_for_later_queue_names&.include?(queue_name)
     end
 
     def completed?
@@ -84,8 +84,8 @@ module Aeon
       Settings.aeon.queue_names.completed[type]
     end
 
-    def draft_queue_names
-      Settings.aeon.queue_names.draft[type]
+    def saved_for_later_queue_names
+      Settings.aeon.queue_names.saved_for_later[type]
     end
   end
 end

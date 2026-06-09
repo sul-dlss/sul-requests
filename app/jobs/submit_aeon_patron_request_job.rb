@@ -112,7 +112,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     return created_request if created_request.valid?
 
     aeon_client.update_request_route(transaction_number: created_request.transaction_number,
-                                     status: Settings.aeon.queue_names.draft.transaction.first)
+                                     status: Settings.aeon.queue_names.saved_for_later.transaction.first)
   end
 
   delegate :aeon_client, to: :Current

@@ -18,7 +18,7 @@ module Aeon
       when :submitted
         appointment? ? :ready : :pending
       else
-        status
+        status.to_s.dasherize
       end
     end
 

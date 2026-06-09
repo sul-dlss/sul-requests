@@ -10,7 +10,7 @@ module Aeon
     def call
       tag.button class: 'btn btn-link p-0 su-underline',
                  data: { action: 'click->add-items#remove',
-                         appointment_target: '#draftRequests',
+                         appointment_target: '#savedForLaterRequests',
                          transaction_number: @request.transaction_number,
                          title: @request.item_title } do
         tag.i(class: 'bi bi-x') + tag.span('Remove')

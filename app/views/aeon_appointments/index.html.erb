@@ -5,7 +5,7 @@
       <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
         <h1>Reading room appointments</h1>
         <div class="d-flex flex-wrap gap-2 align-items-baseline">
-          <button class="btn btn-outline-primary d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#draft_aeon_requests_sidebar" aria-controls="draft_aeon_requests_sidebar">
+          <button class="btn btn-outline-primary d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#saved_for_later_aeon_requests_sidebar" aria-controls="saved_for_later_aeon_requests_sidebar">
             Saved for later
           </button>
           <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary', data: { action: 'modal#open' } %>
@@ -20,6 +20,6 @@
         <%= render Aeon::AppointmentComponent.with_collection(@appointments) %>
       </turbo-frame>
     </div>
-    <%= render 'draft_aeon_requests' %>
+    <%= render 'saved_for_later_aeon_requests' %>
   </div>
 </div>

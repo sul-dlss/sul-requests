@@ -23,7 +23,7 @@ class AeonAbility
     end
     can :update, Aeon::Request do |request|
       (owner_of_request?(aeon_user:, request:) || member_of_request_activity?(aeon_user:, request:)) &&
-        (request.draft? || request.appointment&.editable? || request.cancelled?)
+        (request.saved_for_later? || request.appointment&.editable? || request.cancelled?)
     end
 
     can :read, Aeon::Activity

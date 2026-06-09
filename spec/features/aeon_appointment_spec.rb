@@ -19,7 +19,7 @@ RSpec.describe 'Appointments', :js do
                     appointments_for: [appointment],
                     find_queue: queue,
                     update_request: build(:aeon_request, transaction_number: 100),
-                    update_request_route: build(:aeon_request, :draft, transaction_number: 100),
+                    update_request_route: build(:aeon_request, :saved_for_later, transaction_number: 100),
                     requests_for: [build(:aeon_request, transaction_number: 100, username: user.email_address, appointment: appointment)],
                     cancel_appointment: [],
                     reading_rooms:,
@@ -105,8 +105,8 @@ RSpec.describe 'Appointments', :js do
     end
   end
 
-  describe 'redrafting a request' do
-    it 'moves the request into draft' do
+  describe 'saving an active request for later' do
+    it 'moves the request into saved for later' do
       within '#aeon_appointments #aeon_request_100' do
         click_on 'Save for later'
       end
@@ -119,7 +119,7 @@ RSpec.describe 'Appointments', :js do
   end
 
   describe 'delete appointment modal' do
-    it 'moves requests into draft' do
+    it 'moves requests into saved for later' do
       click_on 'Delete appointment'
       expect(page).to have_css '.modal'
       perform_enqueued_jobs do

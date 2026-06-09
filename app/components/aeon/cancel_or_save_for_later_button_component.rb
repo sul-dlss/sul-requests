@@ -26,7 +26,7 @@ module Aeon
     end
 
     def save_for_later_button
-      form_with(url: redraft_aeon_request_path(request, kind: request.request_type)) do
+      form_with(url: save_for_later_aeon_request_path(request, kind: request.request_type)) do
         tag.button(type: :submit, class: 'btn btn-link su-underline') do
           tag.i(class: 'bi bi-pin-angle-fill align-middle me-1') + tag.span('Save for later')
         end

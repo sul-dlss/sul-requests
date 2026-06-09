@@ -102,7 +102,7 @@ RSpec.describe 'Accessibility testing', :js do
     end
   end
 
-  context 'for drafts and submitted (grouped) requests pages' do
+  context 'for saved for later and submitted (grouped) requests pages' do
     let(:user) { create(:sso_user) }
     let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true) }
     let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
@@ -137,11 +137,11 @@ RSpec.describe 'Accessibility testing', :js do
       login_as(current_user)
     end
 
-    context 'with draft requests' do
+    context 'with saved for later requests' do
       let(:queue_name) { 'Awaiting User Review' }
 
-      it 'validates the drafts page' do
-        visit aeon_requests_path(kind: 'drafts')
+      it 'validates the saved for later page' do
+        visit aeon_requests_path(kind: 'saved_for_later')
         expect(page).to be_accessible
       end
     end

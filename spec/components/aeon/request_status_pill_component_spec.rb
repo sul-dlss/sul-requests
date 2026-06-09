@@ -6,14 +6,14 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
   context 'with reading room requests' do
     let(:request) { build(:aeon_request) }
 
-    context 'when draft' do
+    context 'when saved for later' do
       before do
-        allow(request).to receive_messages(status: :draft)
+        allow(request).to receive_messages(status: :saved_for_later)
         render_inline(described_class.new(request:))
       end
 
-      it 'shows the draft pill' do
-        expect(page).to have_css '.draft', text: 'Reading room use'
+      it 'shows the saved for later pill' do
+        expect(page).to have_css '.saved-for-later', text: 'Reading room use'
       end
     end
 
@@ -45,14 +45,14 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
   context 'with digitization requests' do
     let(:request) { build(:aeon_request, :digitized) }
 
-    context 'when draft' do
+    context 'when saved for later' do
       before do
-        allow(request).to receive_messages(status: :draft)
+        allow(request).to receive_messages(status: :saved_for_later)
         render_inline(described_class.new(request:))
       end
 
-      it 'shows the draft pill' do
-        expect(page).to have_css '.draft', text: 'Digitization'
+      it 'shows the saved for later pill' do
+        expect(page).to have_css '.saved-for-later', text: 'Digitization'
         expect(page).to have_no_text 'Digitization ready'
         expect(page).to have_no_text 'Digitization pending'
       end

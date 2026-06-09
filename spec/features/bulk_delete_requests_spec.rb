@@ -20,13 +20,13 @@ RSpec.describe 'Bulk delete actions and modal', :js do
                          transaction_number: 102, username: aeon_user.username,
                          shipping_option: 'Electronic Delivery')
   end
-  let(:draft_queue) do
+  let(:saved_for_later_queue) do
     Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
   end
   let(:stub_aeon_client) do
     instance_double(AeonClient,
                     find_user: aeon_user,
-                    find_queue: draft_queue,
+                    find_queue: saved_for_later_queue,
                     appointments_for: [],
                     requests_for: [first_request, second_request, third_request],
                     reading_rooms:,
@@ -38,13 +38,13 @@ RSpec.describe 'Bulk delete actions and modal', :js do
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
     allow(aeon_user).to receive_messages(requests: [first_request, second_request, third_request])
     login_as(current_user)
-    visit aeon_requests_path(kind: 'drafts')
+    visit aeon_requests_path(kind: 'saved_for_later')
   end
 
   describe 'on page load' do
     it 'display delete checkboxes next to each request and a delete all input' do
-      expect(page).to have_css('input[data-draft-request-target="select"]', count: 3)
-      expect(page).to have_css('input[data-draft-request-target="selectall"]', count: 1)
+      expect(page).to have_css('input[data-request-bulk-delete-target="select"]', count: 3)
+      expect(page).to have_css('input[data-request-bulk-delete-target="selectall"]', count: 1)
     end
   end
 
@@ -77,7 +77,7 @@ RSpec.describe 'Bulk delete actions and modal', :js do
   describe 'when selecting all requests' do
     it 'shows a summary description in the modal when all items are selected' do
       check('select-all-delete')
-      expect(page).to have_css('input[data-draft-request-target="select"]:checked', count: 3)
+      expect(page).to have_css('input[data-request-bulk-delete-target="select"]:checked', count: 3)
       expect(page).to have_button('delete-all')
 
       click_button('delete-all')

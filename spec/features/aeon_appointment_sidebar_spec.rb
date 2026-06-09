@@ -33,8 +33,8 @@ RSpec.describe 'Appointments', :js do
     visit aeon_appointments_path
   end
 
-  it 'updates the draft request appointment' do
-    within '#draft_aeon_requests_sidebar' do
+  it 'updates the saved for later request appointment' do
+    within '#saved_for_later_aeon_requests_sidebar' do
       click_on 'Appointment'
       click_on I18n.l(1.week.from_now, format: :date_only).to_s
     end

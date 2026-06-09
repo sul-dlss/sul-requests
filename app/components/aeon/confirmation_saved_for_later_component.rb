@@ -12,7 +12,7 @@ module Aeon
     end
 
     def render?
-      @request_group.draft_requests.present?
+      @request_group.saved_for_later_requests.present?
     end
 
     def submitted_requests?
@@ -20,7 +20,7 @@ module Aeon
     end
 
     def saved_count
-      @request_group.draft_requests.count
+      @request_group.saved_for_later_requests.count
     end
   end
 end

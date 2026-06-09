@@ -93,7 +93,7 @@ module Aeon
       elsif submitted?
         :submitted
       else
-        :draft
+        :saved_for_later
       end
     end
 
@@ -122,8 +122,8 @@ module Aeon
       (digital? && photoduplication_queue&.cancelled_by_staff?) || transaction_queue&.cancelled_by_staff?
     end
 
-    def draft?
-      transaction_queue.nil? || transaction_queue&.draft?
+    def saved_for_later?
+      transaction_queue.nil? || transaction_queue&.saved_for_later?
     end
 
     def valid?
@@ -138,7 +138,7 @@ module Aeon
 
     def request_type
       return 'activity' if activity?
-      return 'draft' if draft?
+      return 'saved_for_later' if saved_for_later?
       return 'completed' if completed?
       return 'cancelled' if cancelled?
 
@@ -146,7 +146,7 @@ module Aeon
     end
 
     def submitted?
-      !draft? && !cancelled? && !completed?
+      !saved_for_later? && !cancelled? && !completed?
     end
 
     def digital?
@@ -213,7 +213,7 @@ module Aeon
     end
 
     def in_completed_queue?
-      return false if draft?
+      return false if saved_for_later?
 
       (digital? && photoduplication_queue&.completed?) || transaction_queue&.completed?
     end

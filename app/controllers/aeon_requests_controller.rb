@@ -28,7 +28,7 @@ class AeonRequestsController < ApplicationController
     end
   end
 
-  def redraft
+  def save_for_later
     authorize! :update, @aeon_request
 
     request_field = @aeon_request.activity? ? 'activity_id' : 'appointment_id'
@@ -51,8 +51,8 @@ class AeonRequestsController < ApplicationController
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
       format.html do
-        aeon_requests_path = @updated_aeon_request.draft? ? aeon_requests_path(kind: 'drafts') : aeon_requests_path(kind: 'submitted')
-        redirect_to aeon_requests_path, notice: 'Request was successfully updated.'
+        kind = @updated_aeon_request.saved_for_later? ? 'saved_for_later' : 'submitted'
+        redirect_to aeon_requests_path(kind:), notice: 'Request was successfully updated.'
       end
     end
   end
@@ -93,7 +93,7 @@ class AeonRequestsController < ApplicationController
 
     @previous_aeon_request_groups = @aeon_request_groups
     @next_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests)
-    @next_draft_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests.select(&:draft?).reject(&:digital?))
+    @next_saved_for_later_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests.select(&:saved_for_later?).reject(&:digital?))
 
     if @aeon_request.appointment_id != @updated_aeon_request.appointment_id
       @previous_appointment = @aeon_request.appointment&.tap do |appt|
@@ -140,8 +140,8 @@ class AeonRequestsController < ApplicationController
     @aeon_requests = [] and return unless current_user&.aeon
 
     @aeon_requests = case params[:kind]
-                     when 'drafts'
-                       current_user.aeon.draft_requests
+                     when 'saved_for_later'
+                       current_user.aeon.saved_for_later_requests
                      when 'cancelled'
                        current_user.aeon.cancelled_requests
                      when 'submitted'

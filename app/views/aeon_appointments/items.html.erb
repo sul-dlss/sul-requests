@@ -37,10 +37,10 @@
           </div>
         </div>
       </div>
-      <div class="accordion" id="draftRequestsAccordion">
+      <div class="accordion" id="savedForLaterRequestsAccordion">
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#draftRequests" aria-expanded="true" aria-controls="draftRequests">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#savedForLaterRequests" aria-expanded="true" aria-controls="savedForLaterRequests">
               <span class="d-flex flex-wrap gap-1 align-items-center">
                 <span class="fs-5 fw-semibold">Eligible items to add</span>
                 <span class="ms-2">Materials associated with <%= @appointment.reading_room.name %>.</span>
@@ -48,7 +48,7 @@
               <i class="bi bi-chevron-down accordion-header-icon ms-auto"></i>
             </button>
           </h2>
-          <div id="draftRequests" class="accordion-collapse collapse show" data-bs-parent="#draftRequestsAccordion">
+          <div id="savedForLaterRequests" class="accordion-collapse collapse show" data-bs-parent="#savedForLaterRequestsAccordion">
             <template>
               <%= render Aeon::AddRequestComponent.new(request: Aeon::Request.new(transaction_number: '__TRANSACTION_NUMBER__', item_title: '__ITEM_TITLE__')) %>
             </template>

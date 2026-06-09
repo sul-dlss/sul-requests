@@ -24,7 +24,7 @@ module Aeon
     end
 
     def include_bulk_actions
-      @request.draft? && (helpers.can? :edit, @request)
+      @request.saved_for_later? && (helpers.can? :edit, @request)
     end
   end
 end

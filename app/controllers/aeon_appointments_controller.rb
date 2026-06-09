@@ -67,7 +67,7 @@ class AeonAppointmentsController < ApplicationController
   def items
     authorize! :read, @appointment
 
-    requests = current_user.aeon.draft_requests.reject(&:digital?).select do |request|
+    requests = current_user.aeon.saved_for_later_requests.reject(&:digital?).select do |request|
       request.reading_room.id == @appointment.reading_room.id
     end
     requests = sort_aeon_requests(requests || [])
@@ -79,7 +79,7 @@ class AeonAppointmentsController < ApplicationController
 
     process_items(params[:items_added], :submitted?, params[:appointment_id])
 
-    process_items(params[:items_removed], :draft?, nil)
+    process_items(params[:items_removed], :saved_for_later?, nil)
     redirect_to aeon_appointments_path
   end
 

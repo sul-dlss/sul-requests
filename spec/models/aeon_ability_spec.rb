@@ -22,22 +22,22 @@ RSpec.describe AeonAbility do
     it { is_expected.to be_able_to(:read, Aeon::Request) }
     it { is_expected.to be_able_to(:manage, Aeon::Appointment) }
 
-    context 'with a draft request they own' do
-      before { allow(request).to receive_messages(draft?: true) }
+    context 'with a saved for later request they own' do
+      before { allow(request).to receive_messages(saved_for_later?: true) }
 
       it { is_expected.to be_able_to(:update, request) }
       it { is_expected.to be_able_to(:destroy, request) }
     end
 
     context 'with a cancelled request they own' do
-      before { allow(request).to receive_messages(draft?: false, cancelled?: true, submitted?: false) }
+      before { allow(request).to receive_messages(saved_for_later?: false, cancelled?: true, submitted?: false) }
 
       it { is_expected.to be_able_to(:update, request) }
     end
 
     context 'with a submitted request with an editable appointment' do
       before do
-        allow(request).to receive_messages(draft?: false, cancelled?: false, submitted?: true)
+        allow(request).to receive_messages(saved_for_later?: false, cancelled?: false, submitted?: true)
         allow(request.appointment).to receive_messages(editable?: true)
       end
 
@@ -46,7 +46,7 @@ RSpec.describe AeonAbility do
 
     context 'with a submitted request with a non-editable appointment' do
       before do
-        allow(request).to receive_messages(draft?: false, cancelled?: false, submitted?: true)
+        allow(request).to receive_messages(saved_for_later?: false, cancelled?: false, submitted?: true)
         allow(request.appointment).to receive_messages(editable?: false)
       end
 
@@ -57,7 +57,7 @@ RSpec.describe AeonAbility do
       let(:request) { build(:aeon_request, :without_appointment, username: 'testuser@stanford.edu') }
 
       before do
-        allow(request).to receive_messages(draft?: false, cancelled?: false, submitted?: true)
+        allow(request).to receive_messages(saved_for_later?: false, cancelled?: false, submitted?: true)
       end
 
       it { is_expected.not_to be_able_to(:update, request) }
@@ -66,7 +66,7 @@ RSpec.describe AeonAbility do
     context "with another user's request" do
       let(:request) { build(:aeon_request, username: 'otheruser@stanford.edu') }
 
-      before { allow(request).to receive_messages(draft?: true) }
+      before { allow(request).to receive_messages(saved_for_later?: true) }
 
       it { is_expected.not_to be_able_to(:update, request) }
       it { is_expected.not_to be_able_to(:destroy, request) }
@@ -77,7 +77,7 @@ RSpec.describe AeonAbility do
       let(:activity) { build(:aeon_activity, id: 42, users: [Aeon::User.new(username: 'testuser@stanford.edu')]) }
 
       before do
-        allow(request).to receive_messages(draft?: false, cancelled?: false, activity: activity)
+        allow(request).to receive_messages(saved_for_later?: false, cancelled?: false, activity: activity)
         allow(request.appointment).to receive_messages(editable?: true)
       end
 
@@ -90,7 +90,7 @@ RSpec.describe AeonAbility do
       let(:activity) { build(:aeon_activity, id: 42, users: [Aeon::User.new(username: 'someoneelse@stanford.edu')]) }
 
       before do
-        allow(request).to receive_messages(draft?: true, activity: activity)
+        allow(request).to receive_messages(saved_for_later?: true, activity: activity)
       end
 
       it { is_expected.not_to be_able_to(:update, request) }

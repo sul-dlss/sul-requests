@@ -7,17 +7,17 @@ RSpec.describe 'Add items modal', :js do
   let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true, patron_key: user.patron_key, ldap_attributes: {}) }
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
   let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
-  let(:draft_request_one) do
+  let(:saved_for_later_request_one) do
     build(:aeon_request, call_number: 'PR9195.1 .S56 NO.1', title: 'Slow poetry in America : a poetry quarterly',
                          appointment_id: nil,
                          transaction_number: 100, username: aeon_user.username, web_request_form: 'multiple')
   end
-  let(:draft_request_two) do
+  let(:saved_for_later_request_two) do
     build(:aeon_request, call_number: 'PR9195.1 .S56 NO.2', title: 'Slow poetry in America : a poetry quarterly',
                          appointment_id: nil,
                          transaction_number: 101, username: aeon_user.username, web_request_form: 'multiple')
   end
-  let(:draft_request_three) do
+  let(:saved_for_later_request_three) do
     build(:aeon_request, call_number: 'PR8195.1 .S56 NO.2', title: 'Fast poetry in America : a poetry monthly',
                          transaction_number: 102, username: aeon_user.username, appointment_id: nil,
                          shipping_option: 'Electronic Delivery')
@@ -35,7 +35,7 @@ RSpec.describe 'Add items modal', :js do
                          transaction_number: 104, username: aeon_user.username, web_request_form: 'multiple')
   end
 
-  let(:draft_queue) do
+  let(:saved_for_later_queue) do
     Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
   end
 
@@ -44,9 +44,10 @@ RSpec.describe 'Add items modal', :js do
   let(:stub_aeon_client) do
     instance_double(AeonClient,
                     find_user: aeon_user,
-                    find_queue: draft_queue,
+                    find_queue: saved_for_later_queue,
                     appointments_for: [appointment],
-                    requests_for: [draft_request_one, draft_request_two, draft_request_three, submitted_request_one, submitted_request_two],
+                    requests_for: [saved_for_later_request_one, saved_for_later_request_two, saved_for_later_request_three,
+                                   submitted_request_one, submitted_request_two],
                     reading_rooms:,
                     update_request_route: build(:aeon_request, transaction_number: 100),
                     activities_for: [],
@@ -66,8 +67,8 @@ RSpec.describe 'Add items modal', :js do
     allow(submitted_request_one).to receive_messages(transaction_queue: submitted_queue)
     allow(submitted_request_two).to receive_messages(transaction_queue: submitted_queue)
     allow(stub_aeon_client).to receive_messages(update_request: submitted_request_two)
-    allow(aeon_user).to receive_messages(requests: [draft_request_one, draft_request_two, draft_request_three, submitted_request_one,
-                                                    submitted_request_two])
+    allow(aeon_user).to receive_messages(requests: [saved_for_later_request_one, saved_for_later_request_two, saved_for_later_request_three,
+                                                    submitted_request_one, submitted_request_two])
     login_as(current_user)
     visit aeon_appointments_path
   end
@@ -81,33 +82,33 @@ RSpec.describe 'Add items modal', :js do
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 2)
       expect(page).to have_text('Medium poetry in America : a poetry quarterly', count: 1)
-      expect(page).to have_css('#draftRequestsAccordion li', count: 2)
+      expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 2)
 
       # Add slow poetry call number 1 to scheduled appointments
-      find("button[data-transaction-number='#{draft_request_one.id}']").click
+      find("button[data-transaction-number='#{saved_for_later_request_one.id}']").click
 
       # expect a header to move into modal
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 2)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 3)
       expect(page).to have_text('Medium poetry in America : a poetry quarterly', count: 1)
-      expect(page).to have_css('#draftRequestsAccordion li', count: 1)
+      expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 1)
 
       # Add slow poetry call number 2 to scheduled appointments
-      find("button[data-transaction-number='#{draft_request_two.id}']").click
+      find("button[data-transaction-number='#{saved_for_later_request_two.id}']").click
 
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 4)
       expect(page).to have_text('Medium poetry in America : a poetry quarterly', count: 1)
-      expect(page).to have_css('#draftRequestsAccordion li', count: 0)
+      expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 0)
 
-      # Remove scheduled appointment and draft appointment
+      # Remove scheduled appointment and saved_for_later appointment
       find("button[data-transaction-number='#{submitted_request_one.id}']").click
-      find("button[data-transaction-number='#{draft_request_two.id}']").click
+      find("button[data-transaction-number='#{saved_for_later_request_two.id}']").click
 
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 2)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 2)
       expect(page).to have_text('Medium poetry in America : a poetry quarterly', count: 2)
-      expect(page).to have_css('#draftRequestsAccordion li', count: 2)
+      expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 2)
 
       click_button 'Save changes'
     end

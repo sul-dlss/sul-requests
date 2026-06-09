@@ -55,13 +55,13 @@ Rails.application.routes.draw do
 
   resources :aeon_requests, only: [:edit, :destroy, :update] do
     collection do
-      get "/:kind", constraints: { kind: /submitted|drafts|completed|cancelled/ }, as: '', to: 'aeon_requests#index'
+      get "/:kind", constraints: { kind: /submitted|saved_for_later|completed|cancelled/ }, as: '', to: 'aeon_requests#index'
       delete 'destroy_multiple'
     end
 
     member do
       patch :resubmit
-      post :redraft
+      post :save_for_later
     end
   end
 

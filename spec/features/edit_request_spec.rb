@@ -12,13 +12,13 @@ RSpec.describe 'Edit Aeon request', :js do
     build(:aeon_request, call_number: 'PR9195.1 .S56 NO.1', title: 'Slow poetry in America : a poetry quarterly', item_author: 'Percy Poet',
                          transaction_number: 100, username: aeon_user.username)
   end
-  let(:draft_queue) do
+  let(:saved_for_later_queue) do
     Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
   end
   let(:stub_aeon_client) do
     instance_double(AeonClient,
                     find_user: aeon_user,
-                    find_queue: draft_queue,
+                    find_queue: saved_for_later_queue,
                     appointments_for: [appointment],
                     requests_for: [first_request],
                     reading_rooms: [reading_room],
@@ -32,10 +32,10 @@ RSpec.describe 'Edit Aeon request', :js do
     allow(aeon_user).to receive_messages(requests: [first_request])
     allow(Aeon::ReadingRoom).to receive(:find_by).and_return(reading_room)
     login_as(current_user)
-    visit aeon_requests_path(kind: 'drafts')
+    visit aeon_requests_path(kind: 'saved_for_later')
   end
 
-  describe 'drafts page' do
+  describe 'Saved for later page' do
     it 'displays the page header' do
       expect(page).to have_css('h1', text: 'Saved for later')
     end
@@ -53,7 +53,7 @@ RSpec.describe 'Edit Aeon request', :js do
     end
 
     it 'Opens the edit modal' do
-      expect(page).to have_current_path(aeon_requests_path(kind: 'drafts'))
+      expect(page).to have_current_path(aeon_requests_path(kind: 'saved_for_later'))
       expect(page).to have_css('.modal-header h1', text: 'Edit request')
       expect(page).to have_css('.selected-item-title', text: 'PR9195.1 .S56 NO.1')
     end
