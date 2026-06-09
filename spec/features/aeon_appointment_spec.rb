@@ -29,8 +29,13 @@ RSpec.describe 'Appointments', :js do
   end
   let(:available_appointments) do
     [instance_double(Aeon::AvailableAppointment,
-                     start_time: DateTime.new(2026, 2, 19),
-                     maximum_appointment_length: 210.minutes)]
+                     start_time: DateTime.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day, 11),
+                     seats_available?: true,
+                     maximum_appointment_length: 30.minutes),
+     instance_double(Aeon::AvailableAppointment,
+                     start_time: DateTime.new(Time.zone.now.year, Time.zone.now.month, Time.zone.now.day, 12),
+                     seats_available?: false,
+                     maximum_appointment_length: 120.minutes)]
   end
 
   before do
@@ -55,6 +60,30 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_text 'Earliest appointment available: Thursday, Feb 19, 2026'
         expect(page).to have_css 'label', text: 'Date'
         expect(page).to have_no_text('Duration')
+        click_on 'Cancel'
+      end
+      expect(page).to have_no_css '.modal'
+    end
+
+    it 'opens and closes the create new appointment modal for archive reading room and displays proper durations and times' do
+      click_on 'Create new appointment'
+      expect(page).to have_css '.modal'
+      within '.modal' do
+        select 'Archive of Recorded Sound'
+        click_on 'Continue'
+
+        click_on 'Select a date'
+        click_on Time.zone.now.day.to_s
+
+        # 30 min should be the only duration displayed
+        # because the only appointment with seats avaliable has a 30 min max appointment length
+        expect(page.all('.duration-selector').count).to eq(1)
+        find("label[for='aeon_appointment_duration_1800']").click
+
+        # 12 pm doesn't have any seats avaliable so it should not be displayed
+        expect(page).to have_text '11:00 am'
+        expect(page).to have_no_text '12:00 pm'
+
         click_on 'Cancel'
       end
       expect(page).to have_no_css '.modal'

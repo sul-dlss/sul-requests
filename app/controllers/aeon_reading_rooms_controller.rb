@@ -31,7 +31,7 @@ class AeonReadingRoomsController < ApplicationController
 
   def load_appointments
     @date = (Date.parse(params.expect(:date)) if params[:date]) || Time.zone.now.to_date
-    @available_appointments = @reading_room.available_appointments(@date, include_next_available: true)
+    @available_appointments = @reading_room.available_appointments(@date, include_next_available: true).select(&:seats_available?)
     @available_appointments_on_selected_date = @available_appointments.select { |x| x.start_time.to_date == @date }
     @appointment_lengths = @available_appointments.map(&:maximum_appointment_length)
   end
