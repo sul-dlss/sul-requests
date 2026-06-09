@@ -117,8 +117,7 @@
     form_id: f.id,
     data: { 'patronrequest-forRequestType': 'aeon' },
     submit: true,
-    submit_text: t('aeon_pages.new.continue_button'),
-    cancel: f.object.selectable_items.many?) do |c| %>
+    submit_text: t('aeon_pages.new.continue_button')) do |c| %>
     <% c.with_title.with_content('Aeon request') %>
     <% c.with_body do %>
       <% if f.object.selectable_items.many? && !f.object.finding_aid? %>
