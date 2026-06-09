@@ -582,12 +582,20 @@ label.btn-close {
   .selection-message {
     display: none;
   }
+
+  .appointment-slots {
+    display: none;
+  }
 }
 
 
 #available_appointments {
   .selection-message {
     display: none;
+  }
+
+  .appointment-slots {
+    display: flex;
   }
 }
 
