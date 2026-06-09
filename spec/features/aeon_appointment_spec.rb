@@ -28,9 +28,8 @@ RSpec.describe 'Appointments', :js do
                     available_appointments:)
   end
   let(:available_appointments) do
-    [instance_double(Aeon::AvailableAppointment,
-                     start_time: DateTime.new(2026, 2, 19),
-                     maximum_appointment_length: 210.minutes)]
+    [Aeon::AvailableAppointment.new(start_time: DateTime.new(2026, 2, 19),
+                                    maximum_appointment_length: 210.minutes)]
   end
 
   before do
