@@ -16,7 +16,6 @@ class AccordionStepComponent < ViewComponent::Base
                  form_id: nil,
                  request: nil,
                  submit: false,
-                 cancel: true,
                  submit_text: nil)
     @id = id
     @step_index = step_index
@@ -24,7 +23,6 @@ class AccordionStepComponent < ViewComponent::Base
     @data = data
     @form_id = form_id
     @submit = submit
-    @cancel = cancel
     @item_request = request
     @submit_text = submit_text
   end
@@ -40,10 +38,6 @@ class AccordionStepComponent < ViewComponent::Base
 
   def submit_text
     @submit_text || t('patron_requests.new.submit')
-  end
-
-  def cancel?
-    @cancel
   end
 
   delegate :instance_hrid, :origin_location_code, to: :@item_request
