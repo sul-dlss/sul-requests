@@ -21,7 +21,7 @@ export default class extends Controller {
           this.element.querySelector(`#${li.id}`).remove()
         }
       })
-      appointmentRequests.appendChild(element)
+      appointmentRequests.querySelector('.accordion-body').appendChild(element)
     } else {
       const addTo = this.element.querySelector(`li[data-transaction-number="${transactionNumber}"]`);
       this.updateButtonForm(addTo, template, eventName);
