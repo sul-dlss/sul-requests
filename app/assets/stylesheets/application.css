@@ -1252,7 +1252,7 @@ label.btn-close {
 }
 
 #appointmentRequestsAccordion .request-group,
-#draftRequestsAccordion .request-group {
+#savedForLaterRequestsAccordion .request-group {
   .reading-room {
     display: none;
   }
