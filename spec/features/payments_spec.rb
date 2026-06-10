@@ -20,7 +20,7 @@ RSpec.describe 'Payments History' do
 
   context 'with payments' do
     it 'has a header for payment history' do
-      expect(page).to have_css('h2', text: 'History')
+      expect(page).to have_css('h1', text: 'Fees and fines')
     end
 
     it 'renders a list item for every payment', :js do
