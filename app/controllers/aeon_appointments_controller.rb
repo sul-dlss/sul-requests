@@ -83,7 +83,7 @@ class AeonAppointmentsController < ApplicationController
     process_items(params[:items_added], :submitted?, @appointment.id)
 
     process_items(params[:items_removed], :saved_for_later?, nil)
-    redirect_to aeon_appointments_path
+    redirect_to aeon_appointments_path(anchor: helpers.dom_id(@appointment))
   end
 
   private
