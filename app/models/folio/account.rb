@@ -131,9 +131,7 @@ module Folio
       UNPAID_STATUSES.include?(status) ? 0 : fee
     end
 
-    def contact_info
-      location.contact_info
-    end
+    delegate :contact_info, to: :location
 
     private
 

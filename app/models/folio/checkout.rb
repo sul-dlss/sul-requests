@@ -29,6 +29,10 @@ module Folio
       record['id']
     end
 
+    def bib?
+      record['item'].present?
+    end
+
     def status
       record.dig('details', 'status', 'name')
     end
@@ -178,6 +182,10 @@ module Folio
     # if relevant, both would need to be checked, but they have the same structure of {"quantity" => 1.0, "intervalId" => "hour"}
     def overdue_fines_rate
       overdue_fines_policy['overdueFine']
+    end
+
+    def contact_info
+      location&.contact_info
     end
 
     private

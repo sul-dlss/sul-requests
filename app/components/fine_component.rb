@@ -4,7 +4,7 @@
 class FineComponent < ViewComponent::Base
   attr_reader :fine, :patron
 
-  delegate :sul_icon, :detail_link_to_searchworks, to: :helpers
+  delegate :detail_link_to_searchworks, to: :helpers
 
   def initialize(fine:, patron:)
     @fine = fine
@@ -12,7 +12,13 @@ class FineComponent < ViewComponent::Base
     super()
   end
 
+  def checked_out?
+    fine.is_a?(Folio::Checkout)
+  end
+
   def body_title
+    return fine.title if checked_out?
+
     case fine.nice_status
     when 'SUL library card'
       'Lost library card'
