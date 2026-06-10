@@ -23,6 +23,10 @@ module Folio
       @name ||= cached_data&.name || fallback_value
     end
 
+    def contact_info
+      Settings.libraries[code]&.contact_info
+    end
+
     def to_h
       { id:, code: }
     end
