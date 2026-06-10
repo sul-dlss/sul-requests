@@ -8,7 +8,7 @@ class AeonAppointmentsController < ApplicationController
   include AeonSortable
 
   before_action :load_appointments
-  before_action :load_appointment, only: [:edit, :update, :destroy, :items]
+  before_action :load_appointment, only: [:edit, :update, :destroy, :items, :add_items]
   before_action :build_appointment, only: [:create]
   before_action :load_reading_rooms, only: [:new]
 
@@ -80,10 +80,10 @@ class AeonAppointmentsController < ApplicationController
   def add_items
     authorize! :update, Aeon::Request
 
-    process_items(params[:items_added], :submitted?, params[:appointment_id])
+    process_items(params[:items_added], :submitted?, @appointment.id)
 
     process_items(params[:items_removed], :saved_for_later?, nil)
-    redirect_to aeon_appointments_path
+    redirect_to aeon_appointments_path(anchor: helpers.dom_id(@appointment))
   end
 
   private
