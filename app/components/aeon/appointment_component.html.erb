@@ -6,8 +6,10 @@
   <% end %>
 
   <% c.with_actions do %>
-    <%= link_to edit_aeon_appointment_path(appointment.id), class: 'text-decoration-none', data: { action: 'modal#open' } do %>
-      <i class="bi bi-pencil-fill"></i><span class="visually-hidden">Edit appointment</span>
+    <% if helpers.can? :update, appointment %>
+      <%= link_to edit_aeon_appointment_path(appointment.id), class: 'text-decoration-none', data: { action: 'modal#open' } do %>
+        <i class="bi bi-pencil-fill"></i><span class="visually-hidden">Edit appointment</span>
+      <% end %>
     <% end %>
     <% if helpers.can? :destroy, appointment %>
       <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#delete-appointment-<%= @appointment.id %>">

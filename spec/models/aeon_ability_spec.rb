@@ -20,7 +20,37 @@ RSpec.describe AeonAbility do
   describe 'an authenticated user' do
     it { is_expected.to be_able_to(:create, Aeon::Request) }
     it { is_expected.to be_able_to(:read, Aeon::Request) }
-    it { is_expected.to be_able_to(:manage, Aeon::Appointment) }
+    it { is_expected.to be_able_to(:create, Aeon::Appointment) }
+
+    context 'with an editable appointment they own' do
+      let(:appointment) { build(:aeon_appointment, username: 'testuser@stanford.edu') }
+
+      before { allow(appointment).to receive(:editable?).and_return(true) }
+
+      it { is_expected.to be_able_to(:read, appointment) }
+      it { is_expected.to be_able_to(:update, appointment) }
+      it { is_expected.to be_able_to(:destroy, appointment) }
+    end
+
+    context 'with a non-editable appointment they own' do
+      let(:appointment) { build(:aeon_appointment, username: 'testuser@stanford.edu') }
+
+      before { allow(appointment).to receive(:editable?).and_return(false) }
+
+      it { is_expected.to be_able_to(:read, appointment) }
+      it { is_expected.not_to be_able_to(:update, appointment) }
+      it { is_expected.to be_able_to(:destroy, appointment) }
+    end
+
+    context "with another user's appointment" do
+      let(:appointment) { build(:aeon_appointment, username: 'otheruser@stanford.edu') }
+
+      before { allow(appointment).to receive(:editable?).and_return(true) }
+
+      it { is_expected.not_to be_able_to(:read, appointment) }
+      it { is_expected.not_to be_able_to(:update, appointment) }
+      it { is_expected.not_to be_able_to(:destroy, appointment) }
+    end
 
     context 'with a saved for later request they own' do
       before { allow(request).to receive_messages(saved_for_later?: true) }
