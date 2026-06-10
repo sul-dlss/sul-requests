@@ -18,13 +18,19 @@ import { Controller } from "@hotwired/stimulus"
 //   grid          element where the day buttons are rendered
 export default class extends Controller {
   static targets = ["input", "calendar", "button", "selectedValue", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend"]
-  static values = { disabled: Array, marked: Array, min: String, max: String, openDays: Array, year: Number, month: Number, focused: String }
+  static values = {
+    disabled: Array, marked: Array, min: String, max: String, openDays: Array, year: Number, month: Number, focused: String,
+    today: {
+      type: String,
+      default: new Date().toISOString().slice(0, 10) // "YYYY-MM-DD"
+    }
+   }
 
   connect() {
     const initial = this.inputTarget.value ? this.inputTarget.value : null
 
     // set the initially focused value to the selected day, or the first available day
-    this.focusedValue = initial || this.#toIsoDate(this.nextEnabledDateOnOrAfter(new Date(), 1));
+    this.focusedValue = initial || this.#toIsoDate(this.nextEnabledDateOnOrAfter(new Date(this.todayValue), 1));
     this.element.addEventListener("keydown", this.#handleKeydown)
   }
 

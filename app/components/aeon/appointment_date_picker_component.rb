@@ -49,7 +49,8 @@ module Aeon
     end
 
     def controller_data
-      data.merge(controller: "#{data[:controller]} date-picker").reverse_merge('date-picker-min-value': min,
+      data.merge(controller: "#{data[:controller]} date-picker").reverse_merge('date-picker-today-value': Time.zone.today.iso8601,
+                                                                               'date-picker-min-value': min,
                                                                                'date-picker-max-value': max,
                                                                                'date-picker-disabled-value': closures_dates.map(&:iso8601),
                                                                                'date-picker-open-days-value': open_days)
