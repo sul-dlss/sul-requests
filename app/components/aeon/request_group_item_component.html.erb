@@ -2,7 +2,13 @@
   <div class="rgi-id d-flex align-items-center">
     <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
 
-    <%= render Aeon::CancelOrSaveForLaterButtonComponent.new(request: request) if remove_from_appointment? %>
+    <% if remove_from_appointment? %>
+      <% if request.activity? %>
+        <%= render Aeon::RemoveFromActivityButtonComponent.new(request:) %>
+      <% else %>
+        <%= render Aeon::SaveForLaterButtonComponent.new(request:) %>
+      <% end %>
+    <% end %>
   </div>
 
   <div class="rgi-detail pb-1">
