@@ -35,22 +35,8 @@ module Aeon
       reading_room&.open_hours&.map(&:day_name) || Date::DAYNAMES
     end
 
-    # Dates where a closure covers the entire span of open hours for that day.
-    def closures_dates # rubocop:disable Metrics/AbcSize
-      return [] if reading_room&.closures.blank?
-
-      reading_room.closures.flat_map do |closure|
-        closure.start_date.to_date.upto(closure.end_date.to_date).to_a.select do |date|
-          hours_on_day = reading_room.open_hours_on(date)
-          next if hours_on_day.nil?
-
-          closure.cover?(hours_on_day.range_on(date))
-        end
-      end
-    end
-
-    # Dates where the user's existing appointments leave no gap long enough
-    # for a new appointment of at least the room's minimum length.
+    # Dates with no usable gap in open hours, given the user's appointments
+    # and the reading room's closures.
     def dates_with_no_room
       return [] unless reading_room && max
 
@@ -58,7 +44,7 @@ module Aeon
     end
 
     def disabled_dates
-      (closures_dates + dates_with_no_room).map(&:iso8601).uniq
+      dates_with_no_room.map(&:iso8601)
     end
 
     def controller_data

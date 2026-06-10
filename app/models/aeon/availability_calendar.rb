@@ -15,7 +15,7 @@ module Aeon
     def dates_with_no_room(date_range)
       return [] unless reading_room
 
-      date_range.select { |date| no_room?(date) }
+      candidate_dates(date_range).select { |date| no_room?(date) }.sort
     end
 
     def no_room?(date)
@@ -33,6 +33,19 @@ module Aeon
     private
 
     attr_reader :reading_room, :user_appointments
+
+    # An open date can only have no room if at least one conflict touches it.
+    def candidate_dates(date_range)
+      (appointment_dates + closure_dates).uniq.select { |d| date_range.cover?(d) }
+    end
+
+    def appointment_dates
+      user_appointments.map(&:date)
+    end
+
+    def closure_dates
+      (reading_room.closures || []).flat_map { |c| c.start_date.to_date.upto(c.end_date.to_date).to_a }
+    end
 
     def conflicts_on(date, open_range)
       ranges = appointment_ranges_on(date) + closure_ranges_in(open_range)

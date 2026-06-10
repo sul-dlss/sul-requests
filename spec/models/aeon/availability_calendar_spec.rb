@@ -134,5 +134,35 @@ RSpec.describe Aeon::AvailabilityCalendar do
         expect(calendar.dates_with_no_room(date_range)).to eq []
       end
     end
+
+    context 'with a closure that spans dates outside the range' do
+      let(:date_range) { Date.parse('2026-06-15')..Date.parse('2026-06-22') }
+      let(:user_appointments) { [] }
+      let(:closure) do
+        Aeon::ReadingRoomClosures.new(
+          start_date: Time.zone.parse('2026-06-22T09:00:00-07:00'),
+          end_date: Time.zone.parse('2026-06-29T16:45:00-07:00')
+        )
+      end
+
+      before { allow(reading_room).to receive(:closures).and_return([closure]) }
+
+      it 'only returns closure dates within the range' do
+        expect(calendar.dates_with_no_room(date_range)).to eq [Date.parse('2026-06-22')]
+      end
+    end
+
+    context 'with an appointment on a date outside the range' do
+      let(:date_range) { Date.parse('2026-06-15')..Date.parse('2026-06-15') }
+      let(:user_appointments) do
+        [build(:aeon_appointment, reading_room: reading_room,
+                                  start_time: Time.zone.parse('2026-06-22T09:00:00-07:00'),
+                                  stop_time: Time.zone.parse('2026-06-22T16:45:00-07:00'))]
+      end
+
+      it 'ignores it' do
+        expect(calendar.dates_with_no_room(date_range)).to eq []
+      end
+    end
   end
 end
