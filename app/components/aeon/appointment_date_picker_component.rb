@@ -8,12 +8,13 @@ module Aeon
   #   <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f,
   #             data: { 'date-picker-disabled-value': ['2026-05-01'], 'date-picker-marked-value': ['2026-05-10'] }) %>
   class AppointmentDatePickerComponent < ViewComponent::Base
-    attr_reader :key, :form, :reading_room, :data
+    attr_reader :key, :form, :reading_room, :user_appointments, :data
 
-    def initialize(key, form: nil, reading_room: nil, data: {})
+    def initialize(key, form: nil, reading_room: nil, user_appointments: [], data: {})
       @key = key
       @form = form
       @reading_room = reading_room || form.object.reading_room
+      @user_appointments = user_appointments
       @data = data
     end
 
@@ -48,11 +49,23 @@ module Aeon
       end
     end
 
+    # Dates where the user's existing appointments leave no gap long enough
+    # for a new appointment of at least the room's minimum length.
+    def dates_with_no_room
+      return [] unless reading_room && max
+
+      AvailabilityCalendar.new(reading_room:, user_appointments:).dates_with_no_room(Date.parse(min)..Date.parse(max))
+    end
+
+    def disabled_dates
+      (closures_dates + dates_with_no_room).map(&:iso8601).uniq
+    end
+
     def controller_data
       data.merge(controller: "#{data[:controller]} date-picker").reverse_merge('date-picker-today-value': Time.zone.today.iso8601,
                                                                                'date-picker-min-value': min,
                                                                                'date-picker-max-value': max,
-                                                                               'date-picker-disabled-value': closures_dates.map(&:iso8601),
+                                                                               'date-picker-disabled-value': disabled_dates,
                                                                                'date-picker-open-days-value': open_days)
     end
   end

@@ -15,7 +15,8 @@
     <div class="mb-3">
       <%= f.label :date, class: "form-label fw-semibold redesign-required-label" %>
       <div class="d-flex align-items-center gap-3">
-        <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f, reading_room: @appointment.reading_room, data: { action: 'change->appointment#refreshAvailability change->appointment#updateBanner', 'date-picker-marked-value': @appointments.select { |x| x.reading_room_id == @appointment.reading_room_id }.map(&:date).map(&:iso8601) }) %>
+        <% same_room_appointments = @appointments.select { |x| x.reading_room_id == @appointment.reading_room_id && x.id != @appointment.id } %>
+        <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f, reading_room: @appointment.reading_room, user_appointments: same_room_appointments, data: { action: 'change->appointment#refreshAvailability change->appointment#updateBanner', 'date-picker-marked-value': same_room_appointments.map(&:date).map(&:iso8601) }) %>
         <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_reading_room_url(@appointment.reading_room_id, date: Date.today) %>
       </div>
     </div>
