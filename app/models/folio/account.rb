@@ -14,6 +14,7 @@ module Folio
     delegate :library_name,
              :library_code,
              :from_ill?,
+             :location,
              :effective_location,
              :permanent_location,
              to: :record_location
@@ -128,6 +129,10 @@ module Folio
     # FOLIO treats waived/cancelled as though you paid, so we can't use 'remaining'
     def payment_amount
       UNPAID_STATUSES.include?(status) ? 0 : fee
+    end
+
+    def contact_info
+      location.contact_info
     end
 
     private
