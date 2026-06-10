@@ -726,10 +726,11 @@ FactoryBot.define do
            'paymentStatus' => { 'name' => 'Outstanding' },
            'item' =>
            { 'id' => '020c1a15-3b9f-5b19-9b6f-d6e0f4351b85',
+             'effectiveLocation' => { 'code' => 'GRE-STACKS', 'library' => { 'name' => 'Green Library' } },
              'permanentLocation' => { 'code' => 'GRE-STACKS', 'library' => { 'name' => 'Green Library' } },
              'barcode' => '36105228879115',
              'instance' => { 'title' => 'Memes and the future of pop culture / by Marcel Danesi',
-                             'contributors' => [{ 'name' => 'Danesi, Marcel, 1946-' }] },
+                             'contributors' => [{ 'name' => 'Danesi, Marcel, 1946-' }], 'hrid' => '12345' },
              'holdingsRecord' => { 'callNumber' => 'HM626 .D36 2019' } } }],
         'loans' => [{ 'id' => 'f4817e08-7118-44e1-a5ab-40fc30b29ff7',
                       'item' =>
