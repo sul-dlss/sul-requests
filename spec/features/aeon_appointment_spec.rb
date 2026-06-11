@@ -136,6 +136,7 @@ RSpec.describe 'Appointments', :js do
       end
       within '#aeon_appointments' do
         expect(page).to have_no_css "#aeon_request_#{submitted_request.id}"
+        expect(page).to have_text 'No items have been requested for this appointment.'
       end
     end
   end
@@ -149,6 +150,65 @@ RSpec.describe 'Appointments', :js do
 
       within '#aeon_appointments' do
         expect(page).to have_text('Slow poetry in America : a poetry quarterly')
+      end
+    end
+  end
+
+  describe 'with multiple requests' do
+    let(:second_draft_request) do
+      StubAeonClient::Request.create(
+        callNumber: 'PR9195.1 .S56 NO.2',
+        itemTitle: 'Slow poetry in America : a poetry quarterly',
+        username: aeon_user.username,
+        webRequestForm: 'multiple',
+        site: 'SPECUA'
+      )
+    end
+
+    before do
+      second_draft_request
+    end
+
+    describe 'assigning a draft request to an appointment' do
+      it 'moves the request into the appointment' do # rubocop:disable RSpec/ExampleLength
+        visit aeon_appointments_path
+        within '#saved_for_later_aeon_requests_sidebar' do
+          within "#aeon_request_#{draft_request.id}" do
+            click_on 'Appointment'
+          end
+          expect(page).to have_text("#{I18n.l(1.week.from_now, format: :date_only)} 1 item")
+          click_on I18n.l(1.week.from_now, format: :date_only).to_s
+        end
+
+        within '#aeon_appointments' do
+          expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
+          expect(page).to have_text('Item limit: 2/10')
+        end
+
+        within '#saved_for_later_aeon_requests_sidebar' do
+          within "#aeon_request_#{second_draft_request.id}" do
+            click_on 'Appointment'
+          end
+          expect(page).to have_text("#{I18n.l(1.week.from_now, format: :date_only)} 2 items")
+          click_on I18n.l(1.week.from_now, format: :date_only).to_s
+        end
+
+        within '#saved_for_later_aeon_requests_sidebar' do
+          expect(page).to have_no_text('Slow poetry in America')
+        end
+
+        within '#aeon_appointments' do
+          expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
+          expect(page).to have_text('Item limit: 3/10')
+
+          within "#aeon_request_#{second_draft_request.id}" do
+            click_on 'Save for later'
+          end
+        end
+
+        within '#saved_for_later_aeon_requests_sidebar' do
+          expect(page).to have_text('Slow poetry in America')
+        end
       end
     end
   end
