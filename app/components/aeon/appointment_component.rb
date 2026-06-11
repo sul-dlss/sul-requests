@@ -12,7 +12,7 @@ module Aeon
     end
 
     def add_item_disabled?
-      return true unless appointment.editable? && saved_for_later?
+      return true unless helpers.can?(:update, appointment) && saved_for_later?
       return false unless appointment.reading_room.appointment_item_limit
 
       appointment.requests.count >= appointment.reading_room.appointment_item_limit

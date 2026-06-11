@@ -9,7 +9,9 @@ RSpec.describe 'Appointments', :js do
   let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |rr| Aeon::ReadingRoom.from_dynamic(rr) } }
 
   let(:field_reading_room) { reading_rooms[-1] }
-  let(:appointment) { build(:aeon_appointment, reading_room: field_reading_room, start_time: 1.week.from_now) }
+  let(:appointment) do
+    build(:aeon_appointment, username: user.email_address, reading_room: field_reading_room, start_time: 1.week.from_now)
+  end
   let(:queue) do
     Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
   end

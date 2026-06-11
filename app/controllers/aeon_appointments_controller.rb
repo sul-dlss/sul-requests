@@ -38,8 +38,8 @@ class AeonAppointmentsController < ApplicationController
     return head :unprocessable_content unless @appointment.save
 
     @other_reading_room_appointments = (@appointments + [@appointment]).select do |appt|
-      appt.reading_room.id == @appointment.reading_room.id
-    end.select(&:editable?).sort_by(&:sort_key)
+      appt.reading_room.id == @appointment.reading_room.id && can?(:update, appt)
+    end.sort_by(&:sort_key)
 
     respond_to do |format|
       format.html { redirect_to aeon_appointments_path, notice: 'Appointment created successfully' }
@@ -57,7 +57,7 @@ class AeonAppointmentsController < ApplicationController
   end
 
   def destroy
-    authorize! :delete, @appointment
+    authorize! :destroy, @appointment
 
     CancelAeonAppointmentJob.perform_now(@appointment, cancel_requests: params['cancel_items'] == 'true')
 

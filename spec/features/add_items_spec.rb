@@ -54,7 +54,7 @@ RSpec.describe 'Add items modal', :js do
                     available_appointments:)
   end
 
-  let(:appointment) { build(:aeon_appointment, start_time: 1.week.from_now) }
+  let(:appointment) { build(:aeon_appointment, username: aeon_user.username, start_time: 1.week.from_now) }
 
   let(:available_appointments) do
     [instance_double(Aeon::AvailableAppointment,

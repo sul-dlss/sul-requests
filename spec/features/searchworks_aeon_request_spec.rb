@@ -29,12 +29,14 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   let(:appointments) do
     [
       build(:aeon_appointment,
+            username: aeon_user.username,
             start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
             stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
             id: 1,
             requests: [instance_double(Aeon::Request, cancelled?: false)],
             reading_room: reading_rooms.last),
       build(:aeon_appointment,
+            username: aeon_user.username,
             start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
             stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
             id: 2,
