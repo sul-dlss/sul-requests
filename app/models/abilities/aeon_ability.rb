@@ -34,7 +34,7 @@ class AeonAbility
   private
 
   def member_of_request_activity?(aeon_user:, request:)
-    request.activity&.users&.include?(aeon_user)
+    request.activity? && aeon_user.activities&.any? { |activity| activity.id == request.activity_id }
   end
 
   def owner_of_request?(aeon_user:, request:)
