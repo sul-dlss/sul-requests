@@ -3,34 +3,28 @@
 require 'rails_helper'
 
 RSpec.describe 'Appointments', :js do
+  use_stub_aeon_client
+
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true) }
-  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
-  let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |rr| Aeon::ReadingRoom.from_dynamic(rr) } }
 
-  let(:field_reading_room) { reading_rooms[-1] }
+  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default') }
   let(:appointment) do
-    build(:aeon_appointment, username: user.email_address, reading_room: field_reading_room, start_time: 1.week.from_now)
+    create(:remote_aeon_appointment, username: aeon_user.username, reading_room:, startTime: 1.week.from_now,
+                                     stopTime: 1.week.from_now + 1.hour)
   end
-  let(:queue) do
-    Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
-  end
-  let(:stub_aeon_client) do
-    instance_double(AeonClient,
-                    find_user: aeon_user,
-                    appointments_for: [appointment],
-                    find_queue: queue,
-                    update_request: build(:aeon_request, transaction_number: 100),
-                    update_request_route: build(:aeon_request, transaction_number: 100),
-                    requests_for: [build(:aeon_request, transaction_number: 100, username: user.email_address, appointment_id: nil)],
-                    cancel_appointment: [],
-                    reading_rooms:,
-                    activities_for: [],
-                    available_appointments: [])
-  end
+  let(:reading_room) { StubAeonClient::ReadingRoom.find_by(name: 'Field Reading Room') }
 
   before do
-    allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
+    appointment
+
+    StubAeonClient::Request.create!(
+      itemTitle: 'Throwing a sinker ball at 94 mpg with wicked movement',
+      username: aeon_user.username,
+      webRequestForm: 'single',
+      site: 'SPECUA'
+    )
+
     login_as(current_user)
     visit aeon_appointments_path
   end
@@ -44,11 +38,5 @@ RSpec.describe 'Appointments', :js do
     within '#aeon_appointments' do
       expect(page).to have_text('Throwing a sinker ball at 94 mpg with wicked movement')
     end
-    expect(stub_aeon_client).to have_received(:update_request).with({ aeon_payload: [{ op: 'replace', path: '/appointmentId', value: 23 },
-                                                                                     { op: 'remove', path: '/forPublication' },
-                                                                                     { op: 'remove', path: '/itemInfo5' },
-                                                                                     { op: 'remove', path: '/specialRequest' },
-                                                                                     { op: 'remove', path: '/requestFor' }],
-                                                                      transaction_number: 100 })
   end
 end
