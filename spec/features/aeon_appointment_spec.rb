@@ -140,6 +140,19 @@ RSpec.describe 'Appointments', :js do
     end
   end
 
+  describe 'assigning a draft request to an appointment' do
+    it 'moves the request into the appointment' do
+      within '#saved_for_later_aeon_requests_sidebar' do
+        click_on 'Appointment'
+        click_on I18n.l(1.week.from_now, format: :date_only).to_s
+      end
+
+      within '#aeon_appointments' do
+        expect(page).to have_text('Slow poetry in America : a poetry quarterly')
+      end
+    end
+  end
+
   describe 'delete appointment modal' do
     it 'moves requests into saved for later' do
       click_on 'Delete appointment'
