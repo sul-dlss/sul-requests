@@ -87,6 +87,14 @@ layer(components);
   background-color: var(--stanford-10-black);
 }
 
+.bg-stanford-20-black {
+  background-color: var(--stanford-20-black);
+}
+
+.bg-green {
+  background-color: rgba(var(--stanford-digital-green-dark-rgb), .08);
+}
+
 .text-cardinal {
   color: rgba(var(--stanford-cardinal-rgb), 1);
 }

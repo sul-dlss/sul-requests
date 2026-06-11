@@ -38,7 +38,7 @@ module Folio
       record.dig('paymentStatus', 'name')
     end
 
-    def nice_status
+    def fine_type
       record.dig('feeFine', 'feeFineType')
     end
 
@@ -54,7 +54,7 @@ module Folio
     def sort_date = bill_date
 
     def status_label
-      nice_status.ends_with?('fee') ? nice_status : "#{nice_status} fee"
+      fine_type&.ends_with?('fee') ? fine_type : "#{fine_type} fee"
     end
 
     # dateUpdated on the account is often null, so we use the last action date if closed
@@ -107,13 +107,13 @@ module Folio
     def sort_key(key)
       sort_key = case key
                  when :payment_date
-                   [payment_sort_key, title, nice_status]
+                   [payment_sort_key, title, status_label]
                  when :title
-                   [title, payment_sort_key, nice_status]
+                   [title, payment_sort_key, status_label]
                  when :fee
-                   [fee, payment_sort_key, title, nice_status]
-                 when :nice_status
-                   [nice_status, payment_sort_key, title]
+                   [fee, payment_sort_key, title, status_label]
+                 when :status_label
+                   [status_label, payment_sort_key, title]
                  end
 
       sort_key.join('---')

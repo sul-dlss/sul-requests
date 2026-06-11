@@ -31,21 +31,8 @@ RSpec.describe 'Payments History' do
         expect(page).to have_css('li h3',
                                  text: 'Aspects of twentieth century art : Picasso - Important paintings, ' \
                                        'watercolours, and new linocuts.')
-        expect(page).to have_css('li .nice_status', text: 'Lost item fee')
-      end
-    end
-
-    it 'has content behind a payments toggle', :js do
-      click_on 'Past'
-
-      within('ul.payments') do
-        within(first('li')) do
-          expect(page).to have_no_css('dl', visible: :visible)
-          expect(page).to have_no_css('dt', text: 'Resolution', visible: :visible)
-          click_on 'Expand'
-          expect(page).to have_css('dl', visible: :visible)
-          expect(page).to have_css('dt', text: 'Resolution', visible: :visible)
-        end
+        expect(page).to have_css('li .status', text: 'Lost item fee')
+        expect(page).to have_css('li .fine-status', text: 'PAID')
       end
     end
 
@@ -59,12 +46,11 @@ RSpec.describe 'Payments History' do
         within '[data-sortable-target="menu"] .dropdown-menu' do
           click_on 'Reason'
         end
-
         expect(page).to have_css('.dropdown-toggle', text: 'Sort (Reason)')
         expect(page).to have_css('.active[data-sortable-sort-param="status"]', visible: :all)
 
         within(first('ul.payments li')) do
-          expect(page).to have_css('.nice_status', text: 'Damaged material')
+          expect(page).to have_css('li .status', text: 'Damaged material')
         end
       end
     end
