@@ -24,7 +24,7 @@
 <% end if @previous_appointment %>
 
 <%= turbo_stream.replace_all ".#{dom_id(@previous_appointment, :option)}" do %>
-  <%= render Aeon::AppointmentOptionComponent.new(appointment: @previous_appointment, data_action: 'appointment-select-submit#updateInput') %>
+  <%= render Aeon::AppointmentOptionComponent.new(appointment: @previous_appointment, name: 'aeon_request[appointment_id]', data_action: nil) %>
 <% end if @previous_appointment %>
 
 <%= turbo_stream.replace(dom_id(@appointment)) do %>
@@ -44,5 +44,5 @@
 <% end if @appointment %>
 
 <%= turbo_stream.replace_all ".#{dom_id(@appointment, :option)}" do %>
-  <%= render Aeon::AppointmentOptionComponent.new(appointment: @appointment, data_action: 'appointment-select-submit#updateInput') %>
+  <%= render Aeon::AppointmentOptionComponent.new(appointment: @appointment, name: 'aeon_request[appointment_id]', data_action: nil) %>
 <% end if @appointment %>
