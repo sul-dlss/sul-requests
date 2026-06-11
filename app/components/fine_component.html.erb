@@ -1,4 +1,4 @@
-<%= render CardComponent.new(element: 'li') do |c| %>
+<%= render CardComponent.new(element: 'li', data: ) do |c| %>
   <% c.with_title do %>
     <div class="d-flex flex-row gap-4">
       <%= render PillComponent.new(classes: %w[status bg-plum-light text-white]).with_content(fine.status_label) %>
@@ -13,7 +13,8 @@
         <%= accruing_rate_label %>
       </span>
     <% else %>
-      <div class="h4 mb-0"><%= number_to_currency(fine.owed) %></div>
+      <div class="h4 mb-0"><%= number_to_currency(fine.owed.nonzero? || fine.fee) %></div>
+      <%= render FineStatusPillComponent.new(status: fine.status) if fine.closed? %>
     <% end %>
   <% end %>
   <% c.with_body(classes: 'bg-white') do %>
@@ -31,12 +32,10 @@
       </div>
     <% end %>
   <% end %>
-  <% if fine.barcode %>
-    <% c.with_footer do %>
-      <div class="rgi-footer fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
-        <span>Barcode: <%= fine.barcode %></span>
-        <span>Date incurred: <%= l(fine.sort_date, format: :short) %></span>
-      </div>
-    <% end %>
-  <% end %>
+  <% c.with_footer do %>
+    <div class="rgi-footer fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
+      <% if fine.barcode %><span>Barcode: <%= fine.barcode %></span><% end %>
+      <% if fine.sort_date %><span>Date incurred: <%= l(fine.sort_date.to_date, format: :short) %></span><% end %>
+    </div>
+  <% end if fine.barcode || fine.sort_date %>
 <% end %>

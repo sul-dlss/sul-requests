@@ -22,9 +22,9 @@
       <%= render 'fines/shared_computer_alert' %>
     <% end %>
     <% if @fines_and_accruing.any? %>
-      <ul class="fines ps-0" data-sortable-target="list" aria-live="polite">
+      <ul class="fines ps-0">
         <% @fines_and_accruing.each do |item| %>
-          <%= render FineComponent.new(fine: item, patron: patron_or_group) %>
+          <%= render FineComponent.new(fine: item) %>
         <% end %>
       </ul>
     <% end %>

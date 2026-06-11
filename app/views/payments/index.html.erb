@@ -1,9 +1,9 @@
 <turbo-frame id="past-payments">
   <div id="payments" class="page-section" data-controller="sortable" data-sortable-sort-value="date">
     <% if @payments.any? %>
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-end">
         <div class="dropdown" data-sortable-target="menu">
-          <button class="btn btn-secondary dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-primary mb-2 dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Sort (Date paid)
           </button>
 
@@ -20,19 +20,8 @@
     <% end %>
 
     <% if @payments.any? %>
-      <div class="d-none d-md-flex row font-weight-bold list-header">
-        <div class="row col-md-12 col-lg-6">
-          <div class="col-md-4" data-sort="nice_status">Reason</div>
-          <div class="col-md-4" data-sort="fee">Amount</div>
-          <div class="col-md-4 active" data-sort="payment_date">Paid on</div>
-        </div>
-        <div class="row col-md-12 col-lg-6">
-          <div class="col-md-7" data-sort="title">Title</div>
-        </div>
-      </div>
-
       <ul class="payments list list-group" data-sortable-target="list" aria-live="polite">
-        <%= render PaymentComponent.with_collection(@payments, patron: patron_or_group) %>
+        <%= render FineComponent.with_collection(@payments, sortable: true) %>
       </ul>
     <% end %>
   </div>
