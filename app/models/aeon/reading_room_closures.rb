@@ -10,8 +10,6 @@ module Aeon
       )
     end
 
-    delegate :cover?, to: :range
-
     def range
       start_date..end_date
     end
