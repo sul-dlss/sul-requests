@@ -1,0 +1,842 @@
+[
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 1,
+         "includeInRequestLimit" : false,
+         "internalCode" : 5,
+         "menuGroup" : null,
+         "queueName" : "Web Request Created",
+         "queueType" : "Transaction",
+         "stateCode" : 5
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 2,
+         "includeInRequestLimit" : false,
+         "internalCode" : 10,
+         "menuGroup" : null,
+         "queueName" : "Submitted by User",
+         "queueType" : "Transaction",
+         "stateCode" : 10
+      },
+      "requestCount" : 9
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 3,
+         "includeInRequestLimit" : false,
+         "internalCode" : 15,
+         "menuGroup" : null,
+         "queueName" : "Re-Submitted by User",
+         "queueType" : "Transaction",
+         "stateCode" : 15
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 4,
+         "includeInRequestLimit" : false,
+         "internalCode" : 20,
+         "menuGroup" : null,
+         "queueName" : "Submitted by Staff",
+         "queueType" : "Transaction",
+         "stateCode" : 20
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "needs user review",
+         "id" : 5,
+         "includeInRequestLimit" : false,
+         "internalCode" : 25,
+         "menuGroup" : null,
+         "queueName" : "Awaiting User Review",
+         "queueType" : "Transaction",
+         "stateCode" : 25
+      },
+      "requestCount" : 81
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "request pending",
+         "id" : 6,
+         "includeInRequestLimit" : true,
+         "internalCode" : 26,
+         "menuGroup" : null,
+         "queueName" : "Awaiting Future Request Processing",
+         "queueType" : "Transaction",
+         "stateCode" : 26
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "awaiting completion of digitization request",
+         "id" : 7,
+         "includeInRequestLimit" : false,
+         "internalCode" : 30,
+         "menuGroup" : null,
+         "queueName" : "Awaiting Order Submittal",
+         "queueType" : "Photoduplication",
+         "stateCode" : 30
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "being retrieved",
+         "id" : 49,
+         "includeInRequestLimit" : true,
+         "internalCode" : null,
+         "menuGroup" : "SAL3 Requests",
+         "queueName" : "Awaiting Delivery from SAL3",
+         "queueType" : "Transaction",
+         "stateCode" : 35
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "Awaiting Request Processing",
+         "id" : 60,
+         "includeInRequestLimit" : true,
+         "internalCode" : null,
+         "menuGroup" : null,
+         "queueName" : "Awaiting Folio Data Import",
+         "queueType" : "Transaction",
+         "stateCode" : 35
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : false,
+         "displayName" : null,
+         "id" : 59,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : null,
+         "queueName" : "Awaiting ILS Data Import",
+         "queueType" : "Transaction",
+         "stateCode" : 35
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 58,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : null,
+         "queueName" : "Awaiting Manual Data Import",
+         "queueType" : "Transaction",
+         "stateCode" : 35
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "awaiting approval",
+         "id" : 8,
+         "includeInRequestLimit" : true,
+         "internalCode" : 35,
+         "menuGroup" : null,
+         "queueName" : "Awaiting Request Processing",
+         "queueType" : "Transaction",
+         "stateCode" : 35
+      },
+      "requestCount" : 355
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "awaiting conservation treatment",
+         "id" : 53,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Staff Processing",
+         "queueName" : "In Transit to Conservation",
+         "queueType" : "Transaction",
+         "stateCode" : 35
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in transit to digitization services",
+         "id" : 57,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Photoduplication",
+         "queueName" : "In Transit to DPG",
+         "queueType" : "Transaction",
+         "stateCode" : 35
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "awaiting cataloging ",
+         "id" : 54,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Staff Processing",
+         "queueName" : "In Transit to SPEC Cataloging",
+         "queueType" : "Transaction",
+         "stateCode" : 35
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 47,
+         "includeInRequestLimit" : true,
+         "internalCode" : null,
+         "menuGroup" : "SAL3 Requests",
+         "queueName" : "SAL3 Request",
+         "queueType" : "Transaction",
+         "stateCode" : 35
+      },
+      "requestCount" : 24
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "processing interrupted",
+         "id" : 55,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Staff Processing",
+         "queueName" : "Staff process interrupted",
+         "queueType" : "Transaction",
+         "stateCode" : 35
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "awaiting processing of digitization request",
+         "id" : 9,
+         "includeInRequestLimit" : false,
+         "internalCode" : 40,
+         "menuGroup" : null,
+         "queueName" : "Awaiting Order Processing",
+         "queueType" : "Photoduplication",
+         "stateCode" : 40
+      },
+      "requestCount" : 5
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "awaiting staff processing",
+         "id" : 10,
+         "includeInRequestLimit" : false,
+         "internalCode" : 45,
+         "menuGroup" : null,
+         "queueName" : "Awaiting Activity Processing",
+         "queueType" : "Transaction",
+         "stateCode" : 45
+      },
+      "requestCount" : 62
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "being retrieved",
+         "id" : 51,
+         "includeInRequestLimit" : true,
+         "internalCode" : null,
+         "menuGroup" : "SAL3 Requests",
+         "queueName" : "Error Processing SAL3 Request",
+         "queueType" : "Transaction",
+         "stateCode" : 50
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "being retrieved",
+         "id" : 11,
+         "includeInRequestLimit" : true,
+         "internalCode" : 50,
+         "menuGroup" : null,
+         "queueName" : "In Item Retrieval",
+         "queueType" : "Transaction",
+         "stateCode" : 50
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "being retrieved",
+         "id" : 52,
+         "includeInRequestLimit" : true,
+         "internalCode" : null,
+         "menuGroup" : "SAL3 Requests",
+         "queueName" : "In Transit from SAL3",
+         "queueType" : "Transaction",
+         "stateCode" : 50
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "In Item Retrieval",
+         "id" : 48,
+         "includeInRequestLimit" : true,
+         "internalCode" : null,
+         "menuGroup" : "SAL3 Requests",
+         "queueName" : "Submitted to SAL3",
+         "queueType" : "Transaction",
+         "stateCode" : 50
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in Cataloging",
+         "id" : 36,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Staff Processing",
+         "queueName" : "In Cataloging",
+         "queueType" : "Transaction",
+         "stateCode" : 55
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in Conservation Services",
+         "id" : 38,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Staff Processing",
+         "queueName" : "In Conservation",
+         "queueType" : "Transaction",
+         "stateCode" : 55
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in use",
+         "id" : 12,
+         "includeInRequestLimit" : true,
+         "internalCode" : 55,
+         "menuGroup" : null,
+         "queueName" : "Item Checked Out",
+         "queueType" : "Transaction",
+         "stateCode" : 55
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in use by staff",
+         "id" : 39,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Staff Processing",
+         "queueName" : "Item Checked Out to Staff",
+         "queueType" : "Transaction",
+         "stateCode" : 55
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "on exhibit",
+         "id" : 56,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Exhibition",
+         "queueName" : "On Exhibit - External",
+         "queueType" : "Transaction",
+         "stateCode" : 55
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "on exhibit",
+         "id" : 37,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Exhibition",
+         "queueName" : "On Exhibit - Internal",
+         "queueType" : "Transaction",
+         "stateCode" : 55
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in use",
+         "id" : 13,
+         "includeInRequestLimit" : false,
+         "internalCode" : 60,
+         "menuGroup" : null,
+         "queueName" : "Item Checked Out to Activity",
+         "queueType" : "Transaction",
+         "stateCode" : 60
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "ready for use",
+         "id" : 14,
+         "includeInRequestLimit" : true,
+         "internalCode" : 65,
+         "menuGroup" : null,
+         "queueName" : "Item On Hold",
+         "queueType" : "Transaction",
+         "stateCode" : 65
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "ready for use",
+         "id" : 15,
+         "includeInRequestLimit" : false,
+         "internalCode" : 70,
+         "menuGroup" : null,
+         "queueName" : "Item On Hold for Activity",
+         "queueType" : "Transaction",
+         "stateCode" : 70
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 16,
+         "includeInRequestLimit" : false,
+         "internalCode" : 72,
+         "menuGroup" : null,
+         "queueName" : "Remove from Hold",
+         "queueType" : "Transaction",
+         "stateCode" : 72
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "being reshelved",
+         "id" : 17,
+         "includeInRequestLimit" : false,
+         "internalCode" : 75,
+         "menuGroup" : null,
+         "queueName" : "Awaiting Item Reshelving",
+         "queueType" : "Transaction",
+         "stateCode" : 75
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "awaiting reshelving",
+         "id" : 50,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "SAL3 Requests",
+         "queueName" : "Awaiting Return to SAL3",
+         "queueType" : "Transaction",
+         "stateCode" : 75
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "being reshelved",
+         "id" : 18,
+         "includeInRequestLimit" : false,
+         "internalCode" : 80,
+         "menuGroup" : null,
+         "queueName" : "Item Reshelved",
+         "queueType" : "Transaction",
+         "stateCode" : 80
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "being retrieved",
+         "id" : 19,
+         "includeInRequestLimit" : false,
+         "internalCode" : 85,
+         "menuGroup" : null,
+         "queueName" : "Awaiting Item Delivery",
+         "queueType" : "Photoduplication",
+         "stateCode" : 85
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "awaiting approval for digitization",
+         "id" : 20,
+         "includeInRequestLimit" : false,
+         "internalCode" : 90,
+         "menuGroup" : null,
+         "queueName" : "Awaiting Order Approval",
+         "queueType" : "Photoduplication",
+         "stateCode" : 90
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "awaiting payment for digitization",
+         "id" : 21,
+         "includeInRequestLimit" : false,
+         "internalCode" : 95,
+         "menuGroup" : null,
+         "queueName" : "Awaiting Order Payment",
+         "queueType" : "Photoduplication",
+         "stateCode" : 95
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in Digitization Services",
+         "id" : 46,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Photoduplication",
+         "queueName" : "In BDPL - Outsource",
+         "queueType" : "Transaction",
+         "stateCode" : 100
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in Digitization Services",
+         "id" : 45,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Photoduplication",
+         "queueName" : "In BDPL - SRWC",
+         "queueType" : "Transaction",
+         "stateCode" : 100
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in Digitization Services",
+         "id" : 40,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Photoduplication",
+         "queueName" : "In DPG - Green",
+         "queueType" : "Transaction",
+         "stateCode" : 100
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in Digitization Services",
+         "id" : 41,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Photoduplication",
+         "queueName" : "In DPG - Outsource",
+         "queueType" : "Transaction",
+         "stateCode" : 100
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in Digitization Services",
+         "id" : 42,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Photoduplication",
+         "queueName" : "In DPG - SRWC",
+         "queueType" : "Transaction",
+         "stateCode" : 100
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "being digitized",
+         "id" : 22,
+         "includeInRequestLimit" : false,
+         "internalCode" : 100,
+         "menuGroup" : null,
+         "queueName" : "In Photoduplication",
+         "queueType" : "Transaction",
+         "stateCode" : 100
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in Digitization Services",
+         "id" : 44,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Photoduplication",
+         "queueName" : "In SMPL - Outsource",
+         "queueType" : "Transaction",
+         "stateCode" : 100
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "in Digitization Services",
+         "id" : 43,
+         "includeInRequestLimit" : false,
+         "internalCode" : null,
+         "menuGroup" : "Photoduplication",
+         "queueName" : "In SMPL - SRWC",
+         "queueType" : "Transaction",
+         "stateCode" : 100
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "ready for use",
+         "id" : 23,
+         "includeInRequestLimit" : false,
+         "internalCode" : 105,
+         "menuGroup" : null,
+         "queueName" : "Item Delivered",
+         "queueType" : "Photoduplication",
+         "stateCode" : 105
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 24,
+         "includeInRequestLimit" : false,
+         "internalCode" : 110,
+         "menuGroup" : null,
+         "queueName" : "Cloned From Request",
+         "queueType" : "Transaction",
+         "stateCode" : 110
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 25,
+         "includeInRequestLimit" : false,
+         "internalCode" : 115,
+         "menuGroup" : null,
+         "queueName" : "Cloned To Request",
+         "queueType" : "Transaction",
+         "stateCode" : 115
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 26,
+         "includeInRequestLimit" : false,
+         "internalCode" : 120,
+         "menuGroup" : null,
+         "queueName" : "Request Merged",
+         "queueType" : "Transaction",
+         "stateCode" : 120
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 27,
+         "includeInRequestLimit" : false,
+         "internalCode" : 121,
+         "menuGroup" : null,
+         "queueName" : "Order Merged",
+         "queueType" : "Photoduplication",
+         "stateCode" : 121
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "request cancelled",
+         "id" : 28,
+         "includeInRequestLimit" : false,
+         "internalCode" : 125,
+         "menuGroup" : null,
+         "queueName" : "Cancelled by User",
+         "queueType" : "Transaction",
+         "stateCode" : 125
+      },
+      "requestCount" : 1734
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "digitization request cancelled",
+         "id" : 29,
+         "includeInRequestLimit" : false,
+         "internalCode" : 126,
+         "menuGroup" : null,
+         "queueName" : "Order Cancelled by User",
+         "queueType" : "Photoduplication",
+         "stateCode" : 126
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "request cancelled by staff",
+         "id" : 30,
+         "includeInRequestLimit" : false,
+         "internalCode" : 130,
+         "menuGroup" : null,
+         "queueName" : "Cancelled by Staff",
+         "queueType" : "Transaction",
+         "stateCode" : 130
+      },
+      "requestCount" : 41
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "digitization request cancelled by staff",
+         "id" : 31,
+         "includeInRequestLimit" : false,
+         "internalCode" : 131,
+         "menuGroup" : null,
+         "queueName" : "Order Cancelled by Staff",
+         "queueType" : "Photoduplication",
+         "stateCode" : 131
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "request completed",
+         "id" : 32,
+         "includeInRequestLimit" : false,
+         "internalCode" : 135,
+         "menuGroup" : null,
+         "queueName" : "Request Finished",
+         "queueType" : "Transaction",
+         "stateCode" : 135
+      },
+      "requestCount" : 2
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : "digization complete",
+         "id" : 33,
+         "includeInRequestLimit" : false,
+         "internalCode" : 136,
+         "menuGroup" : null,
+         "queueName" : "Order Finished",
+         "queueType" : "Photoduplication",
+         "stateCode" : 136
+      },
+      "requestCount" : 0
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 34,
+         "includeInRequestLimit" : false,
+         "internalCode" : 140,
+         "menuGroup" : null,
+         "queueName" : "Request In Processing",
+         "queueType" : "Transaction",
+         "stateCode" : 140
+      },
+      "requestCount" : 1
+   },
+   {
+      "queue" : {
+         "active" : true,
+         "displayName" : null,
+         "id" : 35,
+         "includeInRequestLimit" : false,
+         "internalCode" : 145,
+         "menuGroup" : null,
+         "queueName" : "Imported From Legacy System",
+         "queueType" : "Transaction",
+         "stateCode" : 145
+      },
+      "requestCount" : 0
+   }
+]
