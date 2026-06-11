@@ -173,7 +173,7 @@ class AeonClient
 
     def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       {
-        appointmentId: appointment_id&.to_i,
+        appointmentID: appointment_id&.to_i,
         callNumber: call_number&.truncate(255, omission:),
         eadNumber: ead_number&.truncate(255, omission:),
         forPublication: for_publication,
@@ -195,7 +195,7 @@ class AeonClient
         shippingOption: shipping_option&.truncate(255, omission:),
         site: site,
         specialRequest: special_request&.truncate(255, omission:),
-        system_id: system_id,
+        systemID: system_id,
         username: username&.truncate(50, omission:),
         webRequestForm: web_request_form&.truncate(100, omission:) || 'SUL Requests',
         requestFor: request_for
@@ -240,9 +240,9 @@ class AeonClient
         firstName: first_name&.truncate(50),
         lastName: last_name&.truncate(50),
         phone: phone&.truncate(50, omission:),
-        state_or_province: state_or_province&.truncate(50, omission:),
+        state: state_or_province&.truncate(50, omission:),
         username: email_address&.truncate(100, omission:),
-        zip_code: zip_code&.truncate(50, omission:)
+        zip: zip_code&.truncate(50, omission:)
       }.reject { |_k, v| v == UNSET }
     end
 

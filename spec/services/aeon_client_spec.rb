@@ -164,7 +164,7 @@ RSpec.describe AeonClient do
         data = described_class.with_defaults.with(appointment_id: nil)
 
         expect(data.as_patch_json).to contain_exactly(
-          { op: 'remove', path: '/appointmentId' }
+          { op: 'remove', path: '/appointmentID' }
         )
       end
     end
