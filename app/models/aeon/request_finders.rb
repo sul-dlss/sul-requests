@@ -29,6 +29,12 @@ module Aeon
       self.class.new(requests.select(&:activity?))
     end
 
+    def for_activity(activity_or_id)
+      id = activity_or_id.is_a?(Aeon::Activity) ? activity_or_id.id : activity_or_id&.to_i
+
+      self.class.new(requests.select { |request| request.activity_id == id })
+    end
+
     def for_appointment(appointment_or_id)
       id = appointment_or_id.is_a?(Aeon::Appointment) ? appointment_or_id.id : appointment_or_id&.to_i
 

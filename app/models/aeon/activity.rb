@@ -54,12 +54,6 @@ module Aeon
       @grouped_requests ||= Aeon::RequestGrouping.from_requests(requests)
     end
 
-    def assign_requests_from(all_requests)
-      self.requests = all_requests.select do |request|
-        request.activity_id == id && request.submitted?
-      end
-    end
-
     def reading_room; end
 
     def sort_key
