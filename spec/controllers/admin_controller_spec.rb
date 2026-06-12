@@ -146,9 +146,11 @@ RSpec.describe AdminController do
     describe 'for anonymous users' do
       let(:user) { create(:anon_user) }
 
-      it 'is not possible' do
+      render_views
+      it 'is shows the login screen' do
         get :approve_item, params: { id: mediated_page.id, item: 'ABC 123' }
         expect(response).to have_http_status(:forbidden)
+        expect(response.body).to have_css('h1', text: 'Login')
       end
     end
   end
