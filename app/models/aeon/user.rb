@@ -34,7 +34,7 @@ module Aeon
     end
 
     def all_requests
-      self.class.aeon_client.requests_for(username:)
+      Aeon::RequestFinders.new(self.class.aeon_client.requests_for(username:))
     end
 
     def requests
@@ -60,25 +60,13 @@ module Aeon
       activities&.select(&:active?)&.select { |activity| activity.sites.include?(site) }
     end
 
-    def saved_for_later_requests
-      requests.select(&:saved_for_later?)
-    end
-
     def submitted_requests
-      requests.select(&:submitted?)
-    end
-
-    def cancelled_requests
-      requests.select(&:cancelled?)
-    end
-
-    def completed_requests
-      requests.select(&:completed?)
+      requests.submitted
     end
 
     def appointments
       @appointments ||= self.class.aeon_client.appointments_for(username:).sort_by(&:sort_key).reject(&:cancelled?).each do |appointment|
-        appointment.requests = requests.select { |request| request.appointment_id == appointment.id }
+        appointment.requests = requests.for_appointment(appointment)
       end
     end
 

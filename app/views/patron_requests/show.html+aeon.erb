@@ -29,7 +29,7 @@
                 </div>
               <% end %>
               <% if @aeon_requests.first&.multi_item_selector? %>
-                <% @aeon_requests.submitted_requests.group_by(&:activity_id).each do |id, requests| %>
+                <% @aeon_requests.requests.submitted.group_by(&:activity_id).each do |id, requests| %>
                   <%= render Aeon::ConfirmationRequestListComponent.new(requests:, digitization: @aeon_requests.digital?, activity_id: id ) %>
                 <% end %>
                 <%= render Aeon::ConfirmationSavedForLaterComponent.new(request_group: @aeon_requests) %>

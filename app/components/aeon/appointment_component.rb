@@ -19,9 +19,7 @@ module Aeon
     end
 
     def saved_for_later?
-      @saved_for_later ||= current_user.aeon.saved_for_later_requests.reject(&:digital?).any? do |request|
-        request.reading_room.id == @appointment.reading_room.id
-      end
+      @saved_for_later ||= current_user.aeon.requests.saved_for_later.for_reading_room(@appointment.reading_room)
     end
 
     def items_path
