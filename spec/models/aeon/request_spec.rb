@@ -9,6 +9,15 @@ RSpec.describe Aeon::Request do
     end
   end
 
+  describe '#==' do
+    it 'returns true for two requests with the same id' do
+      request1 = build(:aeon_request, id: 1)
+      request2 = build(:aeon_request, id: 1)
+
+      expect(request1).to eq request2
+    end
+  end
+
   describe '#status' do
     subject(:request) do
       build(:aeon_request, transaction_status: queue.id)

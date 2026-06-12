@@ -203,6 +203,16 @@ module Aeon
       @web_request_form != 'single'
     end
 
+    def ==(other)
+      return false unless other.is_a?(Aeon::Request)
+
+      id.present? && other.id.present? ? id == other.id : super
+    end
+
+    def hash
+      id.present? ? id.hash : super
+    end
+
     private
 
     def within_persist_completed_request_as_submitted_period?
