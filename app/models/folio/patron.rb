@@ -269,6 +269,13 @@ module Folio
       @requests ||= folio_requests.reject(&:proxy_request?)
     end
 
+    # ILLIAD requests are retrieved separately
+    def illiad_requests
+      return [] unless username
+
+      IlliadRequests.new(username).requests
+    end
+
     # Requests from the proxy group
     def proxy_group_requests
       folio_requests.select(&:proxy_request?) if sponsor?
