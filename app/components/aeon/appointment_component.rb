@@ -6,20 +6,20 @@ module Aeon
     attr_reader :appointment
 
     delegate :current_user, to: :helpers
+    delegate :reading_room_id, to: :appointment
 
     def initialize(appointment:)
       @appointment = appointment
     end
 
-    def add_item_disabled?
-      return true unless helpers.can?(:update, appointment) && saved_for_later?
-      return false unless appointment.reading_room.appointment_item_limit
+    def add_item_allowed?
+      return false unless helpers.can?(:update, appointment)
 
-      appointment.requests.count >= appointment.reading_room.appointment_item_limit
+      appointment.reading_room.appointment_item_limit.nil? || appointment.requests.count < appointment.reading_room.appointment_item_limit
     end
 
-    def saved_for_later?
-      @saved_for_later ||= current_user.aeon.requests.saved_for_later.for_reading_room(@appointment.reading_room)
+    def eligible_saved_for_later_requests
+      @eligible_saved_for_later_requests ||= current_user.aeon.requests.saved_for_later.for_reading_room(@appointment.reading_room)
     end
 
     def items_path

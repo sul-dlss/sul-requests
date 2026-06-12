@@ -1280,3 +1280,8 @@ label.btn-close {
 .hidden-if-peers:only-child {
   display: block;
 }
+
+.add-items-button[data-disabled] {
+  display: none;
+  pointer-events: none;
+}

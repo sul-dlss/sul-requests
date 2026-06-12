@@ -1,4 +1,4 @@
-<%= render CardComponent.new id: dom_id(appointment) do |c| %>
+<%= render CardComponent.new id: dom_id(appointment), data: { 'appointments-list-target': 'appointment' } do |c| %>
   <% c.with_title do %>
     <h2 class="card-title mb-0 h4 d-flex gap-3">
       <%= render Aeon::AppointmentDateTimeComponent.new(appointment: appointment, location: appointment.reading_room.name) %>
@@ -33,7 +33,7 @@
 
   <% c.with_footer do %>
     <%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %>
-    <%= link_to "Add items", items_path, class: 'btn btn-outline-primary btn-sm', data: { action: 'modal#open' } unless add_item_disabled? %>
+    <%= link_to "Add items", items_path, class: 'btn btn-outline-primary btn-sm add-items-button', data: { action: 'modal#open', disabled: (true if eligible_saved_for_later_requests.none?), reading_room_id: reading_room_id } if add_item_allowed? %>
   <% end %>
 
   <% c.with_post do %>
