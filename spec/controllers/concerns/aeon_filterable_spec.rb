@@ -24,7 +24,7 @@ RSpec.describe AeonFilterable do
     build(:aeon_request, title: 'Reading Room B', creation_date: now - 2.days)
   end
 
-  let(:requests) { [digital_request, reading_room_request_a, reading_room_request_b] }
+  let(:requests) { Aeon::RequestFinders.new([digital_request, reading_room_request_a, reading_room_request_b]) }
 
   before do
     allow(controller).to receive(:params).and_return(ActionController::Parameters.new(filter: filter_param))
