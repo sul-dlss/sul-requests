@@ -106,7 +106,7 @@ GEM
     bot_challenge_page (1.2.0)
       http (>= 5.2, < 7)
       rails (>= 7.1, < 8.2)
-    brakeman (8.0.4)
+    brakeman (8.0.5)
       racc
     builder (3.3.0)
     bundler-audit (0.9.3)
