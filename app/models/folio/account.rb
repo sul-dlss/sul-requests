@@ -14,6 +14,7 @@ module Folio
     delegate :library_name,
              :library_code,
              :from_ill?,
+             :location,
              :effective_location,
              :permanent_location,
              to: :record_location
@@ -129,6 +130,8 @@ module Folio
     def payment_amount
       UNPAID_STATUSES.include?(status) ? 0 : fee
     end
+
+    delegate :contact_info, to: :location
 
     private
 

@@ -23,6 +23,7 @@ RSpec.describe 'fines/index' do
                     shelf_key: 'AB 1234',
                     call_number: 'AB 1234',
                     catkey: '12345',
+                    contact_info: Settings.libraries['GREEN'],
                     patron_key: 'patronkey123',
                     instance_of?: Folio::Account)
   end
@@ -79,6 +80,7 @@ RSpec.describe 'fines/index' do
                         from_ill?: false,
                         author: 'Some Author',
                         library_name: 'Green Library',
+                        contact_info: Settings.libraries['GREEN'],
                         overdue_fines_rate: { 'quantity' => 1.0, 'intervalId' => 'hour' },
                         sort_date: Date.new,
                         is_a?: true)

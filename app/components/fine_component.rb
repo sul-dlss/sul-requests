@@ -12,29 +12,25 @@ class FineComponent < ViewComponent::Base
     super()
   end
 
-  def render_fine_status
-    fine_status_html(css_class: 'status small fw-medium rounded-pill text-white bg-plum-light ready',
-                     text: fine.status_label)
+  def checked_out?
+    fine.is_a?(Folio::Checkout)
   end
 
-  def contact_path(*, **)
-    '#'
+  def accruing_rate_label
+    rate = fine.overdue_fines_rate if checked_out?
+    return unless rate
+
+    "#{sul_icon('sharp-warning-24px')}Accruing #{number_to_currency(rate['quantity'])}/#{rate['intervalId']} until returned"
   end
 
   def body_title
+    return fine.title if checked_out?
+
     case fine.nice_status
     when 'SUL library card'
       'Lost library card'
     else
       fine.title
-    end
-  end
-
-  private
-
-  def fine_status_html(text:, css_class: nil)
-    tag.span(class: css_class) do
-      safe_join([text], ' ')
     end
   end
 end

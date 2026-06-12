@@ -1,30 +1,42 @@
 <%= render CardComponent.new(element: 'li') do |c| %>
   <% c.with_title do %>
     <div class="d-flex flex-row gap-4">
-      <%= render_fine_status %>
+      <%= render PillComponent.new(classes: %w[status bg-plum text-white]).with_content(fine.status_label) %>
+      <% if accruing_rate_label %>
+        <span class="small ms-2">Payment cannot be processed until item is returned</span>
+      <% end %>
     </div>
   <% end %>
   <% c.with_actions do %>
-    <h4><%= number_to_currency(fine.owed) %></h4>
+    <% if accruing_rate_label %>
+      <span class="small fw-medium rounded-pill text-white bg-danger">
+        <%= accruing_rate_label %>
+      </span>
+    <% else %>
+      <div class="h4 mb-0"><%= number_to_currency(fine.owed) %></div>
+    <% end %>
   <% end %>
   <% c.with_body(classes: 'bg-white') do %>
     <h3 class="mb-1 clamp clamp-3"><%= body_title %></h3>
-    <% if fine.bib? %>
-      <div class="d-flex flex-row gap-3">
-        <div>Call number: <%= fine.call_number %></div>
-        <% unless fine.from_ill? %>
-          <%= link_to "#{Settings.searchworks_link}/#{fine.catkey}", rel: 'noopener', target: '_blank' do %>
-            <%= sul_icon :'sharp-open_in_new-24px' %> View in SearchWorks
-          <% end %>
+    <div class="d-flex flex-row gap-3">
+      <div>Call number: <%= fine.call_number %></div>
+      <%= detail_link_to_searchworks(fine.catkey) unless fine.from_ill? %>
+    </div>
+    <% if fine.library_name %>
+      <div class="d-flex gap-3">
+        <span class="visually-hidden">Library:</span><%= fine.library_name %>
+        <%= link_to "mailto:#{fine.contact_info[:email]}", class: 'su-underline' do %>
+          <i class="align-middle bi bi-envelope me-1"></i>Contact
         <% end %>
       </div>
-      <div><span class="visually-hidden">Library:</span><%= fine.library_name %></div>
     <% end %>
-    <%= link_to 'Contact library', contact_path %>
   <% end %>
   <% if fine.barcode %>
     <% c.with_footer do %>
-      <span>Barcode: <%= fine.barcode %></span>
+      <div class="rgi-footer fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
+        <span>Barcode: <%= fine.barcode %></span>
+        <span>Date incurred: <%= l(fine.sort_date.to_date, format: :short) %></span>
+      </div>
     <% end %>
   <% end %>
 <% end %>

@@ -29,7 +29,7 @@ RSpec.describe 'Fines Page' do
         expect(page).to have_css('li', count: 1)
         expect(page).to have_css('li h3', text: 'Memes and the future of pop culture / by Marcel Danesi')
         expect(page).to have_css('li .status', text: 'Damaged material')
-        expect(page).to have_css('li a', text: 'Contact library')
+        expect(page).to have_link('Contact', href: 'mailto:greencirc@stanford.edu')
       end
     end
   end
