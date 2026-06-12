@@ -87,8 +87,8 @@ class AeonRequestsController < ApplicationController
 
   def update_turbo_stream # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
     @previous_aeon_requests = @aeon_requests
-    @next_aeon_requests = sort_aeon_requests(@aeon_requests - [@aeon_request] + [@updated_aeon_request]).sort_by do |x|
-      [x.title, x.sort_key]
+    @next_aeon_requests = (@aeon_requests - [@aeon_request] + [@updated_aeon_request]).sort_by do |x|
+      [x.title, x.sort_key, -1 * x.creation_date.to_i]
     end
 
     @previous_aeon_request_groups = @aeon_request_groups
@@ -133,7 +133,7 @@ class AeonRequestsController < ApplicationController
     @aeon_requests = Aeon::RequestFinders.new([]) and return unless current_user&.aeon
     return load_filtered_aeon_requests if params[:kind]
 
-    @aeon_requests = Aeon::RequestFinders.new(sort_aeon_requests(current_user.aeon.requests))
+    @aeon_requests = Aeon::RequestFinders.new(current_user.aeon.requests)
   end
 
   def load_filtered_aeon_requests # rubocop:disable Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/AbcSize
