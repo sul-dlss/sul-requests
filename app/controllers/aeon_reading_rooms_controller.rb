@@ -11,8 +11,6 @@ class AeonReadingRoomsController < ApplicationController
   before_action :load_appointments
 
   def available
-    @selected_time = params[:selected]
-
     respond_to do |format|
       format.html
       format.json
