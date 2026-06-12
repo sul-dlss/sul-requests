@@ -29,9 +29,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
   let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, saved_for_later?: false, valid?: true) }
 
   let(:available_appointments) do
-    [instance_double(Aeon::AvailableAppointment,
-                     start_time: DateTime.new(2026, 2, 19),
-                     maximum_appointment_length: 210.minutes)]
+    [Aeon::AvailableAppointment.new(start_time: DateTime.new(2026, 2, 19),
+                                    maximum_appointment_length: 210.minutes)]
   end
 
   let(:activities_for) do
