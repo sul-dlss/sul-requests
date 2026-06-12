@@ -3,70 +3,34 @@
 require 'rails_helper'
 
 RSpec.describe 'Requesting an item from an EAD', :js do
+  use_stub_aeon_client
+
   before do
     allow(Settings.features).to receive(:requests_redesign).and_return(true)
     allow(EadClient).to receive(:fetch).and_return(Ead::Document.new(eadxml, url: 'whatever'))
+    create(:remote_aeon_activity, users: [{ username: aeon_user.username }])
+
+    appointments
 
     login_as(current_user)
-
-    allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-    allow(aeon_user).to receive_messages(appointments: Aeon::AppointmentFinders.new(appointments),
-                                         requests: Aeon::RequestFinders.new([]))
-    appointments.each { |appt| allow(appt).to receive(:editable?).and_return(true) }
   end
-
-  let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
 
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
 
-  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
+  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default') }
 
-  let(:stub_aeon_client) do
-    instance_double(AeonClient, find_user: aeon_user, create_request: created_request, reading_rooms:, available_appointments:,
-                                activities_for:, requests_for: [])
-  end
-  let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, saved_for_later?: false, valid?: true) }
+  let(:reading_room_spec) { StubAeonClient::ReadingRoom.find_by(name: 'Field Reading Room') }
+  let(:reading_room_rumsey) { StubAeonClient::ReadingRoom.find_by(name: 'Rumsey Reading Room') }
 
-  let(:available_appointments) do
-    [instance_double(Aeon::AvailableAppointment,
-                     start_time: DateTime.new(2026, 2, 19),
-                     maximum_appointment_length: 210.minutes)]
-  end
-
-  let(:activities_for) do
-    [
-      instance_double(Aeon::Activity,
-                      start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
-                      stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
-                      name: 'Activity1',
-                      activity_type: 'Class visit',
-                      active?: true,
-                      location: 'Special Collections',
-                      sites: ['SPECUA'],
-                      requests: [],
-                      sort_key: DateTime.new(2026, 2, 19, 12, 0, 0),
-                      users: [aeon_user],
-                      id: 1)
-    ]
-  end
-
+  let(:appointment_start_time) { 1.week.from_now }
   let(:appointments) do
     [
-      build(:aeon_appointment,
-            username: aeon_user.username,
-            start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
-            stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
-            id: 1,
-            requests: [instance_double(Aeon::Request, cancelled?: false)],
-            reading_room: reading_rooms.last),
-      build(:aeon_appointment,
-            username: aeon_user.username,
-            start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
-            stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
-            id: 2,
-            requests: [instance_double(Aeon::Request, cancelled?: false)],
-            reading_room: reading_rooms.first)
+      create(:remote_aeon_appointment, username: user.email_address, reading_room: reading_room_spec, startTime: appointment_start_time,
+                                       stopTime: appointment_start_time + 1.hour),
+
+      create(:remote_aeon_appointment, username: user.email_address, reading_room: reading_room_rumsey, startTime: 2.weeks.from_now,
+                                       stopTime: 2.weeks.from_now + 2.hours)
     ]
   end
 
@@ -84,7 +48,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       choose 'Reading room appointment'
 
-      expect(page).to have_text('Earliest appointment available: Thursday, Feb 19, 2026')
+      expect(page).to have_text('Earliest appointment available:')
 
       click_button 'Continue'
 
@@ -99,19 +63,22 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       # In the Appointment step
       click_button 'Select appointment'
-      click_button 'Feb 19'
+      click_button appointment_start_time.strftime('%b %-d')
 
       click_button 'Submit request'
 
       expect(page).to have_css('.confirmation')
 
-      perform_enqueued_jobs
-      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                        username: user.email_address,
-                                                                        call_number: 'SC0097 Computers and Typesetting',
-                                                                        item_volume: 'Box 12',
-                                                                        site: 'SPECUA'
-                                                                      ))
+      expect do
+        perform_enqueued_jobs
+      end.to change(StubAeonClient::Request, :count).by(1)
+
+      expect(StubAeonClient::Request.last).to have_attributes(
+        callNumber: 'SC0097 Computers and Typesetting',
+        itemVolume: 'Box 12',
+        username: user.email_address,
+        site: 'SPECUA'
+      )
     end
 
     it 'can search the EAD contents' do
@@ -168,9 +135,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       # Assign appointment to first item
       within('[data-content-id]', text: 'Box 12') do
         click_button 'Select appointment'
-        click_button 'Feb 19'
+        click_button appointment_start_time.strftime('%b %-d')
       end
-      expect(page).to have_css '.badge', text: '2 items'
+      expect(page).to have_css '.badge', text: '1 item'
 
       # Submit disabled: second item has no appointment
       expect(page).to have_button('Submit request', disabled: true)
@@ -195,15 +162,15 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       # Assign appointment to the second item
       within('[data-content-id]', text: 'Box 13') do
         click_button 'Select appointment'
-        click_button 'Feb 19'
+        click_button appointment_start_time.strftime('%b %-d')
       end
-      expect(page).to have_css '.badge', text: '3 items'
+      expect(page).to have_css '.badge', text: '2 items'
       expect(page).to have_button('Submit request', disabled: false)
 
       first('[data-content-id]', text: 'Box 12').click_button('Save for later')
 
       # Appointment item limit should show that the saved item relinquished the appointment
-      expect(page).to have_css '.badge', text: '2 items'
+      expect(page).to have_css '.badge', text: '1 item'
 
       first('[data-content-id]', text: 'Box 13').click_button('Save for later')
       expect(page).to have_css('.saved-item', count: 2)
@@ -226,7 +193,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       within('[data-content-id]', text: 'Box 12') do
         click_button 'Select appointment'
-        click_button 'Feb 19'
+        click_button appointment_start_time.strftime('%b %-d')
       end
 
       # Save Box 13 for later in the reading-room flow
@@ -300,7 +267,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       within('[data-content-id]', text: 'Box 12') do
         click_button 'Select appointment'
-        click_button 'Feb 19'
+        click_button appointment_start_time.strftime('%b %-d')
       end
       first('[data-content-id]', text: 'Box 13').click_button('Save for later')
 
@@ -337,12 +304,15 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       expect(page).to have_css('.confirmation')
 
-      perform_enqueued_jobs
-      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                        username: user.email_address,
-                                                                        activity_id: '1',
-                                                                        call_number: 'SC0097 Computers and Typesetting'
-                                                                      ))
+      expect do
+        perform_enqueued_jobs
+      end.to change(StubAeonClient::Request, :count).by(1)
+
+      expect(StubAeonClient::Request.last).to have_attributes(
+        requestFor: { type: 'Activity', reference: '1' },
+        callNumber: 'SC0097 Computers and Typesetting',
+        username: user.email_address
+      )
     end
 
     it 'allows the user to submit a request with details about the portion of the item to be digitized' do # rubocop:disable RSpec/ExampleLength
@@ -396,22 +366,27 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       expect(page).to have_css('.confirmation')
 
-      perform_enqueued_jobs
-      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                        username: user.email_address,
-                                                                        item_info5: 'Pages 1-10',
-                                                                        item_volume: 'Box 12',
-                                                                        special_request: 'Testing only',
-                                                                        call_number: 'SC0097 Computers and Typesetting',
-                                                                        site: 'SPECUA'
-                                                                      ))
-      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                        username: user.email_address,
-                                                                        item_info5: 'Pages 6-8',
-                                                                        item_volume: 'Box 14',
-                                                                        call_number: 'SC0097 Computers and Typesetting',
-                                                                        site: 'SPECUA'
-                                                                      ))
+      expect do
+        perform_enqueued_jobs
+      end.to change(StubAeonClient::Request, :count).by(2)
+
+      expect(StubAeonClient::Request.last(2)).to contain_exactly(
+        have_attributes(
+          callNumber: 'SC0097 Computers and Typesetting',
+          itemVolume: 'Box 12',
+          itemInfo5: 'Pages 1-10',
+          specialRequest: 'Testing only',
+          username: user.email_address,
+          site: 'SPECUA'
+        ),
+        have_attributes(
+          callNumber: 'SC0097 Computers and Typesetting',
+          itemVolume: 'Box 14',
+          itemInfo5: 'Pages 6-8',
+          username: user.email_address,
+          site: 'SPECUA'
+        )
+      )
     end
 
     it 'displays a modal to view contents of each selected item for reading room appointments' do
@@ -520,16 +495,29 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       expect(page).to have_css('.confirmation')
 
-      perform_enqueued_jobs
+      expect do
+        perform_enqueued_jobs
+      end.to change(StubAeonClient::Request, :count).by(2)
       expect(PatronRequest.last.aeon_item.keys).to eq ['manual-input-1-box1', 'manual-input-3-box25']
-      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                        username: user.email_address,
-                                                                        item_info5: 'Pages 1-10',
-                                                                        item_volume: 'Box 1',
-                                                                        special_request: 'Testing only',
-                                                                        call_number: 'ARS.0052 ',
-                                                                        site: 'ARS'
-                                                                      ))
+
+      expect(StubAeonClient::Request.last(2)).to contain_exactly(
+        have_attributes(
+          callNumber: 'ARS.0052',
+          itemVolume: 'Box 1',
+          itemInfo5: 'Pages 1-10',
+          specialRequest: 'Testing only',
+          username: user.email_address,
+          site: 'ARS'
+        ),
+        have_attributes(
+          callNumber: 'ARS.0052',
+          itemVolume: 'Box 25',
+          itemInfo5: 'Pages 10-14',
+          specialRequest: 'Testing only',
+          username: user.email_address,
+          site: 'ARS'
+        )
+      )
     end
 
     it 'does not display view container modal for reading room appointment' do
@@ -575,7 +563,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       choose 'Reading room appointment'
 
-      expect(page).to have_text('Earliest appointment available: Thursday, Feb 19, 2026')
+      expect(page).to have_text('Earliest appointment available:')
 
       click_button 'Continue'
 
@@ -591,7 +579,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       # In the Appointment step
       click_button 'Select appointment'
-      click_button 'Feb 19'
+      click_button appointment_start_time.strftime('%b %-d')
     end
 
     context 'when there are no appointments' do
@@ -605,7 +593,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
         choose 'Reading room appointment'
 
-        expect(page).to have_text('Earliest appointment available: Thursday, Feb 19, 2026')
+        expect(page).to have_text('Earliest appointment available:')
 
         click_button 'Continue'
 
