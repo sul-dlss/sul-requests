@@ -38,7 +38,7 @@
       <%= render Aeon::AppointmentDurationSelectorComponent.new(form: f, reading_room: @appointment.reading_room, selected: @appointment.duration) %>
 
       <turbo-frame id="available_appointments" <% unless @appointment.id %>class="form-incomplete"<% end %> data-action="turbo:frame-load->appointment#applyDurationFilter turbo:frame-load->appointment#filterDurationFields" data-appointment-target="availability" src="<%= available_aeon_reading_room_url(@appointment.reading_room_id, date: (@appointment.date unless @appointment.persisted?), duration: @appointment.duration, selected: (l(@appointment.start_time, format: :time_only) if @appointment.start_time)) if @appointment.reading_room_id %>">
-        <fieldset class="mb-3">
+        <fieldset class="mb-3 radio-button-group">
           <legend class="fs-6 fw-semibold redesign-required-label">Available time slots</legend>
           <% if @appointment.reading_room_id && @appointment.date %>
             <div class="spinner-border text-primary" role="status">
