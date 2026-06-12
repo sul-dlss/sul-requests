@@ -20,7 +20,7 @@
 
 <%# update appointment cards + sidebar %>
 <%= turbo_stream.replace(dom_id(@previous_appointment)) do %>
-  <%= render Aeon::AppointmentComponent.new(appointment: @previous_appointment) %>
+  <%= render Aeon::AppointmentComponent.new(appointment: @previous_appointment, all_requests: @next_aeon_requests) %>
 <% end if @previous_appointment %>
 
 <%= turbo_stream.replace_all ".#{dom_id(@previous_appointment, :option)}" do %>
@@ -28,7 +28,7 @@
 <% end if @previous_appointment %>
 
 <%= turbo_stream.replace(dom_id(@appointment)) do %>
-  <%= render Aeon::AppointmentComponent.new(appointment: @appointment) %>
+  <%= render Aeon::AppointmentComponent.new(appointment: @appointment, all_requests: @next_aeon_requests) %>
 <% end if @appointment %>
 
 <%= turbo_stream.replace(dom_id(@activity)) do %>

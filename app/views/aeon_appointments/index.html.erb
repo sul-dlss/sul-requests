@@ -17,7 +17,7 @@
   <div class="row">
     <div class="col-xl-8 pe-5">
       <turbo-frame id="aeon_appointments">
-        <%= render Aeon::AppointmentComponent.with_collection(@appointments) %>
+        <%= render Aeon::AppointmentComponent.with_collection(@appointments, all_requests: @aeon_requests) %>
       </turbo-frame>
     </div>
     <%= render 'saved_for_later_aeon_requests' %>
