@@ -114,12 +114,11 @@ class AeonAppointmentsController < ApplicationController
   end
 
   def load_appointments
-    @appointments = current_user&.aeon&.appointments || []
-    @appointments = @appointments.sort_by(&:start_time)
+    @appointments = current_user.aeon.appointments
   end
 
   def load_appointment
-    @appointment = @appointments.find { |appt| appt.id == (params[:aeon_appointment_id] || params[:id]).to_i }
+    @appointment = @appointments.find(params[:aeon_appointment_id] || params[:id])
   end
 
   def start_time

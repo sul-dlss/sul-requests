@@ -65,17 +65,16 @@ module Aeon
     end
 
     def appointments
-      @appointments ||= self.class.aeon_client.appointments_for(username:).sort_by(&:sort_key).reject(&:cancelled?).each do |appointment|
-        appointment.requests = requests.for_appointment(appointment)
+      @appointments ||= begin
+        appointments = self.class.aeon_client.appointments_for(username:)
+
+        # augment appointments with their requests
+        appointments.each do |appointment|
+          appointment.requests = requests.for_appointment(appointment)
+        end
+
+        Aeon::AppointmentFinders.new(appointments.sort_by(&:sort_key).reject(&:cancelled?))
       end
-    end
-
-    def appointment_by_id(id:)
-      appointments.find { |appointment| appointment.id == id.to_i }
-    end
-
-    def appointments_for(site:)
-      appointments.select { |appt| appt.reading_room.sites.include?(site) }
     end
 
     def persisted? = true
