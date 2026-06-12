@@ -68,7 +68,7 @@ class AeonRequestsController < ApplicationController
   end
 
   def destroy_multiple
-    @salient_requests = @aeon_requests.select { |request| selected_request_ids.include?(request.transaction_number) }
+    @salient_requests = @aeon_requests.find(selected_request_ids)
 
     # Authorize each of the individual aeon requests for deletion
     @salient_requests.each { |aeon_request| authorize! :destroy, aeon_request }
@@ -126,7 +126,7 @@ class AeonRequestsController < ApplicationController
 
   def load_aeon_request
     @aeon_request = @aeon_requests.find(params[:id])
-    @aeon_request_group = @aeon_request_groups.find { |request_group| request_group.requests.find { |r| r.id == @aeon_request.id } }
+    @aeon_request_group = @aeon_request_groups.find { |request_group| request_group.requests.include?(@aeon_request.id) }
   end
 
   def load_aeon_requests
