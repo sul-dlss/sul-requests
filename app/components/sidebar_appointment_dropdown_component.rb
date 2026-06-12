@@ -13,8 +13,6 @@ class SidebarAppointmentDropdownComponent < ViewComponent::Base
   end
 
   def selectable_appointments
-    helpers.current_user.aeon.appointments.select do |appt|
-      appt.reading_room.id == request.reading_room.id
-    end.select(&:editable?).sort_by(&:sort_key)
+    helpers.current_user.aeon.appointments.for_reading_room(request.reading_room).select(&:editable?)
   end
 end

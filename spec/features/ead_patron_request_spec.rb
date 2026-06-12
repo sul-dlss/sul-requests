@@ -10,8 +10,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     login_as(current_user)
 
     allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-    allow(aeon_user).to receive_messages(appointments:,
-                                         requests: [])
+    allow(aeon_user).to receive_messages(appointments: Aeon::AppointmentFinders.new(appointments),
+                                         requests: Aeon::RequestFinders.new([]))
     appointments.each { |appt| allow(appt).to receive(:editable?).and_return(true) }
   end
 

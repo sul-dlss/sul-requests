@@ -20,7 +20,7 @@ module Aeon
     end
 
     def appointments
-      @appointments ||= []
+      @appointments ||= Aeon::AppointmentFinders.new([])
     end
 
     def present? = false
