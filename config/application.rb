@@ -47,6 +47,16 @@ module SULRequests
     # Load all request types automatically
     config.autoload_paths += %W(#{config.root}/app/mailers/factories #{config.root}/app/models/abilities)
 
+    # Ignore the stub Aeon client code in production
+    if Rails.env.production?
+      Rails.autoloaders.main.ignore(
+        "#{config.root}/app/models/aeon_record.rb",
+        "#{config.root}/app/models/stub_aeon_client.rb",
+        "#{config.root}/app/models/stub_aeon_client",
+        "#{config.root}/app/controllers/stub_aeon_client"
+      )
+    end
+
     config.time_zone = 'Pacific Time (US & Canada)'
 
     config.scanning_library_proxy = { 'SCAN' => 'GREEN' }
