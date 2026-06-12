@@ -129,14 +129,17 @@ RSpec.describe 'Appointments', :js do
     it 'moves the request into saved for later' do
       within "#aeon_request_#{submitted_request.id}" do
         click_on 'Save for later'
+        expect(page).to have_no_link 'Add items'
       end
 
       within '#saved_for_later_aeon_requests_sidebar' do
         expect(page).to have_css "#aeon_request_#{submitted_request.id}"
       end
+
       within '#aeon_appointments' do
         expect(page).to have_no_css "#aeon_request_#{submitted_request.id}"
         expect(page).to have_text 'No items have been requested for this appointment.'
+        expect(page).to have_link 'Add items'
       end
     end
   end

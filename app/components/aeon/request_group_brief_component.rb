@@ -15,7 +15,7 @@ module Aeon
     end
 
     def data
-      { title: }.merge(@data)
+      { title:, reading_room_id: requests.first.reading_room&.id }.merge(@data)
     end
   end
 end
