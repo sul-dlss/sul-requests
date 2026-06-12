@@ -41,8 +41,7 @@ module StubAeonClient
     end
 
     def request_params # rubocop:disable Metrics/MethodLength
-      params.permit(:requestFor,
-                    :appointmentID,
+      params.permit(:appointmentID,
                     :bundleID,
                     :callNumber,
                     :documentType,
@@ -90,7 +89,8 @@ module StubAeonClient
                     :user,
                     :additionalProp1,
                     :additionalProp2,
-                    :additionalProp3)
+                    :additionalProp3,
+                    requestFor: [:type, :reference])
     end
   end
 end

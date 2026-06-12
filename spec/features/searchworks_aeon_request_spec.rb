@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
+  use_stub_aeon_client
+
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
   let(:folio_instance) { :special_collections_single_holding }
@@ -13,35 +15,17 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
                                    blocked?: false, proxies: [], sponsors: [], sponsor?: false, proxy?: false,
                                    allowed_request_types: %w[Hold Recall Page])
   end
-  let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
-  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
-  let(:stub_aeon_client) do
-    instance_double(AeonClient, find_user: aeon_user, create_request: created_request, update_request_route: nil,
-                                reading_rooms:, available_appointments:, activities_for: [], requests_for: [])
-  end
-  let(:created_request) { instance_double(Aeon::Request, id: 123, transaction_number: 'abc123', submitted?: true, saved_for_later?: false, valid?: true) }
-  let(:available_appointments) do
-    [instance_double(Aeon::AvailableAppointment,
-                     start_time: DateTime.new(2026, 2, 19),
-                     maximum_appointment_length: 210.minutes)]
-  end
+  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default') }
+  let(:reading_room) { StubAeonClient::ReadingRoom.find_by(name: 'Field Reading Room') }
 
+  let(:appointment_start_time) { 1.week.from_now }
   let(:appointments) do
     [
-      build(:aeon_appointment,
-            username: aeon_user.username,
-            start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
-            stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
-            id: 1,
-            requests: [instance_double(Aeon::Request, cancelled?: false)],
-            reading_room: reading_rooms.last),
-      build(:aeon_appointment,
-            username: aeon_user.username,
-            start_time: DateTime.new(2026, 2, 20, 13, 0, 0),
-            stop_time: DateTime.new(2026, 2, 20, 14, 0, 0),
-            id: 2,
-            requests: [instance_double(Aeon::Request, cancelled?: false)],
-            reading_room: reading_rooms.first)
+      create(:remote_aeon_appointment, username: user.email_address, reading_room:, startTime: appointment_start_time,
+                                       stopTime: appointment_start_time + 1.hour),
+
+      create(:remote_aeon_appointment, username: user.email_address, reading_room:, startTime: appointment_start_time + 1.day,
+                                       stopTime: appointment_start_time + 1.day + 2.hours)
     ]
   end
 
@@ -52,10 +36,8 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
     allow(Settings.features).to receive(:requests_redesign).and_return(true)
     login_as(current_user)
 
-    allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-    appointments.each { |appt| allow(appt).to receive(:editable?).and_return(true) }
-    allow(aeon_user).to receive_messages(appointments: appointments,
-                                         requests: [])
+    aeon_user
+    appointments
 
     visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
   end
@@ -84,10 +66,13 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       expect(page).to have_text 'We received your digitization request!'
 
-      perform_enqueued_jobs
-      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                        call_number: 'ABC 123'
-                                                                      ))
+      expect do
+        perform_enqueued_jobs
+      end.to change(StubAeonClient::Request, :count).by(1)
+
+      expect(StubAeonClient::Request.last).to have_attributes(
+        callNumber: 'ABC 123'
+      )
     end
 
     it 'allows the user to submit a reading room request' do
@@ -97,7 +82,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       # In the Appointment step
       click_button 'Select appointment'
-      click_button 'Feb 19'
+      click_button appointment_start_time.strftime('%b %-d')
 
       fill_in 'Additional information', with: 'Testing only'
 
@@ -105,31 +90,24 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       expect(page).to have_text 'We received your reading room access request!'
 
-      perform_enqueued_jobs
-      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                        call_number: 'ABC 123'
-                                                                      ))
+      expect do
+        perform_enqueued_jobs
+      end.to change(StubAeonClient::Request, :count).by(1)
+
+      expect(StubAeonClient::Request.last).to have_attributes(
+        callNumber: 'ABC 123'
+      )
     end
   end
 
   context 'with an activity request' do
-    let(:activity) { build(:aeon_activity, id: 42, users: [aeon_user]) }
-    let(:stub_aeon_client) do
-      instance_double(AeonClient, find_user: aeon_user, create_request: created_request, update_request_route: nil,
-                                  reading_rooms:, available_appointments:, activities_for: [activity])
+    let(:aeon_activity) do
+      create(:remote_aeon_activity, users: [{ username: aeon_user.username }])
     end
 
     before do
-      allow(stub_aeon_client).to receive(:requests_for) do
-        patron_request = PatronRequest.last
-        # Exercise the confirmation screen polling
-        next [] unless patron_request&.submitted_to_aeon_at
-
-        [build(:aeon_request, :submitted,
-               activity_id: 42,
-               web_request_form: 'multiple',
-               reference_number: patron_request.to_global_id.to_s)]
-      end
+      aeon_activity
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
     end
 
     it 'shows the activity-grouped confirmation after submission' do
@@ -142,10 +120,13 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       expect(page).to have_text 'We received your activities request'
 
-      perform_enqueued_jobs
+      expect do
+        perform_enqueued_jobs
+        expect(page).to have_css('#aeon-confirmation .confirmation')
+      end.to change(StubAeonClient::Request, :count).by(1)
 
       expect(page).to have_text 'An Aeon Activity'
-      expect(page).to have_text 'Request #307'
+      expect(page).to have_text "Request ##{StubAeonClient::Request.last.id}"
     end
   end
 
@@ -214,14 +195,11 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       expect(page).to have_text 'We received your digitization request!'
 
-      perform_enqueued_jobs
-      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                        call_number: 'ABC 123'
-                                                                      ))
+      expect do
+        perform_enqueued_jobs
+      end.to change(StubAeonClient::Request, :count).by(2)
 
-      expect(stub_aeon_client).to have_received(:create_request).with(an_object_having_attributes(
-                                                                        call_number: 'ABC 321'
-                                                                      ))
+      expect(StubAeonClient::Request.last(2).map(&:callNumber)).to contain_exactly('ABC 123', 'ABC 321')
     end
 
     it 'allows the user to save items for later' do # rubocop:disable RSpec/ExampleLength
