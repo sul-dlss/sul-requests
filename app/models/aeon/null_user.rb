@@ -12,11 +12,11 @@ module Aeon
     end
 
     def requests
-      @requests ||= []
+      @requests ||= all_requests
     end
 
     def all_requests
-      []
+      Aeon::RequestFinders.new([])
     end
 
     def appointments

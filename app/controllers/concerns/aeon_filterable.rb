@@ -11,11 +11,11 @@ module AeonFilterable
     },
     'digitization' => {
       label: 'Digitization',
-      filter: ->(requests) { requests.select(&:digital?) }
+      filter: ->(requests) { requests.digitization }
     },
     'reading_room' => {
       label: 'Reading room use',
-      filter: ->(requests) { requests.reject(&:digital?) }
+      filter: ->(requests) { requests.reading_room }
     }
   }.freeze
 

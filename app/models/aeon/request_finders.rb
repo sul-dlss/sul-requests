@@ -25,6 +25,10 @@ module Aeon
       end
     end
 
+    def for_activities
+      self.class.new(requests.select(&:activity?))
+    end
+
     def for_appointment(appointment_or_id)
       id = appointment_or_id.is_a?(Aeon::Appointment) ? appointment_or_id.id : appointment_or_id&.to_i
 
@@ -45,6 +49,10 @@ module Aeon
       self.class.new(requests.reject(&))
     end
 
+    def sort_by(&)
+      self.class.new(requests.sort_by(&))
+    end
+
     def saved_for_later
       self.class.new requests.select(&:saved_for_later?)
     end
@@ -59,6 +67,14 @@ module Aeon
 
     def completed
       self.class.new requests.select(&:completed?)
+    end
+
+    def digitization
+      self.class.new requests.select(&:digital?)
+    end
+
+    def reading_room
+      self.class.new requests.reject(&:digital?)
     end
   end
 end

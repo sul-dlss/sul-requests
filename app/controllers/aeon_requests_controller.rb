@@ -9,7 +9,7 @@ class AeonRequestsController < ApplicationController
   include AeonSortable
 
   before_action :load_aeon_requests
-  before_action :load_filtered_aeon_requests, only: [:index]
+  before_action :filter_and_sort_aeon_requests, only: [:index]
   before_action :load_aeon_request_groups
   before_action :load_aeon_request, except: [:index, :destroy_multiple]
   before_action :set_variant, only: [:index, :edit]
@@ -130,31 +130,30 @@ class AeonRequestsController < ApplicationController
   end
 
   def load_aeon_requests
-    @aeon_requests = Aeon::RequestFinders.new([]) and return unless current_user&.aeon
-    return load_filtered_aeon_requests if params[:kind]
-
-    @aeon_requests = Aeon::RequestFinders.new(current_user.aeon.requests)
+    @aeon_requests = if params[:kind] == 'activity'
+                       current_user.aeon.all_requests.for_activities
+                     else
+                       current_user.aeon.requests
+                     end
   end
 
-  def load_filtered_aeon_requests # rubocop:disable Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/AbcSize
-    @aeon_requests = Aeon::RequestFinders.new([]) and return unless current_user&.aeon
+  def filter_and_sort_aeon_requests # rubocop:disable Metrics/MethodLength
+    @aeon_requests = filter_aeon_requests(@aeon_requests)
 
     @aeon_requests = case params[:kind]
                      when 'saved_for_later'
-                       current_user.aeon.requests.saved_for_later
+                       @aeon_requests.saved_for_later
                      when 'cancelled'
-                       current_user.aeon.requests.cancelled
+                       @aeon_requests.cancelled
                      when 'submitted'
-                       current_user.aeon.requests.submitted
+                       @aeon_requests.submitted
                      when 'completed'
-                       current_user.aeon.requests.completed
-                     when 'activity'
-                       current_user.aeon.activities_with_requests.map(&:requests).flatten
+                       @aeon_requests.completed
                      else
-                       []
+                       @aeon_requests
                      end
 
-    @aeon_requests = Aeon::RequestFinders.new(sort_aeon_requests(filter_aeon_requests(@aeon_requests)))
+    @aeon_requests = sort_aeon_requests(@aeon_requests)
   end
 
   def load_aeon_request_groups
