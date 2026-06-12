@@ -40,6 +40,11 @@
                     <h2>Appointment</h2>
                     <%= render Aeon::AppointmentDateTimeComponent.new(appointment: request.appointment) %>
                   </div>
+                <% elsif request.activity %>
+                  <div class="mb-3">
+                    <h2>Activity</h2>
+                    <%= request.activity.name %>
+                  </div>
                 <% elsif request.requested_pages.present? %>
                   <div class="mb-3">
                     <h2>Pages</h2>
@@ -52,6 +57,8 @@
                     <%= request.special_request %>
                   </div>
                 <% end %>
+
+                <div class="fs-14 text-body-secondary">Request #<%= request.id %></div>
               <% end %>
             <% end %>
           </div>
