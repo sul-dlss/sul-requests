@@ -3,12 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Aeon::RequestGrouping do
-  let(:aeon_client) { instance_double(AeonClient) }
-  let(:queue) { Aeon::Queue.new(id: 0, queue_name: '', queue_type: 'Transaction') }
-
   before do
-    allow(AeonClient).to receive(:new).and_return(aeon_client)
-    allow(aeon_client).to receive(:find_queue).and_return(queue)
+    allow(Aeon::Queue).to receive(:find_by) do |id: nil, **_kwargs|
+      Aeon::Queue.from_dynamic(StubAeonClient::Queue.find_by(id: id).as_json) if id
+    end
   end
 
   describe '.from_requests' do

@@ -97,6 +97,31 @@ Rails.application.routes.draw do
   resources :messages
   match 'reports', to: 'reports#index', via: [:get], as: :reports
 
+  unless Rails.env.production?
+    namespace :stub_aeon_client do
+      get 'Users', to: 'users#index'
+      get 'Users/:username', to: 'users#show', constraints: { username: /[^\/]+/ }
+      get 'Users/:username/requests', to: 'requests#index', constraints: { username: /[^\/]+/ }
+      get 'Users/:username/appointments', to: 'appointments#index', constraints: { username: /[^\/]+/ }
+      post 'Users', to: 'users#create'
+
+      get 'Activities', to: 'activities#index'
+      get 'Queues', to: 'queues#index'
+
+      post 'Requests/create', to: 'requests#create'
+      patch 'Requests/:id', to: 'requests#update'
+      post 'Requests/:id/route', to: 'requests#route'
+
+      post 'Appointments', to: 'appointments#create'
+      patch 'Appointments/:id', to: 'appointments#update'
+      delete 'Appointments/:id', to: 'appointments#destroy'
+
+      get 'ReadingRooms', to: 'reading_rooms#index'
+      get 'ReadingRooms/:id/Closures', to: 'reading_rooms#closures'
+      get 'ReadingRooms/:id/AvailableAppointments/:date', to: 'reading_rooms#available_appointments'
+    end
+  end
+
   mount Lookbook::Engine, at: "/lookbook"
   require 'sidekiq/web'
   require 'sidekiq_constraint'

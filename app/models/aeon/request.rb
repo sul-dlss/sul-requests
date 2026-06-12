@@ -165,7 +165,7 @@ module Aeon
 
     def ead?
       # Legacy requests don't have ead_number set
-      ead_number.present? || ['oac.cdlib.org', 'archives.stanford.edu'].any? { |s| item_url.include?(s) }
+      ead_number.present? || ['oac.cdlib.org', 'archives.stanford.edu'].any? { |s| item_url&.include?(s) }
     end
 
     def physical?

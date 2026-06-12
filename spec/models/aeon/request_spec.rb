@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Aeon::Request do
-  let(:aeon_client) { instance_double(AeonClient) }
-
   before do
-    allow(AeonClient).to receive(:new).and_return(aeon_client)
+    allow(Aeon::Queue).to receive(:find_by) do |id: nil, **_kwargs|
+      Aeon::Queue.from_dynamic(StubAeonClient::Queue.find_by(id: id).as_json) if id
+    end
   end
 
   describe '#status' do
@@ -19,7 +19,7 @@ RSpec.describe Aeon::Request do
     let(:queue) { Aeon::Queue.new(id: 0, queue_name: transaction_status, queue_type: 'Transaction') }
 
     before do
-      allow(aeon_client).to receive(:find_queue).with(id: queue.id, type: :transaction).and_return(queue)
+      allow(Aeon::Queue).to receive(:find_by).with(id: queue.id).and_return(queue)
     end
 
     context 'with a saved for later request' do
@@ -85,17 +85,11 @@ RSpec.describe Aeon::Request do
 
   describe '#saved_for_later?' do
     it 'returns true when the transaction queue is a saved for later queue' do
-      saved_for_later_queue = Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
-      allow(aeon_client).to receive(:find_queue).with(id: 5, type: :transaction).and_return(saved_for_later_queue)
-
       request = build(:aeon_request, transaction_status: 5)
       expect(request).to be_saved_for_later
     end
 
     it 'returns false when the transaction queue is not a saved for later queue' do
-      non_saved_for_later_queue = Aeon::Queue.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
-      allow(aeon_client).to receive(:find_queue).with(id: 8, type: :transaction).and_return(non_saved_for_later_queue)
-
       request = build(:aeon_request, transaction_status: 8)
       expect(request).not_to be_saved_for_later
     end
@@ -103,41 +97,23 @@ RSpec.describe Aeon::Request do
 
   describe '#completed?' do
     it 'returns true when transaction queue is completed' do
-      completed_queue = Aeon::Queue.new(id: 75, queue_name: 'Awaiting Item Reshelving', queue_type: 'Transaction')
-      allow(aeon_client).to receive(:find_queue).with(id: 75, type: :transaction).and_return(completed_queue)
-      allow(aeon_client).to receive(:find_queue).with(id: nil, type: :photoduplication).and_return(nil)
-
-      request = build(:aeon_request, transaction_status: 75, photoduplication_status: nil)
+      request = build(:aeon_request, transaction_status: 17, photoduplication_status: nil)
       expect(request).to be_completed
     end
 
     it 'returns true when photoduplication queue is completed' do
-      non_completed = Aeon::Queue.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
-      completed = Aeon::Queue.new(id: 23, queue_name: 'Item Delivered', queue_type: 'Photoduplication')
-      allow(aeon_client).to receive(:find_queue).with(id: 8, type: :transaction).and_return(non_completed)
-      allow(aeon_client).to receive(:find_queue).with(id: 23, type: :photoduplication).and_return(completed)
-
       request = build(:aeon_request, transaction_status: 8, photoduplication_status: 23, shipping_option: 'Electronic Delivery')
       expect(request).to be_completed
     end
 
     it 'returns false when no queue is completed' do
-      non_completed = Aeon::Queue.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
-      allow(aeon_client).to receive(:find_queue).with(id: 8, type: :transaction).and_return(non_completed)
-      allow(aeon_client).to receive(:find_queue).with(id: nil, type: :photoduplication).and_return(nil)
-
       request = build(:aeon_request, transaction_status: 8, photoduplication_status: nil)
       expect(request).not_to be_completed
     end
 
     it 'persists recently completed digital requests as submitted' do
-      completed_queue = Aeon::Queue.new(id: 75, queue_name: 'Awaiting Item Reshelving', queue_type: 'Transaction')
-      photo_queue = Aeon::Queue.new(id: 23, queue_name: 'Item Delivered', queue_type: 'Photoduplication')
-      allow(aeon_client).to receive(:find_queue).with(id: 75, type: :transaction).and_return(completed_queue)
-      allow(aeon_client).to receive(:find_queue).with(id: 23, type: :photoduplication).and_return(photo_queue)
-
       request = build(:aeon_request, :digitized,
-                      transaction_status: 75,
+                      transaction_status: 17,
                       photoduplication_status: 23,
                       transaction_date: 1.day.ago)
       expect(request).not_to be_completed
@@ -145,12 +121,8 @@ RSpec.describe Aeon::Request do
     end
 
     it 'marks old completed digital requests as completed' do
-      completed_queue = Aeon::Queue.new(id: 75, queue_name: 'Awaiting Item Reshelving', queue_type: 'Transaction')
-      allow(aeon_client).to receive(:find_queue).with(id: 75, type: :transaction).and_return(completed_queue)
-      allow(aeon_client).to receive(:find_queue).with(id: nil, type: :photoduplication).and_return(nil)
-
       request = build(:aeon_request, :digitized,
-                      transaction_status: 75,
+                      transaction_status: 17,
                       photoduplication_status: nil,
                       transaction_date: 10.days.ago)
       expect(request).to be_completed
@@ -160,10 +132,6 @@ RSpec.describe Aeon::Request do
 
   describe '#submitted?' do
     it 'returns true when request is neither a saved for later or completed' do
-      non_saved_for_later = Aeon::Queue.new(id: 8, queue_name: 'Awaiting Request Processing', queue_type: 'Transaction')
-      allow(aeon_client).to receive(:find_queue).with(id: 8, type: :transaction).and_return(non_saved_for_later)
-      allow(aeon_client).to receive(:find_queue).with(id: nil, type: :photoduplication).and_return(nil)
-
       request = build(:aeon_request, transaction_status: 8, photoduplication_status: nil)
       expect(request).to be_submitted
     end
@@ -171,20 +139,11 @@ RSpec.describe Aeon::Request do
 
   describe '#scan_delivered?' do
     it 'returns true for a digital request in a completed queue' do
-      completed_queue = Aeon::Queue.new(id: 75, queue_name: 'Awaiting Item Reshelving', queue_type: 'Transaction')
-      photo_queue = Aeon::Queue.new(id: 23, queue_name: 'Item Delivered', queue_type: 'Photoduplication')
-      allow(aeon_client).to receive(:find_queue).with(id: 75, type: :transaction).and_return(completed_queue)
-      allow(aeon_client).to receive(:find_queue).with(id: 23, type: :photoduplication).and_return(photo_queue)
-
-      request = build(:aeon_request, :digitized, transaction_status: 75, photoduplication_status: 23)
+      request = build(:aeon_request, :digitized, transaction_status: 17, photoduplication_status: 23)
       expect(request).to be_scan_delivered
     end
 
     it 'returns false for a physical request in a completed queue' do
-      completed_queue = Aeon::Queue.new(id: 75, queue_name: 'Awaiting Item Reshelving', queue_type: 'Transaction')
-      allow(aeon_client).to receive(:find_queue).with(id: 75, type: :transaction).and_return(completed_queue)
-      allow(aeon_client).to receive(:find_queue).with(id: nil, type: :photoduplication).and_return(nil)
-
       request = build(:aeon_request, shipping_option: nil, transaction_status: 10, photoduplication_status: nil)
       expect(request).not_to be_scan_delivered
     end

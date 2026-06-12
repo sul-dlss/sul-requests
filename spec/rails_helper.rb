@@ -90,6 +90,10 @@ RSpec.configure do |config|
   config.after do
     Warden.test_reset!
   end
+
+  config.before(:suite) do
+    Rails.application.load_seed # loading seeds
+  end
 end
 
 def stub_current_user(user = create(:anon_user))

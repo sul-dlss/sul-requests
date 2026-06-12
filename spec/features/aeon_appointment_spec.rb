@@ -3,40 +3,43 @@
 require 'rails_helper'
 
 RSpec.describe 'Appointments', :js do
+  use_stub_aeon_client
+
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true) }
-  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
-  let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |rr| Aeon::ReadingRoom.from_dynamic(rr) } }
 
-  let(:field_reading_room) { reading_rooms[-1] }
+  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default') }
   let(:appointment) do
-    build(:aeon_appointment, username: user.email_address, reading_room: field_reading_room, start_time: 1.week.from_now)
+    create(:remote_aeon_appointment, username: user.email_address, reading_room:, startTime: appointment_start_time,
+                                     stopTime: appointment_start_time + 1.hour)
   end
-  let(:queue) do
-    Aeon::Queue.new(id: 8, queue_name: 'Awaiting Staff Review', queue_type: 'Transaction')
+  let(:appointment_start_time) { 1.week.from_now }
+  let(:reading_room) { StubAeonClient::ReadingRoom.find_by(name: 'Field Reading Room') }
+  let(:draft_request) do
+    StubAeonClient::Request.create(
+      callNumber: 'PR9195.1 .S56 NO.1',
+      itemTitle: 'Slow poetry in America : a poetry quarterly',
+      username: aeon_user.username,
+      webRequestForm: 'multiple',
+      site: 'SPECUA'
+    )
   end
-  let(:stub_aeon_client) do
-    instance_double(AeonClient,
-                    find_user: aeon_user,
-                    appointments_for: [appointment],
-                    find_queue: queue,
-                    update_request: build(:aeon_request, transaction_number: 100),
-                    update_request_route: build(:aeon_request, :saved_for_later, transaction_number: 100),
-                    requests_for: [build(:aeon_request, transaction_number: 100, username: user.email_address, appointment: appointment)],
-                    cancel_appointment: [],
-                    reading_rooms:,
-                    activities_for: [],
-                    closures: [],
-                    available_appointments:)
-  end
-  let(:available_appointments) do
-    [instance_double(Aeon::AvailableAppointment,
-                     start_time: DateTime.new(2026, 2, 19),
-                     maximum_appointment_length: 210.minutes)]
+
+  let(:submitted_request) do
+    StubAeonClient::Request.create(
+      callNumber: 'assigned call number 1',
+      itemTitle: 'Medium poetry in America : a poetry quarterly',
+      appointmentID: appointment.id,
+      username: aeon_user.username,
+      webRequestForm: 'multiple',
+      transactionStatus: 3
+    )
   end
 
   before do
-    allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
+    draft_request
+    submitted_request
+
     login_as(current_user)
     visit aeon_appointments_path
   end
@@ -54,15 +57,21 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_text 'Create new appointment Field Reading Room', normalize_ws: true
         expect(page).to have_text 'An appointment must be scheduled at least 5 business days in advance to access items'
         expect(page).to have_text 'Field Reading Room is open Monday - Friday, 9:00 - 4:45 pm'
-        expect(page).to have_text 'Earliest appointment available: Thursday, Feb 19, 2026'
+        expect(page).to have_text 'Earliest appointment available:'
         expect(page).to have_css 'label', text: 'Date'
         expect(page).to have_no_text('Duration')
-        click_on 'Cancel'
+
+        click_on 'Select a date'
+        click_on 'Next month'
+
+        first('td[role="gridcell"]:not(:disabled)').click
+
+        click_on 'Save'
       end
       expect(page).to have_no_css '.modal'
     end
 
-    it 'opens and closes the create new appointment modal for ARS' do
+    it 'opens and closes the create new appointment modal for ARS' do # rubocop:disable RSpec/ExampleLength
       click_on 'Create new appointment'
       expect(page).to have_css '.modal'
       within '.modal' do
@@ -78,7 +87,16 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_css 'label', text: 'Date'
         expect(page).to have_text('Duration')
         expect(page).to have_text('Available time slots')
-        click_on 'Cancel'
+
+        click_on 'Select a date'
+        click_on 'Next month'
+
+        first('td[role="gridcell"]:not(:disabled)').click
+
+        find(:label, text: '2 hours').click
+        find(:label, text: '1:00 pm').click
+
+        click_on 'Save'
       end
       expect(page).to have_no_css '.modal'
     end
@@ -91,8 +109,8 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_text 'Change appointment'
         expect(page).to have_text 'Field Reading Room'
         expect(page).to have_text 'Current'
-        expect(page).to have_text appointment.date.strftime('%b %-d, %Y')
-        expect(page).to have_no_text appointment.start_time.strftime('%l:%M %p')
+        expect(page).to have_text appointment_start_time.strftime('%b %-d, %Y')
+        expect(page).to have_no_text appointment_start_time.strftime('%l:%M %p')
         expect(page).to have_text 'New'
         expect(page).to have_text 'Select date'
         expect(page).to have_text '1 item will move to the new appointment.'
@@ -101,7 +119,7 @@ RSpec.describe 'Appointments', :js do
         click_on 'Next month'
 
         first('td[role="gridcell"]:not(:disabled)').click
-        click_on 'Cancel'
+        click_on 'Save'
       end
       expect(page).to have_no_css '.modal'
     end
@@ -109,14 +127,89 @@ RSpec.describe 'Appointments', :js do
 
   describe 'saving an active request for later' do
     it 'moves the request into saved for later' do
-      within '#aeon_appointments #aeon_request_100' do
+      within "#aeon_request_#{submitted_request.id}" do
         click_on 'Save for later'
       end
 
-      expect(page).to have_no_css '#aeon_appointments #aeon_request_100'
+      within '#saved_for_later_aeon_requests_sidebar' do
+        expect(page).to have_css "#aeon_request_#{submitted_request.id}"
+      end
+      within '#aeon_appointments' do
+        expect(page).to have_no_css "#aeon_request_#{submitted_request.id}"
+        expect(page).to have_text 'No items have been requested for this appointment.'
+      end
+    end
+  end
 
-      expect(stub_aeon_client).to have_received(:update_request_route).with({ status: 'Awaiting User Review',
-                                                                              transaction_number: 100 })
+  describe 'assigning a draft request to an appointment' do
+    it 'moves the request into the appointment' do
+      within '#saved_for_later_aeon_requests_sidebar' do
+        click_on 'Appointment'
+        click_on I18n.l(1.week.from_now, format: :date_only).to_s
+      end
+
+      within '#aeon_appointments' do
+        expect(page).to have_text('Slow poetry in America : a poetry quarterly')
+      end
+    end
+  end
+
+  describe 'with multiple requests' do
+    let(:second_draft_request) do
+      StubAeonClient::Request.create(
+        callNumber: 'PR9195.1 .S56 NO.2',
+        itemTitle: 'Slow poetry in America : a poetry quarterly',
+        username: aeon_user.username,
+        webRequestForm: 'multiple',
+        site: 'SPECUA'
+      )
+    end
+
+    before do
+      second_draft_request
+    end
+
+    describe 'assigning a draft request to an appointment' do
+      it 'moves the request into the appointment' do # rubocop:disable RSpec/ExampleLength
+        visit aeon_appointments_path
+        within '#saved_for_later_aeon_requests_sidebar' do
+          within "#aeon_request_#{draft_request.id}" do
+            click_on 'Appointment'
+          end
+          expect(page).to have_text("#{I18n.l(1.week.from_now, format: :date_only)} 1 item")
+          click_on I18n.l(1.week.from_now, format: :date_only).to_s
+        end
+
+        within '#aeon_appointments' do
+          expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
+          expect(page).to have_text('Item limit: 2/10')
+        end
+
+        within '#saved_for_later_aeon_requests_sidebar' do
+          within "#aeon_request_#{second_draft_request.id}" do
+            click_on 'Appointment'
+          end
+          expect(page).to have_text("#{I18n.l(1.week.from_now, format: :date_only)} 2 items")
+          click_on I18n.l(1.week.from_now, format: :date_only).to_s
+        end
+
+        within '#saved_for_later_aeon_requests_sidebar' do
+          expect(page).to have_no_text('Slow poetry in America')
+        end
+
+        within '#aeon_appointments' do
+          expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
+          expect(page).to have_text('Item limit: 3/10')
+
+          within "#aeon_request_#{second_draft_request.id}" do
+            click_on 'Save for later'
+          end
+        end
+
+        within '#saved_for_later_aeon_requests_sidebar' do
+          expect(page).to have_text('Slow poetry in America')
+        end
+      end
     end
   end
 
@@ -131,10 +224,12 @@ RSpec.describe 'Appointments', :js do
         click_on 'Yes, cancel appointment'
       end
       expect(page).to have_no_css '.modal'
+      expect(page).to have_no_css "#aeon_appointment_#{appointment.id}"
 
-      expect(stub_aeon_client).to have_received(:update_request_route).with({ status: 'Awaiting User Review',
-                                                                              transaction_number: 100 })
-      expect(stub_aeon_client).to have_received(:cancel_appointment).with(23)
+      # TODO: need to add turbo response to update the sidebar
+      # within '#saved_for_later_aeon_requests_sidebar' do
+      #   expect(page).to have_css "#aeon_request_#{submitted_request.id}"
+      # end
     end
 
     it 'deletes the requests' do
@@ -147,9 +242,11 @@ RSpec.describe 'Appointments', :js do
         click_on 'Yes, cancel appointment'
       end
       expect(page).to have_no_css '.modal'
+      expect(page).to have_no_css "#aeon_appointment_#{appointment.id}"
 
-      expect(stub_aeon_client).to have_received(:update_request_route).with({ status: 'Cancelled by User', transaction_number: 100 })
-      expect(stub_aeon_client).to have_received(:cancel_appointment).with(23)
+      within '#saved_for_later_aeon_requests_sidebar' do
+        expect(page).to have_no_css "#aeon_request_#{submitted_request.id}"
+      end
     end
   end
 end

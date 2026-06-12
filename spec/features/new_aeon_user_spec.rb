@@ -3,27 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Creating new accounts for patrons', :js do
+  use_stub_aeon_client
+
   before do
     allow(Settings.features).to receive_messages(requests_redesign: true, authenticate_name_email_users: true)
     allow(EadClient).to receive(:fetch).and_return(Ead::Document.new(eadxml, url: 'whatever'))
-
-    allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-
-    allow(stub_aeon_client).to receive(:find_user).ordered.and_return(
-      null_aeon_user,
-      aeon_user
-    )
   end
-
-  let(:null_aeon_user) { Aeon::NullUser.new }
-  let(:aeon_user) { Aeon::User.new(username: user&.email_address, auth_type: 'Default') }
-
-  let(:stub_aeon_client) do
-    instance_double(AeonClient, find_user: Aeon::NullUser.new, create_user: nil, reading_rooms: reading_rooms, appointments_for: [],
-                                available_appointments: [], activities_for: [])
-  end
-
-  let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
 
   let(:eadxml) do
     Nokogiri::XML(File.read('spec/fixtures/sc0097.xml')).tap(&:remove_namespaces!)
@@ -49,14 +34,6 @@ RSpec.describe 'Creating new accounts for patrons', :js do
       click_button 'Continue'
 
       expect(page).to have_text('New request')
-
-      expect(stub_aeon_client).to have_received(:create_user).with({
-                                                                     user_data: an_object_having_attributes(
-                                                                       sso: true,
-                                                                       email_address: user.email_address,
-                                                                       first_name: 'Test', last_name: 'User'
-                                                                     )
-                                                                   })
     end
   end
 
@@ -94,21 +71,21 @@ RSpec.describe 'Creating new accounts for patrons', :js do
       click_button 'Continue'
       check('I agree to these terms')
 
-      click_button 'Submit'
+      expect do
+        click_button 'Submit'
+      end.to change(StubAeonClient::User, :count).by(1)
 
-      expect(stub_aeon_client).to have_received(:create_user).with({
-                                                                     user_data: AeonClient::UserData.with_defaults.with(
-                                                                       address: '560 Escondido Mall',
-                                                                       address2: '',
-                                                                       city: 'Stanford',
-                                                                       country: 'USA',
-                                                                       phone: '1234552',
-                                                                       zip_code: '94305',
-                                                                       email_address: 'test@localhost',
-                                                                       first_name: 'Test User',
-                                                                       state_or_province: 'CA'
-                                                                     )
-                                                                   })
+      expect(StubAeonClient::User.last).to have_attributes(
+        username: 'test@localhost',
+        cleared: 'No',
+        firstName: 'Test User',
+        address: '560 Escondido Mall',
+        city: 'Stanford',
+        state: 'CA',
+        country: 'USA',
+        zip: '94305',
+        phone: '1234552'
+      )
     end
   end
 end

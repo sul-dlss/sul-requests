@@ -3,34 +3,33 @@
 require 'rails_helper'
 
 RSpec.describe 'Edit Aeon request', :js do
+  use_stub_aeon_client
+
   let(:user) { create(:sso_user) }
-  let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true, patron_key: user.patron_key, ldap_attributes: {}) }
-  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
-  let(:reading_room) { build(:aeon_reading_room) }
-  let(:appointment) { build(:aeon_appointment, reading_room: reading_room, start_time: 1.week.from_now) }
+  let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true) }
+  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default') }
+
+  let(:appointment) do
+    create(:remote_aeon_appointment, username: aeon_user.username, reading_room:, startTime: 1.week.from_now,
+                                     stopTime: 1.week.from_now + 1.hour)
+  end
+  let(:reading_room) { StubAeonClient::ReadingRoom.find_by(name: 'Field Reading Room') }
+
   let(:first_request) do
-    build(:aeon_request, call_number: 'PR9195.1 .S56 NO.1', title: 'Slow poetry in America : a poetry quarterly', item_author: 'Percy Poet',
-                         transaction_number: 100, username: aeon_user.username)
-  end
-  let(:saved_for_later_queue) do
-    Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
-  end
-  let(:stub_aeon_client) do
-    instance_double(AeonClient,
-                    find_user: aeon_user,
-                    find_queue: saved_for_later_queue,
-                    appointments_for: [appointment],
-                    requests_for: [first_request],
-                    reading_rooms: [reading_room],
-                    activities_for: [],
-                    closures: [],
-                    available_appointments: [])
+    StubAeonClient::Request.create(
+      id: 100,
+      callNumber: 'PR9195.1 .S56 NO.1',
+      itemAuthor: 'Percy Poet',
+      itemInfo1: 'https://searchworks.stanford.edu/view/12345678',
+      itemTitle: 'Slow poetry in America : a poetry quarterly',
+      username: aeon_user.username,
+      webRequestForm: 'single',
+      site: 'SPECUA'
+    )
   end
 
   before do
-    allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-    allow(aeon_user).to receive_messages(requests: [first_request])
-    allow(Aeon::ReadingRoom).to receive(:find_by).and_return(reading_room)
+    first_request
     login_as(current_user)
     visit aeon_requests_path(kind: 'saved_for_later')
   end
@@ -43,7 +42,7 @@ RSpec.describe 'Edit Aeon request', :js do
     it 'displays the request with proper record header' do
       expect(page).to have_css('h2', text: 'Slow poetry in America : a poetry quarterly')
       expect(page).to have_text('Call number: PR9195.1')
-      expect(page).to have_link('View in SearchWorks', href: first_request.item_info1)
+      expect(page).to have_link('View in SearchWorks', href: first_request.itemInfo1)
     end
   end
 

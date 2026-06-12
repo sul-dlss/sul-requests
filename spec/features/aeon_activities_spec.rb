@@ -2,75 +2,82 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Appointments', :js do
+RSpec.describe 'Activities', :js do
+  use_stub_aeon_client
+
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true) }
-  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
+  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default') }
 
   let(:requests) do
-    [build(:aeon_request, title: 'title1', activity_id: 1, web_request_form: 'multiple'),
-     build(:aeon_request, title: 'title2', activity_id: 5, web_request_form: 'multiple'),
-     build(:aeon_request, title: 'title3', activity_id: 3, web_request_form: 'multiple')]
-  end
-
-  let(:queue) do
-    Aeon::Queue.new(id: 8, queue_name: 'Awaiting Staff Review', queue_type: 'Transaction')
-  end
-  let(:stub_aeon_client) do
-    instance_double(AeonClient,
-                    find_user: aeon_user,
-                    activities_for:,
-                    find_queue: queue,
-                    requests_for: requests)
-  end
-
-  let(:activities_for) do
     [
-      Aeon::Activity.new(
-        start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
-        stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
+      StubAeonClient::Request.create(
+        requestFor: { type: 'Activity', reference: 1 },
+        itemTitle: 'title1',
+        username: aeon_user.username,
+        webRequestForm: 'multiple',
+        transactionStatus: 1
+      ),
+      StubAeonClient::Request.create(
+        requestFor: { type: 'Activity', reference: 5 },
+        itemTitle: 'title2',
+        username: aeon_user.username,
+        webRequestForm: 'multiple',
+        transactionStatus: 1
+      ),
+      StubAeonClient::Request.create(
+        requestFor: { type: 'Activity', reference: 3 },
+        itemTitle: 'title3',
+        username: aeon_user.username,
+        webRequestForm: 'multiple',
+        transactionStatus: 1
+      )
+    ]
+  end
+
+  let(:activities) do
+    [
+      StubAeonClient::Activity.create(
+        beginDate: Time.zone.local(2026, 2, 19, 12, 0, 0).iso8601,
+        endDate: Time.zone.local(2026, 2, 19, 13, 0, 0).iso8601,
         name: 'Activity1',
-        activity_type: 'Class visit',
+        activityType: 'Class visit',
         active: true,
-        status: 'Pending',
+        activityStatus: 'Pending',
         location: 'Special Collections',
-        sites: ['SPECUA'],
         users: [aeon_user],
         id: 1
       ),
-      Aeon::Activity.new(
-        start_time: DateTime.new(2026, 2, 19, 12, 0, 0),
-        stop_time: DateTime.new(2026, 2, 19, 13, 0, 0),
+      StubAeonClient::Activity.create(
+        beginDate: Time.zone.local(2026, 2, 19, 13, 0, 0).iso8601,
+        endDate: Time.zone.local(2026, 2, 19, 14, 0, 0).iso8601,
         name: 'Activity2',
-        activity_type: 'Class visit',
+        activityType: 'Class visit',
         active: false,
-        status: 'Pending',
+        activityStatus: 'Pending',
         location: 'Special Collections',
-        sites: ['SPECUA'],
         users: [aeon_user],
         id: 2
       ),
-      Aeon::Activity.new(
-        start_time: DateTime.new(2026, 4, 19, 12, 0, 0),
-        stop_time: DateTime.new(2026, 4, 19, 13, 0, 0),
+      StubAeonClient::Activity.create(
+        beginDate: Time.zone.local(2026, 4, 19, 14, 0, 0).iso8601,
+        endDate: Time.zone.local(2026, 4, 19, 15, 0, 0).iso8601,
         name: 'Activity3',
-        activity_type: 'Class visit 2',
+        activityType: 'Class visit 2',
         active: true,
-        status: 'Pending',
+        activityStatus: 'Pending',
         location: 'Special Collections',
-        sites: ['SPECUA'],
         users: [aeon_user],
         id: 3
       ),
-      Aeon::Activity.new(
-        start_time: nil,
-        stop_time: nil,
+      StubAeonClient::Activity.create(
+        beginDate: nil,
+        endDate: nil,
         name: 'Exhibit',
-        activity_type: 'Exhibit',
+        activityType: 'Exhibit',
         active: true,
-        status: 'Pending',
+        activityStatus: 'Pending',
         location: nil,
-        sites: %w[SPECUA EASTASIA],
         users: [aeon_user],
         id: 4
       )
@@ -78,7 +85,9 @@ RSpec.describe 'Appointments', :js do
   end
 
   before do
-    allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
+    activities
+    requests
+
     login_as(current_user)
     visit aeon_activities_path
   end
@@ -86,7 +95,7 @@ RSpec.describe 'Appointments', :js do
   it 'displays all appointments' do
     expect(page).to have_css('h1', text: 'Activities')
     expect(page).to have_text 'Activity1 Feb 19, 2026 12:00 pm - 1:00 pm Special Collections', normalize_ws: true
-    expect(page).to have_text 'Activity3 Apr 19, 2026 12:00 pm - 1:00 pm Special Collections', normalize_ws: true
+    expect(page).to have_text 'Activity3 Apr 19, 2026 2:00 pm - 3:00 pm Special Collections', normalize_ws: true
     expect(page).to have_text(/Exhibit/m)
     expect(page).to have_no_text('Activity2')
 

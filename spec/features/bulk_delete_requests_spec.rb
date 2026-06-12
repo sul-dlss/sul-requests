@@ -3,40 +3,45 @@
 require 'rails_helper'
 
 RSpec.describe 'Bulk delete actions and modal', :js do
+  use_stub_aeon_client
+
   let(:user) { create(:sso_user) }
-  let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true, patron_key: user.patron_key, ldap_attributes: {}) }
-  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
-  let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
+  let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true) }
+  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default') }
   let(:first_request) do
-    build(:aeon_request, call_number: 'PR9195.1 .S56 NO.1', title: 'Slow poetry in America : a poetry quarterly',
-                         transaction_number: 100, username: aeon_user.username, web_request_form: 'multiple')
+    StubAeonClient::Request.create(
+      id: 100,
+      callNumber: 'PR9195.1 .S56 NO.1',
+      itemTitle: 'Slow poetry in America : a poetry quarterly',
+      username: aeon_user.username,
+      webRequestForm: 'multiple',
+      site: 'SPECUA'
+    )
   end
   let(:second_request) do
-    build(:aeon_request, call_number: 'PR9195.1 .S56 NO.2', title: 'Slow poetry in America : a poetry quarterly',
-                         transaction_number: 101, username: aeon_user.username, web_request_form: 'multiple')
+    StubAeonClient::Request.create(
+      id: 101,
+      callNumber: 'PR9195.1 .S56 NO.2',
+      itemTitle: 'Slow poetry in America : a poetry quarterly',
+      username: aeon_user.username,
+      webRequestForm: 'multiple',
+      site: 'SPECUA'
+    )
   end
   let(:third_request) do
-    build(:aeon_request, call_number: 'PR8195.1 .S56 NO.2', title: 'Fast poetry in America : a poetry monthly',
-                         transaction_number: 102, username: aeon_user.username,
-                         shipping_option: 'Electronic Delivery')
-  end
-  let(:saved_for_later_queue) do
-    Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
-  end
-  let(:stub_aeon_client) do
-    instance_double(AeonClient,
-                    find_user: aeon_user,
-                    find_queue: saved_for_later_queue,
-                    appointments_for: [],
-                    requests_for: [first_request, second_request, third_request],
-                    reading_rooms:,
-                    activities_for: [],
-                    available_appointments: [])
+    StubAeonClient::Request.create(
+      id: 102,
+      callNumber: 'PR9195.1 .S56 NO.1',
+      itemTitle: 'Fast poetry in America : a poetry monthly',
+      username: aeon_user.username,
+      shippingOption: 'Electronic Delivery',
+      webRequestForm: 'multiple',
+      site: 'SPECUA'
+    )
   end
 
   before do
-    allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-    allow(aeon_user).to receive_messages(requests: [first_request, second_request, third_request])
+    [first_request, second_request, third_request]
     login_as(current_user)
     visit aeon_requests_path(kind: 'saved_for_later')
   end

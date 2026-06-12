@@ -3,77 +3,72 @@
 require 'rails_helper'
 
 RSpec.describe 'Add items modal', :js do
+  use_stub_aeon_client
+
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true, patron_key: user.patron_key, ldap_attributes: {}) }
-  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
-  let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
-  let(:saved_for_later_request_one) do
-    build(:aeon_request, call_number: 'PR9195.1 .S56 NO.1', title: 'Slow poetry in America : a poetry quarterly',
-                         appointment_id: nil,
-                         transaction_number: 100, username: aeon_user.username, web_request_form: 'multiple')
-  end
-  let(:saved_for_later_request_two) do
-    build(:aeon_request, call_number: 'PR9195.1 .S56 NO.2', title: 'Slow poetry in America : a poetry quarterly',
-                         appointment_id: nil,
-                         transaction_number: 101, username: aeon_user.username, web_request_form: 'multiple')
-  end
-  let(:saved_for_later_request_three) do
-    build(:aeon_request, call_number: 'PR8195.1 .S56 NO.2', title: 'Fast poetry in America : a poetry monthly',
-                         transaction_number: 102, username: aeon_user.username, appointment_id: nil,
-                         shipping_option: 'Electronic Delivery')
-  end
 
-  let(:submitted_request_one) do
-    build(:aeon_request, call_number: 'assigned call number 1', title: 'Medium poetry in America : a poetry quarterly',
-                         appointment_id: appointment.id,
-                         transaction_number: 103, username: aeon_user.username, web_request_form: 'multiple')
+  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default') }
+  let(:appointment) do
+    create(:remote_aeon_appointment, username: aeon_user.username, reading_room:, startTime: 1.week.from_now,
+                                     stopTime: 1.week.from_now + 1.hour)
   end
-
-  let(:submitted_request_two) do
-    build(:aeon_request, call_number: 'assigned call number 2', title: 'Medium poetry in America : a poetry quarterly',
-                         appointment_id: appointment.id,
-                         transaction_number: 104, username: aeon_user.username, web_request_form: 'multiple')
-  end
-
-  let(:saved_for_later_queue) do
-    Aeon::Queue.new(id: 5, queue_name: 'Awaiting User Review', queue_type: 'Transaction')
-  end
-
-  let(:submitted_queue) { Aeon::Queue.new(id: 8, queue_name: 'Awaiting Staff Review', queue_type: 'Transaction') }
-
-  let(:stub_aeon_client) do
-    instance_double(AeonClient,
-                    find_user: aeon_user,
-                    find_queue: saved_for_later_queue,
-                    appointments_for: [appointment],
-                    requests_for: [saved_for_later_request_one, saved_for_later_request_two, saved_for_later_request_three,
-                                   submitted_request_one, submitted_request_two],
-                    reading_rooms:,
-                    update_request_route: build(:aeon_request, transaction_number: 100),
-                    activities_for: [],
-                    available_appointments:)
-  end
-
-  let(:appointment) { build(:aeon_appointment, username: aeon_user.username, start_time: 1.week.from_now) }
-
-  let(:available_appointments) do
-    [instance_double(Aeon::AvailableAppointment,
-                     start_time: DateTime.new(2026, 2, 19),
-                     maximum_appointment_length: 210.minutes)]
-  end
+  let(:reading_room) { StubAeonClient::ReadingRoom.find_by(name: 'Field Reading Room') }
 
   before do
-    allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-    allow(submitted_request_one).to receive_messages(transaction_queue: submitted_queue)
-    allow(submitted_request_two).to receive_messages(transaction_queue: submitted_queue)
-    allow(stub_aeon_client).to receive_messages(update_request: submitted_request_two)
-    allow(aeon_user).to receive_messages(requests: [saved_for_later_request_one, saved_for_later_request_two, saved_for_later_request_three,
-                                                    submitted_request_one, submitted_request_two])
+    StubAeonClient::Request.create(
+      id: 100,
+      callNumber: 'PR9195.1 .S56 NO.1',
+      itemTitle: 'Slow poetry in America : a poetry quarterly',
+      username: aeon_user.username,
+      webRequestForm: 'multiple',
+      site: 'SPECUA'
+    )
+
+    StubAeonClient::Request.create(
+      id: 101,
+      callNumber: 'PR9195.1 .S56 NO.2',
+      itemTitle: 'Slow poetry in America : a poetry quarterly',
+      username: aeon_user.username,
+      webRequestForm: 'multiple',
+      site: 'SPECUA'
+    )
+
+    StubAeonClient::Request.create(
+      id: 102,
+      callNumber: 'PR9195.1 .S56 NO.2',
+      itemTitle: 'Fast poetry in America : a poetry monthly',
+      shippingOption: 'Electronic Delivery',
+      username: aeon_user.username,
+      webRequestForm: 'multiple',
+      site: 'SPECUA'
+    )
+
+    StubAeonClient::Request.create(
+      id: 103,
+      callNumber: 'assigned call number 1',
+      itemTitle: 'Medium poetry in America : a poetry quarterly',
+      appointmentID: appointment.id,
+      username: aeon_user.username,
+      webRequestForm: 'multiple',
+      transactionStatus: 3
+    )
+
+    StubAeonClient::Request.create(
+      id: 104,
+      callNumber: 'assigned call number 2',
+      itemTitle: 'Medium poetry in America : a poetry quarterly',
+      appointmentID: appointment.id,
+      username: aeon_user.username,
+      webRequestForm: 'multiple',
+      transactionStatus: 3
+    )
+
     login_as(current_user)
     visit aeon_appointments_path
   end
 
-  it 'opens and submits add items' do # rubocop:disable RSpec/ExampleLength
+  it 'opens and submits add items' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
     click_link 'Add items'
     within '.modal' do
       expect(page).to have_no_text('Fast poetry in America : a poetry quarterly')
@@ -85,7 +80,7 @@ RSpec.describe 'Add items modal', :js do
       expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 2)
 
       # Add slow poetry call number 1 to scheduled appointments
-      find("button[data-transaction-number='#{saved_for_later_request_one.id}']").click
+      find("button[data-transaction-number='100']", text: 'Add to appointment').click
 
       # expect a header to move into modal
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 2)
@@ -94,7 +89,7 @@ RSpec.describe 'Add items modal', :js do
       expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 1)
 
       # Add slow poetry call number 2 to scheduled appointments
-      find("button[data-transaction-number='#{saved_for_later_request_two.id}']").click
+      find("button[data-transaction-number='101']", text: 'Add to appointment').click
 
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 4)
@@ -102,8 +97,8 @@ RSpec.describe 'Add items modal', :js do
       expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 0)
 
       # Remove scheduled appointment and saved_for_later appointment
-      find("button[data-transaction-number='#{submitted_request_one.id}']").click
-      find("button[data-transaction-number='#{saved_for_later_request_two.id}']").click
+      find("button[data-transaction-number='103']", text: 'Remove').click
+      find("button[data-transaction-number='101']", text: 'Remove').click
 
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 2)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 2)
@@ -114,33 +109,14 @@ RSpec.describe 'Add items modal', :js do
     end
     perform_enqueued_jobs
 
-    sleep 0.5
-    expect(stub_aeon_client).to have_received(:update_request).with(
-      { transaction_number: 100, aeon_payload:
-                                            [{ op: 'replace', path: '/appointmentId', value: 23 },
-                                             { op: 'remove',
-                                               path: '/forPublication' },
-                                             { op: 'remove',
-                                               path: '/itemInfo5' },
+    within '#aeon_appointment_1' do
+      expect(page).to have_text('Slow poetry in America')
+      expect(page).to have_text('PR9195.1 .S56 NO.1')
+      expect(page).to have_no_text('PR9195.1 .S56 NO.2')
 
-                                             { op: 'remove',
-                                               path: '/specialRequest' },
-                                             { op: 'remove',
-                                               path: '/requestFor' }] }
-    )
-
-    expect(stub_aeon_client).to have_received(:update_request).with(
-      { transaction_number: 103, aeon_payload:
-     [{ op: 'remove', path: '/appointmentId' },
-      { op: 'remove',
-        path: '/forPublication' },
-      { op: 'remove',
-        path: '/itemInfo5' },
-      { op: 'remove',
-        path: '/specialRequest' },
-
-      { op: 'remove',
-        path: '/requestFor' }] }
-    )
+      expect(page).to have_text('Medium poetry in America')
+      expect(page).to have_text('assigned call number 2')
+      expect(page).to have_no_text('assigned call number 1')
+    end
   end
 end
