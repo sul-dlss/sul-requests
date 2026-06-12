@@ -726,10 +726,11 @@ FactoryBot.define do
            'paymentStatus' => { 'name' => 'Outstanding' },
            'item' =>
            { 'id' => '020c1a15-3b9f-5b19-9b6f-d6e0f4351b85',
-             'effectiveLocation' => { 'library' => { 'name' => 'Green Library' } },
+             'effectiveLocation' => { 'code' => 'GRE-STACKS', 'library' => { 'name' => 'Green Library' } },
+             'permanentLocation' => { 'code' => 'GRE-STACKS', 'library' => { 'name' => 'Green Library' } },
              'barcode' => '36105228879115',
              'instance' => { 'title' => 'Memes and the future of pop culture / by Marcel Danesi',
-                             'contributors' => [{ 'name' => 'Danesi, Marcel, 1946-' }] },
+                             'contributors' => [{ 'name' => 'Danesi, Marcel, 1946-' }], 'hrid' => '12345' },
              'holdingsRecord' => { 'callNumber' => 'HM626 .D36 2019' } } }],
         'loans' => [{ 'id' => 'f4817e08-7118-44e1-a5ab-40fc30b29ff7',
                       'item' =>
@@ -1021,6 +1022,7 @@ FactoryBot.define do
              'instance' =>
              { 'title' => '"Star shining on the mountain" [sound recording] : music of Medieval and Renaissance Spain.',
                'contributors' => [{ 'name' => 'Trio Live Oak' }] },
+             'barcode' => '12345',
              'holdingsRecord' => { 'callNumber' => 'MD 7520' } } },
          { 'id' => 'd412c6ec-b386-48b2-8f33-0c638307b269',
            'userId' => 'd7b67ab1-a3f2-45a9-87cc-d867bca8315f',
@@ -1041,6 +1043,7 @@ FactoryBot.define do
              { 'title' =>
                'Mental growth during the first three years; a developmental study of sixty-one children',
                'contributors' => [{ 'name' => 'Bayley, Nancy, 1899-1994' }] },
+             'barcode' => '12345',
              'holdingsRecord' => { 'callNumber' => 'BF1 .G35' } } },
          { 'id' => '7e9730cb-9c74-4c48-a355-60c1fd8c8ee4',
            'userId' => 'd7b67ab1-a3f2-45a9-87cc-d867bca8315f',
@@ -1059,6 +1062,7 @@ FactoryBot.define do
              'effectiveLocation' => { 'library' => { 'name' => 'Green Library' } },
              'instance' => { 'title' => 'The archetypal cat / Patricial Dale-Green.',
                              'contributors' => [{ 'name' => 'Dale-Green, Patricia' }] },
+             'barcode' => '12345',
              'holdingsRecord' => { 'callNumber' => 'GR725 .D29 1987' } } },
          { 'id' => 'f93d39be-d252-4c50-9201-193699dcdf8c',
            'userId' => 'd7b67ab1-a3f2-45a9-87cc-d867bca8315f',
@@ -1093,6 +1097,7 @@ FactoryBot.define do
            'item' =>
            { 'id' => '5dfa4b14-f4ae-5bc8-b491-09919dd171c2',
              'effectiveLocation' => { 'library' => { 'name' => 'SUL' } },
+             'barcode' => '12345',
              'instance' =>
              { 'title' =>
                '(RE)DISCOVERING THE OLMEC - NATIONAL GEOGRAPHIC SOCIETY-SMITHSONIAN INSTITUTION',

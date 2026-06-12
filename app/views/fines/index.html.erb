@@ -1,25 +1,41 @@
-<h1 class="sr-only">Fees and fines</h1>
-<div class="page-section">
-  <% if @fines.any? %>
-    <div class="d-flex flex-row align-items-center gap-3 mb-2">
-      <span>Outstanding balance: <strong><%= number_to_currency(@fines.sum(&:owed)) %></strong></span>
-      <%= render 'fines/pay_all_button' %>
-    </div>
-    <%= render 'fines/shared_computer_alert' %>
-  <% end %>
-  <% if @fines_and_accruing.any? %>
-    <ul class="fines ps-0" data-sortable-target="list" aria-live="polite">
-      <% @fines_and_accruing.each do |item| %>
-        <%= render item.is_a?(Folio::Checkout) ? AccruingCheckoutComponent.new(checkout: item, patron: patron_or_group)
-                                              : FineComponent.new(fine: item, patron: patron_or_group) %>
-      <% end %>
-    </ul>
-  <% end %>
-  <% if params[:group] && patron.sponsor? %>
-    Fines incurred by proxy borrowers appear in the list of fines under their sponsor's Self tab.
-  <% end %>
+<div class="d-sm-flex mb-2">
+  <h1 class="mt-2 me-3">Fees and fines</h1>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <button class="nav-link active fs-5" data-bs-toggle="tab" data-bs-target="#active-tab">Current</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link fs-5" data-bs-toggle="tab" data-bs-target="#past-payments-tab">Past</button>
+    </li>
+  </ul>
+  <div class="tab-underline-extend flex-grow-1 border-bottom d-none d-sm-block">
+  </div>
 </div>
-<div class="page-section" data-key="payments" data-type="async">
-  <h2>History</h2>
-  <%= link_to 'Show history', payments_path, class: 'btn btn-info', remote: true, data: { type: :json } %>
+
+<div class="tab-content">
+  <div id="active-tab" class="tab-pane fade show active">
+    <% if @fines.any? %>
+      <div class="d-flex flex-row align-items-center gap-3 mb-2">
+        <span>Outstanding balance: <strong><%= number_to_currency(@fines.sum(&:owed)) %></strong></span>
+        <%= render 'fines/pay_all_button' %>
+      </div>
+      <%= render 'fines/shared_computer_alert' %>
+    <% end %>
+    <% if @fines_and_accruing.any? %>
+      <ul class="fines ps-0">
+        <% @fines_and_accruing.each do |item| %>
+          <%= render FineComponent.new(fine: item) %>
+        <% end %>
+      </ul>
+    <% end %>
+    <% if params[:group] && patron.sponsor? %>
+      Fines incurred by proxy borrowers appear in the list of fines under their sponsor's Self tab.
+    <% end %>
+  </div>
+
+  <div id="past-payments-tab" class="tab-pane fade">
+    <turbo-frame src="<%= payments_path %>" <% unless params[:past] %>loading="lazy"<% end %> id="past-payments">
+      Loading...
+    </turbo-frame>
+  </div>
 </div>

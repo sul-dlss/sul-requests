@@ -48,10 +48,7 @@ class CheckoutComponent < ViewComponent::Base
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def contact_email
-    contact_info = Settings.locations[checkout.effective_location_code]&.contact_info ||
-                   Settings.libraries[checkout.library_code]&.contact_info
-
-    contact_info&.dig(:email)
+    checkout.contact_info&.dig(:email)
   end
 
   def cover_image

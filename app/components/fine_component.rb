@@ -2,39 +2,42 @@
 
 # Render a single fine or payment for a patron
 class FineComponent < ViewComponent::Base
-  attr_reader :fine, :patron
+  attr_reader :fine, :sortable
 
-  delegate :sul_icon, :detail_link_to_searchworks, to: :helpers
+  delegate :sul_icon, :detail_link_to_searchworks, :sort_key, to: :helpers
 
-  def initialize(fine:, patron:)
+  def initialize(fine:, sortable: false)
     @fine = fine
-    @patron = patron
+    @sortable = sortable
     super()
   end
 
-  def render_fine_status
-    fine_status_html(css_class: 'status small fw-medium rounded-pill text-white bg-plum-light ready',
-                     text: fine.status_label)
+  def data
+    return {} unless sortable
+
+    { status_sort_value: fine.sort_key(:status_label), fee_sort_value: fine.sort_key(:fee),
+      data_sort_value: fine.sort_key(:payment_date), title_sort_value: fine.sort_key(:title) }
   end
 
-  def contact_path(*, **)
-    '#'
+  def checked_out?
+    fine.is_a?(Folio::Checkout)
+  end
+
+  def accruing_rate_label
+    rate = fine.overdue_fines_rate if checked_out?
+    return unless rate
+
+    "#{sul_icon('sharp-warning-24px')}Accruing #{number_to_currency(rate['quantity'])}/#{rate['intervalId']} until returned"
   end
 
   def body_title
-    case fine.nice_status
+    return fine.title if checked_out?
+
+    case fine.fine_type
     when 'SUL library card'
       'Lost library card'
     else
       fine.title
-    end
-  end
-
-  private
-
-  def fine_status_html(text:, css_class: nil)
-    tag.span(class: css_class) do
-      safe_join([text], ' ')
     end
   end
 end

@@ -180,6 +180,10 @@ module Folio
       overdue_fines_policy['overdueFine']
     end
 
+    def contact_info
+      location&.contact_info
+    end
+
     private
 
     def loan_policy
