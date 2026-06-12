@@ -34,7 +34,7 @@ module Aeon
     end
 
     def all_requests
-      Aeon::RequestFinders.new(self.class.aeon_client.requests_for(username:))
+      @all_requests ||= Aeon::RequestFinders.new(self.class.aeon_client.requests_for(username:))
     end
 
     def requests
@@ -45,13 +45,14 @@ module Aeon
       @activities ||= self.class.aeon_client.activities_for(username:).sort_by(&:sort_key)
     end
 
-    def activities_with_requests
-      request_cache = {}
+    def activities_with_requests # rubocop:disable Metrics/AbcSize
+      users_cache = activities.flat_map(&:users).index_by(&:username)
+
       activities.each do |activity|
-        user_requests = activity.users.flat_map do |user|
-          request_cache[user.username] ||= self.class.aeon_client.requests_for(username: user.username)
-        end
-        activity.assign_requests_from(user_requests)
+        users = users_cache.values_at(*activity.users.map(&:username)).compact
+        activity_requests = users.flat_map { |u| u.all_requests.for_activity(activity).submitted }
+
+        activity.requests = Aeon::RequestFinders.new(activity_requests)
       end
       activities
     end
