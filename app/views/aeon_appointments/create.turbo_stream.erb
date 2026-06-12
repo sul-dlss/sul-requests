@@ -25,7 +25,7 @@
 <% end %>
 
 <%= turbo_stream.update 'aeon_appointments' do %>
-  <%= render Aeon::AppointmentComponent.with_collection((@appointments + [@appointment]).sort_by(&:start_time)) %>
+  <%= render Aeon::AppointmentComponent.with_collection((@appointments + [@appointment]).sort_by(&:start_time), all_requests: @aeon_requests) %>
 <% end %>
 
 <%= turbo_stream.replace 'appointment-form' do %>

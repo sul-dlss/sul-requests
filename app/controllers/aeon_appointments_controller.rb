@@ -5,8 +5,8 @@
 ###
 class AeonAppointmentsController < ApplicationController
   include AeonController
-  include AeonSortable
 
+  before_action :load_aeon_requests, only: [:index, :items, :add_items]
   before_action :load_appointments
   before_action :load_appointment, only: [:edit, :update, :destroy, :items, :add_items]
   before_action :build_appointment, only: [:create]
@@ -70,17 +70,17 @@ class AeonAppointmentsController < ApplicationController
   def items
     authorize! :read, @appointment
 
-    requests = current_user.aeon.requests.for_reading_room(@appointment.reading_room).saved_for_later
-    requests = sort_aeon_requests(requests || [])
+    requests = @aeon_requests.for_reading_room(@appointment.reading_room).saved_for_later.sort_by do |x|
+      [x.title, x.sort_key, -1 * x.creation_date.to_i]
+    end
     @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
   def add_items # rubocop:disable Metrics/AbcSize
     authorize! :update, Aeon::Request
 
-    requests = current_user.aeon.requests
-    process_items(requests.find(Array(params[:items_added])).saved_for_later, @appointment.id)
-    process_items(requests.find(Array(params[:items_removed])).submitted, nil)
+    process_items(@aeon_requests.find(Array(params[:items_added])).saved_for_later, @appointment.id)
+    process_items(@aeon_requests.find(Array(params[:items_removed])).submitted, nil)
 
     redirect_to aeon_appointments_path(anchor: helpers.dom_id(@appointment))
   end
@@ -119,6 +119,10 @@ class AeonAppointmentsController < ApplicationController
 
   def load_appointment
     @appointment = @appointments.find(params[:aeon_appointment_id] || params[:id])
+  end
+
+  def load_aeon_requests
+    @aeon_requests = current_user.aeon.requests
   end
 
   def start_time
