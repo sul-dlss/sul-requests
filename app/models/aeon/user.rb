@@ -60,10 +60,6 @@ module Aeon
       activities&.select(&:active?)&.select { |activity| activity.sites.include?(site) }
     end
 
-    def submitted_requests
-      requests.submitted
-    end
-
     def appointments
       @appointments ||= self.class.aeon_client.appointments_for(username:).sort_by(&:sort_key).reject(&:cancelled?).each do |appointment|
         appointment.requests = requests.for_appointment(appointment)
