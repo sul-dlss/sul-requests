@@ -133,7 +133,7 @@ RSpec.describe 'Accessibility testing', :js do
 
     before do
       allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-      allow(aeon_user).to receive_messages(requests: all_requests)
+      allow(aeon_user).to receive_messages(requests: Aeon::RequestFinders.new(all_requests))
       login_as(current_user)
     end
 

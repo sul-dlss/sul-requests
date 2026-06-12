@@ -70,29 +70,25 @@ class AeonAppointmentsController < ApplicationController
   def items
     authorize! :read, @appointment
 
-    requests = current_user.aeon.saved_for_later_requests.reject(&:digital?).select do |request|
-      request.reading_room.id == @appointment.reading_room.id
-    end
+    requests = current_user.aeon.requests.for_reading_room(@appointment.reading_room).saved_for_later
     requests = sort_aeon_requests(requests || [])
     @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
-  def add_items
+  def add_items # rubocop:disable Metrics/AbcSize
     authorize! :update, Aeon::Request
 
-    process_items(params[:items_added], :submitted?, @appointment.id)
+    requests = current_user.aeon.requests
+    process_items(requests.find(Array(params[:items_added])).saved_for_later, @appointment.id)
+    process_items(requests.find(Array(params[:items_removed])).submitted, nil)
 
-    process_items(params[:items_removed], :saved_for_later?, nil)
     redirect_to aeon_appointments_path(anchor: helpers.dom_id(@appointment))
   end
 
   private
 
-  def process_items(items, skip_method, appointment_id)
-    items&.each do |transaction_number|
-      request = current_user.aeon.requests.find { |request| request.transaction_number == transaction_number.to_i }
-      next if request.send(skip_method)
-
+  def process_items(requests, appointment_id)
+    requests&.each do |request|
       Aeon::UpdateRequestService.new(request, { appointment_id: }).call
     end
   end

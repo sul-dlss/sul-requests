@@ -17,7 +17,7 @@ module Aeon
     end
 
     def initialize(requests)
-      @requests = requests
+      @requests = requests.is_a?(Aeon::RequestFinders) ? requests : Aeon::RequestFinders.new(requests)
     end
 
     def dom_id
@@ -26,18 +26,10 @@ module Aeon
       "group_#{status}_#{title.parameterize}_#{digital? ? 'digital' : 'reading_room'}"
     end
 
-    def saved_for_later_requests
-      select(&:saved_for_later?)
-    end
-
-    def submitted_requests
-      select(&:submitted?)
-    end
-
     def appointment_reading_room
       return if digital?
 
-      submitted_requests&.first&.reading_room
+      requests.submitted.first&.reading_room
     end
 
     # For status display, prefer a pending request over a ready one

@@ -12,15 +12,15 @@ module Aeon
     end
 
     def render?
-      @request_group.saved_for_later_requests.present?
+      @request_group.requests.saved_for_later.present?
     end
 
     def submitted_requests?
-      request_group.submitted_requests.present?
+      request_group.requests.submitted.present?
     end
 
     def saved_count
-      @request_group.saved_for_later_requests.count
+      @request_group.requests.saved_for_later.count
     end
   end
 end
