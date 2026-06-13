@@ -32,7 +32,14 @@ class AeonReadingRoomsController < ApplicationController
   def load_appointments
     @date = (Date.parse(params.expect(:date)) if params[:date]) || Time.zone.now.to_date
     @available_appointments = @reading_room.available_appointments(@date, include_next_available: true)
-    @available_appointments_on_selected_date = @available_appointments.select { |x| x.start_time.to_date == @date }
-    @appointment_lengths = @available_appointments.map(&:maximum_appointment_length)
+    @available_appointments_on_selected_date = available_appointments_without_conflicts(@available_appointments)
+    @appointment_lengths = @available_appointments_on_selected_date.map(&:maximum_appointment_length)
+  end
+
+  def available_appointments_without_conflicts(available_appointments)
+    existing_appointments = current_user.aeon.appointments
+                                        .for_reading_room(@reading_room)
+                                        .reject { |a| a.id == params[:appointment_id].to_i }
+    Aeon::AppointmentDeconflictionService.new(available_appointments:, existing_appointments:).call
   end
 end
