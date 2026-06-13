@@ -29,15 +29,25 @@ module StubAeonClient
 
     def open_range_on(date)
       start_of_day = date.in_time_zone
-      open_time = Time.zone.parse(open_hours_on(date)['openTime'])
-      close_time = Time.zone.parse(open_hours_on(date)['closeTime'])
+      hours = open_hours_on(date)
+      return unless hours
+
+      open_time = Time.zone.parse(hours['openTime'])
+      close_time = Time.zone.parse(hours['closeTime'])
 
       (start_of_day.change(hour: open_time.hour, min: open_time.min)..
         start_of_day.change(hour: close_time.hour, min: close_time.min))
     end
 
-    def available_appointments(date)
+    def available_appointments(date, include_next_available: false) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       range = open_range_on(date)
+      return [] if !include_next_available && range.nil?
+
+      while range.nil? && date <= 1.year.from_now
+        date += 1.day
+        range = open_range_on(date)
+      end
+
       range.step(30.minutes).map do |time|
         {
           utcStartTime: time.utc.iso8601,
