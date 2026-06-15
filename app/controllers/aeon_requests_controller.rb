@@ -11,7 +11,7 @@ class AeonRequestsController < ApplicationController
   before_action :load_aeon_requests
   before_action :filter_and_sort_aeon_requests, only: [:index]
   before_action :load_aeon_request_groups
-  before_action :load_aeon_request, except: [:index, :destroy_multiple]
+  before_action :load_aeon_request, except: [:index, :destroy_multiple, :update_multiple]
   before_action :set_variant, only: [:index, :edit]
 
   def index
@@ -21,7 +21,7 @@ class AeonRequestsController < ApplicationController
   def resubmit
     authorize! :update, @aeon_request
 
-    @updated_aeon_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
+    @updated_aeon_request = Aeon::UpdateRequestService.new(@aeon_request, { status: 'Submitted by User' }).call
 
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
@@ -57,10 +57,29 @@ class AeonRequestsController < ApplicationController
     end
   end
 
+  def update_multiple # rubocop:disable Metrics/AbcSize
+    @appointment = current_user.aeon.appointments.find(params[:appointment_id])
+
+    authorize! :update, @appointment
+
+    saved_for_later_requests_to_update = @aeon_requests.find(Array(params[:items_added])).saved_for_later
+    submitted_requests_to_update = @aeon_requests.find(Array(params[:items_removed])).submitted
+
+    authorize_all!(saved_for_later_requests_to_update, :update)
+    authorize_all!(submitted_requests_to_update, :update)
+
+    updated_requests = process_items(saved_for_later_requests_to_update, appointment_id: @appointment.id)
+    updated_requests += process_items(submitted_requests_to_update, appointment_id: nil)
+
+    respond_to do |format|
+      format.turbo_stream { update_turbo_stream(updated_requests: updated_requests) }
+    end
+  end
+
   def destroy
     authorize! :destroy, @aeon_request
 
-    @updated_aeon_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
+    @updated_aeon_request = Aeon::UpdateRequestService.new(@aeon_request, { status: 'Cancelled by User' }).call
 
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
@@ -71,46 +90,26 @@ class AeonRequestsController < ApplicationController
     @salient_requests = @aeon_requests.find(selected_request_ids)
 
     # Authorize each of the individual aeon requests for deletion
-    @salient_requests.each { |aeon_request| authorize! :destroy, aeon_request }
+    authorize_all!(@salient_requests, :destroy)
 
     # Change status of the requests corresponding to these transaction numbers/ids to 'canceled'
-    @salient_requests.each do |aeon_request| # rubocop:disable Style/CombinableLoops
-      aeon_client.update_request_route(transaction_number: aeon_request.transaction_number, status: 'Cancelled by User')
-    end
+    updated_requests = process_items(@salient_requests, { status: 'Cancelled by User' })
 
     respond_to do |format|
-      format.turbo_stream
+      format.turbo_stream { update_turbo_stream(updated_requests: updated_requests) }
     end
   end
 
   private
 
-  def update_turbo_stream # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
-    @previous_aeon_requests = @aeon_requests
-    @next_aeon_requests = Aeon::RequestFinders.new(@aeon_requests - [@aeon_request] + [@updated_aeon_request]).sort_by do |x|
-      [x.title, x.sort_key, -1 * x.creation_date.to_i]
+  def process_items(requests, updated_params = {})
+    requests.map do |request|
+      Aeon::UpdateRequestService.new(request, updated_params).call
     end
+  end
 
-    @previous_aeon_request_groups = @aeon_request_groups
-    @next_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests)
-    @next_saved_for_later_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests.saved_for_later.reading_room)
-
-    if @aeon_request.appointment_id != @updated_aeon_request.appointment_id
-      @previous_appointment = @aeon_request.appointment&.tap do |appt|
-        appt.requests = @next_aeon_requests.for_appointment(appt)
-      end
-    end
-
-    if @updated_aeon_request.activity_id
-      @activity = current_user.aeon.activities_with_requests.find do |activity|
-        activity.id == @updated_aeon_request.activity_id
-      end
-      @activity.requests = @activity.requests.reject { |request| request.id == @aeon_request.id }
-    end
-
-    @appointment = @updated_aeon_request.appointment&.tap do |appt|
-      appt.requests = @next_aeon_requests.for_appointment(appt)
-    end
+  def update_turbo_stream(updated_requests: [@updated_aeon_request])
+    @update_response = Aeon::UpdateResponseService.new(@aeon_requests, updated_requests)
 
     render 'update'
   end
@@ -162,5 +161,9 @@ class AeonRequestsController < ApplicationController
 
   def selected_request_ids
     params.expect(ids: []).map(&:to_i)
+  end
+
+  def authorize_all!(requests, action)
+    requests.each { |request| authorize! action, request }
   end
 end

@@ -1,5 +1,7 @@
 <%= turbo_frame_tag params[:modal] do %>
-  <%= form_with(url: aeon_appointment_add_items_path(@appointment), data: { turbo: false }) do |f| %>
+  <%= form_with(url: update_multiple_aeon_requests_path) do |f| %>
+    <%= hidden_field_tag :appointment_id, @appointment.id %>
+
     <div class="modal-header">
       <div class="d-flex flex-column flex-grow-1">
         <div class="d-flex justify-content-between mb-2">
