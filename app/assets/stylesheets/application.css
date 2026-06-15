@@ -1327,3 +1327,10 @@ label.btn-close {
   display: none;
   pointer-events: none;
 }
+
+.required-placeholder {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}

@@ -4,7 +4,7 @@
   <div class="d-flex flex-wrap gap-3">
   <% options.each do |duration| %>
     <span class="duration-selector" data-appointment-target="duration" data-seconds="<%= duration %>">
-      <%= form.radio_button :duration, duration.to_i, class: 'btn-check', checked: selected == duration.to_i, data: { action: 'appointment#applyDurationFilter' } %>
+      <%= form.radio_button :duration, duration.to_i, class: 'btn-check', checked: selected == duration.to_i, required: true, data: { action: 'appointment#applyDurationFilter' } %>
       <%= form.label "duration_#{duration.to_i}", duration.inspect.sub('minutes', 'min'), class: 'btn border px-1' %>
     </span>
   <% end %>
