@@ -94,12 +94,12 @@ class AeonRequestsController < ApplicationController
     @salient_requests.each { |aeon_request| authorize! :destroy, aeon_request }
 
     # Change status of the requests corresponding to these transaction numbers/ids to 'canceled'
-    @salient_requests.each do |aeon_request| # rubocop:disable Style/CombinableLoops
+    updated_requests = @salient_requests.map do |aeon_request|
       aeon_client.update_request_route(transaction_number: aeon_request.transaction_number, status: 'Cancelled by User')
     end
 
     respond_to do |format|
-      format.turbo_stream
+      format.turbo_stream { update_turbo_stream(updated_requests: updated_requests) }
     end
   end
 
