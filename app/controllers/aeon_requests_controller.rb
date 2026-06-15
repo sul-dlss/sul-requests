@@ -57,7 +57,7 @@ class AeonRequestsController < ApplicationController
     end
   end
 
-  def update_multiple # rubocop:disable Metrics/AbcSize
+  def update_multiple # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     @appointment = current_user.aeon.appointments.find(params[:appointment_id])
 
     authorize! :update, @appointment
@@ -69,10 +69,12 @@ class AeonRequestsController < ApplicationController
       authorize! :update, request
     end
 
-    process_items(saved_for_later_requests_to_update, appointment_id: @appointment.id)
-    process_items(submitted_requests_to_update, appointment_id: nil)
+    updated_requests = process_items(saved_for_later_requests_to_update, appointment_id: @appointment.id)
+    updated_requests += process_items(submitted_requests_to_update, appointment_id: nil)
 
-    redirect_to aeon_appointments_path(anchor: helpers.dom_id(@appointment))
+    respond_to do |format|
+      format.turbo_stream { update_turbo_stream(updated_requests: updated_requests) }
+    end
   end
 
   def destroy
@@ -104,7 +106,7 @@ class AeonRequestsController < ApplicationController
   private
 
   def process_items(requests, updated_params = {})
-    requests&.each do |request|
+    requests.map do |request|
       Aeon::UpdateRequestService.new(request, updated_params).call
     end
   end
