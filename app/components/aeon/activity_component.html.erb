@@ -14,10 +14,9 @@
   <% end %>
 
   <% c.with_body do %>
-    <% request_groups = Aeon::RequestGrouping.from_requests(activity.requests) %>
-    <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(request_groups, classes: %w[activity-request-group card rounded-0 px-3 py-2 mb-2]) %>
+    <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(activity.grouped_requests, classes: %w[activity-request-group card rounded-0 px-3 py-2 mb-2]) %>
 
-      <% if request_groups.none? %>
+      <% if activity.grouped_requests.none? %>
         <div role="alert" class="d-flex zero-items-alert align-items-center text-digital-red bg-body py-3 px-4">
           <div role="img" aria-label="Danger icon" class="bi bi-exclamation-triangle-fill fs-3 me-3 align-self-center d-flex justify-content-center ms-2"></div>
           <div class="me-2">
