@@ -11,7 +11,7 @@ class AeonRequestsController < ApplicationController
   before_action :load_aeon_requests
   before_action :filter_and_sort_aeon_requests, only: [:index]
   before_action :load_aeon_request_groups
-  before_action :load_aeon_request, except: [:index, :destroy_multiple]
+  before_action :load_aeon_request, except: [:index, :destroy_multiple, :update_multiple]
   before_action :set_variant, only: [:index, :edit]
 
   def index
@@ -57,6 +57,24 @@ class AeonRequestsController < ApplicationController
     end
   end
 
+  def update_multiple # rubocop:disable Metrics/AbcSize
+    @appointment = current_user.aeon.appointments.find(params[:appointment_id])
+
+    authorize! :update, @appointment
+
+    saved_for_later_requests_to_update = @aeon_requests.find(Array(params[:items_added])).saved_for_later
+    submitted_requests_to_update = @aeon_requests.find(Array(params[:items_removed])).submitted
+
+    (saved_for_later_requests_to_update + submitted_requests_to_update).each do |request|
+      authorize! :update, request
+    end
+
+    process_items(saved_for_later_requests_to_update, appointment_id: @appointment.id)
+    process_items(submitted_requests_to_update, appointment_id: nil)
+
+    redirect_to aeon_appointments_path(anchor: helpers.dom_id(@appointment))
+  end
+
   def destroy
     authorize! :destroy, @aeon_request
 
@@ -84,6 +102,12 @@ class AeonRequestsController < ApplicationController
   end
 
   private
+
+  def process_items(requests, updated_params = {})
+    requests&.each do |request|
+      Aeon::UpdateRequestService.new(request, updated_params).call
+    end
+  end
 
   def update_turbo_stream # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
     @previous_aeon_requests = @aeon_requests

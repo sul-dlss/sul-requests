@@ -6,9 +6,9 @@
 class AeonAppointmentsController < ApplicationController
   include AeonController
 
-  before_action :load_aeon_requests, only: [:index, :items, :add_items]
+  before_action :load_aeon_requests, only: [:index, :items]
   before_action :load_appointments
-  before_action :load_appointment, only: [:edit, :update, :destroy, :items, :add_items]
+  before_action :load_appointment, only: [:edit, :update, :destroy, :items]
   before_action :build_appointment, only: [:create]
   before_action :load_reading_rooms, only: [:new]
 
@@ -76,22 +76,7 @@ class AeonAppointmentsController < ApplicationController
     @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
 
-  def add_items # rubocop:disable Metrics/AbcSize
-    authorize! :update, Aeon::Request
-
-    process_items(@aeon_requests.find(Array(params[:items_added])).saved_for_later, @appointment.id)
-    process_items(@aeon_requests.find(Array(params[:items_removed])).submitted, nil)
-
-    redirect_to aeon_appointments_path(anchor: helpers.dom_id(@appointment))
-  end
-
   private
-
-  def process_items(requests, appointment_id)
-    requests&.each do |request|
-      Aeon::UpdateRequestService.new(request, { appointment_id: }).call
-    end
-  end
 
   def load_reading_rooms
     @reading_rooms = Aeon::ReadingRoom.all

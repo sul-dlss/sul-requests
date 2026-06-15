@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     collection do
       get "/:kind", constraints: { kind: /submitted|saved_for_later|completed|cancelled/ }, as: '', to: 'aeon_requests#index'
       delete 'destroy_multiple'
+      post :update_multiple
     end
 
     member do
@@ -73,7 +74,6 @@ Rails.application.routes.draw do
 
   resources :aeon_appointments do
     get :items
-    post "add_items", to: 'aeon_appointments#add_items', as: :add_items
   end
 
   get "/aeon_appointments/new/:reading_room_id", to: 'aeon_appointments#new', as: :new_aeon_appointment_for_reading_room
