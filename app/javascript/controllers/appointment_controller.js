@@ -31,7 +31,22 @@ export default class extends Controller {
     url.searchParams.append('selected', startTime);
     url.searchParams.append('duration', apptDuration);
 
+    this.availabilityTarget.replaceChildren(this.availabilityPlaceholder);
     this.availabilityTarget.src = url.toString();
+  }
+
+  get availabilityPlaceholder() {
+    const label = document.createElement('label');
+    label.classList.add('visually-hidden-focusable required-placeholder');
+    label.textContent = 'Loading avaiable appointments.';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('visually-hidden-focusable');
+    input.name = 'aeon_appointment[start_time]';
+    input.required = true;
+    label.appendChild(input);
+
+    return label;
   }
 
   updateBanner() {
