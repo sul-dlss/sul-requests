@@ -7,7 +7,7 @@ class CheckoutComponent < ViewComponent::Base
   delegate :sul_icon, :today_with_time_or_date, :detail_link_to_searchworks, to: :helpers
 
   delegate :renewable?, :lost?, :recalled?, :renewal_blocked_by_hold?, :claimed_returned?, :unseen_renewals_remaining, :renewal_count,
-           :reserve_item?, :too_soon_to_renew?, :item_category_non_renewable?, to: :checkout, private: true
+           :reserve_item?, :location, :too_soon_to_renew?, :item_category_non_renewable?, to: :checkout, private: true
 
   def initialize(checkout:, patron:)
     @checkout = checkout
@@ -17,7 +17,7 @@ class CheckoutComponent < ViewComponent::Base
 
   def non_renewable_reason
     return 'Assumed lost' if lost?
-    return 'Another user is waiting' if recalled? || renewal_blocked_by_hold?
+    return 'Renew' if recalled? || renewal_blocked_by_hold?
     return 'Claim review is in process' if claimed_returned?
     return 'Renew in person' if reserve_item?
     return 'Too soon to renew' if too_soon_to_renew?
@@ -25,27 +25,47 @@ class CheckoutComponent < ViewComponent::Base
     'Renew'
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-  def checkout_status_pill
-    if checkout.recalled?
-      tag.span class: 'small fw-bold rounded-pill text-digital-red-dark bg-danger-subtle py-1 px-2' do
-        safe_join([tag.i(class: 'bi bi-exclamation-triangle me-1'), 'Recalled'])
-      end
-    elsif checkout.overdue?
-      tag.span class: 'small fw-bold rounded-pill text-digital-red-dark bg-danger-subtle py-1 px-2' do
-        safe_join([tag.i(class: 'bi bi-exclamation-triangle me-1'), 'Overdue'])
-      end
-    elsif checkout.lost?
-      tag.span class: 'small fw-bold rounded-pill text-digital-red-dark bg-danger-subtle py-1 px-2' do
-        safe_join([tag.i(class: 'bi bi-exclamation-triangle me-1'), 'Assumed lost'])
-      end
-    elsif checkout.claimed_returned?
-      tag.span class: 'small fw-bold rounded-pill text-warning bg-warning-subtle py-1 px-2' do
-        safe_join([tag.i(class: 'bi'), 'Processing claim'])
-      end
-    end
+  def header_message
+    return 'Please return as soon as possible. Item cannot be renewed.' if recalled? || renewal_blocked_by_hold?
+    return accruing_message if checkout.overdue?
+    return unless reserve_item? && location&.library
+
+    "NOTE: This item must be returned to the #{location.library.primary_service_points.first.name}"
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+
+  def accruing_message
+    return unless checkout.accruing?
+
+    "Accruing #{number_to_currency(checkout.overdue_fines_rate['quantity'])}/#{checkout.overdue_fines_rate['intervalId']} until returned"
+  end
+
+  def status_pill_html # rubocop:disable Metrics/AbcSize
+    return safe_join([tag.i(class: 'bi bi-exclamation-triangle me-1'), 'Recalled']) if checkout.recalled?
+    return safe_join([tag.i(class: 'bi bi-exclamation-triangle me-1'), 'Overdue']) if checkout.overdue?
+    return safe_join([tag.i(class: 'bi bi-exclamation-triangle me-1'), 'Assumed lost']) if checkout.lost?
+
+    safe_join([tag.i(class: 'bi'), 'Processing claim']) if checkout.claimed_returned?
+  end
+
+  def proxy_borrower
+    return nil unless checkout.proxy_checkout?
+
+    # TODO: Add code for this. We need to confirm the structure of proxies which is hard with folio down
+    # Here is the old code: patron.proxies.find { |proxy| proxy.id == checkout.patron_key }
+    nil
+  end
+
+  def checkout_status_pill
+    return unless status_pill_html
+
+    pill_classes = if checkout.claimed_returned?
+                     %w[text-warning bg-warning-subtle
+                        text-nowrap]
+                   else
+                     %w[text-digital-red-dark bg-digital-red-10 text-nowrap]
+                   end
+    render PillComponent.new(classes: pill_classes).with_content(status_pill_html)
+  end
 
   def contact_email
     checkout.contact_info&.dig(:email)
