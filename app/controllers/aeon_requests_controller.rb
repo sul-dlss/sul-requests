@@ -57,7 +57,7 @@ class AeonRequestsController < ApplicationController
     end
   end
 
-  def update_multiple # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def update_multiple # rubocop:disable Metrics/AbcSize
     @appointment = current_user.aeon.appointments.find(params[:appointment_id])
 
     authorize! :update, @appointment
@@ -65,9 +65,8 @@ class AeonRequestsController < ApplicationController
     saved_for_later_requests_to_update = @aeon_requests.find(Array(params[:items_added])).saved_for_later
     submitted_requests_to_update = @aeon_requests.find(Array(params[:items_removed])).submitted
 
-    (saved_for_later_requests_to_update + submitted_requests_to_update).each do |request|
-      authorize! :update, request
-    end
+    authorize_all!(saved_for_later_requests_to_update, :update)
+    authorize_all!(submitted_requests_to_update, :update)
 
     updated_requests = process_items(saved_for_later_requests_to_update, appointment_id: @appointment.id)
     updated_requests += process_items(submitted_requests_to_update, appointment_id: nil)
@@ -91,7 +90,7 @@ class AeonRequestsController < ApplicationController
     @salient_requests = @aeon_requests.find(selected_request_ids)
 
     # Authorize each of the individual aeon requests for deletion
-    @salient_requests.each { |aeon_request| authorize! :destroy, aeon_request }
+    authorize_all!(@salient_requests, :destroy)
 
     # Change status of the requests corresponding to these transaction numbers/ids to 'canceled'
     updated_requests = process_items(@salient_requests, { status: 'Cancelled by User' })
@@ -162,5 +161,9 @@ class AeonRequestsController < ApplicationController
 
   def selected_request_ids
     params.expect(ids: []).map(&:to_i)
+  end
+
+  def authorize_all!(requests, action)
+    requests.each { |request| authorize! action, request }
   end
 end
