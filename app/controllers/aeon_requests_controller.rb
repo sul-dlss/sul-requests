@@ -109,32 +109,8 @@ class AeonRequestsController < ApplicationController
     end
   end
 
-  def update_turbo_stream # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
-    @previous_aeon_requests = @aeon_requests
-    @next_aeon_requests = Aeon::RequestFinders.new(@aeon_requests - [@aeon_request] + [@updated_aeon_request]).sort_by do |x|
-      [x.title, x.sort_key, -1 * x.creation_date.to_i]
-    end
-
-    @previous_aeon_request_groups = @aeon_request_groups
-    @next_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests)
-    @next_saved_for_later_aeon_request_groups = Aeon::RequestGrouping.from_requests(@next_aeon_requests.saved_for_later.reading_room)
-
-    if @aeon_request.appointment_id != @updated_aeon_request.appointment_id
-      @previous_appointment = @aeon_request.appointment&.tap do |appt|
-        appt.requests = @next_aeon_requests.for_appointment(appt)
-      end
-    end
-
-    if @updated_aeon_request.activity_id
-      @activity = current_user.aeon.activities_with_requests.find do |activity|
-        activity.id == @updated_aeon_request.activity_id
-      end
-      @activity.requests = @activity.requests.reject { |request| request.id == @aeon_request.id }
-    end
-
-    @appointment = @updated_aeon_request.appointment&.tap do |appt|
-      appt.requests = @next_aeon_requests.for_appointment(appt)
-    end
+  def update_turbo_stream(updated_requests: [@updated_aeon_request])
+    @update_response = Aeon::UpdateResponseService.new(@aeon_requests, updated_requests)
 
     render 'update'
   end
