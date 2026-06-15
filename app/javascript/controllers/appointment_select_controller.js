@@ -18,6 +18,7 @@ export default class extends Controller {
   }
 
   updateItemCounts() {
+    if (!this.element.closest('#reading-accordion')) return;
     this.element.querySelectorAll('[data-count]').forEach(option => {
       const baseCount = parseInt(option.dataset.count);
 
