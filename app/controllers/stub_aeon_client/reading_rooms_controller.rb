@@ -14,7 +14,7 @@ module StubAeonClient
     end
 
     def available_appointments
-      render json: @reading_room.available_appointments(Date.parse(params.expect(:date)))
+      render json: @reading_room.available_appointments(Date.parse(params.expect(:date)), include_next_available: ActiveModel::Type::Boolean.new.cast(params[:getNextAvailable]))
     end
 
     private
