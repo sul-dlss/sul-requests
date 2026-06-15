@@ -31,7 +31,28 @@ export default class extends Controller {
     url.searchParams.append('selected', startTime);
     url.searchParams.append('duration', apptDuration);
 
+    this.setSubmitDisabled(true)
+    this.checkedStartTime()?.removeAttribute("checked")
     this.availabilityTarget.src = url.toString();
+  }
+
+  // disable / enable submit button based on if all the fields are filled out.
+  // 1. It is called in refreshAvailability to disable the form
+  // because we want to wait until the turbo-frame loads before the user can submit.
+  // https://stanfordlib.slack.com/archives/G018TJ20XGE/p1781298300183929
+  // 2. It if called via action for Field reading room when turbo-frame render via checkForStartTime
+  // 3. It is called in updateBanner for all other reading rooms
+  setSubmitDisabled(disabled) {
+    this.element.querySelector('input[type="submit"]').disabled = disabled
+  }
+
+  checkForStartTime() {
+    const formData = new FormData(this.element);
+    this.setSubmitDisabled(formData.get('aeon_appointment[start_time]') == null)
+  }
+
+  checkedStartTime() {
+    return this.element.querySelector('[name="aeon_appointment[start_time]"]:checked')
   }
 
   updateBanner() {
@@ -41,13 +62,14 @@ export default class extends Controller {
     const form_date = formData.get('aeon_appointment[date]');
     if (!form_date) { return }
     const date = new Date(Date.parse(form_date));
-    const start_time =  this.element.querySelector('[name="aeon_appointment[start_time]"]:checked')?.dataset?.timestamp;
+    const start_time =  this.checkedStartTime()?.dataset?.timestamp;
     const duration = formData.get('aeon_appointment[duration]');
     const options = { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
     let text = `<span>${date.toLocaleDateString('en-US', options)}</span>`
     if (start_time && duration) {
       const formattedTime = this.formatTime(start_time, duration)
       text += `<i class="bi bi-dot"></i><span>${formattedTime}</span>`
+      this.setSubmitDisabled(false)
     }
     // Update the selection portion
     this.selectionTarget.innerHTML = text;
@@ -65,7 +87,7 @@ export default class extends Controller {
   }
 
   updateFormStatus() {
-  const formData = new FormData(this.element);
+    const formData = new FormData(this.element);
     if (!formData.get('aeon_appointment[duration]') || !formData.get('aeon_appointment[date]')) {
       this.availabilityTarget.classList.add('form-incomplete');
     } else {
