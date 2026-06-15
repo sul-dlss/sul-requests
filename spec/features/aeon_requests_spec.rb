@@ -76,5 +76,15 @@ RSpec.describe 'Requests', :js do
 
       expect(page).to have_no_text('Slow poetry in America : a poetry quarterly')
     end
+
+    it 'allows the user to cancel the request' do
+      visit aeon_requests_path(kind: 'saved_for_later')
+
+      click_on 'Delete Slow poetry in America'
+
+      click_on 'Yes - Delete'
+
+      expect(page).to have_no_text('Slow poetry in America : a poetry quarterly')
+    end
   end
 end

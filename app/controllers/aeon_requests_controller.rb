@@ -21,7 +21,7 @@ class AeonRequestsController < ApplicationController
   def resubmit
     authorize! :update, @aeon_request
 
-    @updated_aeon_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Submitted by User')
+    @updated_aeon_request = Aeon::UpdateRequestService.new(@aeon_request, { status: 'Submitted by User' }).call
 
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
@@ -80,7 +80,7 @@ class AeonRequestsController < ApplicationController
   def destroy
     authorize! :destroy, @aeon_request
 
-    @updated_aeon_request = aeon_client.update_request_route(transaction_number: params[:id], status: 'Cancelled by User')
+    @updated_aeon_request = Aeon::UpdateRequestService.new(@aeon_request, { status: 'Cancelled by User' }).call
 
     respond_to do |format|
       format.turbo_stream { update_turbo_stream }
@@ -94,9 +94,7 @@ class AeonRequestsController < ApplicationController
     @salient_requests.each { |aeon_request| authorize! :destroy, aeon_request }
 
     # Change status of the requests corresponding to these transaction numbers/ids to 'canceled'
-    updated_requests = @salient_requests.map do |aeon_request|
-      aeon_client.update_request_route(transaction_number: aeon_request.transaction_number, status: 'Cancelled by User')
-    end
+    updated_requests = process_items(@salient_requests, { status: 'Cancelled by User' })
 
     respond_to do |format|
       format.turbo_stream { update_turbo_stream(updated_requests: updated_requests) }

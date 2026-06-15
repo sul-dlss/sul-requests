@@ -3,16 +3,17 @@
 module Aeon
   # Update an existing Aeon request with new data and update the current request route if needed.
   class UpdateRequestService
-    attr_reader :aeon_request, :params, :aeon_client
+    attr_reader :aeon_request, :params, :status, :aeon_client
 
     def initialize(aeon_request, params, aeon_client: nil)
       @aeon_request = aeon_request
-      @params = params
+      @params = params.except(:status)
+      @status = params[:status]
       @aeon_client = aeon_client || Current.aeon_client
     end
 
     def call
-      @aeon_request = update_request
+      @aeon_request = update_request if params.present?
       @aeon_request = update_request_route
 
       @aeon_request
@@ -46,8 +47,8 @@ module Aeon
     end
 
     def update_request_route
-      new_status = if params[:status]
-                     params[:status]
+      new_status = if status
+                     status
                    elsif needs_set_to_submitted?
                      'Awaiting Request Processing'
                    elsif needs_set_to_saved_for_later?
