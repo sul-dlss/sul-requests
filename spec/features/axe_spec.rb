@@ -181,7 +181,7 @@ RSpec.describe 'Accessibility testing', :js do
 
     it 'validates the custom stimulus datepicker',
        skip: 'Skip until custom datepicker is used in the form' do
-      visit new_aeon_appointment_path(reading_room_id: reading_room.id)
+      visit new_aeon_appointment_path(aeon_appointment: { reading_room_id: reading_room.id })
       expect(page).to be_accessible
 
       find('[data-date-picker-target="display"]').click

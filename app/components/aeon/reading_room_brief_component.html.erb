@@ -9,7 +9,7 @@
       Hours: <%= reading_room.human_readable_hours %>
     </span>
   </div>
-  <%= link_to new_aeon_appointment_path(reading_room_id: reading_room.id ), class: 'btn btn-primary hide-when-1-item text-nowrap', data: { action: 'modal#open' } do %>
+  <%= link_to new_aeon_appointment_path(aeon_appointment: { reading_room_id: reading_room.id }), class: 'btn btn-primary hide-when-1-item text-nowrap', data: { action: 'modal#open' } do %>
     <i class="bi bi-calendar-plus me-1"></i>Create new appointment
   <% end %>
 </div>
