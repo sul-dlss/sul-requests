@@ -8,12 +8,13 @@ module Aeon
   #   <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f,
   #             data: { 'date-picker-disabled-value': ['2026-05-01'], 'date-picker-marked-value': ['2026-05-10'] }) %>
   class AppointmentDatePickerComponent < ViewComponent::Base
-    attr_reader :key, :form, :reading_room, :data
+    attr_reader :appointments, :key, :form, :reading_room, :data
 
-    def initialize(key, form: nil, reading_room: nil, data: {})
+    def initialize(key, appointments: [], form: nil, reading_room: nil, data: {})
       @key = key
       @form = form
       @reading_room = reading_room || form.object.reading_room
+      @appointments = appointments
       @data = data
     end
 
@@ -48,12 +49,29 @@ module Aeon
       end
     end
 
+    def scheduled_day_only_appointments
+      return [] unless reading_room&.day_only_appointments?
+
+      appointments.map(&:date)
+    end
+
+    def marked_dates
+      appointments.map { |appt| appt.date.iso8601 }.presence
+    end
+
+    def disabled_dates
+      (closures_dates + scheduled_day_only_appointments).map(&:iso8601).presence
+    end
+
     def controller_data
-      data.merge(controller: "#{data[:controller]} date-picker").reverse_merge('date-picker-today-value': Time.zone.today.iso8601,
-                                                                               'date-picker-min-value': min,
-                                                                               'date-picker-max-value': max,
-                                                                               'date-picker-disabled-value': closures_dates.map(&:iso8601),
-                                                                               'date-picker-open-days-value': open_days)
+      data.merge(controller: "#{data[:controller]} date-picker").reverse_merge(
+        'date-picker-today-value': Time.zone.today.iso8601,
+        'date-picker-min-value': min,
+        'date-picker-max-value': max,
+        'date-picker-disabled-value': disabled_dates,
+        'date-picker-marked-value': marked_dates,
+        'date-picker-open-days-value': open_days
+      )
     end
   end
 end

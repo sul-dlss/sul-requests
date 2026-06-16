@@ -10,6 +10,7 @@ RSpec.describe Aeon::AppointmentDatePickerComponent, type: :component do
                                        'date-picker-open-days-value': open_days })
   end
 
+  let(:aeon_client) { instance_double(AeonClient, available_appointments: [], closures: []) }
   let(:appointment) { build(:aeon_appointment, reading_room: nil) }
   let(:disabled) { nil }
   let(:open_days) { nil }
@@ -21,7 +22,10 @@ RSpec.describe Aeon::AppointmentDatePickerComponent, type: :component do
     ActionView::Helpers::FormBuilder.new(:aeon_appointment, appointment, view, {})
   end
 
-  before { render_inline(component) }
+  before do
+    allow(Current).to receive(:aeon_client).and_return(aeon_client)
+    render_inline(component)
+  end
 
   it 'sets data-date-picker-min-value to today when no reading room is present' do
     expect(page).to have_css("[data-date-picker-min-value='#{Time.zone.today.iso8601}']")
@@ -60,6 +64,42 @@ RSpec.describe Aeon::AppointmentDatePickerComponent, type: :component do
   context 'without marked dates' do
     it 'omits the marked value attribute' do
       expect(page).to have_no_css('[data-date-picker-marked-value]')
+    end
+  end
+
+  describe 'existing appointments' do
+    subject(:component) { described_class.new(:date, form:, appointments:) }
+
+    let(:sites) { ['SPECUA'] }
+    let(:reading_room) { build(:aeon_reading_room, sites:) }
+    let(:appointment) { build(:aeon_appointment, reading_room:) }
+    let(:appointments) do
+      [build(:aeon_appointment, reading_room:, start_time: Time.zone.parse('2026-06-10T09:00:00'),
+                                stop_time: Time.zone.parse('2026-06-10T16:45:00'))]
+    end
+
+    context 'when the room books day-only appointments' do
+      let(:sites) { ['SPECUA'] }
+
+      it 'disables the dates the user already has an appointment on' do
+        expect(page).to have_css("[data-date-picker-disabled-value='#{%w[2026-06-10].to_json}']")
+      end
+
+      it 'still marks those dates so the user sees their existing appointment' do
+        expect(page).to have_css("[data-date-picker-marked-value='#{%w[2026-06-10].to_json}']")
+      end
+    end
+
+    context 'when the room books slotted appointments' do
+      let(:sites) { ['ARS'] }
+
+      it 'marks the dates the user already has an appointment on' do
+        expect(page).to have_css("[data-date-picker-marked-value='#{%w[2026-06-10].to_json}']")
+      end
+
+      it 'does not disable those dates' do
+        expect(page).to have_no_css('[data-date-picker-disabled-value]')
+      end
     end
   end
 end
