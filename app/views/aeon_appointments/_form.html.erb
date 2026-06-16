@@ -3,6 +3,7 @@
   <div class="modal-body">
     <div>
       <%= f.hidden_field :reading_room_id %>
+      <%= hidden_field_tag :modal, params[:modal] %>
     </div>
 
     <%= render AlertComponent.new(type: :info) do %>
@@ -60,6 +61,6 @@
 
   <div class="modal-footer">
     <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary', data: { 'bs-dismiss': 'modal' } %>
-    <%= f.submit 'Save', class: 'ms-2 btn btn-primary', data: { 'bs-dismiss': 'modal' } %>
+    <%= f.submit 'Save', class: 'ms-2 btn btn-primary' %>
   </div>
 <% end %>

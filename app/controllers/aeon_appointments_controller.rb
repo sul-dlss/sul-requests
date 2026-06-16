@@ -51,7 +51,10 @@ class AeonAppointmentsController < ApplicationController
     @appointment.assign_attributes(name: appointment_params[:name], start_time: start_time_param, stop_time: stop_time_param)
     return head :unprocessable_content unless @appointment.save
 
-    redirect_to aeon_appointments_path, notice: 'Appointment updated successfully'
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+      format.html { redirect_to :index, notice: 'Appointment updated successfully' }
+    end
   end
 
   def destroy
