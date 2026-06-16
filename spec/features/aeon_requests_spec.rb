@@ -55,7 +55,7 @@ RSpec.describe 'Requests', :js do
     it 'displays appointments' do
       visit aeon_requests_path(kind: 'saved_for_later')
 
-      within '#aeon_appointments' do
+      within '#aeon_appointments_sidebar' do
         expect(page).to have_text(appointment_label)
         expect(page).to have_text('Item limit: 1/10')
       end
@@ -69,12 +69,40 @@ RSpec.describe 'Requests', :js do
       click_on appointment_label
       click_on 'Submit request'
 
-      within '#aeon_appointments' do
+      within '#aeon_appointments_sidebar' do
         expect(page).to have_text(appointment_label)
         expect(page).to have_text('Item limit: 2/10')
       end
 
       expect(page).to have_no_text('Slow poetry in America : a poetry quarterly')
+    end
+
+    context 'when creating a new appointment' do
+      let(:appointment) { nil }
+      let(:submitted_request) { nil }
+
+      it 'allows the user to assign a saved for later request' do
+        visit aeon_requests_path(kind: 'saved_for_later')
+
+        click_on 'Add appointment'
+        click_on 'Create new appointment'
+        click_on 'Select a date'
+        click_on 'Next month'
+
+        first('td[role="gridcell"]:not(:disabled)').click
+        click_on 'Save'
+
+        within '#aeon_appointments_sidebar' do
+          expect(page).to have_text('Item limit: 0/10')
+        end
+
+        click_on 'Submit request'
+        expect(page).to have_no_text('Slow poetry in America : a poetry quarterly')
+
+        within '#aeon_appointments_sidebar' do
+          expect(page).to have_text('Item limit: 1/10')
+        end
+      end
     end
 
     it 'allows the user to cancel the request' do
