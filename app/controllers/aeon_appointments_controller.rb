@@ -32,8 +32,9 @@ class AeonAppointmentsController < ApplicationController
 
   def create # rubocop:disable Metrics/AbcSize
     authorize! :create, @appointment
+    request.variant = :modal if params[:modal]
 
-    return head :unprocessable_content unless @appointment.save
+    render :new, status: :unprocessable_content and return unless @appointment.save
 
     @other_reading_room_appointments = (@appointments + [@appointment]).select do |appt|
       appt.reading_room.id == @appointment.reading_room.id && can?(:update, appt)
@@ -45,11 +46,12 @@ class AeonAppointmentsController < ApplicationController
     end
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize
     authorize! :update, @appointment
+    request.variant = :modal if params[:modal]
 
     @appointment.assign_attributes(name: appointment_params[:name], start_time: start_time_param, stop_time: stop_time_param)
-    return head :unprocessable_content unless @appointment.save
+    render :edit, status: :unprocessable_content and return unless @appointment.save
 
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
