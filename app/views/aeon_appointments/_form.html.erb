@@ -19,6 +19,11 @@
         <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f, reading_room: @appointment.reading_room, data: { action: 'change->appointment#refreshAvailability change->appointment#updateBanner', 'date-picker-marked-value': @appointments.for_reading_room(@appointment.reading_room).map(&:date).map(&:iso8601) }) %>
         <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_reading_room_url(@appointment.reading_room_id, date: Date.today) %>
       </div>
+      <% if f.object.errors[:date].any? %>
+        <p class="error-message text-cardinal mt-1">
+          <%= f.object.errors.full_messages_for(:date).join(", ") %>
+        </p>
+      <% end %>
     </div>
 
     <% if @appointment&.reading_room&.day_only_appointments? %>
@@ -38,6 +43,11 @@
     <% else %>
       <%= render Aeon::AppointmentDurationSelectorComponent.new(form: f, reading_room: @appointment.reading_room, selected: @appointment.duration) %>
 
+      <% if f.object.errors[:start_time].any? %>
+        <p class="error-message text-danger">
+          <%= f.object.errors.full_messages_for(:start_time).join(", ") %>
+        </p>
+      <% end %>
       <turbo-frame id="available_appointments" <% unless @appointment.id %>class="form-incomplete"<% end %> data-action="turbo:frame-load->appointment#applyDurationFilter turbo:frame-load->appointment#filterDurationFields" data-appointment-target="availability" src="<%= available_aeon_reading_room_url(@appointment.reading_room_id, date: (@appointment.date unless @appointment.persisted?), duration: @appointment.duration, appointment_id: @appointment.id, selected: (l(@appointment.start_time, format: :time_only) if @appointment.start_time)) if @appointment.reading_room_id %>">
         <fieldset class="mb-3 radio-button-group">
           <legend class="fs-6 fw-semibold redesign-required-label">Available time slots</legend>

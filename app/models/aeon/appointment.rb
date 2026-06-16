@@ -96,9 +96,14 @@ module Aeon
       errors.add(:stop_time, 'must be after start time') if stop_time <= start_time
     end
 
-    def within_open_hours
+    def within_open_hours # rubocop:disable Metrics/AbcSize
       hours = reading_room.open_hours_on(start_time)
-      return errors.add(:start_time, 'is outside reading room hours') unless hours
+
+      unless hours
+        return errors.add(:date, 'is outside reading room hours') if reading_room.day_only_appointments?
+
+        return errors.add(:start_time, 'is outside reading room hours')
+      end
 
       range = hours.range_on(start_time.to_date)
       errors.add(:start_time, 'is outside reading room hours') if start_time < range.begin || stop_time > range.end
@@ -107,7 +112,11 @@ module Aeon
     def not_during_closure
       return unless reading_room.closures.any? { |c| c.range.overlap?(start_time..stop_time) }
 
-      errors.add(:start_time, 'is during a reading room closure')
+      if reading_room.day_only_appointments?
+        errors.add(:date, 'is during a reading room closure')
+      else
+        errors.add(:start_time, 'is during a reading room closure')
+      end
     end
   end
 end

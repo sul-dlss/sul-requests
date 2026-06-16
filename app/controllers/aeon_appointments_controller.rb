@@ -11,29 +11,24 @@ class AeonAppointmentsController < ApplicationController
   before_action :load_appointment, only: [:edit, :update, :destroy, :items]
   before_action :build_appointment, only: [:new, :create]
   before_action :load_reading_rooms, only: [:new]
+  before_action :set_request_variant
 
   def index
     authorize! :read, Aeon::Appointment
-
-    request.variant = :sidebar if params[:variant] == 'sidebar'
   end
 
   def new
     authorize! :create, Aeon::Appointment
-
-    request.variant = :modal if params[:modal]
   end
 
   def edit
     authorize! :update, @appointment
-
-    request.variant = :modal if params[:modal]
   end
 
   def create # rubocop:disable Metrics/AbcSize
-    authorize! :create, Aeon::Appointment
+    authorize! :create, @appointment
 
-    return head :unprocessable_content unless @appointment.save
+    render :new, status: :unprocessable_content and return unless @appointment.save
 
     @other_reading_room_appointments = (@appointments + [@appointment]).select do |appt|
       appt.reading_room.id == @appointment.reading_room.id && can?(:update, appt)
@@ -49,7 +44,7 @@ class AeonAppointmentsController < ApplicationController
     authorize! :update, @appointment
 
     @appointment.assign_attributes(name: appointment_params[:name], start_time: start_time_param, stop_time: stop_time_param)
-    return head :unprocessable_content unless @appointment.save
+    render :edit, status: :unprocessable_content and return unless @appointment.save
 
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
@@ -78,6 +73,11 @@ class AeonAppointmentsController < ApplicationController
   end
 
   private
+
+  def set_request_variant
+    request.variant = :modal if params[:modal]
+    request.variant = :sidebar if params[:variant] == 'sidebar'
+  end
 
   def load_reading_rooms
     @reading_rooms = Aeon::ReadingRoom.all
