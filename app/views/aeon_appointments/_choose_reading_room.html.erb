@@ -1,4 +1,4 @@
-<%= form_with url: new_aeon_appointment_path, method: :get, data: {'turbo-frame': params[:modal] || 'appointment-form' }  do |f| %>
+<%= form_with url: new_aeon_appointment_path, method: :get do |f| %>
   <%= hidden_field_tag :modal, params[:modal] if params[:modal] %>
   <div class="modal-body">
     <%= render AlertComponent.new(type: :info) do %>Materials must be used in their associated reading room.<% end %>
