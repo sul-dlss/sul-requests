@@ -9,6 +9,7 @@ module Folio
              :from_ill?,
              :effective_location,
              :permanent_location,
+             :location,
              to: :record_location
 
     def catkey

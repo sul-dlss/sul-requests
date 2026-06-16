@@ -20,11 +20,11 @@ RSpec.describe 'Payments History' do
 
   context 'with payments' do
     it 'has a header for payment history' do
-      expect(page).to have_css('h2', text: 'History')
+      expect(page).to have_css('h1', text: 'Fees and fines')
     end
 
     it 'renders a list item for every payment', :js do
-      click_on 'Show history'
+      click_on 'Past'
 
       within('ul.payments') do
         expect(page).to have_css('li', count: 10)
@@ -36,7 +36,7 @@ RSpec.describe 'Payments History' do
     end
 
     it 'has content behind a payments toggle', :js do
-      click_on 'Show history'
+      click_on 'Past'
 
       within('ul.payments') do
         within(first('li')) do
@@ -50,7 +50,7 @@ RSpec.describe 'Payments History' do
     end
 
     it 'is sortable', :js do
-      click_on 'Show history'
+      click_on 'Past'
 
       within '#payments' do
         expect(page).to have_css('.dropdown-toggle', text: 'Sort (Date paid)')
@@ -82,7 +82,7 @@ RSpec.describe 'Payments History' do
     let(:patron) { Folio::Patron.new(patron_graphql_response: patron_info) }
 
     it 'does not load table', :js do
-      click_on 'Show history'
+      click_on 'Past'
 
       expect(page).to have_css('span', text: 'There is no history on this account')
     end

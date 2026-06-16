@@ -29,6 +29,10 @@ module Folio
       to_h[:library] || Folio::Types.libraries.find_by(id: library_id)
     end
 
+    def contact_info
+      Settings.locations[code]&.contact_info || library&.contact_info
+    end
+
     def pages_prefer_to_send_via_illiad?
       details['pagePreferSendIlliad'] == 'true'
     end

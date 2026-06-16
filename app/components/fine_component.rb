@@ -4,7 +4,7 @@
 class FineComponent < ViewComponent::Base
   attr_reader :fine, :patron
 
-  delegate :sul_icon, :detail_link_to_searchworks, to: :helpers
+  delegate :detail_link_to_searchworks, to: :helpers
 
   def initialize(fine:, patron:)
     @fine = fine
@@ -12,29 +12,18 @@ class FineComponent < ViewComponent::Base
     super()
   end
 
-  def render_fine_status
-    fine_status_html(css_class: 'status small fw-medium rounded-pill text-white bg-plum-light ready',
-                     text: fine.status_label)
-  end
-
-  def contact_path(*, **)
-    '#'
+  def checked_out?
+    fine.is_a?(Folio::Checkout)
   end
 
   def body_title
+    return fine.title if checked_out?
+
     case fine.nice_status
     when 'SUL library card'
       'Lost library card'
     else
       fine.title
-    end
-  end
-
-  private
-
-  def fine_status_html(text:, css_class: nil)
-    tag.span(class: css_class) do
-      safe_join([text], ' ')
     end
   end
 end

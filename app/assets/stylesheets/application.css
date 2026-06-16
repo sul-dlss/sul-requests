@@ -67,8 +67,8 @@ layer(components);
   background-color: rgba(var(--stanford-lagunita-dark-rgb), 1);
 }
 
-.bg-plum-light {
-  background-color: rgb(var(--stanford-plum-light-rgb));
+.bg-plum {
+  background-color: rgb(var(--stanford-plum-rgb));
 }
 
 .bg-bay-dark {
