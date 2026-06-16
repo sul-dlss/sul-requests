@@ -34,18 +34,14 @@ module Aeon
       reading_room&.open_hours&.map(&:day_name) || Date::DAYNAMES
     end
 
-    # Dates where a closure covers the entire span of open hours for that day.
-    def closures_dates # rubocop:disable Metrics/AbcSize
-      return [] if reading_room&.closures.blank?
+    def closures_dates
+      reading_room&.fully_closed_dates || []
+    end
 
-      reading_room.closures.flat_map do |closure|
-        closure.start_date.to_date.upto(closure.end_date.to_date).to_a.select do |date|
-          hours_on_day = reading_room.open_hours_on(date)
-          next if hours_on_day.nil?
+    def availability_url
+      return if reading_room.nil? || !Settings.aeon.date_picker_availability_enabled
 
-          closure.cover?(hours_on_day.range_on(date))
-        end
-      end
+      helpers.unavailable_dates_aeon_reading_room_path(reading_room.id, appointment_id: form&.object&.id)
     end
 
     def disabled_days
@@ -59,7 +55,8 @@ module Aeon
                                                                                'date-picker-min-value': min,
                                                                                'date-picker-max-value': max,
                                                                                'date-picker-disabled-value': disabled_days,
-                                                                               'date-picker-open-days-value': open_days)
+                                                                               'date-picker-open-days-value': open_days,
+                                                                               'date-picker-availability-url-value': availability_url)
     end
   end
 end

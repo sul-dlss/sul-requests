@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   resources :aeon_reading_rooms, only: [] do
     member do
       get 'available', to: 'aeon_reading_rooms#available', as: :available
+      get 'unavailable_dates', to: 'aeon_reading_rooms#unavailable_dates', as: :unavailable_dates
     end
   end
 
