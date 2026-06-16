@@ -28,6 +28,10 @@
   <%= render Aeon::AppointmentComponent.with_collection((@appointments + [@appointment]).sort_by(&:start_time), all_requests: @aeon_requests) %>
 <% end %>
 
+<%= turbo_stream.update 'aeon_appointments_sidebar' do %>
+  <%= render Aeon::AppointmentSidebarComponent.with_collection((@appointments + [@appointment]).sort_by(&:start_time)) %>
+<% end %>
+
 <%= turbo_stream.replace 'appointment-form' do %>
   <%= render AlertComponent.new(type: :success) do %>
     <span class="fw-normal">New appointment: </span><%= render AppointmentTimeRangeComponent.new(appointment: @appointment, location: @appointment.reading_room.name) %>
