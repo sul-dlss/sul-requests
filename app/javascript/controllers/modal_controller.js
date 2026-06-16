@@ -2,7 +2,16 @@ import { Controller } from "@hotwired/stimulus"
 import { Modal } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ["template", "frame"]
+  static targets = ["template", "frame", "closeSignal"]
+
+  closeSignalTargetConnected(element) {
+    const modal = element.closest('.modal');
+    const bsModal = Modal.getInstance(modal);
+
+    if (bsModal) {
+      bsModal.hide();
+    }
+  }
 
   open(event) {
     event.preventDefault()

@@ -1,3 +1,7 @@
+<%= turbo_stream.append(params[:modal]) do %>
+  <div class="d-none" data-modal-target="closeSignal"></div>
+<% end %>
+
 <%= turbo_stream.remove(@appointment) %>
 
 <%= turbo_stream.remove_all ".dropdown [data-value='#{@appointment.id}']" %>
