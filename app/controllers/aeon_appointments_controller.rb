@@ -31,7 +31,7 @@ class AeonAppointmentsController < ApplicationController
   end
 
   def create # rubocop:disable Metrics/AbcSize
-    authorize! :create, Aeon::Appointment
+    authorize! :create, @appointment
 
     return head :unprocessable_content unless @appointment.save
 
