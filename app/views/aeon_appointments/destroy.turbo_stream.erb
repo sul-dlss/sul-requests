@@ -1,3 +1,7 @@
 <%= turbo_stream.remove(@appointment) %>
 
 <%= turbo_stream.remove_all ".dropdown [data-value='#{@appointment.id}']" %>
+
+<%= turbo_stream.replace('saved_for_later_aeon_requests_sidebar') do %>
+  <%= render 'saved_for_later_aeon_requests' %>
+<% end unless params['cancel_items'] == 'true' %>
