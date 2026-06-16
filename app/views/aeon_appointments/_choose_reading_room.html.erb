@@ -2,8 +2,8 @@
   <%= hidden_field_tag :modal, params[:modal] if params[:modal] %>
   <div class="modal-body">
     <%= render AlertComponent.new(type: :info) do %>Materials must be used in their associated reading room.<% end %>
-    <label for="reading_room_id" class="d-block fw-semibold redesign-required-label mb-2">For which reading room?</label>
-    <%= select_tag 'reading_room_id', options_from_collection_for_select(@reading_rooms, "id", "name"), include_blank: true, class: 'bg-white border rounded px-2 py-1' %>
+    <label for="aeon_appointment[reading_room_id]" class="d-block fw-semibold redesign-required-label mb-2">For which reading room?</label>
+    <%= select_tag 'aeon_appointment[reading_room_id]', options_from_collection_for_select(@reading_rooms, "id", "name"), include_blank: true, class: 'bg-white border rounded px-2 py-1' %>
   </div>
   <div class="modal-footer">
     <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary', data: { 'bs-dismiss': 'modal' } %>

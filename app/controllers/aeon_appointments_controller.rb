@@ -9,7 +9,7 @@ class AeonAppointmentsController < ApplicationController
   before_action :load_aeon_requests, only: [:index, :items]
   before_action :load_appointments
   before_action :load_appointment, only: [:edit, :update, :destroy, :items]
-  before_action :build_appointment, only: [:create]
+  before_action :build_appointment, only: [:new, :create]
   before_action :load_reading_rooms, only: [:new]
 
   def index
@@ -20,8 +20,6 @@ class AeonAppointmentsController < ApplicationController
 
   def new
     authorize! :create, Aeon::Appointment
-
-    @appointment = Aeon::Appointment.new reading_room_id: @reading_room&.id, reading_room: @reading_room
 
     request.variant = :modal if params[:modal]
   end
@@ -80,19 +78,15 @@ class AeonAppointmentsController < ApplicationController
 
   def load_reading_rooms
     @reading_rooms = Aeon::ReadingRoom.all
-
-    return unless params[:reading_room_id]
-
-    @reading_room = Aeon::ReadingRoom.find(params[:reading_room_id])
   end
 
   def build_appointment
     reading_room = Aeon::ReadingRoom.find(create_params[:reading_room_id])
     @appointment = Aeon::Appointment.new(
-      start_time: start_time,
-      stop_time: stop_time,
+      start_time: start_time_param,
+      stop_time: stop_time_param,
       name: create_params[:name],
-      reading_room_id: reading_room.id,
+      reading_room_id: reading_room&.id,
       reading_room: reading_room,
       username: current_user.aeon.username
     )
@@ -110,19 +104,25 @@ class AeonAppointmentsController < ApplicationController
     @aeon_requests = current_user.aeon.requests
   end
 
-  def start_time
+  def start_time_param
+    return unless create_params[:start_time]
+
     Time.zone.parse("#{create_params[:date]}T#{create_params[:start_time]}")
   end
 
-  def stop_time
+  def stop_time_param # rubocop:disable Metrics/AbcSize
+    return unless create_params[:stop_time] || (start_time_param && create_params[:duration])
+
     if create_params[:stop_time]
       Time.zone.parse("#{create_params[:date]}T#{create_params[:stop_time]}")
     else
-      start_time + create_params[:duration].to_i.seconds
+      start_time_param + create_params[:duration].to_i.seconds
     end
   end
 
   def create_params
+    return {} unless params[:aeon_appointment]
+
     params.expect(aeon_appointment: [:date, :start_time, :stop_time, :duration, :name, :reading_room_id])
   end
 
