@@ -1222,15 +1222,10 @@ label.btn-close {
 
 .expand-icon,
 .collapse-icon {
-  .sul-icons {
+  svg {
+    fill: var(--stanford-digital-blue);
     height: 1.5rem;
     width: 1.5rem;
-
-    svg {
-      fill: var(--stanford-digital-blue);
-      height: 1.5rem;
-      width: 1.5rem;
-    }
   }
 }
 

@@ -4,7 +4,7 @@
 class CheckoutComponent < ViewComponent::Base
   attr_reader :checkout, :patron
 
-  delegate :sul_icon, :today_with_time_or_date, :detail_link_to_searchworks, to: :helpers
+  delegate :today_with_time_or_date, :detail_link_to_searchworks, to: :helpers
 
   delegate :renewable?, :lost?, :recalled?, :renewal_blocked_by_hold?, :claimed_returned?, :unseen_renewals_remaining, :renewal_count,
            :reserve_item?, :too_soon_to_renew?, :item_category_non_renewable?, to: :checkout, private: true
@@ -63,18 +63,5 @@ class CheckoutComponent < ViewComponent::Base
               oclc: identifiers['OCLC']&.join(','),
               lccn: identifiers['LCCN']&.join(',')
             }
-  end
-
-  private
-
-  def checkout_status_html(text:, css_class: nil, icon: nil, accrued: 0)
-    tag.span(class: css_class) do
-      safe_join([
-                  (sul_icon(icon) if icon),
-                  text,
-                  (number_to_currency(accrued) if accrued.positive?)
-
-                ], ' ')
-    end
   end
 end

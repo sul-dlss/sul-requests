@@ -4,8 +4,6 @@
 class CheckedOutActionsComponent < ViewComponent::Base
   attr_reader :checkout
 
-  delegate :sul_icon, to: :helpers
-
   def initialize(checkout:)
     @checkout = checkout
   end
@@ -14,7 +12,8 @@ class CheckedOutActionsComponent < ViewComponent::Base
     rate = checkout.overdue_fines_rate
     return unless rate
 
-    safe_join([sul_icon('sharp-warning-24px'), "Accruing #{number_to_currency(rate['quantity'])}/#{rate['intervalId']} until returned"])
+    safe_join([render(Icons::WarningComponent.new),
+               "Accruing #{number_to_currency(rate['quantity'])}/#{rate['intervalId']} until returned"])
   end
 
   def call

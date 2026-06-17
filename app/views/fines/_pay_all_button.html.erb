@@ -13,7 +13,7 @@
         <% end %>
       <% end %>
     <% else %>
-      <button class="btn btn-info" disabled><%= sul_icon :'sharp-payment-24px' %> Payments blocked</button>
+      <button class="btn btn-info" disabled><%= render Icons::PaymentComponent.new %> Payments blocked</button>
     <% end %>
   </div>
 <% end %>

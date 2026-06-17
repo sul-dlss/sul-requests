@@ -4,7 +4,7 @@
 class RequestComponent < ViewComponent::Base
   attr_reader :request, :patron
 
-  delegate :sul_icon, :detail_link_to_searchworks, to: :helpers
+  delegate :detail_link_to_searchworks, to: :helpers
 
   def initialize(request:, patron:, group: false)
     @request = request

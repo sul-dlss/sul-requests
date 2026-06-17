@@ -4,8 +4,6 @@
 class BorrowDirectRequestComponent < ViewComponent::Base
   attr_reader :borrow_direct_request
 
-  delegate :sul_icon, to: :helpers
-
   def initialize(borrow_direct_request:)
     @borrow_direct_request = borrow_direct_request
 

@@ -3,17 +3,17 @@
   <ul class="list-unstyled">
     <li class="pb-1">
       <%= link_to 'https://library.stanford.edu/services/borrow-and-request', target: '_blank' do %>
-        <%= sul_icon :'sharp-open_in_new-24px' %> Borrowing and renewals
+        <%= render Icons::OpenInNewComponent.new %> Borrowing and renewals
       <% end %>
     </li>
     <li class="pb-1">
       <%= link_to 'https://library.stanford.edu/proxy-borrowing', target: '_blank' do %>
-        <%= sul_icon :'sharp-open_in_new-24px' %> Proxy borrowing
+        <%= render Icons::OpenInNewComponent.new %> Proxy borrowing
       <% end %>
     </li>
     <li>
       <%= link_to 'https://library.stanford.edu/interlibrary-loan', target: '_blank' do %>
-        <%= sul_icon :'sharp-open_in_new-24px' %> About Interlibrary loan and BorrowDirect
+        <%= render Icons::OpenInNewComponent.new %> About Interlibrary loan and BorrowDirect
       <% end %>
     </li>
   </ul>
