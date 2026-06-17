@@ -44,6 +44,6 @@ class AeonActivitiesController < ApplicationController
   end
 
   def all_activities
-    @all_activities ||= current_user.aeon.activities_with_requests
+    @all_activities ||= current_user.aeon.activities
   end
 end
