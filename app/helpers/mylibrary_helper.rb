@@ -39,17 +39,4 @@ module MylibraryHelper
       safe_join(['View in SearchWorks', tag.i(class: 'ms-1 bi bi-arrow-up-right')])
     end
   end
-
-  ##
-  # Returns the raw SVG (String) for a SUL Icon located in
-  # app/assets/images/icons/*.svg. Caches them so we don't have to look up
-  # the svg everytime.
-  # @param [String, Symbol] icon_name
-  # @return [String]
-  def sul_icon(icon_name, **kwargs)
-    Rails.cache.fetch([:sul_icon, icon_name, kwargs]) do
-      icon = Icon.new(icon_name, **kwargs)
-      tag.span(icon.svg.html_safe, **icon.options) # rubocop:disable Rails/OutputSafety
-    end
-  end
 end
