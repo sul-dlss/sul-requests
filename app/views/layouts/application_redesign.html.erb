@@ -72,6 +72,7 @@
           <%= link_to 'Fees/fines', fines_path, class: 'nav-link fw-semibold' %>
         <% end if current_user.patron.present? %>
 
+        <%= render AdminNavDropdownComponent.new(masthead_component: component) %>
       <% end %>
     </header>
     <main id="main" class="flex-fill container my-3 pt-3">
