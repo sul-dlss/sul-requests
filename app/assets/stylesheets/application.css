@@ -40,6 +40,10 @@ layer(components);
   }
 }
 
+.border-cardinal {
+  --bs-border-color: rgba(var(--stanford-cardinal-rgb), 1);
+}
+
 .bg-su-process-black-50 {
   background-color: rgba(var(--stanford-process-black-50-rgb), 1);
 }
