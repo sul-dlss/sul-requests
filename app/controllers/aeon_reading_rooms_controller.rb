@@ -6,7 +6,6 @@
 class AeonReadingRoomsController < ApplicationController
   include AeonController
 
-  before_action :load_reading_rooms
   before_action :load_reading_room
   before_action :load_appointments
 
@@ -20,10 +19,6 @@ class AeonReadingRoomsController < ApplicationController
   end
 
   private
-
-  def load_reading_rooms
-    @reading_rooms = Aeon::ReadingRoom.all
-  end
 
   def load_reading_room
     @reading_room = Aeon::ReadingRoom.find(params.expect(:id))
