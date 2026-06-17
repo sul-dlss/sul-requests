@@ -30,9 +30,8 @@ class AeonUsersController < ApplicationController
   def user_data
     required_user_params = [:email_address, :address, :city, :state_or_province, :zip_code, :country, :first_name]
     optional_user_params = [:phone, :address2]
-    required_params = [:email_address, :address, :city, :state_or_province, :zip_code, :country, :first_name]
 
-    params.require(required_params)
+    params.require(required_user_params)
     hash_params = params.permit(required_user_params + optional_user_params).to_h
 
     AeonClient::UserData.with_defaults.with(**hash_params)
