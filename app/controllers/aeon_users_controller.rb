@@ -13,16 +13,29 @@ class AeonUsersController < ApplicationController
   def new; end
 
   def create
-    aeon_client.create_user(user_data:) if ActiveModel::Type::Boolean.new.cast(params[:aeon_terms])
+    aeon_client.create_user(user_data:) if aeon_terms_param
     redirect_back_or_to(params[:referrer])
+  end
+
+  def accept_terms
+    params.require(:aeon_terms)
+
+    aeon_client.create_user(user_data: folio_user_data) if aeon_terms_param
+
+    redirect_back_or_to(params[:referer])
+  end
+
+  private
+
+  def aeon_terms_param
+    ActiveModel::Type::Boolean.new.cast(params.expect(:aeon_terms))
   end
 
   def user_data
     required_user_params = [:email_address, :address, :city, :state_or_province, :zip_code, :country, :first_name]
     optional_user_params = [:phone, :address2]
-    required_params = [:email_address, :address, :city, :state_or_province, :zip_code, :country, :first_name]
 
-    params.require(required_params)
+    params.require(required_user_params)
     hash_params = params.permit(required_user_params + optional_user_params).to_h
 
     AeonClient::UserData.with_defaults.with(**hash_params)
@@ -44,13 +57,5 @@ class AeonUsersController < ApplicationController
       country: primary_address['countryId'],
       zip_code: primary_address['postalCode']
     )
-  end
-
-  def accept_terms
-    params.require(:aeon_terms)
-
-    aeon_client.create_user(user_data: folio_user_data) if ActiveModel::Type::Boolean.new.cast(params[:aeon_terms])
-
-    redirect_back_or_to(params[:referer])
   end
 end
