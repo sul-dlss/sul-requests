@@ -64,17 +64,4 @@ class CheckoutComponent < ViewComponent::Base
               lccn: identifiers['LCCN']&.join(',')
             }
   end
-
-  private
-
-  def checkout_status_html(text:, css_class: nil, icon: nil, accrued: 0)
-    tag.span(class: css_class) do
-      safe_join([
-                  (sul_icon(icon) if icon),
-                  text,
-                  (number_to_currency(accrued) if accrued.positive?)
-
-                ], ' ')
-    end
-  end
 end
