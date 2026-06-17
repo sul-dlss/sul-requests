@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
   post '/sessions/login_by_university_id', to: 'sessions#login_by_university_id', as: :login_by_university_id
   post '/sessions/register_visitor', to: 'sessions#register_visitor', as: :register_visitor
+  post '/sessions/proxy', to: 'sessions#proxy', as: :proxy
 
   get 'circ-check' => 'circ_check#index', as: :circ_check
   post 'circ-check' => 'circ_check#show', as: :circ_check_item

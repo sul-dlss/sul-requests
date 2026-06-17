@@ -320,7 +320,7 @@ FactoryBot.define do
         'totalCharges' => { 'isoCurrencyCode' => 'USD', 'amount' => 0 },
         'totalChargesCount' => 0,
         'totalLoans' => 3,
-        'totalHolds' => 2 }.merge(custom_properties)
+        'totalHolds' => 2 }.deep_merge(custom_properties)
     end
 
     initialize_with { new(patron_graphql_response: patron_info) }
@@ -463,7 +463,7 @@ FactoryBot.define do
         'totalCharges' => { 'isoCurrencyCode' => 'USD', 'amount' => 0 },
         'totalChargesCount' => 0,
         'totalLoans' => 1,
-        'totalHolds' => 1 }.merge(custom_properties)
+        'totalHolds' => 1 }.deep_merge(custom_properties)
     end
 
     initialize_with { new(patron_graphql_response: patron_info) }

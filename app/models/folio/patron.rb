@@ -172,6 +172,10 @@ module Folio
       sponsors.first.id
     end
 
+    def proxy_group
+      @proxy_group ||= Folio::ProxyGroup.new(self)
+    end
+
     def status
       standing
     end
@@ -328,13 +332,15 @@ module Folio
     # Get all the sponsors for this patron
     def sponsors_for_response
       @sponsors_for_response ||= user_info.dig('stubs', 'sponsors') # used for stubbing
-      @sponsors_for_response ||= extended_user_info&.dig('proxiesFor') || []
+      @sponsors_for_response ||= extended_user_info&.dig('proxiesFor')
+      @sponsors_for_response ||= []
     end
 
     # Get all the proxies of this patron
     def proxies_of_response
       @proxies_of_response ||= user_info.dig('stubs', 'proxies') # used for stubbing
-      @proxies_of_response ||= extended_user_info&.dig('proxiesOf') || []
+      @proxies_of_response ||= extended_user_info&.dig('proxiesOf')
+      @proxies_of_response ||= []
     end
 
     def policy_service

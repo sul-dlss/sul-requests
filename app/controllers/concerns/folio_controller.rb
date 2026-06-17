@@ -13,6 +13,16 @@ module FolioController
   end
 
   def patron_or_group
-    current_user.patron
+    current_proxy_group || current_user.patron
+  end
+
+  def current_proxy_group
+    return unless session[:proxyFor]
+
+    sponsor = current_user.patron.sponsors.find { |s| s.id == session[:proxyFor] }
+
+    return unless sponsor
+
+    sponsor.proxy_group.with_proxy(current_user.patron)
   end
 end
