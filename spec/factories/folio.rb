@@ -34,9 +34,7 @@ FactoryBot.define do
               'status' => { 'name' => 'Open' } } }
     end
 
-    loan_policy { nil }
-
-    initialize_with { new(record, nil, **attributes.except(:record)) }
+    initialize_with { new(record, nil) }
   end
 
   factory :checkout_with_recall, parent: :checkout do

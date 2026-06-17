@@ -60,12 +60,10 @@ RSpec.describe 'Checkout Page' do
 
   context 'when the checkout is renewable' do
     let(:loan_policy) do
-      build(:grad_mono_loans,
-            due_date: '2020-01-09T07:59:59.000+00:00',
-            renewal_count: 0)
+      build(:grad_mono_loans)
     end
 
-    it 'has a renewa button' do
+    it 'has a renewal button' do
       visit checkouts_path
 
       expect(page).to have_button 'Renew'

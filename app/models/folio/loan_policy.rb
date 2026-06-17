@@ -3,13 +3,10 @@
 module Folio
   # Loan policies applicable to a given checkout
   class LoanPolicy
-    attr_reader :loan_policy, :due_date, :renewal_count, :hold_queue_length
+    attr_reader :loan_policy
 
-    def initialize(loan_policy:, due_date:, renewal_count:, hold_queue_length:)
+    def initialize(loan_policy:)
       @loan_policy = loan_policy
-      @due_date = due_date
-      @renewal_count = renewal_count
-      @hold_queue_length = hold_queue_length
     end
 
     def name
@@ -25,15 +22,15 @@ module Folio
     end
 
     # Renewing would not extend the due date
-    def too_soon_to_renew?
-      due_date_after_renewal <= due_date
+    def too_soon_to_renew?(current_due_date)
+      due_date_after_renewal(due_date: current_due_date) <= current_due_date
     end
 
     # Unseen renewals are initiated by the patron online
-    def unseen_renewals_remaining
+    def unseen_renewals_allowed
       return Float::INFINITY if unlimited_renewals?
 
-      unseen_renewals_allowed - renewal_count
+      loan_policy.dig('renewalsPolicy', 'numberAllowed') || 0
     end
 
     # Seen renewals are initiated by the patron in person with library staff
@@ -45,13 +42,13 @@ module Folio
       loan_policy['description']
     end
 
-    def renewal_blocked_by_hold?
-      hold_queue_length.positive? && !renewals_allowed_with_open_holds?
+    def renewals_allowed_with_open_holds?
+      loan_policy.dig('requestManagement', 'holds', 'renewItemsWithRequest') || false
     end
 
     private
 
-    def due_date_after_renewal
+    def due_date_after_renewal(due_date:)
       if schedule_policy
         due_date_from_schedule || due_date
       elsif renewal_calculated_from_system_date?
@@ -138,14 +135,6 @@ module Folio
 
     def unlimited_renewals?
       loan_policy.dig('renewalsPolicy', 'unlimited') || false
-    end
-
-    def unseen_renewals_allowed
-      loan_policy.dig('renewalsPolicy', 'numberAllowed') || 0
-    end
-
-    def renewals_allowed_with_open_holds?
-      loan_policy.dig('requestManagement', 'holds', 'renewItemsWithRequest') || false
     end
   end
 end

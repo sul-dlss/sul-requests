@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Folio::LoanPolicy do
   subject(:folio_loan_policy) do
-    described_class.new(loan_policy:, due_date:, renewal_count:, hold_queue_length:)
+    described_class.new(loan_policy:)
   end
 
   let(:due_date) { nil }
@@ -60,13 +60,13 @@ RSpec.describe Folio::LoanPolicy do
       context 'when renewal would not extend the due date' do
         let(:due_date) { Date.parse('2024-07-02T06:59:59.000+00:00') }
 
-        it { expect(folio_loan_policy.too_soon_to_renew?).to be true }
+        it { expect(folio_loan_policy.too_soon_to_renew?(due_date)).to be true }
       end
 
       context 'when renewal would extend the due date' do
         let(:due_date) { Date.parse('2023-07-02T06:59:59.000+00:00') }
 
-        it { expect(folio_loan_policy.too_soon_to_renew?).to be false }
+        it { expect(folio_loan_policy.too_soon_to_renew?(due_date)).to be false }
       end
     end
 
@@ -105,7 +105,7 @@ RSpec.describe Folio::LoanPolicy do
       context 'when renewal would extend the due date' do
         let(:due_date) { Date.parse('2003-07-02T06:59:59.000+00:00') }
 
-        it { expect(folio_loan_policy.too_soon_to_renew?).to be false }
+        it { expect(folio_loan_policy.too_soon_to_renew?(due_date)).to be false }
       end
     end
 
@@ -123,13 +123,13 @@ RSpec.describe Folio::LoanPolicy do
       context 'when renewal would not extend the due date' do
         let(:due_date) { Date.parse('2024-07-02T06:59:59.000+00:00') }
 
-        it { expect(folio_loan_policy.too_soon_to_renew?).to be true }
+        it { expect(folio_loan_policy.too_soon_to_renew?(due_date)).to be true }
       end
 
       context 'when renewal would extend the due date' do
         let(:due_date) { Date.parse('2023-07-02T06:59:59.000+00:00') }
 
-        it { expect(folio_loan_policy.too_soon_to_renew?).to be false }
+        it { expect(folio_loan_policy.too_soon_to_renew?(due_date)).to be false }
       end
     end
 
@@ -146,7 +146,7 @@ RSpec.describe Folio::LoanPolicy do
       let(:due_date) { Date.parse('2023-06-30T06:59:59.000+00:00') }
 
       context 'when renewal would not extend the due date' do
-        it { expect(folio_loan_policy.too_soon_to_renew?).to be true }
+        it { expect(folio_loan_policy.too_soon_to_renew?(due_date)).to be true }
       end
     end
 
@@ -163,18 +163,18 @@ RSpec.describe Folio::LoanPolicy do
       let(:due_date) { Date.parse('2024-07-02T06:59:59.000+00:00') }
 
       context 'when renewal would extend the due date' do
-        it { expect(folio_loan_policy.too_soon_to_renew?).to be false }
+        it { expect(folio_loan_policy.too_soon_to_renew?(due_date)).to be false }
       end
     end
   end
 
-  describe '#unseen_renewals_remaining' do
+  describe '#unseen_renewals_allowed' do
     context 'when renewals are unlimited' do
       let(:loan_policy) do
         { 'renewalsPolicy' => { 'unlimited' => true } }
       end
 
-      it { expect(folio_loan_policy.unseen_renewals_remaining).to eq Float::INFINITY }
+      it { expect(folio_loan_policy.unseen_renewals_allowed).to eq Float::INFINITY }
     end
 
     context 'when renewals are limited' do
@@ -183,9 +183,8 @@ RSpec.describe Folio::LoanPolicy do
           { 'unlimited' => false,
             'numberAllowed' => 5 } }
       end
-      let(:renewal_count) { 3 }
 
-      it { expect(folio_loan_policy.unseen_renewals_remaining).to eq 2 }
+      it { expect(folio_loan_policy.unseen_renewals_allowed).to eq 5 }
     end
   end
 
@@ -207,7 +206,7 @@ RSpec.describe Folio::LoanPolicy do
       end
 
       it 'renewal is not blocked' do
-        expect(folio_loan_policy.renewal_blocked_by_hold?).to be false
+        expect(folio_loan_policy.renewals_allowed_with_open_holds?).to be true
       end
     end
 
@@ -218,15 +217,7 @@ RSpec.describe Folio::LoanPolicy do
       end
 
       it 'renewal is blocked' do
-        expect(folio_loan_policy.renewal_blocked_by_hold?).to be true
-      end
-
-      context 'when there are no holds' do
-        let(:hold_queue_length) { 0 }
-
-        it 'renewal is not blocked' do
-          expect(folio_loan_policy.renewal_blocked_by_hold?).to be false
-        end
+        expect(folio_loan_policy.renewals_allowed_with_open_holds?).to be false
       end
     end
   end
