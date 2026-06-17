@@ -20,14 +20,16 @@ FactoryBot.define do
           'proxiesFor' => [],
           'proxiesOf' =>
           [{ 'proxyUserId' => 'bdfa62a1-758c-4389-ae81-8ddb37860f9b',
-             'requestForSponsor' => 'Yes',
              'status' => 'Active',
+             'requestForSponsor' => 'Yes',
              'proxyUser' => { 'barcode' => 'Proxy1',
+                              'id' => 'bdfa62a1-758c-4389-ae81-8ddb37860f9b',
                               'personal' => { 'firstName' => 'Piper', 'lastName' => 'Proxy' } } },
            { 'proxyUserId' => '8e03792c-e673-43c2-a412-a3796d7c8f7e',
-             'requestForSponsor' => 'Yes',
              'status' => 'Active',
+             'requestForSponsor' => 'Yes',
              'proxyUser' => { 'barcode' => 'grad1',
+                              'id' => '8e03792c-e673-43c2-a412-a3796d7c8f7e',
                               'personal' => { 'firstName' => 'Gene', 'lastName' => 'Graduate' } } }],
           'expirationDate' => nil,
           'externalSystemId' => nil,
@@ -334,6 +336,7 @@ FactoryBot.define do
     patron_info do
       { 'user' =>
         { 'username' => 'Proxy1',
+          'id' => 'bdfa62a1-758c-4389-ae81-8ddb37860f9b',
           'barcode' => 'Proxy1',
           'active' => true,
           'personal' =>
@@ -341,12 +344,22 @@ FactoryBot.define do
             'lastName' => 'Proxy',
             'firstName' => 'Piper',
             'preferredFirstName' => nil },
-          'proxiesFor' => [{ 'userId' => 'ec52d62d-9f0e-4ea5-856f-a1accb0121d1' }],
+          'proxiesFor' => [
+            {
+              'userId' => 'ec52d62d-9f0e-4ea5-856f-a1accb0121d1',
+              'status' => 'Active',
+              'requestForSponsor' => 'Yes',
+              'user' => { 'barcode' => 'sponsor1',
+                          'id' => 'ec52d62d-9f0e-4ea5-856f-a1accb0121d1',
+                          'personal' => { 'firstName' => 'Shea', 'lastName' => 'Sponsor' } }
+            }
+          ],
           'proxiesOf' => [],
           'expirationDate' => nil,
           'externalSystemId' => nil,
           'patronGroup' =>
           { 'desc' => 'Graduate Student',
+            'id' => 'ad0bc554-d5bc-463c-85d1-5562127ae91b',
             'group' => 'graduate',
             'limits' =>
             [{ 'conditionId' => 'cf7a0d5f-a327-4ca1-aa9e-dc55ec006b8a',

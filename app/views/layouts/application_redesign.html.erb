@@ -81,6 +81,8 @@
 
         <%= render AdminNavDropdownComponent.new(masthead_component: component) %>
       <% end %>
+
+      <%= render ProxyMastheadComponent.new patron: current_user.patron, selected: patron_or_group if show_proxy_masthead? %>
     </header>
     <main id="main" class="flex-fill container my-3 pt-3">
       <%= render 'shared/flashes' %>

@@ -1,0 +1,2 @@
+<% patron = FactoryBot.build(:proxy_patron) %>
+<%= render ProxyMastheadComponent.new(patron: patron, selected: patron.sponsors.find { |x| x.id == session[:proxyFor]}) %>

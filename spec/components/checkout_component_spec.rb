@@ -14,11 +14,11 @@ RSpec.describe CheckoutComponent, type: :component do
   let(:overdue_fines_policy_id) { '' }
 
   context 'when proxy has checked out item' do
-    it 'shows proxy badge', skip: 'TODO: implement proxy data' do
+    it 'shows proxy badge' do
       expect(page).to have_css('.status-pill', text: 'Proxy')
     end
 
-    it 'shows name of borrower', skip: 'TODO: implement proxy data' do
+    it 'shows name of borrower' do
       expect(page).to have_text('Borrowed by: Piper Proxy')
     end
   end

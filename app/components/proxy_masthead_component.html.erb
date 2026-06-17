@@ -1,0 +1,48 @@
+<div class="proxy-masthead <%= personal? ? 'bg-light' : 'bg-warning bg-opacity-10' %> border-bottom border-3 border-cardinal py-2">
+  <div class="container d-flex align-items-center gap-2">
+    <% if personal? %>
+      <%= render PillComponent.new(classes: ['bg-cardinal text-light me-1 text-nowrap']) do %>
+        <i class="bi bi-person-vcard"></i> Personal
+      <% end %>
+
+      <span class="fw-semibold"><%= selected.display_name %></span>
+    <% else %>
+      <%= render PillComponent.new(classes: ['bg-warning text-light me-1 text-nowrap']) do %>
+        <i class="bi bi-key-fill"></i> Proxy
+      <% end %>
+
+      <div>
+        On behalf of
+        <span class="fw-semibold"><%= selected.display_name %></span>
+        (sponsor)
+      </div>
+    <% end %>
+
+    <div class="vr my-1 mx-2"></div>
+
+    <div class="dropdown">
+      <button class="btn btn-sm border-dark text-dark bg-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <% if personal? %>
+          Switch to proxy
+        <% else %>
+          Switch to personal
+        <% end %>
+      </button>
+      <%= form_with url: proxy_path do |f| %>
+        <ul class="dropdown-menu">
+          <% unless personal? %>
+            <li>
+              <%= button_tag "Personal account: #{patron.display_name}", name: 'id', value: nil, class: 'dropdown-item' %>
+            </li>
+          <% end %>
+
+          <% @patron.sponsors.without(selected).each do |sponsor| %>
+            <li>
+              <%= button_tag "Proxy for: #{sponsor.display_name}", name: 'id', value: sponsor.id, class: 'dropdown-item' %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+</div>
