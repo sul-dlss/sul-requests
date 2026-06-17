@@ -57,10 +57,6 @@ module Aeon
       activities
     end
 
-    def active_reading_room_activities(site:)
-      activities&.select(&:active?)&.select { |activity| activity.sites.include?(site) }
-    end
-
     def appointments
       @appointments ||= begin
         appointments = self.class.aeon_client.appointments_for(username:)
