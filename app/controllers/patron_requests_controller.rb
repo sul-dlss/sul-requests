@@ -24,7 +24,7 @@ class PatronRequestsController < ApplicationController
   authorize_resource
 
   before_action :associate_request_with_patron, only: [:new, :create]
-  before_action :activities, only: [:new]
+  before_action :load_activities, only: [:new]
   before_action :redirect_aeon_pages, only: [:create]
   before_action :require_aeon_terms, only: [:new, :create]
   before_action :redirect_finding_aid_pages, if: lambda {
@@ -131,8 +131,10 @@ class PatronRequestsController < ApplicationController
     @patron_request.user = current_user if current_user.persisted?
   end
 
-  def activities
-    @activities ||= current_user.aeon.activities&.select(&:active?)&.select do |activity|
+  def load_activities
+    return unless @patron_request.aeon_page?
+
+    @activities = current_user.aeon.activities&.select(&:active?)&.select do |activity|
       activity.sites.include?(@patron_request.aeon_site)
     end
   end
