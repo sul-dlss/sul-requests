@@ -17,6 +17,16 @@ class AeonUsersController < ApplicationController
     redirect_back_or_to(params[:referrer])
   end
 
+  def accept_terms
+    params.require(:aeon_terms)
+
+    aeon_client.create_user(user_data: folio_user_data) if ActiveModel::Type::Boolean.new.cast(params[:aeon_terms])
+
+    redirect_back_or_to(params[:referer])
+  end
+
+  private
+
   def user_data
     required_user_params = [:email_address, :address, :city, :state_or_province, :zip_code, :country, :first_name]
     optional_user_params = [:phone, :address2]
@@ -44,13 +54,5 @@ class AeonUsersController < ApplicationController
       country: primary_address['countryId'],
       zip_code: primary_address['postalCode']
     )
-  end
-
-  def accept_terms
-    params.require(:aeon_terms)
-
-    aeon_client.create_user(user_data: folio_user_data) if ActiveModel::Type::Boolean.new.cast(params[:aeon_terms])
-
-    redirect_back_or_to(params[:referer])
   end
 end
