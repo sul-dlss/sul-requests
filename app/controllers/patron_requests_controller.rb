@@ -132,7 +132,9 @@ class PatronRequestsController < ApplicationController
   end
 
   def activities
-    @activities ||= current_user.aeon.active_reading_room_activities(site: @patron_request.aeon_site)
+    @activities ||= current_user.aeon.activities&.select(&:active?)&.select do |activity|
+      activity.sites.include?(@patron_request.aeon_site)
+    end
   end
 
   def sunetid_without_folio_account?
