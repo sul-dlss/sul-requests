@@ -8,6 +8,8 @@ module Aeon
     attr_accessor :id, :username, :reading_room_id, :start_time, :stop_time,
                   :name, :appointment_status, :reading_room, :creation_date, :available_to_proxies
 
+    attr_reader :user
+
     validates :start_time, :stop_time, presence: true
     validate :stop_after_start,    if: -> { start_time && stop_time }
     validate :within_open_hours,   if: -> { reading_room && start_time && stop_time }
@@ -36,13 +38,19 @@ module Aeon
       reading_room_id.present?
     end
 
+    def user=(user)
+      @user = user
+      @requests = nil
+      @grouped_requests = nil
+    end
+
     def requests=(requests)
-      @requests = requests
+      @requests = requests.reject(&:cancelled?)
       @grouped_requests = nil
     end
 
     def requests
-      (@requests ||= []).reject(&:cancelled?)
+      @requests ||= (user&.requests&.for_appointment(self) || []).reject(&:cancelled?)
     end
 
     def grouped_requests

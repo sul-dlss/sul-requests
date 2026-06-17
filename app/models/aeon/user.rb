@@ -67,7 +67,7 @@ module Aeon
 
         # augment appointments with their requests
         appointments.each do |appointment|
-          appointment.requests = requests.for_appointment(appointment)
+          appointment.user = self
         end
 
         Aeon::AppointmentFinders.new(appointments.sort_by(&:sort_key).reject(&:cancelled?))
