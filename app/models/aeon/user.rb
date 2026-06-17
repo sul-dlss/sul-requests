@@ -41,20 +41,16 @@ module Aeon
       @requests ||= all_requests.reject(&:activity?)
     end
 
-    def activities
-      @activities ||= self.class.aeon_client.activities_for(username:).sort_by(&:sort_key)
-    end
+    def activities # rubocop:disable Metrics/AbcSize
+      @activities ||= self.class.aeon_client.activities_for(username:).sort_by(&:sort_key).tap do |activities|
+        # use the same user instances across activities to preserve e.g. memoized requests
+        users_cache = activities.flat_map(&:users).index_by(&:username).merge(username => self)
 
-    def activities_with_requests # rubocop:disable Metrics/AbcSize
-      users_cache = activities.flat_map(&:users).index_by(&:username)
-
-      activities.each do |activity|
-        users = users_cache.values_at(*activity.users.map(&:username)).compact
-        activity_requests = users.flat_map { |u| u.all_requests.for_activity(activity).submitted }
-
-        activity.requests = Aeon::RequestFinders.new(activity_requests)
+        activities.each do |activity|
+          users = users_cache.values_at(*activity.users.map(&:username)).compact
+          activity.users = users
+        end
       end
-      activities
     end
 
     def active_reading_room_activities(site:)

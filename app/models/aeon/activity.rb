@@ -47,7 +47,11 @@ module Aeon
     end
 
     def requests
-      @requests ||= []
+      @requests ||= begin
+        requests = users.flat_map { |u| u.all_requests.for_activity(self).submitted }.sort_by { |r| [r.title.to_s, r.sort_key] }
+
+        Aeon::RequestFinders.new(requests)
+      end
     end
 
     def grouped_requests
