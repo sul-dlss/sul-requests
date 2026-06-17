@@ -280,16 +280,34 @@ class FolioClient
                        location_id: }.as_json)
   end
 
-  def renew_items(checkouts)
-    checkouts.each_with_object(success: [], error: []) do |checkout, status|
-      response = renew_item_by_id(checkout.patron_key, checkout.item_id)
+  def renew_checkout(checkout)
+    response = renew_item_by_id(checkout.patron_key, checkout.item_id)
 
-      case response.status
-      when 200
-        status[:success] << checkout
-      else
-        status[:error] << checkout
-      end
+    RenewCheckoutResponse.new(response, checkout)
+  end
+
+  # Response object for renewing a checkout, which brings together the FOLIO response
+  # and the checkout that was attempted to be renewed (which may not be obvious from the error response)
+  class RenewCheckoutResponse
+    attr_reader :response, :checkout
+
+    def initialize(response, checkout)
+      @response = response
+      @checkout = checkout
+    end
+
+    def success?
+      @response.status.in?([200, 201])
+    end
+
+    def body
+      JSON.parse(@response.body)
+    end
+
+    def updated_checkout
+      return unless success?
+
+      checkout.update('dueDate' => body['dueDate'], 'overdue' => false, 'details' => { 'renewalCount' => body['renewalCount'] })
     end
   end
 

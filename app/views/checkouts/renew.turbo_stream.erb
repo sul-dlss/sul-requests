@@ -1,0 +1,14 @@
+<% if @response.success? %>
+  <%= turbo_stream.replace(dom_id(@response.checkout)) do %>
+    <%= render CheckoutComponent.new(checkout: @response.updated_checkout, patron: patron_or_group) %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.prepend('main') do %>
+  <% if @response.success? %>
+    <% success = I18n.t('mylibrary.renew_item.success_html', title: @response.checkout.title) %>
+  <% else %>
+    <% error = I18n.t('mylibrary.renew_item.error_html', title: @response.checkout.title) %>
+  <% end %>
+  <%= render 'shared/flashes', flash: { success: success, error: error} %>
+<% end %>

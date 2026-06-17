@@ -19,16 +19,20 @@ class CheckoutsController < ApplicationController
   # GET /checkouts.json
   def index; end
 
-  def renew # rubocop:disable Metrics/AbcSize
-    @response = FolioClient.new.renew_item_by_id(patron_or_group.key, @checkout.item_id)
+  def renew # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    @response = FolioClient.new.renew_checkout(@checkout)
 
-    if @response.status.in?([200, 201])
-      flash[:success] = t 'mylibrary.renew_item.success_html', title: params['title']
-    else
-      flash[:error] = t 'mylibrary.renew_item.error_html', title: params['title']
+    respond_to do |format|
+      format.html do
+        if @response.success?
+          flash[:success] = t 'mylibrary.renew_item.success_html', title: params['title']
+        else
+          flash[:error] = t 'mylibrary.renew_item.error_html', title: params['title']
+        end
+        redirect_to checkouts_path
+      end
+      format.turbo_stream
     end
-
-    redirect_to checkouts_path
   end
 
   # Renew all eligible items for a patron
@@ -36,12 +40,17 @@ class CheckoutsController < ApplicationController
   # POST /checkouts/renew_eligible
   def renew_eligible
     eligible_renewals = @checkouts.select(&:renewable?)
-    response = FolioClient.new.renew_items(eligible_renewals)
+    @responses = eligible_renewals.map { |checkout| FolioClient.new.renew_checkout(checkout) }
 
-    bulk_renewal_success_flash(response)
-    bulk_renewal_error_flash(response)
+    respond_to do |format|
+      format.html do
+        bulk_renewal_success_flash(@responses.select(&:success?))
+        bulk_renewal_error_flash(@responses.reject(&:success?))
 
-    redirect_to checkouts_path(group: params[:group])
+        redirect_to checkouts_path
+      end
+      format.turbo_stream
+    end
   end
 
   private
@@ -60,19 +69,19 @@ class CheckoutsController < ApplicationController
     raise ActiveRecord::RecordNotFound, 'Checkout not found' if @checkout.nil?
   end
 
-  def bulk_renewal_success_flash(response)
-    return unless response[:success].any?
+  def bulk_renewal_success_flash(responses)
+    return unless responses.any?
 
-    flash[:success] = I18n.t('mylibrary.renew_all_items.success_html', count: response[:success].length) # rubocop:disable Rails/ActionControllerFlashBeforeRender
+    flash[:success] = I18n.t('mylibrary.renew_all_items.success_html', count: responses.length) # rubocop:disable Rails/ActionControllerFlashBeforeRender
   end
 
-  def bulk_renewal_error_flash(response)
-    return unless response[:error].any?
+  def bulk_renewal_error_flash(responses)
+    return unless responses.any?
 
     flash[:error] = I18n.t('mylibrary.renew_all_items.error_html', # rubocop:disable Rails/ActionControllerFlashBeforeRender
-                           count: response[:error].length,
-                           items: tag.ul(safe_join(response[:error].collect do |renewal|
-                                                     tag.li(renewal.title.truncate_words(7))
+                           count: responses.length,
+                           items: tag.ul(safe_join(responses.collect do |renewal|
+                                                     tag.li(renewal.checkout.title.truncate_words(7))
                                                    end, '')))
   end
 

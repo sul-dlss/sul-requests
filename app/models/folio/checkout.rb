@@ -4,6 +4,7 @@ module Folio
   # ? FOLIO: Checkout = "Loan" in Folio - consider renaming for clarity
   class Checkout
     include Folio::FolioRecord
+    include ActiveModel::Model
 
     attr_reader :record, :patron_type_id
     attr_writer :loan_policy
@@ -21,9 +22,14 @@ module Folio
       @loan_policy = loan_policy
     end
 
+    def update(data = {})
+      self.class.new(record.deep_merge(data), patron_type_id, loan_policy:)
+    end
+
     def key
       record['id']
     end
+    alias id key
 
     def bib?
       record['item'].present?
