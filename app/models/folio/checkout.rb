@@ -6,11 +6,7 @@ module Folio
     include Folio::FolioRecord
 
     attr_reader :record, :patron_type_id
-
-    delegate :too_soon_to_renew?,
-             :renewal_blocked_by_hold?,
-             :unseen_renewals_remaining,
-             to: :loan_policy
+    attr_writer :loan_policy
 
     delegate :loan_policy_interval,
              to: :loan_policy,
@@ -188,13 +184,22 @@ module Folio
       location&.contact_info
     end
 
+    def too_soon_to_renew?
+      loan_policy.too_soon_to_renew?(due_date)
+    end
+
+    def renewal_blocked_by_hold?
+      hold_queue_length.positive? && !loan_policy.renewals_allowed_with_open_holds?
+    end
+
+    def unseen_renewals_remaining
+      (loan_policy.unseen_renewals_allowed - renewal_count)
+    end
+
     private
 
     def loan_policy
-      @loan_policy ||= Folio::LoanPolicy.new(loan_policy: effective_loan_policy,
-                                             due_date:,
-                                             renewal_count:,
-                                             hold_queue_length:)
+      @loan_policy ||= Folio::LoanPolicy.new(loan_policy: effective_loan_policy)
     end
 
     def effective_loan_policy

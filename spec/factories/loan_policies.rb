@@ -2,12 +2,6 @@
 
 FactoryBot.define do
   factory :grad_mono_loans, class: 'Folio::LoanPolicy' do
-    transient do
-      due_date { '2024-01-09T07:59:59.000+00:00' }
-      renewal_count { 3 }
-      hold_queue_length { 0 }
-    end
-
     loan_policy do
       { 'id' => '885a2bd0-35c7-497f-9dc6-462bebe837a3',
         'name' => '1qtr-3renew-7daygrace',
@@ -37,7 +31,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      new(loan_policy:, due_date: Time.zone.parse(due_date), renewal_count:, hold_queue_length:)
+      new(loan_policy:)
     end
   end
 end
