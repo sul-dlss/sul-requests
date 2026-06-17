@@ -169,6 +169,8 @@ RSpec.describe 'Accessibility testing', :js do
     let(:stub_aeon_client) do
       instance_double(AeonClient,
                       find_user: aeon_user,
+                      activities_for: [],
+                      closures: [],
                       appointments_for: [],
                       available_appointments: [],
                       reading_rooms: [reading_room])
@@ -179,12 +181,11 @@ RSpec.describe 'Accessibility testing', :js do
       login_as(current_user)
     end
 
-    it 'validates the custom stimulus datepicker',
-       skip: 'Skip until custom datepicker is used in the form' do
+    it 'validates the custom stimulus datepicker' do
       visit new_aeon_appointment_path(aeon_appointment: { reading_room_id: reading_room.id })
       expect(page).to be_accessible
 
-      find('[data-date-picker-target="display"]').click
+      find('[data-date-picker-target="button"]').click
       expect(page).to have_css('[data-date-picker-target="calendar"]:not([hidden])') # picker is open
       expect(page).to be_accessible
     end
