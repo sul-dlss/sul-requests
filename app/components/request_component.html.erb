@@ -5,7 +5,7 @@
         <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup ready') %>
 
         <span class="text-lagunita-dark">
-          <%= sul_icon 'sharp-check_circle-24px' %>
+          <%= render Icons::CheckCircleComponent.new %>
           <span class="d-md-none">Pick up at </span><%= request.service_point_name %>
 
           <% if request.expiration_date %>
