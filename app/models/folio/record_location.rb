@@ -46,6 +46,10 @@ module Folio
       @item.dig('effectiveLocation', 'code')
     end
 
+    def effective_location_id
+      @item.dig('effectiveLocation', 'id')
+    end
+
     private
 
     def treat_temporary_location_as_permanent_location?
