@@ -1,0 +1,23 @@
+<%= render CardComponent.new(classes: %w[home-list-card], margin_class: nil) do |c| %>
+  <% c.with_title do %>
+    <div class="d-flex align-items-center">
+      <i class="bi <%= icon %> text-60-black fs-4 me-3"></i>
+      <h2 class="mb-0"><%= title %></h2>
+    </div>
+  <% end %>
+
+  <% c.with_actions do %>
+    <%= render PillComponent.new(classes: %w[bg-stanford-20-black fw-light py-0]).with_content("#{count} #{pill_noun}") %>
+  <% end %>
+
+  <% c.with_body(classes: %w[bg-white pt-2 pb-0 px-2]) do %>
+    <% if status.present? %>
+      <p class="fw-semibold small text-digital-red-dark mb-2"><%= status %></p>
+    <% end %>
+    <%= items %>
+  <% end %>
+
+  <% c.with_footer do %>
+    <%= render Home::ArrowLinkComponent.new(label: view_all_label, path: view_all_path) %>
+  <% end %>
+<% end %>

@@ -13,12 +13,14 @@ class CardComponent < ViewComponent::Base
   }
   renders_one :post
 
-  attr_reader :element, :classes, :tag_options
+  attr_reader :element, :classes, :header_classes, :margin_class, :tag_options
 
-  def initialize(element: 'div', classes: [], body_classes: [], **tag_options)
+  def initialize(element: 'div', classes: [], body_classes: [], header_classes: [], margin_class: 'mb-4', **tag_options) # rubocop:disable Metrics/ParameterLists
     @element = element
     @classes = Array(classes)
     @body_classes = Array(body_classes)
+    @header_classes = Array(header_classes)
+    @margin_class = margin_class
     @tag_options = tag_options
   end
 end
