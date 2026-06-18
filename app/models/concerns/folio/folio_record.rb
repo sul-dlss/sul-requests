@@ -6,6 +6,7 @@ module Folio
     delegate :library_name,
              :library_code,
              :effective_location_code,
+             :effective_location_id,
              :from_ill?,
              :effective_location,
              :permanent_location,

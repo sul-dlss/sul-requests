@@ -190,10 +190,6 @@ module Folio
       location&.contact_info
     end
 
-    def location
-      Folio::Types.locations.find_by(id: location_id)
-    end
-
     def too_soon_to_renew?
       loan_policy.too_soon_to_renew?(due_date)
     end
@@ -224,12 +220,12 @@ module Folio
     # with the loan is the policy at the time of checkout and could have changed in ways that impact
     # eligibility for renewal.
     def effective_loan_policy_id # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      cache_key = ['effective_loan_policy_id', item_type_id, loan_type_id, patron_type_id, location_id].join(':')
+      cache_key = ['effective_loan_policy_id', item_type_id, loan_type_id, patron_type_id, effective_location_id].join(':')
       Rails.cache.fetch(cache_key, expires_in: 1.day) do
         response = FolioClient.new.find_effective_loan_policy(item_type_id:,
                                                               loan_type_id:,
                                                               patron_type_id:,
-                                                              location_id:)
+                                                              location_id: effective_location_id)
 
         unless response['loanPolicyId']
           Honeybadger.notify('Unable to find effective loan policy for checkout',
@@ -249,12 +245,12 @@ module Folio
     end
 
     def overdue_fines_policy_id # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      cache_key = ['overdue_fines_policy_id', item_type_id, loan_type_id, loan_type_id, location_id].join(':')
+      cache_key = ['overdue_fines_policy_id', item_type_id, loan_type_id, loan_type_id, effective_location_id].join(':')
       Rails.cache.fetch(cache_key, expires_in: 1.day) do
         response = FolioClient.new.find_overdue_fines_policy(item_type_id:,
                                                              loan_type_id:,
                                                              patron_type_id:,
-                                                             location_id:)
+                                                             location_id: effective_location_id)
 
         unless response&.dig('overdueFinePolicyId')
           Honeybadger.notify('Unable to find overdue fines policy for checkout',
@@ -263,10 +259,6 @@ module Folio
 
         response&.dig('overdueFinePolicyId')
       end
-    end
-
-    def location_id
-      record.dig('item', 'item', 'effectiveLocationId')
     end
 
     def loan_type_id
