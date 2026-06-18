@@ -79,6 +79,10 @@ layer(components);
   background-color: rgba(var(--stanford-cardinal-rgb), 1);
 }
 
+.bg-muted-cardinal {
+  background-color: #A34444;
+}
+
 .bg-dark.bg-cardinal {
   --bs-dark-rgb: var(--stanford-cardinal-rgb);
 }
