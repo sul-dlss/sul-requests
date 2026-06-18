@@ -322,7 +322,7 @@ module Folio
 
     def patron_group_id
       # FOLIO APIs return a UUID here
-      user_info['patronGroup']
+      user_info['patronGroup'] || extended_user_info&.dig('patronGroup', 'id')
     end
 
     # Get all the sponsors for this patron
