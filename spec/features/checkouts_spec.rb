@@ -7,12 +7,13 @@ require 'active_support/testing/time_helpers'
 RSpec.describe 'Checkout Page' do
   include ActiveSupport::Testing::TimeHelpers
 
-  let(:mock_client) { instance_double(FolioClient, ping: true, find_effective_loan_policy: {}) }
+  let(:mock_client) { instance_double(FolioClient, ping: true, find_effective_loan_policy: {}, find_overdue_fines_policy:) }
 
   let(:patron) do
     build(:sponsor_patron)
   end
 
+  let(:find_overdue_fines_policy) { {} }
   let(:loan_policy) { build(:grad_mono_loans) }
 
   before do
@@ -47,13 +48,52 @@ RSpec.describe 'Checkout Page' do
     it 'has recall data' do
       visit checkouts_path
 
-      expect(page).to have_css('ul.recalled-checkouts', count: 1)
-      expect(page).to have_css('ul.recalled-checkouts li', count: 1)
+      expect(page).to have_css('ul.checkouts', count: 1)
+      expect(page).to have_css('ul.checkouts li', count: 1)
 
-      within(first('ul.recalled-checkouts li')) do
+      within(first('ul.checkouts li')) do
         expect(page).to have_text 'Recalled'
         expect(page).to have_text(/Sci-fi architecture./)
         expect(page).to have_text 'Call number: NA1 .A16'
+      end
+    end
+  end
+
+  context 'when a patron has overdue items' do
+    let(:patron) do
+      build(:patron_with_overdue_items)
+    end
+    let(:find_overdue_fines_policy) { { 'overdueFinePolicyId' => '12d0d55b-bcb9-473e-9bd7-1a54d52c007f' } }
+
+    it 'has overdue messaging data' do
+      visit checkouts_path
+
+      expect(page).to have_css('ul.checkouts', count: 1)
+      expect(page).to have_css('ul.checkouts li', count: 1)
+
+      within(first('ul.checkouts li')) do
+        expect(page).to have_text 'Overdue'
+        expect(page).to have_text 'Accruing $1.00/day until returned'
+        expect(page).to have_text(/Sci-fi architecture./)
+        expect(page).to have_text 'Call number: NA1 .A16'
+      end
+    end
+  end
+
+  context 'when a patron has reserve items' do
+    let(:loan_policy) { build(:reserves_loan_policy) }
+
+    it 'has reserve messaging data' do
+      visit checkouts_path
+
+      expect(page).to have_css('ul.checkouts', count: 1)
+      expect(page).to have_css('ul.checkouts li', count: 1)
+
+      within(first('ul.checkouts li')) do
+        expect(page).to have_text 'NOTE: This item must be returned to the Green Library'
+        expect(page).to have_text 'Renew in person'
+        expect(page).to have_text('Blue-collar Broadway')
+        expect(page).to have_text 'Call number: PN2277 .N7 W48 2015'
       end
     end
   end

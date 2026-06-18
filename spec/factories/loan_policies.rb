@@ -34,4 +34,28 @@ FactoryBot.define do
       new(loan_policy:)
     end
   end
+
+  factory :reserves_loan_policy, class: 'Folio::LoanPolicy' do
+    transient do
+      due_date { '2024-01-09T07:59:59.000+00:00' }
+      renewal_count { 0 }
+      hold_queue_length { 0 }
+    end
+
+    loan_policy do
+      { 'id' => '07115e75-c4a9-4ef0-b013-dba184251041',
+        'name' => '7day-norenew-1daygrace',
+        'description' => '7-day loan (Art periodicals and Business Permanent Reserves)',
+        'renewable' => false,
+        'renewalsPolicy' => nil,
+        'loanable' => true,
+        'loansPolicy' =>
+  { 'period' => { 'duration' => 7, 'intervalId' => 'Days' }, 'fixedDueDateSchedule' => nil },
+        'requestManagement' => { 'holds' => nil } }
+    end
+
+    initialize_with do
+      new(loan_policy:)
+    end
+  end
 end

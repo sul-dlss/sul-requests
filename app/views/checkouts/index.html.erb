@@ -1,14 +1,9 @@
-<h1 class="sr-only">Checkouts</h1>
-
 <% if @checkouts.any? %>
-  <% recalled, other_checkouts = @checkouts.partition(&:recalled?) %>
-  <%= render 'checkouts/recalled', recalled: recalled if recalled.any? %>
-
   <div id="checkouts" class="page-section" data-controller="sortable google-cover-image" data-sortable-sort-value="dueDate">
     <div class="d-flex justify-content-between">
-      <h2>Checked out: <%= other_checkouts.length %><%= " (#{patron_or_group.remaining_checkouts} remaining)" if patron_or_group.remaining_checkouts %></h2>
+      <h1>Borrowed (checked out) items</h1>
       <div class="dropdown" data-sortable-target="menu">
-        <button class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-outline-primary btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Sort (Due date)
         </button>
 
@@ -21,18 +16,17 @@
         </ul>
       </div>
     </div>
-
     <div class="mb-3">
       <%= render 'checkouts/renew_all_button' %>
     </div>
 
     <ul class="checkouts p-0" data-sortable-target="list" aria-live="polite">
-      <%= render CheckoutComponent.with_collection(other_checkouts, patron: patron_or_group) %>
+      <%= render CheckoutComponent.with_collection(@checkouts, patron: patron_or_group) %>
     </ul>
   </div>
 <% else %>
   <div id="checkouts" class="page-section">
+    <h1>Borrowed (checked out) items</h1>
     <h2>Checked out: <%= @checkouts.length %><%= " (#{patron_or_group.remaining_checkouts} remaining)" if patron_or_group.remaining_checkouts %></h2>
   </div>
 <% end %>
-<%= render 'checkouts/policies' %>

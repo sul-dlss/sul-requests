@@ -83,6 +83,10 @@ layer(components);
   --bs-dark-rgb: var(--stanford-cardinal-rgb);
 }
 
+.bg-digital-red-10 {
+  background-color: rgba(var(--stanford-digital-red-rgb), .1);
+}
+
 .bg-stanford-10-black {
   background-color: var(--stanford-10-black);
 }
@@ -102,7 +106,6 @@ layer(components);
 .text-digital-red {
   color: var(--stanford-digital-red);
 }
-
 
 .text-digital-red-dark {
   color: var(--stanford-digital-red-dark);

@@ -190,6 +190,10 @@ module Folio
       location&.contact_info
     end
 
+    def location
+      Folio::Types.locations.find_by(id: location_id)
+    end
+
     def too_soon_to_renew?
       loan_policy.too_soon_to_renew?(due_date)
     end
