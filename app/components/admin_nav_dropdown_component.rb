@@ -10,18 +10,14 @@ class AdminNavDropdownComponent < ViewComponent::Base
   end
 
   def render?
-    mediated_locations? || site_admin?
+    mediated_locations.any? || site_admin?
   end
 
   def site_admin?
     can?(:manage, :site)
   end
 
-  def mediated_locations?
-    mediated_locations.present?
-  end
-
   def mediated_locations
-    mediated_locations_for(PatronRequest.mediateable_origins)
+    @mediated_locations ||= mediated_locations_for(PatronRequest.mediateable_origins)
   end
 end

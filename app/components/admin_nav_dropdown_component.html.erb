@@ -4,17 +4,17 @@
   </button>
   <ul class="dropdown-menu">
     <% if site_admin? %>
-      <li><span class="h6 dropdown-header text-cardinal">APPLICATION</span></li>
+      <li><span class="h6 dropdown-header text-cardinal text-uppercase">Application</span></li>
       <li><%= link_to 'Global messages', messages_path, class: 'dropdown-item' %></li>
-      <li><span class="h6 dropdown-header text-cardinal">REQUESTS</span></li>
+      <li><span class="h6 dropdown-header text-cardinal text-uppercase">Requests</span></li>
       <li><%= link_to 'Dashboard', admin_index_path, class: 'dropdown-item' %></li>
       <li><%= link_to 'Job queue', main_app.sidekiq_web_path, class: 'dropdown-item' %></li>
       <li><%= link_to 'Paging schedule', paging_schedule_index_path, class: 'dropdown-item' %></li>
       <li><%= link_to 'Reports', reports_path, class: 'dropdown-item' %></li>
     <% end %>
-    <% if mediated_locations? %>
+    <% if mediated_locations.any? %>
+        <li><span class="h6 dropdown-header text-cardinal text-uppercase">Requests mediation</span></li>
       <% mediated_locations.each do |code, config| %>
-        <li><span class="h6 dropdown-header text-cardinal">REQUESTS MEDIATION</span></li>
         <li>
           <%= link_to(LibraryLocation.library_name_by_code(config&.library_override || code), admin_path(code), class: 'dropdown-item') %>
         </li>
