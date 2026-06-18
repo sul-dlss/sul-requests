@@ -26,6 +26,8 @@ export default class extends Controller {
   }
 
   updateMenu() {
+    if (!this.hasMenuTarget) return;
+
     this.menuTarget.querySelector('.active')?.classList?.remove('active');
     const activeSort =  this.menuTarget.querySelector('[data-sortable-sort-param="' + this.sortValue + '"]');
 
@@ -34,7 +36,7 @@ export default class extends Controller {
   }
   
   resort() {
-    if (!this.sortValue) return;
+    if (!this.sortValue || !this.hasListTarget) return;
 
     const items = this.listTarget.children;
 
