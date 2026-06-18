@@ -12,7 +12,7 @@
       <li><%= link_to 'Paging schedule', paging_schedule_index_path, class: 'dropdown-item' %></li>
       <li><%= link_to 'Reports', reports_path, class: 'dropdown-item' %></li>
     <% end %>
-    <% if mediated_locations? %>
+    <% if mediated_locations.any? %>
         <li><span class="h6 dropdown-header text-cardinal text-uppercase">Requests mediation</span></li>
       <% mediated_locations.each do |code, config| %>
         <li>
