@@ -2,14 +2,21 @@
 
 # Render a single fine or payment for a patron
 class FineComponent < ViewComponent::Base
-  attr_reader :fine, :patron
+  attr_reader :fine, :sortable
 
   delegate :detail_link_to_searchworks, to: :helpers
 
-  def initialize(fine:, patron:)
+  def initialize(fine:, sortable: false)
     @fine = fine
-    @patron = patron
+    @sortable = sortable
     super()
+  end
+
+  def data
+    return {} unless sortable
+
+    { status_sort_value: fine.sort_key(:status_label), fee_sort_value: fine.sort_key(:fee),
+      data_sort_value: fine.sort_key(:payment_date), title_sort_value: fine.sort_key(:title) }
   end
 
   def checked_out?
@@ -19,7 +26,7 @@ class FineComponent < ViewComponent::Base
   def body_title
     return fine.title if checked_out?
 
-    case fine.nice_status
+    case fine.fine_type
     when 'SUL library card'
       'Lost library card'
     else

@@ -1,4 +1,4 @@
-<%= render CardComponent.new(element: 'li') do |c| %>
+<%= render CardComponent.new(element: 'li', data: ) do |c| %>
   <% c.with_title do %>
     <div class="d-flex flex-row gap-4">
       <%= render PillComponent.new(classes: %w[status bg-plum text-white]).with_content(fine.status_label) %>
@@ -12,6 +12,7 @@
       <%= render CheckedOutActionsComponent.new(checkout: fine) %>
     <% else %>
       <%= render FineActionsComponent.new(fine:) %>
+      <%= render FineStatusPillComponent.new(status: fine.status) if fine.closed? %>
     <% end %>
   <% end %>
   <% c.with_body(classes: 'bg-white') do %>

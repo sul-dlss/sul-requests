@@ -10,7 +10,7 @@ class FineActionsComponent < ViewComponent::Base
 
   def call
     tag.div(class: 'h4 mb-0') do
-      number_to_currency(fine.owed)
+      number_to_currency(fine.owed.nonzero? || fine.fee)
     end
   end
 end
