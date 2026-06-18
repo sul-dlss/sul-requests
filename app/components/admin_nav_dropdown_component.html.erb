@@ -13,8 +13,8 @@
       <li><%= link_to 'Reports', reports_path, class: 'dropdown-item' %></li>
     <% end %>
     <% if mediated_locations? %>
-      <% mediated_locations.each do |code, config| %>
         <li><span class="h6 dropdown-header text-cardinal">REQUESTS MEDIATION</span></li>
+      <% mediated_locations.each do |code, config| %>
         <li>
           <%= link_to(LibraryLocation.library_name_by_code(config&.library_override || code), admin_path(code), class: 'dropdown-item') %>
         </li>
