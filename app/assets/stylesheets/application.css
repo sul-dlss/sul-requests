@@ -164,6 +164,15 @@ body {
   --bs-alert-border-color: rgba(var(--stanford-digital-blue-dark-rgb), 1);
 }
 
+.btn-xs {
+  --bs-btn-padding-y: 0.25rem;
+  --bs-btn-padding-x: 0.25rem;
+  --bs-btn-font-size: 0.875rem;
+  --bs-btn-border-radius: var(--bs-border-radius-sm);
+  line-height: 1;
+
+}
+
 input[type="radio"] {
   --bs-border-color: var(--stanford-50-black);
 }

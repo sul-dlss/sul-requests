@@ -11,14 +11,14 @@
         <%= hidden_field_tag :item_id, checkout.item_id %>
         <%= hidden_field_tag :title, checkout.title %>
         <%= hidden_field_tag :group, params[:group] if params[:group] %>
-        <%= button_tag class: 'btn btn-outline-primary btn-sm',
+        <%= button_tag class: 'btn btn-outline-primary btn-xs',
                         data: { turbo_submits_with: t('mylibrary.renew_item.in_progress_html') },
                         type: 'submit' do %>
           <i class="bi bi-arrow-repeat me-1"></i>Renew
         <% end %>
       <% end %>
     <% elsif !renewable? %>
-        <button disabled class="btn btn-outline-primary btn-disabled btn-sm"><i class="bi bi-arrow-repeat me-1"></i><%= non_renewable_reason %></button>
+        <button disabled class="btn btn-outline-primary btn-disabled btn-xs"><i class="bi bi-arrow-repeat me-1"></i><%= non_renewable_reason %></button>
     <% end %>
   <% end %>
   <% c.with_footer do %>
