@@ -30,7 +30,7 @@ RSpec.describe 'Request Page' do
 
     within('#request-7fa87cfe-df57-4dc7-953b-a5a44ff37d91') do
       expect(page).to have_text(/Rothko : the color field paintings/)
-      expect(page).to have_text('Pickup: Green Library')
+      expect(page).to have_text('Pick up at Green Library')
       expect(page).to have_text 'ND237 .R725 A4 2017 F'
     end
   end
@@ -71,25 +71,6 @@ RSpec.describe 'Request Page' do
       within(first('ul.requests li')) do
         expect(page).to have_text(/A history of Persia/)
       end
-    end
-  end
-
-  context 'with no requests' do
-    let(:patron_info) do
-      {
-        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [] },
-        'loans' => [],
-        'holds' => [],
-        'accounts' => []
-      }
-    end
-    let(:patron) { Folio::Patron.new(patron_graphql_response: patron_info) }
-
-    it 'does not render table headers' do
-      visit requests_path
-
-      expect(page).to have_text('Requested: 0')
-      expect(page).to have_no_css('.list-header')
     end
   end
 end

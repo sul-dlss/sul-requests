@@ -5,12 +5,11 @@
         <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup ready') %>
 
         <span class="text-lagunita-dark">
-          <%= sul_icon 'sharp-check_circle-24px' %>
-          <span class="d-md-none">Pick up at </span><%= request.service_point_name %>
+          Pick up at <span class="fw-semibold"><%= request.service_point_name %></span>
 
           <% if request.expiration_date %>
-            <span class="d-inline d-md-none mr-2">by</span>
-            <%= l(request.expiration_date, format: :short) %>
+            by
+            <span class="fw-semibold"><%= l(request.expiration_date, format: :date_only) %></span>.
           <% end %>
         </span>
       <% else %>
@@ -28,13 +27,12 @@
         <% if request.ready_for_pickup? %>
           <%= form_tag request_path(request.key), method: :delete do %>
             <%= hidden_field_tag :title, request.title %>
-            <%= hidden_field_tag :group, group? if group? %>
-            <%= button_tag class: 'btn btn-outline-primary btn-sm', type: 'submit' do %>
+            <%= button_tag class: 'btn btn-outline-primary btn-xs', type: 'submit' do %>
               Cancel
             <% end %>
           <% end %>
         <% else %>
-          <%= link_to edit_request_path(request.key, group: group?), class: 'btn btn-outline-primary btn-sm' do %>
+          <%= link_to edit_request_path(request.key), class: 'btn btn-outline-primary btn-sm' do %>
             Edit
           <% end %>
         <% end %>
@@ -43,21 +41,26 @@
   <% end %>
 
   <% c.with_footer do %>
-    Date added/modified: <%= l(request.placed_date, format: :short) %>
+    Date added/modified: <%= l(request.placed_date, format: :full) %>
   <% end %>
 
   <% c.with_body(classes: 'bg-white') do %>
     <div class="d-flex justify-content-between gap-5">
       <div>
         <h3 class="mb-1 clamp clamp-3"><%= request.title %></h3>
-        <div class="d-flex flex-row flex-wrap position-relative justify-content-start gap-4">
+        <div class="d-flex flex-row flex-wrap position-relative justify-content-start gap-4 mb-1">
           <div>Call number: <%= request.call_number %></div>
           <%= detail_link_to_searchworks(request.catkey) %>
         </div>
         <div class="mb-1 clamp clamp-1"><span class="visually-hidden">Author:</span><%= request.author %></div>
-        <% if request.library_name.present? %><div><%= request.library_name %></div><% end %>
-        <div><span class="bg-light fw-semibold p-1 rounded">Pickup: <%= request.service_point_name %></span></div>
-        <div>Waitlist position: <%= request.waitlist_position %></div>
+
+        <div class="mb-1"><span class="visually-hidden">Library:</span>
+          <%= request.library_name %> <%= mail_to(contact_email, safe_join([tag.i(class: 'bi bi-envelope me-1'), 'Contact']), class: 'su-underline ms-3') if contact_email %>
+        </div>
+        <% unless request.ready_for_pickup? %>
+        <div class="my-2"><span class="bg-light fw-semibold p-1 rounded">Deliver to: <%= request.service_point_name %></span></div>
+        <% end %>
+        <div class="mb-1">Waitlist position: <%= request.waitlist_position %></div>
       </div>
       <div>
         <%= cover_image %>
