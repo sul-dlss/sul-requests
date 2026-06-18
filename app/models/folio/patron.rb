@@ -153,7 +153,7 @@ module Folio
       @proxies ||= proxies_of_response.filter_map do |info|
         next nil unless valid_proxy_relation?(info)
 
-        self.class.new(info['proxyUser']) if info['proxyUser'].present?
+        self.class.new(info['proxyUser'].merge({'id' => info['proxyUserId']})) if info['proxyUser'].present?
       end
     end
 
