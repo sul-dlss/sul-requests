@@ -50,11 +50,11 @@ RSpec.describe CheckoutsController do
   end
 
   describe '#renew' do
-    let(:api_response) { instance_double(Faraday::Response, status: 201) }
+    let(:api_response) { instance_double(FolioClient::RenewCheckoutResponse, success?: true, checkout: checkouts[0], updated_checkout: checkouts[0]) }
     let(:checkouts) { [instance_double(Folio::Checkout, item_id: '123', item_category_non_renewable?: false, sort_key: nil)] }
 
     before do
-      allow(mock_client).to receive(:renew_item_by_id).and_return(api_response)
+      allow(mock_client).to receive(:renew_checkout).and_return(api_response)
     end
 
     context 'when everything is good' do
@@ -72,7 +72,7 @@ RSpec.describe CheckoutsController do
     end
 
     context 'when the response is not 201' do
-      let(:api_response) { instance_double(Faraday::Response, status: 401) }
+      let(:api_response) { instance_double(FolioClient::RenewCheckoutResponse, success?: false, checkout: checkouts[0], updated_checkout: checkouts[0]) }
 
       it 'does not renew the item and sets flash messages' do
         post :renew, params: { id: '123' }
@@ -115,16 +115,19 @@ RSpec.describe CheckoutsController do
     end
 
     before do
-      allow(mock_client).to receive(:renew_items).and_return(api_response)
+      allow(mock_client).to receive(:renew_checkout).with(having_attributes(key: '1')).and_return(instance_double(FolioClient::RenewCheckoutResponse,
+                                                                                                                  success?: true,
+                                                                                                                  checkout: checkouts[0]))
+      allow(mock_client).to receive(:renew_checkout).with(having_attributes(key: '2')).and_return(instance_double(FolioClient::RenewCheckoutResponse,
+                                                                                                                  success?: false,
+                                                                                                                  checkout: checkouts[1]))
     end
 
     it 'sends renewal requests to Folio for eligible items' do
       post :renew_eligible
 
-      expect(mock_client).to have_received(:renew_items).with([
-                                                                having_attributes(key: '1'),
-                                                                having_attributes(key: '2')
-                                                              ])
+      expect(mock_client).to have_received(:renew_checkout).with(having_attributes(key: '1'))
+      expect(mock_client).to have_received(:renew_checkout).with(having_attributes(key: '2'))
     end
 
     context 'when successful' do
