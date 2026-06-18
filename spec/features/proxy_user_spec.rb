@@ -47,4 +47,34 @@ RSpec.describe 'Proxy User' do
 
     expect(page).to have_text('Personal Piper Proxy', normalize_ws: true)
   end
+
+  context 'when on the borrowed items page' do
+    it 'displays the sponsor checkouts from a proxy' do
+      visit checkouts_path
+
+      click_on 'Switch to proxy'
+      click_on 'Proxy for: Shea Sponsor'
+
+      expect(page).to have_css('.checkouts li', count: 2)
+
+      expect(page).to have_text('Music, sound, language, theater')
+      expect(page).to have_text('See this sound')
+
+      expect(page).to have_no_text('Blue-collar Broadway')
+    end
+  end
+
+  context 'when on the requests page' do
+    it 'displays the sponsor requests from a proxy' do
+      visit requests_path
+
+      click_on 'Switch to proxy'
+      click_on 'Proxy for: Shea Sponsor'
+
+      expect(page).to have_css('.requests li', count: 1)
+
+      expect(page).to have_text('Fiction!')
+      expect(page).to have_no_text('A history of Persia')
+    end
+  end
 end
