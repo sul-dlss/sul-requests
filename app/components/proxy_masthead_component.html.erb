@@ -1,4 +1,4 @@
-<div class="proxy-masthead <%= personal? ? 'bg-light' : 'bg-warning bg-opacity-10' %> border-bottom border-3 border-cardinal py-2">
+<div class="proxy-masthead <%= personal? ? 'bg-light' : 'bg-warning-subtle bg-opacity-10' %> border-bottom border-3 border-cardinal py-2">
   <div class="container d-flex align-items-center gap-2">
     <% if personal? %>
       <%= render PillComponent.new(classes: ['bg-cardinal text-light me-1 text-nowrap']) do %>
@@ -7,7 +7,7 @@
 
       <span class="fw-semibold"><%= selected.display_name %></span>
     <% else %>
-      <%= render PillComponent.new(classes: ['bg-warning text-light me-1 text-nowrap']) do %>
+      <%= render PillComponent.new(classes: ['bg-poppy-darker text-light me-1 text-nowrap']) do %>
         <i class="bi bi-key-fill"></i> Proxy
       <% end %>
 
@@ -16,6 +16,13 @@
         <span class="fw-semibold"><%= selected.display_name %></span>
         (sponsor)
       </div>
+    <% end %>
+
+    <% unless personal? %>
+      <button class="btn btn-link text-poppy-darker su-underline" data-bs-toggle="modal" data-bs-target="#proxy-group" aria-label="View proxy group">
+        <i class="bi bi-people align-middle me-1" aria-hidden></i>
+        <span class="d-none d-md-inline">View proxy group</span>
+      </button>
     <% end %>
 
     <div class="vr my-1 mx-2"></div>
@@ -46,3 +53,27 @@
     </div>
   </div>
 </div>
+
+<%= render ModalComponent.new(id: 'proxy-group', header_classes: ['border-0', 'pb-2']) do |c| %>
+  <% c.with_title do %>
+    Proxy Group
+  <% end %>
+
+  <% c.with_banner do %>
+    <h3 class="border-bottom pb-2 px-3 mb-0">Sponsor: <%= selected.display_name %></h3>
+  <% end %>
+
+  <% c.with_body do %>
+    <ul class="list-unstyled mb-0">
+      <% selected.proxy_group.members.each do |member| %>
+        <li>
+          <%= member.display_name %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% c.with_footer do %>
+    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+  <% end %>
+<% end %>

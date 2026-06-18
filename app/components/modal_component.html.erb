@@ -1,10 +1,10 @@
 <%= content_tag(:div, class: @classes, id:, tabindex: "-1", aria: {labelledby: title_id, hidden: false}, data:) do %>
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
-      <div class="modal-header">
+      <%= tag.div class: ['modal-header'] + @header_classes do %>
         <h2 class="modal-title" id="<%= title_id %>"><%= title %></h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+      <% end %>
       <%= banner %>
       <%= body %>
       <%= footer if footer? %>
