@@ -50,9 +50,7 @@ class CheckoutComponent < ViewComponent::Base
   def proxy_borrower
     return nil unless checkout.proxy_checkout?
 
-    # TODO: Add code for this. We need to confirm the structure of proxies which is hard with folio down
-    # Here is the old code: patron.proxies.find { |proxy| proxy.id == checkout.patron_key }
-    nil
+    patron.proxies.find { |proxy| proxy.id == checkout.patron_key }
   end
 
   def checkout_status_pill
