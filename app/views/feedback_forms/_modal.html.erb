@@ -1,0 +1,19 @@
+<%= render ModalComponent.new(id: "feedback-form") do |component| %>
+  <% component.with_custom_header do %>
+    <div class="d-flex flex-row align-items-center flex-wrap w-100">
+      <h1 class="modal-title order-1 me-auto h2" id="<%= component.title_id %>">Send Feedback</h1>
+      <%= link_to feedback_form_path, target: '_blank', class: "order-3 order-sm-2 new-tab-link mt-2 mt-sm-0 me-sm-3 su-underline" do %>
+        <i class="bi bi-box-arrow-up-right me-1"></i>Open form in new tab
+      <% end %>
+      <button type="button" class="btn-close order-2 order-sm-3 ms-auto ms-sm-0" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+  <% end %>
+  <% component.with_banner do %>
+    <div class="bg-stanford-10-black py-1 px-3">
+      Reporting from: <span class="reporting-from-field"><%= request.referer %></span>
+    </div>
+  <% end %>
+  <% component.with_body(classes: []) do %>
+    <%= render 'feedback_forms/form' %>
+  <% end %>
+<% end %>

@@ -1,0 +1,37 @@
+<% close_button = local_assigns.fetch(:close_button, true) %>
+<%= form_tag feedback_form_path, method: :post, class:"feedback-form" do %>
+  <div class="modal-body">
+    <span class="d-none">
+      <%= label_tag(:email_address, 'Ignore this text box. It is used to detect spammers. If you enter anything into this text box, your message will not be sent.') %><br>
+      <%= email_field_tag :email_address %><br>
+      <%= hidden_field_tag :user_agent %>
+      <%= hidden_field_tag :viewport %>
+      <%= hidden_field_tag :url, request.referer, class:"reporting-from-field" %>
+    </span>
+    <div class="mb-3">
+      <%= label_tag(:name, 'Name', class:"px-0 fw-bold mb-2") %>
+      <%= text_field_tag :name, "", class:"form-control", placeholder: 'Enter your name' %>
+    </div>
+    <div class="mb-3">
+      <%= label_tag(:to, 'Email', class:"px-0 fw-bold mb-2 redesign-required-label") %>
+      <%= email_field_tag :to, "", class:"form-control", required: true, placeholder: 'Enter your email' %>
+    </div>
+    <div class="mb-3">
+      <%= label_tag(:message, 'Message', class:"px-0 fw-bold mb-2 redesign-required-label") %>
+      <%= text_area_tag :message, "", rows:"2", class:"form-control", required: true, placeholder: 'Enter your message' %>
+    </div>
+
+    <% unless current_user? %>
+      <div class="mb-3 requests-captcha">
+        Stanford affiliates: <%= link_to 'Log in', login_by_sunetid_path(referrer: request.original_url), class: 'su-underline text-digital-red-light' %> to skip Captcha.
+        <%= recaptcha_tags %>
+      </div>
+    <% end %>
+  </div>
+  <div class="modal-footer">
+    <% if close_button %>
+      <%= link_to "Close", "#feedback-form", class:"btn btn-outline-primary", data: { bs_dismiss: "modal", bs_target: "#feedback-form"} %>
+    <% end %>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+<% end %>
