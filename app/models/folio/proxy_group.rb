@@ -17,12 +17,15 @@ module Folio
     end
 
     def checkouts
-      sponsor.proxy_group_checkouts || []
+      sponsor.all_checkouts.select(&:proxy_checkout?)
     end
 
     def requests
-      sponsor.proxy_group_requests
+      sponsor.folio_requests.select(&:proxy_request?)
     end
+
+    def borrow_direct_requests = []
+    def illiad_requests = []
 
     # NOTE: Fines on items borrowed by a proxy/group are associated
     # with the sponsor's individual account.

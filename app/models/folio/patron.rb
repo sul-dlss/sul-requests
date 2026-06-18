@@ -129,16 +129,6 @@ module Folio
       patron_group.desc
     end
 
-    # @deprecated
-    def proxy_email_address
-      sponsors&.first&.notifications_to || email
-    end
-
-    # @deprecated
-    def notifications_to
-      user_info['notificationsTo']
-    end
-
     def proxy?
       sponsors.any?
     end
@@ -165,11 +155,6 @@ module Folio
 
         self.class.new(info['user']) if info['user'].present?
       end
-    end
-
-    # @deprecated
-    def proxy_sponsor_user_id
-      sponsors.first.id
     end
 
     def proxy_group
@@ -252,11 +237,6 @@ module Folio
       all_checkouts.reject(&:proxy_checkout?) || []
     end
 
-    # Checkouts from the proxy group
-    def proxy_group_checkouts
-      all_checkouts.select(&:proxy_checkout?)
-    end
-
     # this is all requests including self and group/proxy
     def folio_requests
       patron_graphql_response['holds'].map { |request| Request.new(request) }
@@ -278,11 +258,6 @@ module Folio
       return [] unless username
 
       IlliadRequests.new(username).requests
-    end
-
-    # Requests from the proxy group
-    def proxy_group_requests
-      folio_requests.select(&:proxy_request?) if sponsor?
     end
 
     ##
