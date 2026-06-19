@@ -4,6 +4,7 @@ module Folio
   # ? FOLIO: Request = "Hold" in Folio - consider renaming for clarity
   class Request
     include Folio::FolioRecord
+    include ActiveModel::Model
 
     attr_reader :record
 
@@ -17,6 +18,7 @@ module Folio
     def key
       record['requestId']
     end
+    alias id key
 
     def patron_key
       record.dig('details', 'proxyUserId') || record.dig('details', 'requesterId')

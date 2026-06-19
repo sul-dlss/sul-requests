@@ -1,0 +1,7 @@
+<ol class="list-unstyled">
+  <%= render RequestComponent.new(
+      request: FactoryBot.build(:request),
+      patron: FactoryBot.build(:sponsor_patron)
+    )
+  %>
+</ol>
