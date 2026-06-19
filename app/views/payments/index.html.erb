@@ -21,7 +21,7 @@
 
     <% if @payments.any? %>
       <ul class="payments list list-group" data-sortable-target="list" aria-live="polite">
-        <%= render FineComponent.with_collection(@payments, sortable: true) %>
+        <%= render FineComponent.with_collection(@payments, sortable: true, patron: patron_or_group) %>
       </ul>
     <% end %>
   </div>

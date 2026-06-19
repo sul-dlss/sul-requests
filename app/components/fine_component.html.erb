@@ -37,5 +37,6 @@
       <% if fine.barcode %><span>Barcode: <%= fine.barcode %></span><% end %>
       <% if fine.sort_date %><span>Date incurred: <%= l(fine.sort_date.to_date, format: :short) %></span><% end %>
     </div>
+    <%= render ProxyIndicatorComponent.new(proxy: proxy_borrower) %>
   <% end %>
 <% end %>

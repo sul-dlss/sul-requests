@@ -24,7 +24,7 @@
     <% if @fines_and_accruing.any? %>
       <ul class="fines ps-0">
         <% @fines_and_accruing.each do |item| %>
-          <%= render FineComponent.new(fine: item) %>
+          <%= render FineComponent.new(fine: item, patron: patron_or_group) %>
         <% end %>
       </ul>
     <% end %>
