@@ -1,11 +1,9 @@
-<h1 class="sr-only">Requests</h1>
-
 <div id="requests" class="page-section" data-controller="sortable google-cover-image" data-sortable-sort-value="date">
   <div class="d-flex justify-content-between">
-    <h2>Requested: <%= @requests.length %></h2>
+    <h1>Requests</h1>
     <% if @requests.any? %>
     <div class="dropdown" data-sortable-target="menu">
-      <button class="btn btn-secondary dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-outline-primary btn-sm dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Sort (Not needed after)
       </button>
 
@@ -21,7 +19,7 @@
   </div>
   <% if @requests.any? %>
     <ul class="requests p-0" data-sortable-target="list" aria-live="polite">
-      <%= render RequestComponent.with_collection(@requests, patron: patron_or_group, group: params[:group]) %>
+      <%= render RequestComponent.with_collection(@requests, patron: patron_or_group) %>
     </ul>
   <% end %>
 </div>

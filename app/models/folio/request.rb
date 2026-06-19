@@ -70,6 +70,10 @@ module Folio
       item&.dig('effectiveCallNumberComponents', 'callNumber')
     end
 
+    def contact_info
+      location&.contact_info
+    end
+
     def service_point_name
       Folio::Types.service_points.find_by(id: service_point_id)&.name || service_point_code
     end

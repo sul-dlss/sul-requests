@@ -13,8 +13,8 @@ class RequestComponent < ViewComponent::Base
     super()
   end
 
-  def group?
-    @group
+  def contact_email
+    request.contact_info&.dig(:email)
   end
 
   def cover_image
