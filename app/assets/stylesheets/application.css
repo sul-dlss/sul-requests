@@ -59,6 +59,7 @@ layer(components);
 
 .text-poppy-darker {
   color: rgba(var(--stanford-poppy-darker-rgb), 1);
+  --underline-color: rgba(var(--stanford-poppy-darker-rgb), 1);
 }
 
 .text-green {
