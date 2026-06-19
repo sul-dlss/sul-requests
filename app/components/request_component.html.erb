@@ -1,69 +1,74 @@
-<%= render CardComponent.new(element: 'li', id: "request-#{request.key}", data: { 'library-sort-value': request.sort_key(:library), 'date-sort-value': request.sort_key(:date), 'title-sort-value': request.sort_key(:title), 'author-sort-value': request.sort_key(:author), 'call-number-sort-value': request.sort_key(:call_number)  }) do |c| %>
+<%= render CardComponent.new(element: 'li', id: dom_id(request), classes: 'request', data: { 'library-sort-value': request.sort_key(:library), 'date-sort-value': request.sort_key(:date), 'title-sort-value': request.sort_key(:title), 'author-sort-value': request.sort_key(:author), 'call-number-sort-value': request.sort_key(:call_number)  }) do |c| %>
   <% c.with_title do %>
-    <div class="d-flex flex-row gap-3 align-items-center">
-      <% if request.ready_for_pickup? %>
-        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup ready') %>
+    <div class="flex-grow-1">
+      <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
+        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup') %>
+      </div>
 
-        <span class="text-lagunita-dark">
-          Pick up at <span class="fw-semibold"><%= request.service_point_name %></span>
-
-          <% if request.expiration_date %>
-            by
-            <span class="fw-semibold"><%= l(request.expiration_date, format: :date_only) %></span>.
+      <div>
+        <%= tag.h2 request.title || 'Not available', class: @title_classes %>
+        <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
+          <% if request.call_number.present? %>
+            <span>Call number: <%= request.call_number %></span>
           <% end %>
-        </span>
-      <% else %>
-        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup pending') %>
-        <span class="text-lagunita-dark">We'll email you when your items are available for pickup.</span>
-      <% end %>
-    </div>
-
-    <% if patron.can_modify_requests? %>
-      <% if request.manage_request_link %>
-        <div class="illiad-link">
-          <a href="<%= request.manage_request_link %>">Manage this request in your ILL account</a>
+          <span>
+            <%= detail_link_to_searchworks(request.catkey) %>
+          </span>
         </div>
-      <% else %>
-        <% if request.ready_for_pickup? %>
-          <%= form_tag request_path(request.key), method: :delete do %>
-            <%= hidden_field_tag :title, request.title %>
-            <%= button_tag class: 'btn btn-outline-primary btn-xs', type: 'submit' do %>
-              Cancel
+        <% if request.author %>
+          <div class="mt-2">
+            <%= request.author %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div>
+      <%= cover_image %>
+    </div>
+  <% end %>
+
+  <% c.with_body do %>
+    <div class="bg-white px-3 py-2 d-flex column-gap-4 row-gap-2 justify-content-between align-items-center flex-wrap flex-md-nowrap">
+      <div class="d-flex justify-content-start gap-2">
+        <span class="text-body-secondary small">Date added/modified: <span class="text-nowrap"><%= l(request.placed_date, format: :full) %></span></span>
+      </div>
+
+      <div class="d-flex flex-grow-1 column-gap-4 row-gap-2 justify-content-between align-items-center flex-wrap flex-md-nowrap">
+        <div>
+          <% if request.ready_for_pickup? %>
+            <span class="text-green">
+              <i class="bi bi-bag me-1" aria-hidden></i>Awaiting pick up at <span class="fw-semibold"><%= request.service_point_name %></span>
+                <% if request.expiration_date %>
+                  by <span class="fw-semibold"><%= l(Time.zone.now || request.expiration_date, format: :date_only) %></span>.
+                <% end %>
+            </span>
+          <% else %>
+            <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i>Staff processing</span>
+          <% end %>
+        </div>
+
+        <div class="d-flex text-nowrap align-items-baseline align-self-start justify-content-xl-end">
+          <% if patron.can_modify_requests? %>
+            <% if request.manage_request_link %>
+              <div class="illiad-link">
+                <a href="<%= request.manage_request_link %>">Manage this request in your ILL account</a>
+              </div>
+            <% else %>
+              <% if request.ready_for_pickup? %>
+                <%= form_tag request_path(request.key), method: :delete do %>
+                  <%= hidden_field_tag :title, request.title %>
+                  <%= button_tag class: 'btn btn-link su-underline p-0', type: 'submit' do %>
+                    <i class="bi bi-trash align-middle"></i><span class="visually-hidden">Cancel request</span>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <%= link_to edit_request_path(request.key), class: 'btn btn-link su-underline p-0' do %>
+                  <i class="bi bi-pencil-fill me-1 align-middle"></i><span class="visually-hidden">Edit request</span>
+                <% end %>
+              <% end %>
             <% end %>
           <% end %>
-        <% else %>
-          <%= link_to edit_request_path(request.key), class: 'btn btn-outline-primary btn-sm' do %>
-            Edit
-          <% end %>
-        <% end %>
-      <% end %>
-    <% end %>
-  <% end %>
-
-  <% c.with_footer do %>
-    Date added/modified: <%= l(request.placed_date, format: :full) %>
-  <% end %>
-
-  <% c.with_body(classes: 'bg-white') do %>
-    <div class="d-flex justify-content-between gap-5">
-      <div>
-        <h3 class="mb-1 clamp clamp-3"><%= request.title %></h3>
-        <div class="d-flex flex-row flex-wrap position-relative justify-content-start gap-4 mb-1">
-          <div>Call number: <%= request.call_number %></div>
-          <%= detail_link_to_searchworks(request.catkey) %>
         </div>
-        <div class="mb-1 clamp clamp-1"><span class="visually-hidden">Author:</span><%= request.author %></div>
-
-        <div class="mb-1"><span class="visually-hidden">Library:</span>
-          <%= request.library_name %> <%= mail_to(contact_email, safe_join([tag.i(class: 'bi bi-envelope me-1'), 'Contact']), class: 'su-underline ms-3') if contact_email %>
-        </div>
-        <% unless request.ready_for_pickup? %>
-        <div class="my-2"><span class="bg-light fw-semibold p-1 rounded">Deliver to: <%= request.service_point_name %></span></div>
-        <% end %>
-        <div class="mb-1">Waitlist position: <%= request.waitlist_position %></div>
-      </div>
-      <div>
-        <%= cover_image %>
       </div>
     </div>
   <% end %>

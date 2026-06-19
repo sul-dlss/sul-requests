@@ -28,9 +28,9 @@ RSpec.describe 'Request Page' do
   it 'has ready for pickup request data' do
     visit requests_path
 
-    within('#request-7fa87cfe-df57-4dc7-953b-a5a44ff37d91') do
+    within('#folio_request_7fa87cfe-df57-4dc7-953b-a5a44ff37d91') do
       expect(page).to have_text(/Rothko : the color field paintings/)
-      expect(page).to have_text('Pick up at Green Library')
+      expect(page).to have_text('Awaiting pick up at Green Library')
       expect(page).to have_text 'ND237 .R725 A4 2017 F'
     end
   end
@@ -38,7 +38,7 @@ RSpec.describe 'Request Page' do
   it 'ready for pickup can be cancelled' do
     visit requests_path
 
-    within('#request-7fa87cfe-df57-4dc7-953b-a5a44ff37d91') do
+    within('#folio_request_7fa87cfe-df57-4dc7-953b-a5a44ff37d91') do
       click_on 'Cancel'
     end
 
