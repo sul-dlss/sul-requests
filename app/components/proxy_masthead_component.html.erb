@@ -63,7 +63,7 @@
   <% end %>
 
   <% c.with_body do %>
-    <ul class="list-unstyled mb-0">
+    <ul class="list-unstyled mb-0 flex-column d-flex gap-2">
       <% selected.proxy_group.members.each do |member| %>
         <li>
           <%= member.display_name %>
