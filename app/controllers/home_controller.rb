@@ -3,6 +3,8 @@
 # Controller to handle root HTTP
 # connections and display the home page
 class HomeController < ApplicationController
+  include FolioController
+
   bot_challenge
 
   before_action :authenticate_user!, only: [:show]

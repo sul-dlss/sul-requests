@@ -1,0 +1,78 @@
+<div class="proxy-masthead <%= personal? ? 'bg-light border-cardinal' : 'bg-warning-subtle bg-opacity-10 border-warning' %> border-bottom border-3 py-2">
+  <div class="container d-flex align-items-center gap-2">
+    <% if personal? %>
+      <%= render PillComponent.new(classes: ['bg-cardinal text-light me-1 text-nowrap']) do %>
+        <i class="bi bi-person-vcard"></i> Personal
+      <% end %>
+
+      <span class="fw-semibold"><%= selected.display_name %></span>
+    <% else %>
+      <%= render PillComponent.new(classes: ['bg-poppy-darker text-light me-1 text-nowrap']) do %>
+        <i class="bi bi-key-fill"></i> Proxy
+      <% end %>
+
+      <div>
+        On behalf of
+        <span class="fw-semibold"><%= selected.display_name %></span>
+        (sponsor)
+      </div>
+    <% end %>
+
+    <% unless personal? %>
+      <button class="btn btn-link text-poppy-darker su-underline" data-bs-toggle="modal" data-bs-target="#proxy-group" aria-label="View proxy group">
+        <i class="bi bi-people align-middle me-1" aria-hidden></i><span class="d-none d-md-inline">View proxy group</span>
+      </button>
+    <% end %>
+
+    <div class="vr my-1 mx-2"></div>
+
+    <div class="dropdown">
+      <button class="btn btn-xs border-dark-subtle text-body-secondary bg-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <% if personal? %>
+          Switch to proxy
+        <% else %>
+          Switch to personal
+        <% end %>
+      </button>
+      <%= form_with url: proxy_path do |f| %>
+        <ul class="dropdown-menu">
+          <% unless personal? %>
+            <li>
+              <%= button_tag "Personal account: #{patron.display_name}", name: 'id', value: nil, class: 'dropdown-item' %>
+            </li>
+          <% end %>
+
+          <% @patron.sponsors.without(selected).each do |sponsor| %>
+            <li>
+              <%= button_tag "Proxy for: #{sponsor.display_name}", name: 'id', value: sponsor.id, class: 'dropdown-item' %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= render ModalComponent.new(id: 'proxy-group', header_classes: ['border-0', 'pb-2']) do |c| %>
+  <% c.with_title do %>
+    Proxy Group
+  <% end %>
+
+  <% c.with_banner do %>
+    <h3 class="border-bottom pb-2 px-3 mb-0">Sponsor: <%= selected.display_name %></h3>
+  <% end %>
+
+  <% c.with_body do %>
+    <ul class="list-unstyled mb-0 flex-column d-flex gap-2">
+      <% selected.proxy_group.members.each do |member| %>
+        <li>
+          <%= member.display_name %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% c.with_footer do %>
+    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+  <% end %>
+<% end %>

@@ -19,6 +19,7 @@ layer(components);
   --stanford-jungle-green-rgb: 39, 153, 137;
   --stanford-process-black-50-rgb: 151, 150, 148;
   --stanford-lagunita-dark-rgb: 0, 107, 129;
+  --stanford-poppy-darker-rgb: 175, 85, 11;
 
   --bs-danger: #dc3545;
   --bs-danger-rgb: 220, 53, 69;
@@ -40,11 +41,25 @@ layer(components);
   }
 }
 
+.border-cardinal {
+  --bs-border-color: rgba(var(--stanford-cardinal-rgb), 1);
+}
+
 .bg-su-process-black-50 {
   background-color: rgba(var(--stanford-process-black-50-rgb), 1);
 }
+
 .bg-jungle-green {
   background-color: rgba(var(--stanford-jungle-green-rgb), 1);
+}
+
+.bg-poppy-darker {
+  background-color: rgba(var(--stanford-poppy-darker-rgb), 1);
+}
+
+.text-poppy-darker {
+  color: rgba(var(--stanford-poppy-darker-rgb), 1);
+  --underline-color: rgba(var(--stanford-poppy-darker-rgb), 1);
 }
 
 .text-green {

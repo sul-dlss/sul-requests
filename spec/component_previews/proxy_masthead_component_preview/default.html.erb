@@ -1,0 +1,3 @@
+<% sponsor = FactoryBot.build(:sponsor_patron, custom_properties: { 'user' => { 'stubs' => { 'proxies' => FactoryBot.build(:sponsor_patron).user_info['proxiesOf']}}}).user_info %>
+<% patron = FactoryBot.build(:proxy_patron, custom_properties: { 'user' => { 'stubs' => { 'sponsors' => [{ 'userId' => 'abc', 'status' => 'Active', 'requestForSponsor' => 'Yes', 'user' => sponsor }] }} }) %>
+<%= render ProxyMastheadComponent.new(patron: patron, selected: patron.sponsors.find { |x| x.id == session[:proxyFor]}) %>

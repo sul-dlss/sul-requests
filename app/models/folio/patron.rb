@@ -129,16 +129,6 @@ module Folio
       patron_group.desc
     end
 
-    # @deprecated
-    def proxy_email_address
-      sponsors&.first&.notifications_to || email
-    end
-
-    # @deprecated
-    def notifications_to
-      user_info['notificationsTo']
-    end
-
     def proxy?
       sponsors.any?
     end
@@ -167,9 +157,8 @@ module Folio
       end
     end
 
-    # @deprecated
-    def proxy_sponsor_user_id
-      sponsors.first.id
+    def proxy_group
+      @proxy_group ||= Folio::ProxyGroup.new(self)
     end
 
     def status
@@ -248,11 +237,6 @@ module Folio
       all_checkouts.reject(&:proxy_checkout?) || []
     end
 
-    # Checkouts from the proxy group
-    def proxy_group_checkouts
-      all_checkouts.select(&:proxy_checkout?)
-    end
-
     # this is all requests including self and group/proxy
     def folio_requests
       patron_graphql_response['holds'].map { |request| Request.new(request) }
@@ -274,11 +258,6 @@ module Folio
       return [] unless username
 
       IlliadRequests.new(username).requests
-    end
-
-    # Requests from the proxy group
-    def proxy_group_requests
-      folio_requests.select(&:proxy_request?) if sponsor?
     end
 
     ##
@@ -328,13 +307,15 @@ module Folio
     # Get all the sponsors for this patron
     def sponsors_for_response
       @sponsors_for_response ||= user_info.dig('stubs', 'sponsors') # used for stubbing
-      @sponsors_for_response ||= extended_user_info&.dig('proxiesFor') || []
+      @sponsors_for_response ||= extended_user_info&.dig('proxiesFor')
+      @sponsors_for_response ||= []
     end
 
     # Get all the proxies of this patron
     def proxies_of_response
       @proxies_of_response ||= user_info.dig('stubs', 'proxies') # used for stubbing
-      @proxies_of_response ||= extended_user_info&.dig('proxiesOf') || []
+      @proxies_of_response ||= extended_user_info&.dig('proxiesOf')
+      @proxies_of_response ||= []
     end
 
     def policy_service

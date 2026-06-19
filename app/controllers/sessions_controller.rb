@@ -66,6 +66,12 @@ class SessionsController < ApplicationController
     redirect_to redirect_path
   end
 
+  def proxy
+    session[:proxyFor] = params[:id].presence
+
+    redirect_back_or_to(params[:referrer])
+  end
+
   private
 
   def needs_shibboleth_logout?

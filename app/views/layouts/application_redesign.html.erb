@@ -46,19 +46,26 @@
           <%= link_to 'Borrowed items', checkouts_path, class: 'nav-link fw-semibold' %>
         <% end if current_user.patron.present? %>
 
-        <% if current_user.aeon.present? %>
+        <% if current_user.aeon.present? || current_user.patron.present? %>
           <% component.with_nav_item(classes: ['dropdown']) do %>
             <button class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" aria-expanded="false">
               Requests
             </button>
             <ul class="dropdown-menu">
+              <% if current_user.patron.present? %>
               <li><%= link_to 'FOLIO requests', requests_url, class: 'dropdown-item' %></li>
+              <% end %>
+              <% if current_user.aeon.present? %>
               <li><%= link_to 'Saved for later', aeon_requests_url(kind: 'saved_for_later'), class: 'dropdown-item' %></li>
               <li><%= link_to 'Submitted requests', aeon_requests_url(kind: 'submitted'), class: 'dropdown-item' %></li>
               <li><%= link_to 'Cancelled requests', aeon_requests_url(kind: 'cancelled'), class: 'dropdown-item' %></li>
               <li><%= link_to 'Completed requests', aeon_requests_url(kind: 'completed'), class: 'dropdown-item' %></li>
+              <% end %>
             </ul>
           <% end %>
+        <% end %>
+
+        <% if current_user.aeon.present? %>
           <% component.with_nav_item do %>
             <%= link_to 'Activities', aeon_activities_url, class: 'nav-link fw-semibold' %>
           <% end if current_user.aeon.activities.present? %>
@@ -74,6 +81,8 @@
 
         <%= render AdminNavDropdownComponent.new(masthead_component: component) %>
       <% end %>
+
+      <%= render ProxyMastheadComponent.new patron: current_user.patron, selected: patron_or_group if show_proxy_masthead? %>
     </header>
     <main id="main" class="flex-fill container my-3 pt-3">
       <%= render 'shared/flashes' %>
