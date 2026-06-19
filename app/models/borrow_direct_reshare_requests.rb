@@ -37,6 +37,8 @@ class BorrowDirectReshareRequests
   # Wrap the borrow direct reshare request item JSON in a class
   # so we can give it a similar interface to ILS Requests
   class ReshareRequest
+    include ActiveModel::Model
+
     def initialize(request_json = [])
       @request_json = request_json
     end
@@ -76,6 +78,8 @@ class BorrowDirectReshareRequests
       nil
     end
 
+    alias placed_date date_submitted
+
     def expiration_date; end
 
     def fill_by_date; end
@@ -83,6 +87,7 @@ class BorrowDirectReshareRequests
     def key
       @request_json.fetch('id', nil)
     end
+    alias id key
 
     def patron_id
       @request_json.fetch('patronIdentifier', nil)
@@ -112,6 +117,9 @@ class BorrowDirectReshareRequests
     def title
       @request_json.fetch('title', nil)
     end
+
+    def author = nil
+    def call_number = nil
 
     def to_partial_path
       'requests/borrow_direct_request'
