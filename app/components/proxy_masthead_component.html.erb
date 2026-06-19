@@ -1,4 +1,4 @@
-<div class="proxy-masthead <%= personal? ? 'bg-light' : 'bg-warning-subtle bg-opacity-10' %> border-bottom border-3 border-cardinal py-2">
+<div class="proxy-masthead <%= personal? ? 'bg-light border-cardinal' : 'bg-warning-subtle bg-opacity-10 border-warning' %> border-bottom border-3 py-2">
   <div class="container d-flex align-items-center gap-2">
     <% if personal? %>
       <%= render PillComponent.new(classes: ['bg-cardinal text-light me-1 text-nowrap']) do %>
