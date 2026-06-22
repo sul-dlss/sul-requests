@@ -21,15 +21,20 @@
         aria-labelledby="date-picker-month-label"
         hidden>
     <div class="d-flex justify-content-between align-items-center mb-2">
-      <button type="button" class="btn btn-sm btn-light" data-date-picker-target="prevBtn" data-action="click->date-picker#prevMonth" aria-label="Previous month">&#8249;</button>
+      <button type="button" class="btn btn-sm btn-light prev-next" data-date-picker-target="prevBtn" data-action="click->date-picker#prevMonth" aria-label="Previous month">&#8249;</button>
       <strong id="date-picker-month-label" data-date-picker-target="monthLabel"></strong>
-      <button type="button" class="btn btn-sm btn-light" data-date-picker-target="nextBtn" data-action="click->date-picker#nextMonth" aria-label="Next month">&#8250;</button>
+      <button type="button" class="btn btn-sm btn-light prev-next" data-date-picker-target="nextBtn" data-action="click->date-picker#nextMonth" aria-label="Next month">&#8250;</button>
     </div>
     <div data-date-picker-target="grid"></div>
     <div class="date-picker-legend d-flex align-items-center mt-2 small" data-date-picker-target="legend">
       <span class="date-picker-dot flex-shrink-0 me-2" aria-hidden="true"></span>
       <span class="text-muted">Existing appointment</span>
     </div>
+    <% if lead_time %>
+      <div class="small text-muted" data-date-picker-target="leadTimeMessage" hidden>
+        Appointments can only be scheduled <%= lead_time %> from today
+      </div>
+    <% end %>
     <div class="small text-muted mt-2" data-date-picker-target="availabilityStatus" aria-live="polite" hidden>
       <div class="d-flex align-items-center justify-content-center">
         <div class="spinner-border spinner-border-sm me-2" aria-hidden="true"></div>

@@ -19,7 +19,7 @@ import { Controller } from "@hotwired/stimulus"
 //   grid               element where the day buttons are rendered
 //   availabilityStatus optional element shown while a month's availability is being fetched
 export default class extends Controller {
-  static targets = ["input", "calendar", "button", "selectedValue", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend", "availabilityStatus"]
+  static targets = ["input", "calendar", "button", "selectedValue", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend", "availabilityStatus", "leadTimeMessage"]
   static values = {
     disabled: Array, marked: Array, min: String, max: String, openDays: Array, year: Number, month: Number, focused: String,
     availabilityUrl: String,
@@ -204,6 +204,7 @@ export default class extends Controller {
       }
     }
 
+    this.#isPrevNextDisabled()
     this.#fetchMonthAvailability(year, month)
     this.#fetchMonthAvailability(...this.#nextMonth(year, month))
     this.#updateAvailabilityStatus()
@@ -268,6 +269,13 @@ export default class extends Controller {
     ].join("-")
   }
 
+  #isPrevNextDisabled() {
+    this.prevBtnTarget.disabled =  new Date(this.yearValue, this.monthValue, 1) <= new Date()
+    const nextDisabled = new Date(this.yearValue, this.monthValue + 1, 1) > new Date(this.maxValue)
+    this.nextBtnTarget.disabled = nextDisabled
+    if (this.hasLeadTimeMessageTarget) this.leadTimeMessageTarget.hidden = !nextDisabled
+  }
+
   #isDateDisabled(isoDate, index) {
     return this.disabledValue.includes(isoDate) ||
       (this.minValue && isoDate < this.minValue) || (this.maxValue && isoDate > this.maxValue) || !this.openDayInts.includes(index)
@@ -291,7 +299,8 @@ export default class extends Controller {
       const focusedDay = this.gridTarget.querySelector("button[tabindex='0']")
       if (!event.shiftKey && document.activeElement === focusedDay) {
         event.preventDefault()
-        this.prevBtnTarget.focus({ focusVisible: true })
+        const focusButton = this.prevBtnTarget.disabled ? this.nextBtnTarget : this.prevBtnTarget
+        focusButton.focus({ focusVisible: true })
       } else if (event.shiftKey && document.activeElement === this.prevBtnTarget) {
         event.preventDefault()
         focusedDay?.focus({ focusVisible: true })

@@ -44,17 +44,22 @@ RSpec.describe 'Date picker keyboard navigation', :js do
   end
 
   describe 'Tab key focus trap' do
-    it 'Tab from the focused day moves to the Previous month button' do
+    it 'Tab from the focused day moves to the next month button' do
       open_picker
       grid_send(:tab)
-      prev_focused = page.evaluate_script(
-        "document.activeElement === document.querySelector('[data-date-picker-target=\"prevBtn\"]')"
+      next_focused = page.evaluate_script(
+        "document.activeElement === document.querySelector('[data-date-picker-target=\"nextBtn\"]')"
       )
-      expect(prev_focused).to be true
+
+      # Prev button is disabled due to min value = today
+      expect(page).to have_button('Previous month', disabled: true)
+      expect(next_focused).to be true
     end
 
     it 'natural Tab from Previous month moves to Next month' do
       open_picker
+      grid_send(:tab) # nextBtn
+      find(':focus').click # enables prevButton
       grid_send(:tab) # prevBtn
       find('[data-date-picker-target="prevBtn"]').send_keys(:tab) # nextBtn
       next_focused = page.evaluate_script(
@@ -65,6 +70,8 @@ RSpec.describe 'Date picker keyboard navigation', :js do
 
     it 'Shift+Tab from Previous month wraps back to the focused day' do
       open_picker
+      grid_send(:tab) # nextBtn
+      find(':focus').click # enables prevButton
       grid_send(:tab) # prevBtn
       find('[data-date-picker-target="prevBtn"]').send_keys([:shift, :tab])
       day_focused = page.evaluate_script(
