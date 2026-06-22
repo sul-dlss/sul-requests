@@ -31,6 +31,8 @@ class IlliadRequests
 
   # ILLiad Request class (that duck-types our Folio::Request class)
   class Request
+    include ActiveModel::Model
+
     INACTIVE_REQUEST_STATUSES = [
       'Awaiting Renewal OK Processing', 'Awaiting Renewal Request Processing', 'Awaiting Return Label Printing',
       'Borrow Direct Loan from an Ivy+ Library', 'Borrow Direct Lost', 'Borrow Direct Testing',
@@ -57,6 +59,7 @@ class IlliadRequests
     def key
       @illiad_result['TransactionNumber'].to_s
     end
+    alias id key
 
     # rubocop:disable Metrics/MethodLength
     def sort_key(key)

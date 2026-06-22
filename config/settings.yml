@@ -581,8 +581,5 @@ cybersource:
   secret_key: 'change_me'
   profile_id: 'change_me'
 
-borrow_direct_reshare:
-  enabled: false
-
 sul_illiad: https://sul-illiad-test.stanford.edu/
 illiad_api_key: 'AbC123'

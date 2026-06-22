@@ -53,6 +53,7 @@ Rails.application.routes.draw do
 
   # requests#new is a legacy route for redirecting old-style requests to the new patron_requests
   resources :requests, except: [:create]
+  resources :ill_requests, only: [:index]
 
   resources :aeon_requests, only: [:edit, :destroy, :update] do
     collection do
