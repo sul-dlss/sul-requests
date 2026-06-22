@@ -3,23 +3,26 @@ import { Controller } from "@hotwired/stimulus"
 // Custom date picker.
 //
 // Data attributes on the controller element:
-//   data-date-picker-disabled-value  JSON array of ISO dates to disable, e.g. '["2026-04-24","2026-04-27"]'
-//   data-date-picker-open-days-value JSON array of daynames to enable, e.g. '["Monday", "Tuesday"]'
-//   data-date-picker-min-value       ISO date string; any date before this is disabled, e.g. '"2026-04-23"'
-//   data-date-picker-max-value       ISO date string; any date after this is disabled, e.g. '"2027-03-01"'
-//   data-date-picker-marked-value    JSON array of ISO dates to mark with a dot, e.g. '["2026-04-23"]'
+//   data-date-picker-disabled-value         JSON array of ISO dates to disable, e.g. '["2026-04-24","2026-04-27"]'
+//   data-date-picker-open-days-value        JSON array of daynames to enable, e.g. '["Monday", "Tuesday"]'
+//   data-date-picker-min-value              ISO date string; any date before this is disabled, e.g. '"2026-04-23"'
+//   data-date-picker-max-value              ISO date string; any date after this is disabled, e.g. '"2027-03-01"'
+//   data-date-picker-marked-value           JSON array of ISO dates to mark with a dot, e.g. '["2026-04-23"]'
+//   data-date-picker-availability-url-value Optional URL probed per visible month for { unavailable_dates }
 //
 // Targets:
-//   input         hidden <input> that holds the selected ISO date value
-//   button        clickable element (button/span) that shows the formatted date and opens/closes the calendar
-//   selectedValue the selected value as displayed in the button
-//   calendar      the popup wrapper div
-//   monthLabel    element where the current month/year label is rendered
-//   grid          element where the day buttons are rendered
+//   input              hidden <input> that holds the selected ISO date value
+//   button             clickable element (button/span) that shows the formatted date and opens/closes the calendar
+//   selectedValue      the selected value as displayed in the button
+//   calendar           the popup wrapper div
+//   monthLabel         element where the current month/year label is rendered
+//   grid               element where the day buttons are rendered
+//   availabilityStatus optional element shown while a month's availability is being fetched
 export default class extends Controller {
-  static targets = ["input", "calendar", "button", "selectedValue", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend"]
+  static targets = ["input", "calendar", "button", "selectedValue", "monthLabel", "grid", "announce", "prevBtn", "nextBtn", "legend", "availabilityStatus"]
   static values = {
     disabled: Array, marked: Array, min: String, max: String, openDays: Array, year: Number, month: Number, focused: String,
+    availabilityUrl: String,
     today: {
       type: String,
       default: new Date().toISOString().slice(0, 10) // "YYYY-MM-DD"
@@ -28,6 +31,8 @@ export default class extends Controller {
 
   connect() {
     const initial = this.inputTarget.value ? this.inputTarget.value : null
+
+    this.monthStatus = new Map() // key -> "pending" | "done"
 
     // set the initially focused value to the selected day, or the first available day
     this.focusedValue = initial || this.#toIsoDate(this.nextEnabledDateOnOrAfter(new Date(this.todayValue), 1));
@@ -198,9 +203,53 @@ export default class extends Controller {
         this.focusedValue = focusedBtn.dataset.datePickerDateParam
       }
     }
+
+    this.#fetchMonthAvailability(year, month)
+    this.#fetchMonthAvailability(...this.#nextMonth(year, month))
+    this.#updateAvailabilityStatus()
   }
 
   // --- private ---
+
+  #nextMonth(year, month) {
+    return month === 11 ? [year + 1, 0] : [year, month + 1]
+  }
+
+  async #fetchMonthAvailability(year, month) {
+    const key = `${year}-${String(month + 1).padStart(2, "0")}`
+    if (!this.availabilityUrlValue || this.monthStatus.has(key)) return
+    this.monthStatus.set(key, "pending")
+    this.#updateAvailabilityStatus()
+
+    try {
+      const additions = await this.#requestUnavailableDates(key)
+      if (additions.length > 0) {
+        this.disabledValue = [...new Set([...this.disabledValue, ...additions])]
+        this.renderCalendar()
+      }
+      this.monthStatus.set(key, "done")
+    } catch (e) {
+      this.monthStatus.delete(key)
+      throw e
+    } finally {
+      this.#updateAvailabilityStatus()
+    }
+  }
+
+  async #requestUnavailableDates(monthKey) {
+    const sep = this.availabilityUrlValue.includes("?") ? "&" : "?"
+    const url = `${this.availabilityUrlValue}${sep}month=${monthKey}`
+    const res = await fetch(url, { headers: { Accept: "application/json" } })
+    if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`)
+    const data = await res.json()
+    return data.unavailable_dates || []
+  }
+
+  #updateAvailabilityStatus() {
+    if (!this.hasAvailabilityStatusTarget) return
+    const visibleKey = `${this.yearValue}-${String(this.monthValue + 1).padStart(2, "0")}`
+    this.availabilityStatusTarget.hidden = this.monthStatus.get(visibleKey) !== "pending"
+  }
 
   #formatDisplay(isoDate) {
     const [y, m, d] = isoDate.split("-").map(Number)
