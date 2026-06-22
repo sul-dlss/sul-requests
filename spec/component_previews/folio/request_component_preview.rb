@@ -5,5 +5,6 @@ module Folio
     layout 'lookbook'
 
     def default; end
+    def proxy; end
   end
 end
