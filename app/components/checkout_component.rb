@@ -50,7 +50,7 @@ class CheckoutComponent < ViewComponent::Base
   def proxy_borrower
     return nil unless checkout.proxy_checkout?
 
-    patron.proxy_user(checkout.patron_key)
+    patron.proxies.find(checkout.patron_key)
   end
 
   def checkout_status_pill

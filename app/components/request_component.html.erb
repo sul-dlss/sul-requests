@@ -28,12 +28,12 @@
   <% end %>
 
   <% c.with_body do %>
-    <div class="bg-white px-3 py-2 d-flex column-gap-4 row-gap-2 justify-content-between align-items-center flex-wrap flex-md-nowrap">
+    <div class="bg-white px-3 py-2 d-flex column-gap-4 row-gap-2 justify-content-between align-items-start flex-wrap flex-md-nowrap">
       <div class="d-flex justify-content-start gap-2">
         <span class="text-body-secondary small">Date added/modified: <span class="text-nowrap"><%= l(request.placed_date, format: :full) %></span></span>
       </div>
 
-      <div class="d-flex flex-grow-1 column-gap-4 row-gap-2 justify-content-between align-items-center flex-wrap flex-md-nowrap">
+      <div class="d-flex flex-grow-1 column-gap-4 row-gap-2 justify-content-between align-items-start flex-wrap flex-md-nowrap">
         <div>
           <% if request.ready_for_pickup? %>
             <span class="text-green">
@@ -45,6 +45,12 @@
           <% else %>
             <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i>Staff processing</span>
           <% end %>
+
+        <% if request.proxy_request? %>
+          <div class="py-2">
+            <%= render ProxyIndicatorComponent.new(proxy: proxy_borrower, verb: 'Requested') %>
+          </div>
+        <% end %>
         </div>
 
         <div class="d-flex text-nowrap align-items-baseline align-self-start justify-content-xl-end">

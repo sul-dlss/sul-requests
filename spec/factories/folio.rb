@@ -105,6 +105,10 @@ FactoryBot.define do
   end
 
   factory :request, class: 'Folio::Request' do
+    transient do
+      custom_properties { {} } # Properties you can override in the test cases
+    end
+
     record do
       { 'requestDate' => '2023-06-26T17:45:01.000+00:00',
         'item' =>
@@ -132,7 +136,7 @@ FactoryBot.define do
         'canceledByUserId' => nil,
         'cancellationAdditionalInformation' => nil,
         'canceledDate' => nil,
-        'patronComments' => nil }
+        'patronComments' => nil }.deep_merge(custom_properties)
     end
 
     initialize_with { new(record) }

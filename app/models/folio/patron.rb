@@ -140,21 +140,17 @@ module Folio
     # Return list of proxies that can act as behalf of this patron
     def proxies
       # Return display name for any proxies where 'requestForSponser' is yes.
-      @proxies ||= proxies_of_response.filter_map do |info|
-        next nil unless valid_proxy_relation?(info)
-
-        self.class.new(info['proxyUser']) if info['proxyUser'].present?
-      end
+      @proxies ||= Folio::PatronFinders.new(proxies_of_response.filter_map do |info|
+        self.class.new(info['proxyUser']) if info['proxyUser'].present? && valid_proxy_relation?(info)
+      end)
     end
 
     # Return list of sponsors this patron acts as a proxy for
     def sponsors
       # Return display name for any proxies where 'requestForSponser' is yes.
-      @sponsors ||= sponsors_for_response.filter_map do |info|
-        next nil unless valid_proxy_relation?(info)
-
-        self.class.new(info['user']) if info['user'].present?
-      end
+      @sponsors ||= Folio::PatronFinders.new(sponsors_for_response.filter_map do |info|
+        self.class.new(info['user']) if info['user'].present? && valid_proxy_relation?(info)
+      end)
     end
 
     def proxy_group
