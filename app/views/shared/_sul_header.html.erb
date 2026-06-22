@@ -24,7 +24,7 @@
         </li>
         <% unless current_page?(feedback_form_path) %>
           <li>
-            <%= link_to "#feedback-form", role: 'button', data: {'bs-toggle':"collapse", 'bs-target':"#feedback-form"} do %>
+            <%= link_to "#feedback-form", role: 'button', data: {'bs-toggle':"modal", 'bs-target':"#feedback-form"} do %>
               Feedback
             <% end %>
           </li>

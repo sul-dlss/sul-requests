@@ -21,7 +21,7 @@ RSpec.describe 'FeedbackForm', type: :feature do
     it 'reCAPTCHA challenge is NOT present' do
       visit feedback_form_path
 
-      expect(page).to have_text 'Submit feedback'
+      expect(page).to have_text 'Send feedback'
       expect(page).to have_no_css '.requests-captcha'
     end
 

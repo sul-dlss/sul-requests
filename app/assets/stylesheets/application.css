@@ -106,10 +106,6 @@ layer(components);
   background-color: rgba(var(--stanford-digital-red-rgb), .1);
 }
 
-.bg-stanford-10-black {
-  background-color: var(--stanford-10-black);
-}
-
 .bg-stanford-20-black {
   background-color: var(--stanford-20-black);
 }
@@ -1334,5 +1330,21 @@ label.btn-close {
   &:hover {
     text-decoration: var(--bs-link-hover-decoration);
     text-underline-offset: 0.25rem;
+  }
+}
+
+/* Everything after: remove when we add feedback form to component library */
+.bg-stanford-10-black {
+  background-color: var(--stanford-10-black);
+}
+
+.text-digital-red-light {
+  color: var(--stanford-digital-red-light);
+}
+
+#feedback-form .new-tab-link {
+  width: 100%;
+  @media (min-width: 576px) {
+    width: auto;
   }
 }
