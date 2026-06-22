@@ -8,7 +8,6 @@ RSpec.describe 'ILL Request Page' do
     build(:sponsor_patron)
   end
 
-  let(:borrow_direct_requests) { [] }
   let(:illiad_requests) do
     [
       IlliadRequests::Request.new({
@@ -21,7 +20,7 @@ RSpec.describe 'ILL Request Page' do
     login_as(CurrentUser.new(username: 'stub_user', patron_key: 'ec52d62d-9f0e-4ea5-856f-a1accb0121d1', shibboleth: true))
     allow(Folio::Patron).to receive(:find_by).with(patron_key: 'ec52d62d-9f0e-4ea5-856f-a1accb0121d1').and_return(patron)
 
-    allow(patron).to receive_messages(illiad_requests: illiad_requests, borrow_direct_requests: borrow_direct_requests)
+    allow(patron).to receive_messages(illiad_requests: illiad_requests)
   end
 
   it 'has request data' do

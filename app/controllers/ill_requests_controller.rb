@@ -17,7 +17,7 @@ class IllRequestsController < ApplicationController
   private
 
   def load_requests
-    @requests = (patron_or_group.illiad_requests + patron_or_group.borrow_direct_requests).sort_by { |request| request.sort_key(:date) }
+    @requests = patron_or_group.illiad_requests.sort_by { |request| request.sort_key(:date) }
   end
 
   def load_request

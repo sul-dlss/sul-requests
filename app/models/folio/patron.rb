@@ -242,12 +242,6 @@ module Folio
       patron_graphql_response['holds'].map { |request| Request.new(request) }
     end
 
-    def borrow_direct_requests
-      return [] unless Settings.borrow_direct_reshare.enabled
-
-      BorrowDirectReshareRequests.new(university_id).requests
-    end
-
     # Self requests from FOLIO
     def requests
       @requests ||= folio_requests.reject(&:proxy_request?)
