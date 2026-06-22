@@ -384,6 +384,7 @@ aeon_archives_url: https://stanford.aeon.atlas-sys.com/logon?Action=10&Form=31
 aeon:
   api_url: https://stanford-dev.aeon.atlas-sys.com/aeonapi
   api_key: ~
+  date_picker_availability_enabled: true
   days_to_persist_completed_digital_requests_as_submitted: 3
   directions:
     SPECUA: 'Located on the second floor of Green Library'
@@ -579,9 +580,6 @@ cybersource:
   access_key: 'change_me'
   secret_key: 'change_me'
   profile_id: 'change_me'
-
-borrow_direct_reshare:
-  enabled: false
 
 sul_illiad: https://sul-illiad-test.stanford.edu/
 illiad_api_key: 'AbC123'

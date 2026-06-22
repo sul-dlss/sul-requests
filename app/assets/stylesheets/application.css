@@ -557,8 +557,6 @@ label.btn-close {
   --bs-border-radius: 0.25rem;
   --bs-card-border-color: var(--stanford-10-black);
 
-  box-shadow: 0px 4px 4px 0px #00000040;
-
   .card-header {
     --bs-card-border-color: var(--stanford-20-black);
   }
@@ -1322,6 +1320,17 @@ label.btn-close {
 .add-items-button[data-disabled] {
   display: none;
   pointer-events: none;
+}
+
+.masthead .dropdown-toggle {
+  &:after {
+    vertical-align: middle!important; /* instead of default 0.255em */
+  }
+
+  &:hover {
+    text-decoration: var(--bs-link-hover-decoration);
+    text-underline-offset: 0.25rem;
+  }
 }
 
 /* Everything after: remove when we add feedback form to component library */

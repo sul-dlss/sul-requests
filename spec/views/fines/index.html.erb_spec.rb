@@ -26,6 +26,7 @@ RSpec.describe 'fines/index' do
                     catkey: '12345',
                     contact_info: Settings.libraries['GREEN'],
                     patron_key: 'patronkey123',
+                    proxy_checkout?: false,
                     instance_of?: Folio::Account)
   end
   let(:fines) { [fine] }
@@ -85,6 +86,7 @@ RSpec.describe 'fines/index' do
                         contact_info: Settings.libraries['GREEN'],
                         overdue_fines_rate: { 'quantity' => 1.0, 'intervalId' => 'hour' },
                         sort_date: Date.new,
+                        proxy_checkout?: false,
                         is_a?: true)
       end
 

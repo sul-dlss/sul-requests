@@ -140,21 +140,17 @@ module Folio
     # Return list of proxies that can act as behalf of this patron
     def proxies
       # Return display name for any proxies where 'requestForSponser' is yes.
-      @proxies ||= proxies_of_response.filter_map do |info|
-        next nil unless valid_proxy_relation?(info)
-
-        self.class.new(info['proxyUser']) if info['proxyUser'].present?
-      end
+      @proxies ||= Folio::PatronFinders.new(proxies_of_response.filter_map do |info|
+        self.class.new(info['proxyUser']) if info['proxyUser'].present? && valid_proxy_relation?(info)
+      end)
     end
 
     # Return list of sponsors this patron acts as a proxy for
     def sponsors
       # Return display name for any proxies where 'requestForSponser' is yes.
-      @sponsors ||= sponsors_for_response.filter_map do |info|
-        next nil unless valid_proxy_relation?(info)
-
-        self.class.new(info['user']) if info['user'].present?
-      end
+      @sponsors ||= Folio::PatronFinders.new(sponsors_for_response.filter_map do |info|
+        self.class.new(info['user']) if info['user'].present? && valid_proxy_relation?(info)
+      end)
     end
 
     def proxy_group
@@ -209,6 +205,10 @@ module Folio
       policy_service.item_request_policy(item)&.dig('requestTypes') || []
     end
 
+    def proxy_user(proxy_id)
+      proxies.find { |proxy| proxy.id == proxy_id }
+    end
+
     # Generate a PIN reset token for the patron
     def pin_reset_token
       crypt.encrypt_and_sign(id, expires_in: 20.minutes)
@@ -240,12 +240,6 @@ module Folio
     # this is all requests including self and group/proxy
     def folio_requests
       patron_graphql_response['holds'].map { |request| Request.new(request) }
-    end
-
-    def borrow_direct_requests
-      return [] unless Settings.borrow_direct_reshare.enabled
-
-      BorrowDirectReshareRequests.new(university_id).requests
     end
 
     # Self requests from FOLIO

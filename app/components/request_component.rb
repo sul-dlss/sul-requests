@@ -30,4 +30,8 @@ class RequestComponent < ViewComponent::Base
               lccn: identifiers['LCCN']&.join(',')
             }
   end
+
+  def proxy_borrower
+    @proxy_borrower ||= patron.proxies.find(request.patron_key) if request.proxy_request?
+  end
 end

@@ -123,9 +123,8 @@ class AeonClient
   end
 
   def reading_rooms
-    @reading_rooms ||= begin
+    @reading_rooms ||= Rails.cache.fetch('aeon/reading_rooms', expires_in: 5.minutes) do
       response = get('ReadingRooms')
-
       handle_response(response, as_class: Aeon::ReadingRoom, not_found: [])
     end
   end

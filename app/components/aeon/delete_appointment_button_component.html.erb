@@ -1,0 +1,4 @@
+<button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#<%= modal_id %>">
+  <i class="bi bi-trash align-middle"></i><span class="visually-hidden">Delete appointment</span>
+</button>
+<%= render Aeon::CancelAppointmentModalComponent.new(appointment: appointment, id: modal_id) %>

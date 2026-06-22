@@ -1,0 +1,9 @@
+<ol class="list-unstyled">
+  <%= render RequestComponent.new(
+      request: FactoryBot.build(:request, custom_properties: {
+        'details' => { 'proxyUserId' => '8e03792c-e673-43c2-a412-a3796d7c8f7e' }
+      }),
+      patron: FactoryBot.build(:sponsor_patron)
+    )
+  %>
+</ol>

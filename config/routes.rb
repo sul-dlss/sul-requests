@@ -53,6 +53,7 @@ Rails.application.routes.draw do
 
   # requests#new is a legacy route for redirecting old-style requests to the new patron_requests
   resources :requests, except: [:create]
+  resources :ill_requests, only: [:index]
 
   resources :aeon_requests, only: [:edit, :destroy, :update] do
     collection do
@@ -70,6 +71,7 @@ Rails.application.routes.draw do
   resources :aeon_reading_rooms, only: [] do
     member do
       get 'available', to: 'aeon_reading_rooms#available', as: :available
+      get 'unavailable_dates', to: 'aeon_reading_rooms#unavailable_dates', as: :unavailable_dates
     end
   end
 

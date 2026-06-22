@@ -11,7 +11,7 @@
           data-action="click->date-picker#toggle"
     aria-haspopup="dialog"
     aria-expanded="false">
-    <span data-date-picker-target="selectedValue">Select a date</span>
+    <span data-date-picker-target="selectedValue"><%= form.object.public_send(key).present? ? l(form.object.public_send(key), format: :short) :  'Select a date' %></span>
     <i class="bi bi-calendar ms-2" aria-hidden="true"></i>
   </button>
   <div class="date-picker-popup mt-1"
@@ -29,6 +29,12 @@
     <div class="date-picker-legend d-flex align-items-center mt-2 small" data-date-picker-target="legend">
       <span class="date-picker-dot flex-shrink-0 me-2" aria-hidden="true"></span>
       <span class="text-muted">Existing appointment</span>
+    </div>
+    <div class="small text-muted mt-2" data-date-picker-target="availabilityStatus" aria-live="polite" hidden>
+      <div class="d-flex align-items-center justify-content-center">
+        <div class="spinner-border spinner-border-sm me-2" aria-hidden="true"></div>
+        <span>Fetching availability…</span>
+      </div>
     </div>
   </div>
 <% end %>

@@ -24,7 +24,6 @@ module Folio
       sponsor.folio_requests.select(&:proxy_request?)
     end
 
-    def borrow_direct_requests = []
     def illiad_requests = []
 
     # NOTE: Fines on items borrowed by a proxy/group are associated

@@ -2,5 +2,5 @@
   <%= render PillComponent.new(classes: %w[text-white bg-poppy-dark me-1]) do %>
     <i class="bi bi-key-fill me-1"></i>Proxy
   <% end %>
-  Borrowed by: <%= proxy.display_name || proxy.library_id %>
+  <%= verb %> by: <%= proxy.display_name || proxy.library_id %>
 </div>

@@ -24,3 +24,6 @@ features:
 folio:
   okapi_url: 'http://example.com'
   graphql_url: 'http://example.com'
+
+aeon:
+  date_picker_availability_enabled: false
