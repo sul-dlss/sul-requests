@@ -16,7 +16,7 @@ class FineComponent < ViewComponent::Base
   def proxy_borrower
     return nil unless fine.proxy_checkout?
 
-    patron.proxy_user(fine.patron_key)
+    patron.proxies.find(fine.patron_key)
   end
 
   def data
