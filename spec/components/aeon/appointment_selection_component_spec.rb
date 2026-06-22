@@ -13,10 +13,10 @@ RSpec.describe Aeon::AppointmentSelectionComponent, type: :component do
     end
 
     it 'renders existing appointment time and date and placeholder for date to be selected' do
-      expect(page).to have_css('h4', text: 'Current')
+      expect(page).to have_css('h2', text: 'Current')
       expect(page).to have_text('Mar 11, 2024')
       expect(page).to have_no_text('1:00 pm - 1:15 pm')
-      expect(page).to have_css('h4', text: 'New')
+      expect(page).to have_css('h2', text: 'New')
       expect(page).to have_css('div[data-appointment-target="selection"]', text: 'Select date')
     end
   end
@@ -30,10 +30,10 @@ RSpec.describe Aeon::AppointmentSelectionComponent, type: :component do
     end
 
     it 'renders existing appointment time and date and placeholder for date to be selected' do
-      expect(page).to have_css('h4', text: 'Current')
+      expect(page).to have_css('h2', text: 'Current')
       expect(page).to have_text('Mar 11, 2024')
       expect(page).to have_text('1:00 pm - 1:15 pm')
-      expect(page).to have_css('h4', text: 'New')
+      expect(page).to have_css('h2', text: 'New')
       expect(page).to have_css('div[data-appointment-target="selection"]', text: 'Select date and time')
     end
   end
