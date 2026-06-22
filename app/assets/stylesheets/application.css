@@ -1327,3 +1327,14 @@ label.btn-close {
   display: none;
   pointer-events: none;
 }
+
+.masthead .dropdown-toggle {
+  &:after {
+    vertical-align: middle!important; /* instead of default 0.255em */
+  }
+
+  &:hover {
+    text-decoration: var(--bs-link-hover-decoration);
+    text-underline-offset: 0.25rem;
+  }
+}
