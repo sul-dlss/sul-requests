@@ -1,4 +1,4 @@
-<%= form_with(model: request, data: { turbo: true, controller: 'appointment-select-submit', action: 'submit->appointment-select-submit#disableForm'}) do |f| %>
+<%= form_with(model: request, data: { turbo: true, controller: 'appointment-select-submit', action: 'submit->appointment-select-submit#handleSubmit'}) do |f| %>
   <%= hidden_field_tag 'sidebar', true %>
   <%= render 'aeon_appointments/dropdown', appointments: selectable_appointments, reading_room_id: request.reading_room.id %>
 <% end %>
