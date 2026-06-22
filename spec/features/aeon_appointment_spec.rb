@@ -115,7 +115,7 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_text 'Select date'
         expect(page).to have_text '1 item will move to the new appointment.'
 
-        click_on 'Select a date'
+        click_on appointment_start_time.strftime('%b %-d, %Y')
         click_on 'Next month'
 
         first('td[role="gridcell"]:not(:disabled)').click
