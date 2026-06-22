@@ -34,6 +34,10 @@ module Folio
       record.dig('loan', 'proxyUserId') || record['userId']
     end
 
+    def proxy_checkout?
+      record.dig('loan', 'proxyUserId').present?
+    end
+
     def status
       record.dig('paymentStatus', 'name')
     end

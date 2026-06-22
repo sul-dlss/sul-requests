@@ -2,14 +2,21 @@
 
 # Render a single fine or payment for a patron
 class FineComponent < ViewComponent::Base
-  attr_reader :fine, :sortable
+  attr_reader :fine, :sortable, :patron
 
   delegate :detail_link_to_searchworks, to: :helpers
 
-  def initialize(fine:, sortable: false)
+  def initialize(fine:, sortable: false, patron: nil)
     @fine = fine
     @sortable = sortable
+    @patron = patron
     super()
+  end
+
+  def proxy_borrower
+    return nil unless fine.proxy_checkout?
+
+    patron.proxy_user(fine.patron_key)
   end
 
   def data

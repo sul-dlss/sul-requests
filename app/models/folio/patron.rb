@@ -209,6 +209,10 @@ module Folio
       policy_service.item_request_policy(item)&.dig('requestTypes') || []
     end
 
+    def proxy_user(proxy_id)
+      proxies.find { |proxy| proxy.id == proxy_id }
+    end
+
     # Generate a PIN reset token for the patron
     def pin_reset_token
       crypt.encrypt_and_sign(id, expires_in: 20.minutes)
