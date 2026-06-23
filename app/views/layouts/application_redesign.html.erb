@@ -84,6 +84,7 @@
       <% end %>
 
       <%= render ProxyMastheadComponent.new patron: current_user.patron, selected: patron_or_group if show_proxy_masthead? %>
+      <%= render '/shared/feature_flag' %>
     </header>
     <main id="main" class="flex-fill container my-3 pt-3">
       <%= render 'shared/flashes' %>

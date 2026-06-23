@@ -1,15 +1,19 @@
-<% if can?(:toggle, :feature_flags) && !Settings.features.requests_redesign %>
-  <div class="my-2 col-8 text-end">
-    <% if use_requests_redesign? %>
-      <% if controller_name == 'patron_requests' && action_name == 'new' && @patron_request&.ead_url %>
-        <%= link_to Settings.aeon_archives_url + "&Value=#{@patron_request.ead_url}", class: 'su-underline' do %>
-          <i class="bi bi-box-arrow-up-right"></i> Use Aeon web interface
+<% if  !Settings.features.requests_redesign &&  can?(:toggle, :feature_flags) %>
+  <div class="p-2 bg-illuminating-light">
+    <div class="container">
+      <% if use_requests_redesign? %>
+        <% if controller_name == 'patron_requests' && action_name == 'new' && @patron_request&.ead_url %>
+          <%= link_to Settings.aeon_archives_url + "&Value=#{@patron_request.ead_url}", class: 'su-underline' do %>
+            <i class="bi bi-box-arrow-up-right"></i> Use Aeon web interface
+          <% end %>
+        <% else %>
+          <b>Beta release:</b> You’re viewing the new My Library Account due to be released soon.
+          <%= link_to '← Return to classic view', feature_flags_path(feature_flags: ''), class: 'ms-2 btn btn-xs btn-outline-primary', data: { turbo_method: 'POST' } %>
         <% end %>
       <% else %>
-        <%= link_to '← Use the production experience', feature_flags_path(feature_flags: ''), class: 'su-underline', data: { turbo_method: 'POST' } %>
+        Classic View: New aeon and My Library account features are being added.
+        <%= link_to '✨ Try the new experience', feature_flags_path(feature_flags: 'requests_redesign'), class: 'ms-2 btn btn-xs btn-outline-primary', data: { turbo_method: 'POST' } %>
       <% end %>
-    <% else %>
-      <%= link_to '✨ Try the new experience', feature_flags_path(feature_flags: 'requests_redesign'), class: 'su-underline', data: { turbo_method: 'POST' } %>
-    <% end %>
+    </div>
   </div>
 <% end %>

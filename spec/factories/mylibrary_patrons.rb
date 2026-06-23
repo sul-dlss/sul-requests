@@ -568,7 +568,7 @@ FactoryBot.define do
 
     patron_info do
       {
-        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [] },
+        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [], 'id' => 'userid' },
         'loans' => [{ 'id' => '242c2dc3-6db5-40a1-a3ce-e1f27da86590',
                       'item' =>
           { 'title' => 'Sci-fi architecture.',
@@ -611,7 +611,7 @@ FactoryBot.define do
 
     patron_info do
       {
-        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [] },
+        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [], 'id' => 'userid' },
         'loans' => [{ 'id' => '242c2dc3-6db5-40a1-a3ce-e1f27da86590',
                       'item' =>
           { 'title' => 'Sci-fi architecture.',
@@ -665,6 +665,7 @@ FactoryBot.define do
           'externalSystemId' => nil,
           'patronGroup' =>
           { 'desc' => 'Undergraduate Student',
+            'id' => 'bdc2b6d4-5ceb-4a12-ab46-249b9a68473e',
             'group' => 'undergrad',
             'limits' =>
             [{ 'conditionId' => 'cf7a0d5f-a327-4ca1-aa9e-dc55ec006b8a',
