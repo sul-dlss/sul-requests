@@ -1,0 +1,154 @@
+
+.w-fit { width: fit-content; }
+
+.btn-xs {
+  --bs-btn-padding-y: 0.25rem;
+  --bs-btn-padding-x: 0.25rem;
+  --bs-btn-font-size: 0.875rem;
+  --bs-btn-border-radius: var(--bs-border-radius-sm);
+  line-height: 1;
+}
+
+.styled-hr {
+  height: 1px;
+  background-color: var(--stanford-50-black);
+  margin: 0px 10px;
+}
+
+.pill-close {
+  font-size: .6rem;
+}
+
+.dl-inline {
+  dt {
+    display: inline;
+    margin-right: 0.5rem;
+  }
+
+  dd {
+    display: inline;
+  }
+}
+
+label.btn-close {
+  cursor: pointer;
+}
+
+.radio-button-group {
+  .btn-check:checked + .btn {
+    --bs-border-color: var(--stanford-digital-blue);
+    background-color: var(--stanford-digital-blue);
+    color: white;
+  }
+
+  .btn-check:checked + .btn::before {
+    content: "\f633"; /* check-lg icon */
+    display: inline-block;
+    font-family: "bootstrap-icons";
+    font-size: .85rem;
+    margin-right: 0.25rem;
+    text-decoration: none;
+    vertical-align: middle;
+  }
+
+  .btn-check:focus-visible + .btn {
+    outline: 2px solid white;
+    box-shadow: 0 0 0 4px var(--stanford-black);
+  }
+}
+
+.offcanvas-sm-start {
+  --bs-offcanvas-height: 75%;
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .offcanvas-sm-start {
+    --bs-offcanvas-height: 100%;
+    top: 0;
+    left: 0;
+    width: var(--bs-offcanvas-width);
+    border-right: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+    transform: translateX(-100%);
+
+    right: auto;
+    max-height: auto;
+    border-top: none;
+
+    &.showing,
+    &.show:not(.hiding) {
+      transform: none;
+    }
+  }
+}
+
+.clamp {
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: var(--clamp-lines, 3);
+  line-clamp: var(--clamp-lines, 3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clamp-1 {
+  --clamp-lines: 1;
+}
+.clamp-2 {
+  --clamp-lines: 2;
+}
+
+.clamp-3 {
+  --clamp-lines: 3;
+}
+
+.expand-icon,
+.collapse-icon {
+  .sul-icons {
+    height: 1.5rem;
+    width: 1.5rem;
+
+    svg {
+      fill: var(--stanford-digital-blue);
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+  }
+}
+
+.expand-icon {
+  display: none;
+}
+
+.collapsed {
+  .collapse-icon {
+    display: none;
+  }
+
+  .expand-icon {
+    display: inline;
+  }
+}
+
+.required-label::after {
+  content: '*';
+  color: var(--stanford-cardinal);
+  margin-left: 5px;
+}
+
+.rounded-pill {
+  padding: 4px 12px;
+}
+
+.hidden-if-peers {
+  display: none;
+}
+
+.hidden-if-peers:only-child {
+  display: block;
+}
+
+.vr-lg {
+  opacity: 1;
+  width: 4px;
+}

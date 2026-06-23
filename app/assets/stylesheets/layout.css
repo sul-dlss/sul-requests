@@ -1,0 +1,51 @@
+
+@font-face {
+  font-family: "Stanford";
+  src: url("https://www-media.stanford.edu/assets/fonts/stanford.woff") format("woff"), url("https://www-media.stanford.edu/assets/fonts/stanford.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap
+}
+
+.su-logo {
+  --bs-link-hover-decoration: none;
+  display: inline-block;
+  font-family: Stanford, "Source Serif Pro", Georgia, Times, "Times New Roman", serif;
+  font-variant-ligatures: discretionary-ligatures;
+  font-feature-settings: "liga";
+  font-weight: 400;
+  font-size: 2.125rem;
+  line-height: 0.75;
+  text-decoration: none;
+}
+
+ /* header links don't get underline until you hover */
+#sul-header {
+  --bs-link-decoration: none;
+  --bs-link-hover-decoration: underline;
+}
+
+/* Font smoothing for light text on dark background */
+#app-header {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#sul-header {
+  --bs-link-color-rgb: var(--stanford-cardinal-rgb);
+  --bs-link-hover-color-rgb: var(--stanford-cardinal-rgb);
+}
+
+.masthead .dropdown-toggle {
+  &:after {
+    vertical-align: middle!important; /* instead of default 0.255em */
+  }
+
+  &:hover {
+    text-decoration: var(--bs-link-hover-decoration);
+    text-underline-offset: 0.25rem;
+  }
+}
+
+#pre-footer {
+  background-color: var(--stanford-stone-light);
+}
