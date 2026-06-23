@@ -958,3 +958,10 @@ summary .disclosure-icon::before {
     width: auto;
   }
 }
+
+.required-placeholder {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
