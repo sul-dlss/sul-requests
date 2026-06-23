@@ -1,0 +1,8 @@
+<%= form_tag payments_path, data: { turbo: false }, method: :post do %>
+  <%= hidden_field_tag :user_id, patron_key %>
+  <%= hidden_field_tag :amount, format('%.2f', balance) %>
+  <% fines.each do |fine| %>
+    <%= hidden_field_tag 'fine_ids[]', fine.key %>
+  <% end %>
+  <%= button_tag 'Pay now', type: 'submit', class: button_class, disabled: balance.zero?, data: { 'pay-button' => true } %>
+<% end %>

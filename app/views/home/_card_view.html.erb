@@ -1,0 +1,77 @@
+<div class="home-cards d-grid gap-4" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+  <%= render Home::SummaryCardComponent.new(
+        title: 'Borrowed items',
+        icon: 'bi-book',
+        count: dashboard.checkouts.count,
+        item_label: 'item',
+        item_label_suffix: 'currently loaned',
+        empty_label: 'No items on loan',
+        path: checkouts_path,
+        status: count_callout(count: dashboard.actionable_borrowed_items.count, phrase: 'due soon')) %>
+
+  <%= render Home::FinesCardComponent.new(
+        title: 'Fees and fines',
+        icon: 'bi-cash-coin',
+        fines: dashboard.fines,
+        balance: dashboard.balance,
+        patron_key: current_user.patron.key,
+        path: fines_path,
+        past_path: fines_path(past: 1)) %>
+
+  <%= render Home::SummaryCardComponent.new(
+        title: 'Pickup requests',
+        icon: 'bi-bag',
+        count: dashboard.pickup_requests.count,
+        item_label: 'item',
+        item_label_suffix: 'requested',
+        empty_label: 'No pickup requests',
+        path: folio_requests_path,
+        status: count_callout(count: dashboard.ready_for_pickup.count, phrase: "#{'item'.pluralize(dashboard.ready_for_pickup.count)} ready for pickup")) %>
+
+  <% delivery = dashboard.digitization_status %>
+  <%= render Home::SummaryCardComponent.new(
+        title: 'Digitization requests',
+        icon: 'bi-printer',
+        count: dashboard.digital_requests.count,
+        item_label: 'item',
+        item_label_suffix: 'requested',
+        empty_label: 'No digitization requests',
+        path: aeon_requests_path(kind: 'submitted', filter: 'digitization'),
+        empty_path: aeon_requests_path(kind: 'completed', filter: 'digitization'),
+        empty_link_label: 'View past requests',
+        status: count_callout(count: delivery.count, phrase: delivery.label)) %>
+
+  <%= render Home::SummaryCardComponent.new(
+        title: 'Reading room appointments',
+        icon: 'bi-calendar',
+        count: dashboard.appointments.count,
+        item_label: 'appointment',
+        empty_label: 'No appointments scheduled',
+        path: aeon_appointments_path,
+        empty_path: aeon_requests_path(kind: 'completed', filter: 'reading_room'),
+        empty_link_label: 'View past appointments',
+        secondary_count: dashboard.appointment_requests_count,
+        secondary_label: 'item',
+        secondary_label_suffix: 'scheduled',
+        next_up_date: dashboard.next_appointment_date) %>
+
+  <%= render Home::SummaryCardComponent.new(
+        title: 'Saved for later',
+        icon: 'bi-pin-angle',
+        count: dashboard.saved_for_later.count,
+        item_label: 'item',
+        empty_label: 'No saved items',
+        path: aeon_requests_path(kind: 'saved_for_later'),
+        status: (tag.span('Requests not complete', class: 'text-digital-red-dark') if dashboard.saved_for_later.count.positive?)) %>
+
+  <%= render Home::SummaryCardComponent.new(
+        title: 'Activities',
+        icon: 'bi-person-video3',
+        count: dashboard.upcoming_activities.count,
+        item_label: 'upcoming activity',
+        empty_label: 'No upcoming activities',
+        path: aeon_activities_path,
+        empty_path: past_aeon_activities_path,
+        empty_link_label: 'View past activities',
+        next_up_date: dashboard.next_activity_date) %>
+</div>

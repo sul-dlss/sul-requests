@@ -1,0 +1,57 @@
+<aside class="col-lg-3 mt-4 mt-lg-0">
+  <div class="border-start ps-3 pb-1">
+    <h2 class="mb-4">Questions?</h2>
+
+    <div class="row">
+      <div class="col-md-6 col-lg-12">
+        <h3>Circulating materials</h3>
+        <p class="mb-1">
+          <%= link_to 'https://library.stanford.edu/services/borrow-and-request', class: 'su-underline' do %>
+            Borrow, renew, and <span class="text-nowrap">request<i class="bi bi-arrow-up-right ms-1"></i></span>
+          <% end %>
+        </p>
+        <p class="mb-1">
+          <%= link_to "mailto:#{Settings.libraries.default.contact_info.email}", class: 'su-underline' do %>
+            <i class="align-middle bi bi-envelope me-1"></i><%= Settings.libraries.default.contact_info.email %>
+          <% end %>
+        </p>
+        <p class="mb-3">
+          <i class="align-middle bi bi-phone me-1"></i><%= Settings.libraries.default.contact_info.phone %>
+        </p>
+      </div>
+
+      <div class="col-md-6 col-lg-12">
+        <h3>Special collections</h3>
+        <p class="mb-3">
+          <%= link_to 'https://library.stanford.edu/libraries/special-collections', class: 'su-underline' do %>
+            Access rare and distinctive <span class="text-nowrap">materials<i class="bi bi-arrow-up-right ms-1"></i></span>
+          <% end %>
+        </p>
+
+        <h3>The Libraries doesn't have what you need?</h3>
+        <p class="mb-1">
+          Place a request via <%= link_to 'https://library.stanford.edu/interlibrary-loan', class: 'su-underline' do %>
+          Interlibrary loan.
+          <% end %>
+        </p>
+        <p>
+          Submit a <%= link_to 'purchase recommendation.', 'https://stanforduniversity.qualtrics.com/jfe/form/SV_5iQABR6VSszIQMR', class: 'su-underline' %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 p-3">
+    <p class="small text-muted mb-2">Home page variant</p>
+    <div class="btn-group btn-group-sm" role="group" aria-label="Home view variant">
+      <button type="button"
+              class="btn btn-primary"
+              data-action="home-view-toggle#set"
+              data-home-view-toggle-variant-param="card">Card view</button>
+      <button type="button"
+              class="btn btn-primary"
+              data-action="home-view-toggle#set"
+              data-home-view-toggle-variant-param="list">List view</button>
+    </div>
+  </div>
+</aside>

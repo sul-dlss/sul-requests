@@ -6,7 +6,7 @@
 class AeonAppointmentsController < ApplicationController
   include AeonController
 
-  before_action :load_aeon_requests, only: [:index, :items]
+  before_action :load_aeon_requests, only: [:index, :items, :update]
   before_action :load_appointments
   before_action :load_appointment, only: [:edit, :update, :destroy, :items]
   before_action :build_appointment, only: [:new, :create]
@@ -47,7 +47,7 @@ class AeonAppointmentsController < ApplicationController
     render :edit, status: :unprocessable_content and return unless @appointment.save
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.refresh(request_id: nil) }
+      format.turbo_stream
       format.html { redirect_to :index, notice: 'Appointment updated successfully' }
     end
   end

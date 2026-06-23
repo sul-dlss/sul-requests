@@ -59,7 +59,7 @@ RSpec.describe 'Payments History' do
   context 'with no payments' do
     let(:patron_info) do
       {
-        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [] },
+        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [], 'id' => 'userid' },
         'loans' => [],
         'holds' => [],
         'accounts' => []

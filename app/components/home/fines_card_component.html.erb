@@ -1,0 +1,20 @@
+<%= render Home::FlatCardComponent.new do |c| %>
+  <% c.with_title do %>
+    <i class="bi <%= icon %> text-60-black fs-4"></i>
+  <% end %>
+
+  <% c.with_actions do %>
+    <%= render Home::PayNowFormComponent.new(fines: fines, balance: balance, patron_key: patron_key) %>
+  <% end %>
+
+  <% c.with_body(classes: %w[pt-1]) do %>
+    <h2 class="mb-1"><%= title %></h2>
+    <% if empty? %>
+      <p class="mb-1">No fees or fines</p>
+      <%= render Home::ArrowLinkComponent.new(label: 'View past fees/fines', path: past_path) %>
+    <% else %>
+      <p class="mb-1"><span class="fw-semibold"><%= number_to_currency(balance) %></span> balance</p>
+      <%= render Home::ArrowLinkComponent.new(label: 'View details', path: path) %>
+    <% end %>
+  <% end %>
+<% end %>

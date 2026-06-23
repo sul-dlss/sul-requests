@@ -951,6 +951,11 @@ summary .disclosure-icon::before {
   pointer-events: none;
 }
 
+/* Remove after we go live and don't have beta banner */
+.bg-illuminating-light {
+ background: rgb(var(--stanford-illuminating-light-rgb));
+}
+
 /* Everything after: remove when we add feedback form to component library */
 #feedback-form .new-tab-link {
   width: 100%;
@@ -964,4 +969,24 @@ summary .disclosure-icon::before {
   width: 0;
   height: 0;
   overflow: hidden;
+}
+
+[data-pay-button]:disabled {
+  background-color: rgba(var(--stanford-digital-red-dark-rgb), 0.2);
+  color: rgba(140, 21, 21, 0.6);
+  border-color: transparent;
+  opacity: 1;
+}
+
+.home-cards > .card {
+  min-height: 196px;
+}
+
+.home-list .borrowed-items > li:last-child {
+  --bs-border-color: transparent;
+}
+
+[data-home-view="card"] [data-home-view-variant="list"],
+[data-home-view="list"] [data-home-view-variant="card"] {
+  display: none;
 }
