@@ -9,7 +9,9 @@ class HomeController < ApplicationController
 
   before_action :authenticate_user!, only: [:show]
 
-  def show; end
+  def show
+    @dashboard = Home::Dashboard.new(current_user)
+  end
 
   def authenticate_user!
     return if current_user.persisted?

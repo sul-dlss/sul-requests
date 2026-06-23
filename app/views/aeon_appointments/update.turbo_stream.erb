@@ -1,0 +1,11 @@
+<%= turbo_stream.append(params[:modal]) do %>
+  <div class="d-none" data-modal-target="closeSignal"></div>
+<% end if params[:modal] %>
+
+<%= turbo_stream.replace dom_id(@appointment) do %>
+  <%= render Aeon::AppointmentComponent.new(appointment: @appointment, all_requests: @aeon_requests) %>
+<% end %>
+
+<%= turbo_stream.replace dom_id(@appointment, :home) do %>
+  <%= render 'home/appointments/li', appointment: @appointment %>
+<% end %>

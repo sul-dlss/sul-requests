@@ -30,6 +30,20 @@ module MylibraryHelper
     end
   end
 
+  def format_relative_date_phrase(date)
+    return unless date
+
+    days = (date.to_date - Time.zone.today).to_i
+    case days
+    when 0 then 'today'
+    when 1 then 'tomorrow'
+    when -1 then 'yesterday'
+    when 2..7 then "in #{pluralize(days, 'day')}"
+    when -7..-2 then "#{pluralize(-days, 'day')} ago"
+    else l(date, format: :date_only)
+    end
+  end
+
   # Wrap a link to the SearchWorks record for the given Catkey wrapped in the markup
   # necessary to be aligned with the content in the collapsible list sections
   def detail_link_to_searchworks(catkey)

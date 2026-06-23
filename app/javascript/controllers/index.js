@@ -90,3 +90,6 @@ application.register("view-container-contents", ViewContainerContentsController)
 
 import AddItemsController from "./add_items_controller"
 application.register("add-items", AddItemsController)
+
+import HomeViewToggleController from "./home_view_toggle_controller"
+application.register("home-view-toggle", HomeViewToggleController)
