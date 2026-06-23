@@ -59,6 +59,14 @@ module Aeon
       self.class.new(requests.sort_by(&))
     end
 
+    # Sorts requests newest-first by `creation_date`, rounded to the minute,
+    # with title and sort_key as tiebreakers. Pass a block to sort by a
+    # different timestamp accessor (e.g. `&:transaction_date`).
+    def newest_first(&date_block)
+      date_block ||= :creation_date.to_proc
+      self.class.new(requests.sort_by { |r| [-date_block.call(r).change(sec: 0).to_i, r.title.to_s, r.sort_key] })
+    end
+
     def saved_for_later
       self.class.new requests.select(&:saved_for_later?)
     end
@@ -77,6 +85,10 @@ module Aeon
 
     def digitization
       self.class.new requests.select(&:digital?)
+    end
+
+    def recently_delivered(within: 3.days)
+      self.class.new(requests.select { |r| r.delivered_recently?(within: within) })
     end
 
     def reading_room

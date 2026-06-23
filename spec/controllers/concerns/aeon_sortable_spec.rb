@@ -35,7 +35,9 @@ RSpec.describe AeonSortable do
           appointment: build(:aeon_appointment, start_time: now + 3.days))
   end
 
-  let(:requests) { [request_c_with_appointment, request_a_with_appointment, request_b_digitial] }
+  let(:requests) do
+    Aeon::RequestFinders.new([request_c_with_appointment, request_a_with_appointment, request_b_digitial])
+  end
 
   before do
     allow(controller).to receive(:params).and_return(ActionController::Parameters.new(sort: sort_param))

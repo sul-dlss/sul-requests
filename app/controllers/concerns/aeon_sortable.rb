@@ -16,11 +16,11 @@ module AeonSortable
     },
     'date_added' => {
       label: 'Sort by date added',
-      sort: ->(requests) { requests.sort_by { |r| [-r.creation_date.change(sec: 0).to_i, r.title.to_s, r.sort_key] } }
+      sort: ->(requests) { requests.newest_first }
     },
     'date_modified' => {
       label: 'Sort by date modified',
-      sort: ->(requests) { requests.sort_by { |r| [-r.transaction_date.change(sec: 0).to_i, r.title.to_s, r.sort_key] } }
+      sort: ->(requests) { requests.newest_first(&:transaction_date) }
     },
     'appointment_time' => {
       label: 'Sort by appointment time',

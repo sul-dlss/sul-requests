@@ -23,6 +23,10 @@ module Aeon
       @appointments ||= Aeon::AppointmentFinders.new([])
     end
 
+    def activities
+      @activities ||= Aeon::ActivityFinders.new([])
+    end
+
     def present? = false
 
     def persisted? = false

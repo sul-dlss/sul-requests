@@ -6,8 +6,8 @@ module Aeon
   class RequestFulfillmentComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :appointment?, :cancelled_by_staff?, :digital?, :saved_for_later?, :scan_delivered?, :submitted?,
-             :photoduplication_date, :transaction_date, to: :request
+    delegate :appointment?, :cancelled_by_staff?, :delivered_date, :digital?, :saved_for_later?,
+             :scan_delivered?, :submitted?, to: :request
 
     def initialize(request:)
       @request = request
@@ -17,10 +17,6 @@ module Aeon
       return false if saved_for_later?
 
       mode.present?
-    end
-
-    def delivered_date
-      photoduplication_date.presence || transaction_date
     end
 
     def mode
