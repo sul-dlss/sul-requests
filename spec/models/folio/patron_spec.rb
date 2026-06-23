@@ -169,6 +169,21 @@ RSpec.describe Folio::Patron do
     end
   end
 
+  context 'when the FOLIO graphql response is nil' do
+    let(:fields) { { 'id' => 'no-folio-record' } }
+    let(:folio_client) { instance_double(FolioClient, extended_patron_info: nil) }
+
+    before do
+      allow(described_class).to receive(:folio_client).and_return(folio_client)
+    end
+
+    it 'returns empty collections instead of raising' do
+      expect(patron.checkouts).to eq []
+      expect(patron.fines).to eq []
+      expect(patron.folio_requests).to eq []
+    end
+  end
+
   describe '#proxies' do
     let(:fields) do
       {
