@@ -6,8 +6,8 @@
   </button>
   <ul class="dropdown-menu" role="menu">
     <% sort_fields.each do |sort_field, label| %>
-      <li>
-        <%= link_to url_for(request.query_parameters.merge({sort: sort_field})), class: "dropdown-item #{'active' if params[:sort] == sort_field || (!params[:sort] && sort_field == sort_fields.keys.first )}" do %>
+      <li role="presentation">
+        <%= link_to url_for(request.query_parameters.merge({sort: sort_field})), role: 'menuitem', class: "dropdown-item #{'active' if params[:sort] == sort_field || (!params[:sort] && sort_field == sort_fields.keys.first )}" do %>
           <%= label %>
         <% end %>
       </li>

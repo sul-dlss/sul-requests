@@ -4,8 +4,8 @@
   </button>
   <ul class="dropdown-menu" role="menu">
     <% available_aeon_sort_options.each do |key, option| %>
-      <li>
-        <%= link_to url_for(request.query_parameters.merge(sort: key)), class: "dropdown-item #{'active' if current_aeon_sort == key}" do %>
+      <li role="presentation">
+        <%= link_to url_for(request.query_parameters.merge(sort: key)), role: 'menuitem', class: "dropdown-item #{'active' if current_aeon_sort == key}" do %>
           <%= option[:label] %>
         <% end %>
       </li>

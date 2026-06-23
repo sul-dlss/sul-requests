@@ -4,8 +4,8 @@
   </button>
   <ul class="dropdown-menu" role="menu">
     <% AeonFilterable::FILTER_OPTIONS.each do |key, option| %>
-      <li>
-        <%= link_to url_for(request.query_parameters.merge(filter: key)), class: "dropdown-item #{'active' if current_aeon_filter == key}" do %>
+      <li role="presentation">
+        <%= link_to url_for(request.query_parameters.merge(filter: key)), role: 'menuitem', class: "dropdown-item #{'active' if current_aeon_filter == key}" do %>
           <%= option[:label] %>
         <% end %>
       </li>
