@@ -157,4 +157,56 @@ RSpec.describe Aeon::Request do
       expect(request).not_to be_scan_delivered
     end
   end
+
+  describe '#delivered_date' do
+    it 'returns nil when the request is not scan delivered' do
+      request = build(:aeon_request, shipping_option: nil, transaction_status: 8, photoduplication_status: nil)
+      expect(request.delivered_date).to be_nil
+    end
+
+    it 'returns the photoduplication date when present' do
+      photoduplication_date = Time.zone.parse('2024-03-12T12:44:01.23Z')
+      request = build(:aeon_request, :digitized,
+                      transaction_status: 17, photoduplication_status: 23,
+                      photoduplication_date: photoduplication_date)
+      expect(request.delivered_date).to eq photoduplication_date
+    end
+
+    it 'falls back to the transaction date when photoduplication date is blank' do
+      transaction_date = Time.zone.parse('2024-03-11T23:35:01.23Z')
+      request = build(:aeon_request, :digitized,
+                      transaction_status: 17, photoduplication_status: 23,
+                      photoduplication_date: nil, transaction_date: transaction_date)
+      expect(request.delivered_date).to eq transaction_date
+    end
+  end
+
+  describe '#delivered_recently?' do
+    it 'returns false when the request has no delivered date' do
+      request = build(:aeon_request, shipping_option: nil, transaction_status: 8, photoduplication_status: nil)
+      expect(request).not_to be_delivered_recently
+    end
+
+    it 'returns true when delivered inside the default window' do
+      request = build(:aeon_request, :digitized,
+                      transaction_status: 17, photoduplication_status: 23,
+                      photoduplication_date: 1.day.ago)
+      expect(request).to be_delivered_recently
+    end
+
+    it 'returns false when delivered outside the default window' do
+      request = build(:aeon_request, :digitized,
+                      transaction_status: 17, photoduplication_status: 23,
+                      photoduplication_date: 10.days.ago)
+      expect(request).not_to be_delivered_recently
+    end
+
+    it 'respects a custom window' do
+      request = build(:aeon_request, :digitized,
+                      transaction_status: 17, photoduplication_status: 23,
+                      photoduplication_date: 5.days.ago)
+      expect(request.delivered_recently?(within: 7.days)).to be true
+      expect(request.delivered_recently?(within: 3.days)).to be false
+    end
+  end
 end

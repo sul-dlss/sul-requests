@@ -12,14 +12,14 @@ class AeonActivitiesController < ApplicationController
   def index; end
 
   def active
-    @activities = all_activities.select(&:active?)
+    @activities = all_activities.active
     @activity_types = @activities.map(&:activity_type)
     filter
     sort_results
   end
 
   def past
-    @activities = all_activities.reject(&:active?)
+    @activities = all_activities.past
     @activity_types = @activities.map(&:activity_type)
     filter
     sort_results

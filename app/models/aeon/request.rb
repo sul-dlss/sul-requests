@@ -112,6 +112,16 @@ module Aeon
       digital? && in_completed_queue?
     end
 
+    def delivered_date
+      return unless scan_delivered?
+
+      photoduplication_date.presence || transaction_date
+    end
+
+    def delivered_recently?(within: 3.days)
+      delivered_date.present? && delivered_date >= within.ago
+    end
+
     def cancelled?
       (digital? && photoduplication_queue&.cancelled?) || transaction_queue&.cancelled?
     end

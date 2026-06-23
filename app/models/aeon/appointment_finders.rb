@@ -4,6 +4,7 @@ module Aeon
   # Wraps a group of Aeon appointments with finder methods
   class AppointmentFinders
     include Enumerable
+    include ScheduledFinders
 
     attr_reader :appointments
 

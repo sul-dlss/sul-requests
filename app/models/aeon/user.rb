@@ -42,7 +42,8 @@ module Aeon
     end
 
     def activities # rubocop:disable Metrics/AbcSize
-      @activities ||= self.class.aeon_client.activities_for(username:).sort_by(&:sort_key).tap do |activities|
+      @activities ||= begin
+        activities = self.class.aeon_client.activities_for(username:).sort_by(&:sort_key)
         # use the same user instances across activities to preserve e.g. memoized requests
         users_cache = activities.flat_map(&:users).index_by(&:username).merge(username => self)
 
@@ -50,6 +51,8 @@ module Aeon
           users = users_cache.values_at(*activity.users.map(&:username)).compact
           activity.users = users
         end
+
+        Aeon::ActivityFinders.new(activities)
       end
     end
 
