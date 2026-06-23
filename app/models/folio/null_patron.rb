@@ -79,6 +79,7 @@ module Folio
     def payments = []
     def folio_requests = []
     def requests = []
+    def illiad_requests = []
 
     # define the remaining methods of Folio::Patron
     (Folio::Patron.instance_methods(false) - instance_methods(false)).each do |method|
