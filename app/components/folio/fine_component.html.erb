@@ -9,10 +9,10 @@
   <% end %>
   <% c.with_actions do %>
     <% if checked_out? %>
-      <%= render CheckedOutActionsComponent.new(checkout: fine) %>
+      <%= render Folio::CheckedOutActionsComponent.new(checkout: fine) %>
     <% else %>
-      <%= render FineActionsComponent.new(fine:) %>
-      <%= render FineStatusPillComponent.new(status: fine.status) if fine.closed? %>
+      <%= render Folio::FineActionsComponent.new(fine:) %>
+      <%= render Folio::FineStatusPillComponent.new(status: fine.status) if fine.closed? %>
     <% end %>
   <% end %>
   <% c.with_body(classes: 'bg-white') do %>
@@ -37,6 +37,6 @@
       <% if fine.barcode %><span>Barcode: <%= fine.barcode %></span><% end %>
       <% if fine.sort_date %><span>Date incurred: <%= l(fine.sort_date.to_date, format: :short) %></span><% end %>
     </div>
-    <%= render ProxyIndicatorComponent.new(proxy: proxy_borrower) %>
+    <%= render Folio::ProxyIndicatorComponent.new(proxy: proxy_borrower) %>
   <% end %>
 <% end %>

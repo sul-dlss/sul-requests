@@ -21,7 +21,7 @@
     </div>
 
     <ul class="checkouts p-0" data-sortable-target="list" aria-live="polite">
-      <%= render CheckoutComponent.with_collection(@checkouts, patron: patron_or_group) %>
+      <%= render Folio::CheckoutComponent.with_collection(@checkouts, patron: patron_or_group) %>
     </ul>
   </div>
 <% else %>

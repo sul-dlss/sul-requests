@@ -31,7 +31,7 @@
         <%= today_with_time_or_date(checkout.checkout_date, short_term: checkout.short_term_loan?) %>
       </span>
     </div>
-    <%= render ProxyIndicatorComponent.new(proxy: proxy_borrower) %>
+    <%= render Folio::ProxyIndicatorComponent.new(proxy: proxy_borrower) %>
   <% end %>
   <% c.with_body(classes: 'bg-white') do %>
     <div class="d-flex justify-content-between gap-5">

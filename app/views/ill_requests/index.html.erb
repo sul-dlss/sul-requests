@@ -19,7 +19,7 @@
   </div>
   <% if @requests.any? %>
     <ul class="requests p-0" data-sortable-target="list" aria-live="polite">
-      <%= render IllRequestComponent.with_collection(@requests, patron: patron_or_group) %>
+      <%= render Folio::IllRequestComponent.with_collection(@requests, patron: patron_or_group) %>
     </ul>
   <% end %>
 </div>

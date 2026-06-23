@@ -48,7 +48,7 @@
 
         <% if request.proxy_request? %>
           <div class="py-2">
-            <%= render ProxyIndicatorComponent.new(proxy: proxy_borrower, verb: 'Requested') %>
+            <%= render Folio::ProxyIndicatorComponent.new(proxy: proxy_borrower, verb: 'Requested') %>
           </div>
         <% end %>
         </div>

@@ -1,6 +1,6 @@
 <% @responses.select(&:success?).each do |response| %>
   <%= turbo_stream.replace(dom_id(response.checkout)) do %>
-    <%= render CheckoutComponent.new(checkout: response.updated_checkout, patron: patron_or_group) %>
+    <%= render Folio::CheckoutComponent.new(checkout: response.updated_checkout, patron: patron_or_group) %>
   <% end %>
 <% end %>
 
