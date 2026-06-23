@@ -149,7 +149,7 @@ RSpec.describe 'Checkout Page' do
   context 'with a user who has no checkouts' do
     let(:patron_info) do
       {
-        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [] },
+        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [], 'id' => 'userid' },
         'loans' => [],
         'holds' => [],
         'accounts' => []

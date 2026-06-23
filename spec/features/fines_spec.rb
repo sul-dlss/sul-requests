@@ -45,7 +45,7 @@ RSpec.describe 'Fines Page' do
   context 'with no fines' do
     let(:patron_info) do
       {
-        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [] },
+        'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [], 'id' => 'userid' },
         'loans' => [],
         'holds' => [],
         'accounts' => []
