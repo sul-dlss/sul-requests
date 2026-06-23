@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RequestsController do
+RSpec.describe FolioRequestsController do
   let(:mock_patron) { instance_double(Folio::Patron, requests:, key: '513a9054-5897-11ee-8c99-0242ac120002') }
   let(:requests) { [] }
 
@@ -100,10 +100,10 @@ RSpec.describe RequestsController do
       context 'with a group request' do
         let(:mock_client) { instance_double(FolioClient, change_pickup_service_point: api_response, ping: true) }
 
-        it 'renews the item and redirects to requests_path' do
+        it 'renews the item and redirects to folio_requests_path' do
           patch :update, params: { id: '123', service_point: 'Other library', group: true }
 
-          expect(response).to redirect_to requests_path(group: true)
+          expect(response).to redirect_to folio_requests_path(group: true)
         end
       end
 
@@ -114,10 +114,10 @@ RSpec.describe RequestsController do
           expect(flash[:error]).to match('An unexpected error has occurred')
         end
 
-        it 'does not renew the item and redirects to requests_path' do
+        it 'does not renew the item and redirects to folio_requests_path' do
           patch :update, params: { id: 'some_other_request_key' }
 
-          expect(response).to redirect_to requests_path
+          expect(response).to redirect_to folio_requests_path
         end
       end
     end
@@ -140,9 +140,9 @@ RSpec.describe RequestsController do
           expect(flash[:success]).to include('Success!')
         end
 
-        it 'cancels the hold and redirects to requests_path' do
+        it 'cancels the hold and redirects to folio_requests_path' do
           delete :destroy, params: { id: '123' }
-          expect(response).to redirect_to requests_path
+          expect(response).to redirect_to folio_requests_path
         end
       end
 
@@ -154,18 +154,18 @@ RSpec.describe RequestsController do
           expect(flash[:error]).to include('Sorry!')
         end
 
-        it 'does not cancel the hold and redirects to requests_path' do
+        it 'does not cancel the hold and redirects to folio_requests_path' do
           delete :destroy, params: { id: '123' }
-          expect(response).to redirect_to requests_path
+          expect(response).to redirect_to folio_requests_path
         end
       end
     end
 
     context 'with a group request' do
-      it 'renews the item and redirects to requests_path' do
+      it 'renews the item and redirects to folio_requests_path' do
         delete :destroy, params: { id: '123', group: true }
 
-        expect(response).to redirect_to requests_path(group: true)
+        expect(response).to redirect_to folio_requests_path(group: true)
       end
     end
 
@@ -176,10 +176,10 @@ RSpec.describe RequestsController do
         expect(flash[:error]).to match('An unexpected error has occurred')
       end
 
-      it 'does not renew the item and redirects to requests_path' do
+      it 'does not renew the item and redirects to folio_requests_path' do
         delete :destroy, params: { id: 'some_other_request_key' }
 
-        expect(response).to redirect_to requests_path
+        expect(response).to redirect_to folio_requests_path
       end
     end
   end

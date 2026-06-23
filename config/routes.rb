@@ -52,7 +52,8 @@ Rails.application.routes.draw do
   post '/payments/cancel', to: 'payments#cancel'
 
   # requests#new is a legacy route for redirecting old-style requests to the new patron_requests
-  resources :requests, except: [:create]
+  get 'requests/new', to: 'requests#new', as: :new_request
+  resources :folio_requests, except: [:new, :create], path: 'requests'
   resources :ill_requests, only: [:index]
 
   resources :aeon_requests, only: [:edit, :destroy, :update] do

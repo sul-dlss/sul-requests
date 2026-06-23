@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'requests/edit' do
+RSpec.describe 'folio_requests/edit' do
   let(:request_attributes) { {} }
   let(:mock_request) do
     instance_double(
