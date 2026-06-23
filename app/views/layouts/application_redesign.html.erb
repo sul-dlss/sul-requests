@@ -53,7 +53,7 @@
             </button>
             <ul class="dropdown-menu">
               <% if current_user.patron.present? %>
-              <li><%= link_to 'FOLIO requests', requests_url, class: 'dropdown-item' %></li>
+              <li><%= link_to 'FOLIO requests', folio_requests_url, class: 'dropdown-item' %></li>
               <li><%= link_to 'ILL requests', ill_requests_url, class: 'dropdown-item' %></li>
               <% end %>
               <% if current_user.aeon.present? %>

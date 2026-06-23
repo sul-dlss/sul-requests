@@ -66,7 +66,7 @@ RSpec.describe 'Proxy User' do
 
   context 'when on the requests page' do
     it 'displays the sponsor requests from a proxy' do
-      visit requests_path
+      visit folio_requests_path
 
       click_on 'Switch to proxy'
       click_on 'Proxy for: Shea Sponsor'

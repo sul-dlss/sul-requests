@@ -3,7 +3,7 @@
 </div>
 <div class="modal-body request-edit">
   <h3 class="record-title"><%= @request.title %></h3>
-  <%= form_tag request_path(@request.key), method: :patch do %>
+  <%= form_tag folio_request_path(@request.key), method: :patch do %>
     <%= hidden_field_tag :id, @request.key %>
     <%= hidden_field_tag :title, @request.title %>
     <%= hidden_field_tag :group, params[:group] if params[:group] %>

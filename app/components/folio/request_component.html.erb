@@ -56,14 +56,14 @@
         <div class="d-flex text-nowrap align-items-baseline align-self-start justify-content-xl-end">
           <% if patron.can_modify_requests? %>
             <% if request.ready_for_pickup? %>
-              <%= form_tag request_path(request.key), method: :delete do %>
+              <%= form_tag folio_request_path(request.key), method: :delete do %>
                 <%= hidden_field_tag :title, request.title %>
                 <%= button_tag class: 'btn btn-link su-underline p-0', type: 'submit' do %>
                   <i class="bi bi-trash align-middle"></i><span class="visually-hidden">Cancel request</span>
                 <% end %>
               <% end %>
             <% else %>
-              <%= link_to edit_request_path(request.key), class: 'btn btn-link su-underline p-0' do %>
+              <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link su-underline p-0' do %>
                 <i class="bi bi-pencil-fill me-1 align-middle"></i><span class="visually-hidden">Edit request</span>
               <% end %>
             <% end %>

@@ -26,7 +26,7 @@ RSpec.describe 'Request Page' do
   end
 
   it 'has ready for pickup request data' do
-    visit requests_path
+    visit folio_requests_path
 
     within('#folio_request_7fa87cfe-df57-4dc7-953b-a5a44ff37d91') do
       expect(page).to have_text(/Rothko : the color field paintings/)
@@ -36,7 +36,7 @@ RSpec.describe 'Request Page' do
   end
 
   it 'ready for pickup can be cancelled' do
-    visit requests_path
+    visit folio_requests_path
 
     within('#folio_request_7fa87cfe-df57-4dc7-953b-a5a44ff37d91') do
       click_on 'Cancel'
@@ -46,7 +46,7 @@ RSpec.describe 'Request Page' do
   end
 
   it 'is editable' do
-    visit edit_request_path('7fa87cfe-df57-4dc7-953b-a5a44ff37d91')
+    visit edit_folio_request_path('7fa87cfe-df57-4dc7-953b-a5a44ff37d91')
     select('Engineering Library (Terman)', from: 'service_point')
     fill_in('not_needed_after', with: '1999/01/01')
     click_on 'Change'
@@ -55,7 +55,7 @@ RSpec.describe 'Request Page' do
   end
 
   it 'is sortable', :js do
-    visit requests_path
+    visit folio_requests_path
 
     within '#requests' do
       expect(page).to have_css('.dropdown-toggle', text: 'Sort (Not needed after)')
