@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['list', 'menu']
+  static targets = ['list', 'menu', 'observe']
   static values = {
     sort: String
   }
@@ -12,6 +12,30 @@ export default class extends Controller {
     } else {
       this.resort();
     }
+  }
+
+  debouncedDynamicResort() {
+    if (this.debounceTimeout) {
+      clearTimeout(this.debounceTimeout);
+    }
+
+    // this.sorting = true;
+    this.debounceTimeout = setTimeout(() => {
+      this.resort();
+    }, 30);
+  }
+
+  observeTargetConnected(el) {
+    this.observer = new MutationObserver((_mutations => {
+      this.debouncedDynamicResort();
+    }));
+
+    this.observer.observe(el, { childList: true });
+  }
+
+  observeTargetDisconnected() {
+    this.observer.disconnect();
+    if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
   }
 
   sort(event) {
@@ -48,6 +72,12 @@ export default class extends Controller {
       if (aValue > bValue) return 1;
       return 0;
     });
+
+    // TODO: sort subgroups too.
+
+    if (Array.from(items).every((item, index) => item === sortedItems[index])) {
+      return;
+    }
 
     sortedItems.forEach(item => this.listTarget.appendChild(item));
   }

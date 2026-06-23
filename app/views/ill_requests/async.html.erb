@@ -1,0 +1,7 @@
+<%= turbo_frame_tag :ill_requests do %>
+  <turbo-stream action="append" target="requests">
+    <template>
+      <%= render Folio::IllRequestComponent.with_collection(@requests, patron: patron_or_group) %>
+    </template>
+  </turbo-stream>
+<% end %>

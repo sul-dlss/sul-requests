@@ -16,6 +16,8 @@ class AeonRequestsController < ApplicationController
 
   def index
     authorize! :read, Aeon::Request
+
+    render 'async' and return if params[:async]
   end
 
   def resubmit

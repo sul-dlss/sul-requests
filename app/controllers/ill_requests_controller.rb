@@ -12,7 +12,9 @@ class IllRequestsController < ApplicationController
   #
   # GET /ill_requests
   # GET /ill_requests.json
-  def index; end
+  def index
+    render 'async' and return if params[:async]
+  end
 
   private
 
