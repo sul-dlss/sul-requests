@@ -16,19 +16,21 @@
     view_all_path: checkouts_path) do |c| %>
     <% c.with_items do %>
       <ul class="borrowed-items list-unstyled mb-2">
-        <% dashboard.borrowed_items_preview&.each do |request| %>
-          <li id="<%= dom_id(request, :home) %>" class="border-bottom d-flex flex-column gap-1 py-1">
-            <% if request.overdue? %>
+        <% dashboard.borrowed_items_preview&.each do |checkout| %>
+          <li id="<%= dom_id(checkout, :home) %>" class="border-bottom d-flex flex-column gap-1 py-1">
+            <% if checkout.overdue? %>
               <span class="fw-semibold small text-cardinal"><i class="bi bi-exclamation-triangle text-cardinal me-1"></i>Overdue</span>
-              <span class="ms-3">Accruing <%= number_to_currency(request.overdue_fines_rate['quantity']) %>/<%= request.overdue_fines_rate['intervalId'] %> until returned
-              </span>
+              <% if checkout.accruing? %>
+                <span class="ms-3">Accruing <%= number_to_currency(checkout.overdue_fines_rate['quantity']) %>/<%= checkout.overdue_fines_rate['intervalId'] %> until returned
+                </span>
+              <% end %>
             <% else %>
               <div class="fw-semibold small text-cardinal">
-                Due <%= format_relative_date_phrase(request.due_date) %>
+                Due <%= format_relative_date_phrase(checkout.due_date) %>
               </div>
             <% end %>
             <div class="small">
-              <%= request.title %>
+              <%= checkout.title %>
             </div>
             <div class="d-flex flex-shrink-0 gap-2">
             </div>
