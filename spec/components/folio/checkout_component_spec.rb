@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe CheckoutComponent, type: :component do
+RSpec.describe Folio::CheckoutComponent, type: :component do
   before do
     allow(checkout).to receive(:overdue_fines_policy_id).and_return(overdue_fines_policy_id)
     render_inline(described_class.new(checkout:, patron:))

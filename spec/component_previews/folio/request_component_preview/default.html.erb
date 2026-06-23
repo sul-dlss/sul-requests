@@ -1,5 +1,5 @@
 <ol class="list-unstyled">
-  <%= render RequestComponent.new(
+  <%= render Folio::RequestComponent.new(
       request: FactoryBot.build(:request),
       patron: FactoryBot.build(:sponsor_patron)
     )
