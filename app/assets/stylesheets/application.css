@@ -15,186 +15,9 @@ layer(framework);
 @import url("https://cdn.jsdelivr.net/gh/sul-dlss/component-library@v2026-01-27/styles/sul.css")
 layer(components);
 
-:root {
-  --stanford-jungle-green-rgb: 39, 153, 137;
-  --stanford-process-black-50-rgb: 151, 150, 148;
-  --stanford-lagunita-dark-rgb: 0, 107, 129;
-  --stanford-poppy-darker-rgb: 175, 85, 11;
-
-  --bs-danger: #dc3545;
-  --bs-danger-rgb: 220, 53, 69;
-  --bs-danger-text-emphasis: #58151c;
-  --bs-danger-bg-subtle: #f8d7da;
-  --bs-danger-border-subtle: #f1aeb5;
-
-  --bs-card-border-color: var(--stanford-20-black);
-  --bs-tertiary-bg-rgb: var(--stanford-fog-light-rgb);
-  --bs-light-border-subtle: var(--stanford-10-black);
-}
-
-.accordion {
-  --bs-accordion-active-bg: var(--stanford-fog-light);
-  --bs-accordion-btn-bg: var(--stanford-fog-light);
-
-  .accordion-header {
-    background-color: var(--bs-accordion-btn-bg);
-  }
-}
-
-.border-cardinal {
-  --bs-border-color: rgba(var(--stanford-cardinal-rgb), 1);
-}
-
-.bg-su-process-black-50 {
-  background-color: rgba(var(--stanford-process-black-50-rgb), 1);
-}
-
-.bg-jungle-green {
-  background-color: rgba(var(--stanford-jungle-green-rgb), 1);
-}
-
-.bg-poppy-darker {
-  background-color: rgba(var(--stanford-poppy-darker-rgb), 1);
-}
-
-.text-poppy-darker {
-  color: rgba(var(--stanford-poppy-darker-rgb), 1);
-  --underline-color: rgba(var(--stanford-poppy-darker-rgb), 1);
-}
-
-.text-green {
-  color: rgba(var(--stanford-digital-green-dark-rgb), 1);
-}
-
-.text-jungle-green {
-  color: rgba(var(--stanford-jungle-green-rgb), 1);
-}
-
-.text-lagunita-dark {
-  color: rgba(var(--stanford-lagunita-dark-rgb), 1);
-}
-
-.text-bay-dark {
-  color: rgba(var(--stanford-bay-dark-rgb));
-}
-
-.bg-lagunita-dark {
-  background-color: rgba(var(--stanford-lagunita-dark-rgb), 1);
-}
-
-.bg-plum {
-  background-color: rgb(var(--stanford-plum-rgb));
-}
-
-.bg-bay-dark {
-  background-color: rgb(var(--stanford-bay-dark-rgb));
-}
-
-.bg-cardinal {
-  background-color: rgba(var(--stanford-cardinal-rgb), 1);
-}
-
-.bg-muted-cardinal {
-  background-color: #A34444;
-}
-
-.bg-dark.bg-cardinal {
-  --bs-dark-rgb: var(--stanford-cardinal-rgb);
-}
-
-.bg-digital-red-10 {
-  background-color: rgba(var(--stanford-digital-red-rgb), .1);
-}
-
-.bg-stanford-20-black {
-  background-color: var(--stanford-20-black);
-}
-
-.bg-green {
-  background-color: rgba(var(--stanford-digital-green-dark-rgb), .08);
-}
-
-.text-cardinal {
-  color: rgba(var(--stanford-cardinal-rgb), 1);
-}
-
-.text-digital-blue {
-  color: var(--stanford-digital-blue);
-}
-
-.text-digital-blue-dark {
-  color: var(--stanford-digital-blue-dark);
-}
-
-.text-digital-red {
-  color: var(--stanford-digital-red);
-}
-
-.text-digital-red-dark {
-  color: var(--stanford-digital-red-dark);
-}
-
-.text-plum-dark {
-    color: rgba(var(--stanford-plum-dark-rgb), 1);
-}
-
-.text-spirited-dark {
-  color: #C74632;
-}
-
-.text-30-black {
-  color: var(--stanford-30-black);
-}
-
-.text-80-black {
-  color: var(--stanford-80-black);
-}
-
-.w-fit { width: fit-content; }
-
-@font-face {
-  font-family: "Stanford";
-  src: url("https://www-media.stanford.edu/assets/fonts/stanford.woff") format("woff"), url("https://www-media.stanford.edu/assets/fonts/stanford.ttf") format("truetype");
-  font-weight: 300;
-  font-display: swap
-}
-
-body {
-  --bs-link-hover-decoration: underline;
-  --bs-danger-bg-subtle: rgba(130, 0, 0, 0.1);
-  --bs-danger-border-subtle: rgba(130, 0, 0, 0.1);
-  --bs-info-bg-subtle: rgba(0, 84, 143, 0.08);
-  --bs-info-border-subtle: rgba(0, 84, 143, 0.08);
-  --bs-info-text-emphasis:var(--stanford-black);
-  --bs-heading-color: var(--stanford-black);
-  --bs-warning-rgb: var(--stanford-poppy-rgb);
-  --bs-warning-bg-subtle: rgba(var(--stanford-poppy-rgb), 0.1);
-  --bs-warning-border-subtle: rgba(var(--stanford-poppy-rgb), 1);
-  --bs-warning-text-emphasis: black;
-  --bs-green-rgb: 25, 135, 84;
-}
-
-.alert-info {
-  --bs-alert-color: rgba(var(--stanford-digital-blue-dark-rgb), 1);
-  --bs-alert-border-color: rgba(var(--stanford-digital-blue-dark-rgb), 1);
-}
-
-.btn-xs {
-  --bs-btn-padding-y: 0.25rem;
-  --bs-btn-padding-x: 0.25rem;
-  --bs-btn-font-size: 0.875rem;
-  --bs-btn-border-radius: var(--bs-border-radius-sm);
-  line-height: 1;
-
-}
-
-input[type="radio"] {
-  --bs-border-color: var(--stanford-50-black);
-}
-
-.form-check-input {
-  --bs-border-color: var(--stanford-50-black);
-}
+@import url("colors.css");
+@import url("layout.css");
+@import url("utility.css");
 
 /* This selector/rule can be removed after https://github.com/twbs/bootstrap/pull/39098 is released */
 a {
@@ -204,35 +27,6 @@ a {
   &:focus-visible {
     text-decoration: var(--bs-link-hover-decoration);
   }
-}
-
-.su-logo {
-  --bs-link-hover-decoration: none;
-  display: inline-block;
-  font-family: Stanford, "Source Serif Pro", Georgia, Times, "Times New Roman", serif;
-  font-variant-ligatures: discretionary-ligatures;
-  font-feature-settings: "liga";
-  font-weight: 400;
-  font-size: 2.125rem;
-  line-height: 0.75;
-  text-decoration: none;
-}
-
- /* header links don't get underline until you hover */
-#sul-header {
-  --bs-link-decoration: none;
-  --bs-link-hover-decoration: underline;
-}
-
-/* Font smoothing for light text on dark background */
-#app-header {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#sul-header {
-  --bs-link-color-rgb: var(--stanford-cardinal-rgb);
-  --bs-link-hover-color-rgb: var(--stanford-cardinal-rgb);
 }
 
 summary.btn::-webkit-details-marker{
@@ -248,12 +42,6 @@ summary .disclosure-icon::before {
   font-weight: 900!important;
 }
 
-.required-label::after {
-  content: '*';
-  color: var(--stanford-cardinal);
-  margin-left: 5px;
-}
-
 #user-header-hide:checked + .user-header {
   display: none;
 }
@@ -261,11 +49,6 @@ summary .disclosure-icon::before {
 .item-table {
   max-height: 25rem;
   overflow-x: auto;
-}
-
-.vr-lg {
-  opacity: 1;
-  width: 4px;
 }
 
 /* Accordion in request form */
@@ -372,31 +155,6 @@ summary .disclosure-icon::before {
   }
 }
 
-.styled-hr {
-  height: 1px;
-  background-color: var(--stanford-50-black);
-  margin: 0px 10px;
-}
-
-.pill-close {
-  font-size: .6rem;
-}
-
-.dl-inline {
-  dt {
-    display: inline;
-    margin-right: 0.5rem;
-  }
-
-  dd {
-    display: inline;
-  }
-}
-
-label.btn-close {
-  cursor: pointer;
-}
-
 #patron_request_service_point_code,
 #patron_request_needed_date {
   width: 100%;
@@ -473,28 +231,6 @@ label.btn-close {
   text-wrap: nowrap;
 }
 
-#pre-footer {
-  background-color: var(--stanford-stone-light);
-}
-
-/* Restore the upstream bootstrap behavior that the component library broke. */
-.alert-link {
-  font-weight: 700;
-}
-
-/* Restore the upstream bootstrap danger alert color. */
-.alert-danger {
-  color: rgb(88, 21, 28);
-}
-
-/* Restore disabled primary button styling from upstream bootstrap. */
-.btn-primary {
-  --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #006CB8;
-  --bs-btn-disabled-border-color: #006CB8;
-  --bs-btn-disabled-opacity: 0.65;
-}
-
 .series-contents-container {
   max-height: 400px;
   height: auto;
@@ -546,10 +282,6 @@ label.btn-close {
 .accordion-button[aria-expanded="true"] ~ .accordion-header-icon::before,
 .accordion-header[aria-expanded="true"] .accordion-header-icon::before {
   transform: rotate(180deg);
-}
-
-.rounded-pill {
-  padding: 4px 12px;
 }
 
 .request.card, .request-group.card {
@@ -657,29 +389,6 @@ label.btn-close {
   /* modal-lg fits 6 per row at this size */
   @media (min-width: 992px) {
     min-height: calc(3.125rem * round(up, var(--appointment-slots), 6) / 6 + 2rem);
-  }
-}
-
-.radio-button-group {
-  .btn-check:checked + .btn {
-    --bs-border-color: var(--stanford-digital-blue);
-    background-color: var(--stanford-digital-blue);
-    color: white;
-  }
-
-  .btn-check:checked + .btn::before {
-    content: "\f633"; /* check-lg icon */
-    display: inline-block;
-    font-family: "bootstrap-icons";
-    font-size: .85rem;
-    margin-right: 0.25rem;
-    text-decoration: none;
-    vertical-align: middle;
-  }
-
-  .btn-check:focus-visible + .btn {
-    outline: 2px solid white;
-    box-shadow: 0 0 0 4px var(--stanford-black);
   }
 }
 
@@ -1111,29 +820,6 @@ label.btn-close {
     }
   }
 }
-.offcanvas-sm-start {
-  --bs-offcanvas-height: 75%;
-}
-
-@media screen and (min-width: 576px) and (max-width: 767px) {
-  .offcanvas-sm-start {
-    --bs-offcanvas-height: 100%;
-    top: 0;
-    left: 0;
-    width: var(--bs-offcanvas-width);
-    border-right: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
-    transform: translateX(-100%);
-
-    right: auto;
-    max-height: auto;
-    border-top: none;
-
-    &.showing,
-    &.show:not(.hiding) {
-      transform: none;
-    }
-  }
-}
 
 .progress {
   border-radius: 99px;
@@ -1232,55 +918,6 @@ label.btn-close {
   margin-left: 1rem;
 }
 
-.clamp {
-  -webkit-box-orient: vertical;
-  box-orient: vertical;
-  display: -webkit-box;
-  -webkit-line-clamp: var(--clamp-lines, 3);
-  line-clamp: var(--clamp-lines, 3);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.clamp-1 {
-  --clamp-lines: 1;
-}
-.clamp-2 {
-  --clamp-lines: 2;
-}
-
-.clamp-3 {
-  --clamp-lines: 3;
-}
-
-.expand-icon,
-.collapse-icon {
-  .sul-icons {
-    height: 1.5rem;
-    width: 1.5rem;
-
-    svg {
-      fill: var(--stanford-digital-blue);
-      height: 1.5rem;
-      width: 1.5rem;
-    }
-  }
-}
-
-.expand-icon {
-  display: none;
-}
-
-.collapsed {
-  .collapse-icon {
-    display: none;
-  }
-
-  .expand-icon {
-    display: inline;
-  }
-}
-
 .cover-image {
   border: 1px solid var(--stanford-fog-light);
   max-height: 200px;
@@ -1309,39 +946,12 @@ label.btn-close {
   }
 }
 
-.hidden-if-peers {
-  display: none;
-}
-
-.hidden-if-peers:only-child {
-  display: block;
-}
-
 .add-items-button[data-disabled] {
   display: none;
   pointer-events: none;
 }
 
-.masthead .dropdown-toggle {
-  &:after {
-    vertical-align: middle!important; /* instead of default 0.255em */
-  }
-
-  &:hover {
-    text-decoration: var(--bs-link-hover-decoration);
-    text-underline-offset: 0.25rem;
-  }
-}
-
 /* Everything after: remove when we add feedback form to component library */
-.bg-stanford-10-black {
-  background-color: var(--stanford-10-black);
-}
-
-.text-digital-red-light {
-  color: var(--stanford-digital-red-light);
-}
-
 #feedback-form .new-tab-link {
   width: 100%;
   @media (min-width: 576px) {
