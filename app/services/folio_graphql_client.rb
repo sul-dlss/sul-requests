@@ -344,6 +344,7 @@ class FolioGraphqlClient
                                           code
                                         }
                                         effectiveLocation {
+                                          id
                                           code
                                           details {
                                             pageServicePoints {
@@ -356,6 +357,7 @@ class FolioGraphqlClient
                                         }
                                         holdingsRecord {
                                           effectiveLocation {
+                                            id
                                             code
                                           }
                                         }
@@ -428,6 +430,7 @@ class FolioGraphqlClient
                                       barcode
                                       effectiveShelvingOrder
                                       effectiveLocation {
+                                        id
                                         code
                                       }
                                       permanentLocation {
@@ -443,6 +446,7 @@ class FolioGraphqlClient
                                       holdingsRecord {
                                         callNumber
                                         effectiveLocation {
+                                          id
                                           code
                                         }
                                       }
@@ -482,6 +486,7 @@ class FolioGraphqlClient
                                         materialTypeId
                                         effectiveLocationId
                                         effectiveLocation {
+                                          id
                                           code
                                         }
                                         permanentLocation {
@@ -489,6 +494,7 @@ class FolioGraphqlClient
                                         }
                                         holdingsRecord {
                                           effectiveLocation {
+                                            id
                                             code
                                           }
                                         }
