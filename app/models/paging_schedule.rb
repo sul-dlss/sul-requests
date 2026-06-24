@@ -29,7 +29,7 @@ class PagingSchedule
     Estimate.new(self, as_of: time)
   end
 
-  def schedule_for_request # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def schedule_for_request # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     # We don't estimate schedules for items that patrons have requested to be sent via ILLiad
     raise ScheduleNotFound if from&.pages_prefer_to_send_via_illiad?
 
@@ -61,6 +61,12 @@ class PagingSchedule
       steps[:completed] = steps[:scan_delivered] || steps[:available_at_destination]
 
       steps
+    rescue StandardError => e
+      if Rails.env.test?
+        puts e # rubocop:disable Rails/Output
+        puts steps.inspect # rubocop:disable Rails/Output
+      end
+      raise
     end
   end
 
