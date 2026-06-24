@@ -11,20 +11,13 @@
 
   <% c.with_body(classes: %w[pt-1]) do %>
     <h2 class="mb-1"><%= title %></h2>
-    <% if empty? %>
-      <p class="mb-1"><%= label %></p>
-      <% if empty_path %>
-        <%= render Home::ArrowLinkComponent.new(label: empty_link_label, path: empty_path, classes: ['stretched-link']) %>
+    <p class="mb-1">
+      <%= label %>
+      <% if secondary_label.present? %>
+        <i class="bi bi-dot"></i>
+        <%= secondary_label %>
       <% end %>
-    <% else %>
-      <p class="mb-1">
-        <%= label %>
-        <% if secondary_label.present? %>
-          <i class="bi bi-dot"></i>
-          <%= secondary_label %>
-        <% end %>
-      </p>
-      <%= render Home::ArrowLinkComponent.new(label: 'View details', path: path, classes: ['stretched-link']) %>
-    <% end %>
+    </p>
+    <%= render Home::ArrowLinkComponent.new(label: link_label, path: path, classes: ['stretched-link']) if path %>
   <% end %>
 <% end %>
