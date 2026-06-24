@@ -1,5 +1,5 @@
 <%= tag.div class: 'position-relative', data: controller_data do %>
-  <%= form.hidden_field key, id: nil, data: { "date-picker-target": "input" }, autocomplete: false %>
+  <%= form.text_field key, id: nil, class: 'visually-hidden-focusable required-placeholder', aria: { labelledby: "#{form.object_name}_#{key}" }, data: { "date-picker-target": "input" }, required: true, autocomplete: false %>
   <div data-date-picker-target="announce"
         aria-live="polite"
         aria-atomic="true"
