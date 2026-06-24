@@ -92,7 +92,7 @@ RSpec.describe 'Requests', :js do
         first('td[role="gridcell"]:not(:disabled)').click
         click_on 'Save'
 
-        within '#aeon_appointments_sidebar' do
+        within '#aeon-appointments-frame[complete] #aeon_appointments_sidebar' do
           expect(page).to have_text('Item limit: 0/10')
         end
 
