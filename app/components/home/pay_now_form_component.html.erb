@@ -1,4 +1,4 @@
-<%= form_tag payments_path, data: { turbo: false }, method: :post do %>
+<%= form_tag payments_path, class: 'position-relative z-3 mn-2 p-2', data: { turbo: false }, method: :post do %>
   <%= hidden_field_tag :user_id, patron_key %>
   <%= hidden_field_tag :amount, format('%.2f', balance) %>
   <% fines.each do |fine| %>

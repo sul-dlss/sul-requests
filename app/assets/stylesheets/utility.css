@@ -152,3 +152,7 @@ label.btn-close {
   opacity: 1;
   width: 4px;
 }
+
+.mn-2 {
+  margin: -0.5rem !important;
+}
