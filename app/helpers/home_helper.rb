@@ -2,10 +2,9 @@
 
 # Helpers for the home page redesign views.
 module HomeHelper
-  def count_callout(count:, phrase:)
-    return unless count.to_i.positive?
+  def count_callout(label:)
+    return if label.blank?
 
-    tag.span(safe_join([tag.span(count, class: 'fw-semibold'), phrase], ' '),
-             class: 'text-digital-red-dark')
+    tag.span(label, class: 'text-digital-red-dark')
   end
 end

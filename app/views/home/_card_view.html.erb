@@ -3,11 +3,9 @@
         title: 'Borrowed items',
         icon: 'bi-book',
         count: dashboard.checkouts.count,
-        item_label: 'item',
-        item_label_suffix: 'currently loaned',
-        empty_label: 'No items on loan',
+        label: t('dashboard.borrowed_items.label_html', count: dashboard.checkouts.count),
         path: checkouts_path,
-        status: count_callout(count: dashboard.actionable_borrowed_items.count, phrase: 'due soon')) %>
+        status: count_callout(label: t('dashboard.borrowed_items_due_soon.label_html', count: dashboard.actionable_borrowed_items.count))) %>
 
   <%= render Home::FinesCardComponent.new(
         title: 'Fees and fines',
@@ -22,45 +20,36 @@
         title: 'Pickup requests',
         icon: 'bi-bag',
         count: dashboard.pickup_requests.count,
-        item_label: 'item',
-        item_label_suffix: 'requested',
-        empty_label: 'No pickup requests',
+        label: t('dashboard.pickup_requests.label_html', count: dashboard.pickup_requests.count),
         path: folio_requests_path,
-        status: count_callout(count: dashboard.ready_for_pickup.count, phrase: "#{'item'.pluralize(dashboard.ready_for_pickup.count)} ready for pickup")) %>
+        status: count_callout(label: t('dashboard.pickup_requests_ready.label_html', count: dashboard.ready_for_pickup.count))) %>
 
-  <% delivery = dashboard.digitization_status %>
   <%= render Home::SummaryCardComponent.new(
         title: 'Digitization requests',
         icon: 'bi-printer',
         count: dashboard.digital_requests.count,
-        item_label: 'item',
-        item_label_suffix: 'requested',
-        empty_label: 'No digitization requests',
+        label: t('dashboard.digitization_requests.label_html', count: dashboard.digital_requests.count),
         path: aeon_requests_path(kind: 'submitted', filter: 'digitization'),
         empty_path: aeon_requests_path(kind: 'completed', filter: 'digitization'),
         empty_link_label: 'View past requests',
-        status: count_callout(count: delivery.count, phrase: delivery.label)) %>
+        status: count_callout(label: t('dashboard.digitization_requests_delivered.label_html', count: dashboard.recently_delivered_digital_requests.count))) %>
 
   <%= render Home::SummaryCardComponent.new(
         title: 'Reading room appointments',
         icon: 'bi-calendar',
         count: dashboard.appointments.count,
-        item_label: 'appointment',
-        empty_label: 'No appointments scheduled',
+        label: t('dashboard.appointments.label_html', count: dashboard.appointments.count),
         path: aeon_appointments_path,
         empty_path: aeon_requests_path(kind: 'completed', filter: 'reading_room'),
         empty_link_label: 'View past appointments',
-        secondary_count: dashboard.appointment_requests_count,
-        secondary_label: 'item',
-        secondary_label_suffix: 'scheduled',
+        secondary_label: t('dashboard.appointment_items.label_html', count: dashboard.appointment_requests_count),
         next_up_date: dashboard.next_appointment_date) %>
 
   <%= render Home::SummaryCardComponent.new(
         title: 'Saved for later',
         icon: 'bi-pin-angle',
         count: dashboard.saved_for_later.count,
-        item_label: 'item',
-        empty_label: 'No saved items',
+        label: t('dashboard.saved_for_later.label_html', count: dashboard.saved_for_later.count),
         path: aeon_requests_path(kind: 'saved_for_later'),
         status: (tag.span('Requests not complete', class: 'text-digital-red-dark') if dashboard.saved_for_later.count.positive?)) %>
 
@@ -68,8 +57,7 @@
         title: 'Activities',
         icon: 'bi-person-video3',
         count: dashboard.upcoming_activities.count,
-        item_label: 'upcoming activity',
-        empty_label: 'No upcoming activities',
+        label: t('dashboard.activities.label_html', count: dashboard.upcoming_activities.count),
         path: aeon_activities_path,
         empty_path: past_aeon_activities_path,
         empty_link_label: 'View past activities',
