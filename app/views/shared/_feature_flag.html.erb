@@ -11,7 +11,7 @@
           <%= link_to '← Return to classic view', feature_flags_path(feature_flags: ''), class: 'ms-2 btn btn-xs btn-outline-primary', data: { turbo_method: 'POST' } %>
         <% end %>
       <% else %>
-        Classic View: New aeon and My Library account features are being added.
+        <b>Classic View</b>
         <%= link_to '✨ Try the new experience', feature_flags_path(feature_flags: 'requests_redesign'), class: 'ms-2 btn btn-xs btn-outline-primary', data: { turbo_method: 'POST' } %>
       <% end %>
     </div>
