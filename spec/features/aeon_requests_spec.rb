@@ -89,7 +89,7 @@ RSpec.describe 'Requests', :js do
         click_on 'Select a date'
         click_on 'Next month'
 
-        first('td[role="gridcell"]:not(:has(buton:disabled))').click
+        first('td[role="gridcell"]:not(:has(button:disabled))').click
         expect(page).to have_css('#aeon_appointment_start_time', visible: :all)
         click_on 'Save'
 
