@@ -77,4 +77,17 @@ RSpec.describe 'Proxy User' do
       expect(page).to have_no_text('A history of Persia')
     end
   end
+
+  context 'when on the home page' do
+    it 'displays the sponsor information' do
+      visit root_path
+
+      expect(page).to have_css('.card', text: '1 item currently loaned')
+
+      click_on 'Switch to proxy'
+      click_on 'Proxy for: Shea Sponsor'
+
+      expect(page).to have_css('.card', text: '2 due soon')
+    end
+  end
 end

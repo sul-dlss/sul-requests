@@ -38,4 +38,22 @@ RSpec.describe 'Home Page' do
       expect(page).to have_link('Earth Sciences Library (Branner)', href: '/admin/SAL3-PAGE-MP')
     end
   end
+
+  context 'with the new layout' do
+    before do
+      allow(Settings.features).to receive(:requests_redesign).and_return(true)
+      login_as(current_user)
+    end
+
+    let(:user) { create(:sso_user) }
+    let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
+
+    it 'renders the cards' do
+      visit root_path
+
+      expect(page).to have_css('.card', count: 7)
+      expect(page).to have_css('.card', text: 'No pickup requests')
+      expect(page).to have_css('.card', text: 'No items on loan')
+    end
+  end
 end

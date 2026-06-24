@@ -5,10 +5,11 @@ module Home
   class Dashboard
     DigitizationStatus = Data.define(:count, :label)
 
-    attr_reader :user
+    attr_reader :aeon, :patron
 
-    def initialize(user)
-      @user = user
+    def initialize(aeon:, patron:)
+      @aeon = aeon
+      @patron = patron
     end
 
     def checkouts
@@ -89,14 +90,6 @@ module Home
     end
 
     private
-
-    def patron
-      @patron ||= user.patron
-    end
-
-    def aeon
-      @aeon ||= user.aeon
-    end
 
     def preview(primary, fallback, limit: 3)
       primary.presence || fallback.first(limit)
