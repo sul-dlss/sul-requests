@@ -276,3 +276,54 @@ en:
       cancel_html: <span class="font-weight-bold">Payment canceled.</span> No payment was made &mdash; your payable balance remains unchanged.
       request_failed_html: <span class="font-weight-bold">Sorry!</span> Something went wrong, possibly due to a connection failure. Please <a href="mailto:sul-privileges@stanford.edu">contact us</a> for help resolving your fines.
       payment_failed_html: <span class="font-weight-bold">Sorry!</span> Payment failed. Please <a href="mailto:sul-privileges@stanford.edu">contact us</a> for help resolving your fines.
+  dashboard:
+    borrowed_items:
+      label_html:
+        zero: 'No items on loan'
+        one: '<span class="fw-semibold">1</span> item currently loaned'
+        other: '<span class="fw-semibold">%{count}</span> items currently loaned'
+    borrowed_items_due_soon:
+      label_html:
+        zero: ''
+        one: '<span class="fw-semibold">1</span> due soon'
+        other: '<span class="fw-semibold">%{count}</span> due soon'
+    pickup_requests:
+      label_html:
+        zero: 'No pickup requests'
+        one: '<span class="fw-semibold">1</span> item requested'
+        other: '<span class="fw-semibold">%{count}</span> items requested'
+    pickup_requests_ready:
+      label_html:
+        zero: ''
+        one: '<span class="fw-semibold">1</span> item ready for pickup'
+        other: '<span class="fw-semibold">%{count}</span> items ready for pickup'
+    digitization_requests:
+      label_html:
+        zero: 'No digitization requests'
+        one: '<span class="fw-semibold">1</span> item requested'
+        other: '<span class="fw-semibold">%{count}</span> items requested'
+    digitization_requests_delivered:
+      label_html:
+        zero: ''
+        one: '<span class="fw-semibold">1</span> delivered recently via email'
+        other: '<span class="fw-semibold">%{count}</span> delivered recently via email'
+    appointments:
+      label_html:
+        zero: 'No appointments scheduled'
+        one: '<span class="fw-semibold">1</span> appointment'
+        other: '<span class="fw-semibold">%{count}</span> appointments'
+    appointment_items:
+      label_html:
+        zero: 'No items scheduled'
+        one: '<span class="fw-semibold">1</span> item scheduled'
+        other: '<span class="fw-semibold">%{count}</span> items scheduled'
+    saved_for_later:
+      label_html:
+        zero: 'No saved items'
+        one: '<span class="fw-semibold">1</span> item saved for later'
+        other: '<span class="fw-semibold">%{count}</span> items saved for later'
+    activities:
+      label_html:
+        zero: 'No upcoming activities'
+        one: '<span class="fw-semibold">1</span> upcoming activity'
+        other: '<span class="fw-semibold">%{count}</span> upcoming activities'

@@ -16,16 +16,16 @@
   <% c.with_body(classes: %w[pt-1]) do %>
     <h2 class="mb-1"><%= title %></h2>
     <% if empty? %>
-      <p class="mb-1"><%= empty_label %></p>
+      <p class="mb-1"><%= label %></p>
       <% if empty_path %>
         <%= render Home::ArrowLinkComponent.new(label: empty_link_label, path: empty_path) %>
       <% end %>
     <% else %>
       <p class="mb-1">
-        <span class="fw-semibold"><%= count %></span> <%= item_label.pluralize(count) %><%= " #{item_label_suffix}" if item_label_suffix %>
-        <% if secondary_count %>
+        <%= label %>
+        <% if secondary_label.present? %>
           <i class="bi bi-dot"></i>
-          <span class="fw-semibold"><%= secondary_count %></span> <%= secondary_label.pluralize(secondary_count) %><%= " #{secondary_label_suffix}" if secondary_label_suffix %>
+          <%= secondary_label %>
         <% end %>
       </p>
       <%= render Home::ArrowLinkComponent.new(label: 'View details', path: path) %>
