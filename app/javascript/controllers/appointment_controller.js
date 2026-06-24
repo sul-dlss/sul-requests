@@ -37,7 +37,7 @@ export default class extends Controller {
 
   get availabilityPlaceholder() {
     const label = document.createElement('label');
-    label.classList.add('visually-hidden-focusable required-placeholder');
+    label.classList.add('visually-hidden-focusable', 'required-placeholder');
     label.textContent = 'Loading avaiable appointments.';
     const input = document.createElement('input');
     input.type = 'text';
