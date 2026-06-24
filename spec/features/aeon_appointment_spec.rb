@@ -64,7 +64,8 @@ RSpec.describe 'Appointments', :js do
         click_on 'Select a date'
         click_on 'Next month'
 
-        first('td[role="gridcell"]:not(:disabled)').click
+        first('td[role="gridcell"]:not(:has(buton:disabled))').click
+        expect(page).to have_css('#aeon_appointment_start_time', visible: :all)
 
         click_on 'Save'
       end
@@ -91,7 +92,7 @@ RSpec.describe 'Appointments', :js do
         click_on 'Select a date'
         click_on 'Next month'
 
-        first('td[role="gridcell"]:not(:disabled)').click
+        first('td[role="gridcell"]:not(:has(buton:disabled))').click
 
         find(:label, text: '2 hours').click
         find(:label, text: '1:00 pm').click
@@ -118,7 +119,9 @@ RSpec.describe 'Appointments', :js do
         click_on appointment_start_time.strftime('%b %-d, %Y')
         click_on 'Next month'
 
-        first('td[role="gridcell"]:not(:disabled)').click
+        first('td[role="gridcell"]:not(:has(buton:disabled))').click
+        expect(page).to have_css('#aeon_appointment_start_time', visible: :all)
+
         click_on 'Save'
       end
       expect(page).to have_no_css '.modal'
