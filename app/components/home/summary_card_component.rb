@@ -21,11 +21,11 @@ module Home
     attr_reader :id, :title, :label, :link_label, :path, :secondary_label
 
     # rubocop:disable Metrics/ParameterLists
-    def initialize(id:, title:, icon:, path:, label: nil, secondary_label: nil, status: nil, link_label: nil)
+    def initialize(id:, title:, icon_class:, path:, label: nil, secondary_label: nil, status: nil, link_label: nil)
       # rubocop:enable Metrics/ParameterLists
       @id = id
       @title = title
-      @icon = icon
+      @icon_class = icon_class
       @label = label
       @secondary_label = secondary_label
       @path = path
@@ -38,11 +38,11 @@ module Home
     end
 
     def default_icon
-      render_icon(@icon)
+      render_icon(@icon_class)
     end
 
-    def render_icon(icon)
-      tag.i(class: "bi #{icon} text-60-black fs-4")
+    def render_icon(icon_class)
+      tag.i(class: "bi #{icon_class} text-60-black fs-4")
     end
   end
 end
