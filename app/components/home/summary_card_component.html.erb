@@ -18,7 +18,7 @@
     <% if empty? %>
       <p class="mb-1"><%= label %></p>
       <% if empty_path %>
-        <%= render Home::ArrowLinkComponent.new(label: empty_link_label, path: empty_path) %>
+        <%= render Home::ArrowLinkComponent.new(label: empty_link_label, path: empty_path, classes: ['stretched-link']) %>
       <% end %>
     <% else %>
       <p class="mb-1">
@@ -28,7 +28,7 @@
           <%= secondary_label %>
         <% end %>
       </p>
-      <%= render Home::ArrowLinkComponent.new(label: 'View details', path: path) %>
+      <%= render Home::ArrowLinkComponent.new(label: 'View details', path: path, classes: ['stretched-link']) %>
     <% end %>
   <% end %>
 <% end %>
