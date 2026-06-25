@@ -20,7 +20,7 @@ module Folio
     end
 
     def call
-      tag.span(class: 'fw-bold rounded-pill text-digital-red-dark bg-digital-red-10') do
+      tag.span(class: 'fw-bold rounded-pill text-digital-red-dark bg-digital-red-10 text-nowrap') do
         accruing_rate_label
       end
     end
