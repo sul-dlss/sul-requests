@@ -39,7 +39,7 @@ module Aeon
     end
 
     def needs_set_to_submitted?
-      aeon_request.saved_for_later? && aeon_request.valid?
+      (aeon_request.saved_for_later? || aeon_request.cancelled?) && aeon_request.valid?
     end
 
     def needs_set_to_saved_for_later?
