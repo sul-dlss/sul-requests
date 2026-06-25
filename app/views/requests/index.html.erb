@@ -3,30 +3,18 @@
     <h1>Submitted requests</h1>
 
     <div class="d-flex gap-2">
-      <div class="dropdown" data-sortable-target="sortMenu">
-        <button class="btn btn-outline-primary btn-sm dropdown-toggle" id="dropdownSortMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Sort by request timing
-        </button>
+      <%= render System::SortableDropdownComponent.new(button_label: 'request timing') do |component| %>
+        <% component.with_list_item(label: 'default', field: 'request timing') %>
+        <% component.with_list_item(label: 'date modified', field: 'date') %>
+        <% component.with_list_item(label: 'title', field: 'title') %>
+      <% end %>
 
-        <ul class="dropdown-menu" aria-labelledby="dropdownSortMenuLink">
-          <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="default" data-sortable-label-param="Sort by request timing">request timing</button></li>
-          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="date" data-sortable-label-param="Sort by date modified">date modified</button></li>
-          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort by title">title</button></li>
-        </ul>
-      </div>
-
-      <div class="dropdown" data-sortable-target="filterMenu">
-        <button class="btn btn-outline-primary btn-sm dropdown-toggle" id="dropdownFilterMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        All requests
-        </button>
-
-        <ul class="dropdown-menu" aria-labelledby="dropdownFilterMenuLink">
-          <li><button class="dropdown-item active" data-action="click->sortable#filter" data-sortable-label-param="All requests">All requests</button></li>
-          <li><button class="dropdown-item" data-action="click->sortable#filter" data-sortable-filter-param="digitization" data-sortable-label-param="Digitization">Digitization</button></li>
-          <li><button class="dropdown-item" data-action="click->sortable#filter" data-sortable-filter-param="pickup" data-sortable-label-param="Pickup">Pickup</button></li>
-          <li><button class="dropdown-item" data-action="click->sortable#filter" data-sortable-filter-param="reading room" data-sortable-label-param="Reading room use">Reading room use</button></li>
-        </ul>
-      </div>
+      <%= render System::SortableFilterDropdownComponent.new do |component| %>
+        <% component.with_list_item(label: 'all requests', field: '') %>
+        <% component.with_list_item(label: 'Digitization', field: 'digitization') %>
+        <% component.with_list_item(label: 'Pickup', field: 'pickup') %>
+         <% component.with_list_item(label: 'Reading room use', field: 'reading room') %>
+      <% end %>
     </div>
   </div>
 

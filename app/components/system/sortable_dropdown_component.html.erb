@@ -1,0 +1,10 @@
+<div class="dropdown" data-sortable-target="sortMenu">
+  <button class="btn btn-outline-primary btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Sort by <%= button_label %>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <% list_items.each do |list_item| %>
+      <%= list_item %>
+    <% end %>
+  </ul>
+</div>
