@@ -2,22 +2,23 @@
   <div id="checkouts" class="page-section" data-controller="sortable google-cover-image" data-sortable-sort-value="dueDate">
     <div class="d-flex justify-content-between">
       <h1>Borrowed (checked out) items</h1>
-      <div class="dropdown" data-sortable-target="menu">
-        <button class="btn btn-outline-primary btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Sort (Due date)
-        </button>
+      <div class="d-flex gap-2 align-items-center">
+        <div class="dropdown" data-sortable-target="menu">
+          <button class="btn btn-outline-primary btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort (Due date)
+          </button>
 
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="dueDate" data-sortable-label-param="Sort (Due date)">Due date</button></li>
-          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="status" data-sortable-label-param="Sort (Status)">Status</button></li>
-          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort (Title)">Title</button></li>
-          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="author" data-sortable-label-param="Sort (Author)">Author name</button></li>
-          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="callNumber" data-sortable-label-param="Sort (Call number)">Call number</button></li>
-        </ul>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="dueDate" data-sortable-label-param="Sort (Due date)">Due date</button></li>
+            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="status" data-sortable-label-param="Sort (Status)">Status</button></li>
+            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort (Title)">Title</button></li>
+            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="author" data-sortable-label-param="Sort (Author)">Author name</button></li>
+            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="callNumber" data-sortable-label-param="Sort (Call number)">Call number</button></li>
+          </ul>
+
+        </div>
+        <%= render 'checkouts/renew_all_button' %>
       </div>
-    </div>
-    <div class="mb-3">
-      <%= render 'checkouts/renew_all_button' %>
     </div>
 
     <ul class="checkouts p-0" data-sortable-target="list" aria-live="polite">
