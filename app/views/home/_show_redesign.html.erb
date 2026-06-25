@@ -1,17 +1,15 @@
-<% if sso_user? %>
-  <h1 class="visually-hidden">My Library Account Home</h1>
-  <div class="row"
-       data-controller="home-view-toggle"
-       data-home-view-toggle-storage-key-value="sulRequests:homeView"
-       data-home-view="card">
-    <div class="col-lg-9">
-      <div data-home-view-variant="card">
-        <%= render 'card_view', dashboard: @dashboard %>
-      </div>
-      <div data-home-view-variant="list">
-        <%= render 'list_view', dashboard: @dashboard %>
-      </div>
+<h1 class="visually-hidden">My Library Account Home</h1>
+<div class="row"
+      data-controller="home-view-toggle"
+      data-home-view-toggle-storage-key-value="sulRequests:homeView"
+      data-home-view="card">
+  <div class="col-lg-9">
+    <div data-home-view-variant="card">
+      <%= render 'card_view', dashboard: @dashboard %>
     </div>
-    <%= render 'questions_aside' %>
+    <div data-home-view-variant="list">
+      <%= render 'list_view', dashboard: @dashboard %>
+    </div>
   </div>
-<% end %>
+  <%= render 'questions_aside' %>
+</div>
