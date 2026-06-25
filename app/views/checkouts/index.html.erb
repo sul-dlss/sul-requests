@@ -3,20 +3,13 @@
     <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2">
       <h1 class="mb-0">Borrowed (checked out) items</h1>
       <div class="d-flex gap-2 align-items-center">
-        <div class="dropdown" data-sortable-target="sortMenu">
-          <button class="btn btn-outline-primary btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Sort by due date
-          </button>
-
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="dueDate" data-sortable-label-param="Sort by due date">due date</button></li>
-            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="status" data-sortable-label-param="Sort by status">status</button></li>
-            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort by title">title</button></li>
-            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="author" data-sortable-label-param="Sort by author">author name</button></li>
-            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="callNumber" data-sortable-label-param="Sort by call number">call number</button></li>
-          </ul>
-
-        </div>
+        <%= render SortableDropdownComponent.new(button_label: 'due date') do |component| %>
+          <% component.with_list_item(label: 'due date', field: 'dueDate') %>
+          <% component.with_list_item(label: 'status', field: 'status') %>
+          <% component.with_list_item(label: 'title', field: 'title') %>
+          <% component.with_list_item(label: 'author name', field: 'author') %>
+          <% component.with_list_item(label: 'call number', field: 'callNumber') %>
+        <% end %>
         <%= render 'checkouts/renew_all_button' %>
       </div>
     </div>
