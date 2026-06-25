@@ -884,7 +884,7 @@ summary .disclosure-icon::before {
   min-width: 2rem;
 }
 
-.date-picker-day:disabled {
+.date-picker-day:disabled, .prev-next:disabled {
   opacity: 0.35;
   cursor: not-allowed;
 }

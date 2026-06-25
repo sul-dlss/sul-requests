@@ -30,6 +30,17 @@ module Aeon
       end.max
     end
 
+    def lead_time
+      return unless max
+
+      days = (max.to_date - Time.zone.today).to_i
+      if days < 365
+        pluralize(days, 'day')
+      else
+        pluralize(days / 365, 'year')
+      end
+    end
+
     def open_days
       reading_room&.open_hours&.map(&:day_name) || Date::DAYNAMES
     end
