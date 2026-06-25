@@ -42,18 +42,50 @@ RSpec.describe 'Home Page' do
   context 'with the new layout' do
     before do
       allow(Settings.features).to receive(:requests_redesign).and_return(true)
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      allow(Aeon::User).to receive(:find_by).and_return(aeon_user)
       login_as(current_user)
     end
 
     let(:user) { create(:sso_user) }
     let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
+    let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
+
+    let(:patron) do
+      build(:sponsor_patron)
+    end
 
     it 'renders the cards' do
       visit root_path
 
       expect(page).to have_css('.card', count: 7)
-      expect(page).to have_css('.card', text: 'No pickup requests')
-      expect(page).to have_css('.card', text: 'No items on loan')
+      expect(page).to have_css('.card', text: 'Pickup requests')
+      expect(page).to have_css('.card', text: '1 item currently loaned')
+      expect(page).to have_css('.card', text: 'Digitization requests')
+    end
+
+    context 'with a FOLIO-only user' do
+      let(:aeon_user) { Aeon::NullUser.new }
+
+      it 'renders just the FOLIO cards' do
+        visit root_path
+
+        expect(page).to have_css('.card', count: 3)
+        expect(page).to have_css('.card', text: 'Pickup requests')
+        expect(page).to have_no_css('.card', text: 'Digitization requests')
+      end
+    end
+
+    context 'with an Aeon-only user' do
+      let(:patron) { Folio::NullPatron.new }
+
+      it 'renders just the Aeon cards' do
+        visit root_path
+
+        expect(page).to have_css('.card', count: 4)
+        expect(page).to have_css('.card', text: 'Digitization requests')
+        expect(page).to have_no_css('.card', text: 'Pickup requests')
+      end
     end
   end
 end
