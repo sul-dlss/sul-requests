@@ -58,4 +58,14 @@ FactoryBot.define do
       new(loan_policy:)
     end
   end
+
+  factory :overdue_fine_policy_daily, class: 'Hash' do
+    overdue_fine_policy do
+      Folio::Types.policies[:overdue].fetch('12d0d55b-bcb9-473e-9bd7-1a54d52c007f')
+    end
+
+    initialize_with do
+      overdue_fine_policy
+    end
+  end
 end
