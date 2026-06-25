@@ -1,7 +1,7 @@
 <%= render CardComponent.new(classes: %w[home-list-card], margin_class: nil) do |c| %>
   <% c.with_title do %>
     <div class="d-flex align-items-center">
-      <i class="bi <%= icon %> text-60-black fs-4 me-3"></i>
+      <%= icon %>
       <h2 class="mb-0"><%= title %></h2>
     </div>
   <% end %>
@@ -11,9 +11,7 @@
   <% end %>
 
   <% c.with_body(classes: %w[bg-white pt-2 pb-0 px-2]) do %>
-    <% if status.present? %>
-      <p class="fw-semibold small text-digital-red-dark mb-2"><%= status %></p>
-    <% end %>
+    <%= status %>
     <%= items %>
   <% end %>
 

@@ -10,7 +10,7 @@
 
   <%= render Home::ListView::SummaryCardComponent.new(
     title: 'Borrowed items',
-    icon: 'bi-book',
+    icon_class: 'bi-book',
     count: dashboard.checkouts.count,
     view_all_label: 'View all borrowed items',
     view_all_path: checkouts_path) do |c| %>
@@ -42,11 +42,11 @@
 
   <%= render Home::ListView::SummaryCardComponent.new(
     title: 'Pickup requests',
-    icon: 'bi-bag',
+    icon_class: 'bi-bag',
     count: dashboard.pickup_requests.count,
     view_all_label: 'View all pickup requests',
-    view_all_path: folio_requests_path,
-    status: (dashboard.ready_for_pickup.any? ? "#{dashboard.ready_for_pickup.count} #{'item'.pluralize(dashboard.ready_for_pickup.count)} ready for pickup" : 'Recently requested')) do |c| %>
+    view_all_path: folio_requests_path) do |c| %>
+    <% c.with_status_content((dashboard.ready_for_pickup.any? ? "#{dashboard.ready_for_pickup.count} #{'item'.pluralize(dashboard.ready_for_pickup.count)} ready for pickup" : 'Recently requested')) %>
     <% c.with_items do %>
       <ul class="list-unstyled mb-2">
         <% dashboard.pickup_requests&.each do |request| %>
@@ -66,11 +66,11 @@
   <% delivery = dashboard.digitization_status %>
   <%= render Home::ListView::SummaryCardComponent.new(
     title: 'Digitization requests',
-    icon: 'bi-printer',
+    icon_class: 'bi-printer',
     count: dashboard.digital_requests.count,
     view_all_label: 'View all digitization requests',
-    view_all_path: aeon_requests_path(kind: 'submitted', filter: 'digitization'),
-    status: (delivery.count.positive? ? "#{delivery.count} #{delivery.label}" : delivery.label)) do |c| %>
+    view_all_path: aeon_requests_path(kind: 'submitted', filter: 'digitization')) do |c| %>
+    <% c.with_status_content((delivery.count.positive? ? "#{delivery.count} #{delivery.label}" : delivery.label)) %>
     <% c.with_items do %>
       <ul class="list-unstyled mb-2">
         <% dashboard.digitization_preview_requests&.first(3)&.each do |request| %>
@@ -85,12 +85,12 @@
 
   <%= render Home::ListView::SummaryCardComponent.new(
         title: 'Reading room appointments',
-        icon: 'bi-calendar',
+        icon_class: 'bi-calendar',
         count: dashboard.appointments.count,
         pill_noun: 'appointments',
         view_all_label: 'View all reading room appointments',
-        view_all_path: aeon_appointments_path,
-        status: 'Coming soon') do |c| %>
+        view_all_path: aeon_appointments_path) do |c| %>
+    <% c.with_status_content('Coming soon') %>
     <% c.with_items do %>
       <ul class="list-unstyled mb-2">
         <% dashboard.upcoming_appointments&.each do |appointment| %>
@@ -102,11 +102,11 @@
 
   <%= render Home::ListView::SummaryCardComponent.new(
         title: 'Activities',
-        icon: 'bi-person-video3',
+        icon_class: 'bi-person-video3',
         count: dashboard.upcoming_activities.count,
         view_all_label: 'View all activities',
-        view_all_path: aeon_activities_path,
-        status: 'Coming soon') do |c| %>
+        view_all_path: aeon_activities_path) do |c| %>
+    <% c.with_status_content('Coming soon') %>
     <% c.with_items do %>
       <ul class="list-unstyled mb-2">
         <% dashboard.upcoming_activities&.each do |activity| %>
@@ -125,11 +125,11 @@
 
   <%= render Home::ListView::SummaryCardComponent.new(
     title: 'Saved for later',
-    icon: 'bi-pin-angle',
+    icon_class: 'bi-pin-angle',
     count: dashboard.saved_for_later.count,
-    status: 'Requests not complete',
     view_all_label: 'View all saved items',
     view_all_path: aeon_requests_path(kind: 'saved_for_later')) do |c| %>
+    <% c.with_status_content('Requests not complete') %>
     <% c.with_items do %>
       <ul class="list-unstyled mb-2">
         <% dashboard.saved_for_later&.first(3)&.each do |request| %>
