@@ -1,7 +1,7 @@
 <div class="home-cards d-grid gap-4" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
   <%= render Home::SummaryCardComponent.new(
         title: 'Borrowed items',
-        icon: 'bi-book',
+        icon_class: 'bi-book',
         label: t('dashboard.borrowed_items.label_html', count: dashboard.checkouts.count),
         path: dashboard.checkouts.count.positive? ? checkouts_path : nil ) do |c| %>
             <% c.with_status_count(label: t('dashboard.borrowed_items_due_soon.label_html', count: dashboard.actionable_borrowed_items.count)) %>
@@ -18,7 +18,7 @@
 
   <%= render Home::SummaryCardComponent.new(
         title: 'Pickup requests',
-        icon: 'bi-bag',
+        icon_class: 'bi-bag',
         label: t('dashboard.pickup_requests.label_html', count: dashboard.pickup_requests.count),
         path: dashboard.pickup_requests.count.positive? ? folio_requests_path : nil) do |c| %>
             <% c.with_status_count(label: t('dashboard.pickup_requests_ready.label_html', count: dashboard.ready_for_pickup.count)) %>
@@ -26,7 +26,7 @@
 
   <%= render Home::SummaryCardComponent.new(
         title: 'Digitization requests',
-        icon: 'bi-printer',
+        icon_class: 'bi-printer',
         label: t('dashboard.digitization_requests.label_html', count: dashboard.digital_requests.count),
         path: dashboard.digital_requests.count.positive? ? aeon_requests_path(kind: 'submitted', filter: 'digitization') : aeon_requests_path(kind: 'completed', filter: 'digitization'),
         link_label: dashboard.digital_requests.count.zero? ? 'View past requests' : nil) do |c| %>
@@ -35,7 +35,7 @@
 
   <%= render Home::SummaryCardComponent.new(
         title: 'Reading room appointments',
-        icon: 'bi-calendar',
+        icon_class: 'bi-calendar',
         label: t('dashboard.appointments.label_html', count: dashboard.appointments.count),
         path: dashboard.appointments.count.positive? ? aeon_appointments_path : aeon_requests_path(kind: 'completed', filter: 'reading_room'),
         link_label: dashboard.appointments.count.zero? ? 'View past appointments' : nil,
@@ -45,7 +45,7 @@
 
   <%= render Home::SummaryCardComponent.new(
         title: 'Saved for later',
-        icon: 'bi-pin-angle',
+        icon_class: 'bi-pin-angle',
         label: t('dashboard.saved_for_later.label_html', count: dashboard.saved_for_later.count),
         path: dashboard.saved_for_later.count.positive? ? aeon_requests_path(kind: 'saved_for_later') : nil) do |c| %>
             <% c.with_status_count(label: 'Requests not complete') if dashboard.saved_for_later.count.positive? %>
@@ -53,7 +53,7 @@
 
   <%= render Home::SummaryCardComponent.new(
         title: 'Activities',
-        icon: 'bi-person-video3',
+        icon_class: 'bi-person-video3',
         label: t('dashboard.activities.label_html', count: dashboard.upcoming_activities.count),
         path: dashboard.upcoming_activities.count.positive? ? aeon_activities_path : past_aeon_activities_path,
         link_label: dashboard.upcoming_activities.count.zero? ? 'View past activities' : nil) do |c| %>
