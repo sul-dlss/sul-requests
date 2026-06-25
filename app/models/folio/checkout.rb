@@ -7,7 +7,7 @@ module Folio
     include ActiveModel::Model
 
     attr_reader :record, :patron_type_id
-    attr_writer :loan_policy
+    attr_writer :loan_policy, :overdue_fines_policy
 
     delegate :loan_policy_interval,
              to: :loan_policy,

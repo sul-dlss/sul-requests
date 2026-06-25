@@ -15,11 +15,12 @@ module Folio
       rate = checkout.overdue_fines_rate
       return unless rate
 
-      safe_join([sul_icon('sharp-warning-24px'), "Accruing #{number_to_currency(rate['quantity'])}/#{rate['intervalId']} until returned"])
+      safe_join([tag.i(class: 'bi bi-exclamation-triangle me-2'),
+                 "Accruing #{number_to_currency(rate['quantity'])}/#{rate['intervalId']} until returned"])
     end
 
     def call
-      tag.span(class: 'small fw-medium rounded-pill text-white bg-danger') do
+      tag.span(class: 'fw-bold rounded-pill text-digital-red-dark bg-digital-red-10 text-nowrap') do
         accruing_rate_label
       end
     end
