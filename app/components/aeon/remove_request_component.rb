@@ -8,7 +8,7 @@ module Aeon
     end
 
     def spinner
-      tag.div(class: 'text-green spinner-message align-content-center d-none') do
+      tag.div(class: 'text-green spinner-message align-content-center d-none', data: { submit_message_target: 'message' }) do
         tag.div(class: 'spinner-border spinner-border-sm me-2', aria: { hidden: true }) +
           tag.span('Removing and saving for later')
       end
@@ -16,8 +16,9 @@ module Aeon
 
     def remove_button
       tag.button class: 'btn btn-link p-0 su-underline me-2',
-                 data: { action: 'click->add-items#remove',
+                 data: { action: 'click->add-items#remove click->submit-message#showMessage',
                          appointment_target: '#savedForLaterRequests',
+                         submit_message_target: 'button',
                          transaction_number: @request.transaction_number,
                          title: @request.item_title } do
         tag.i(class: 'bi bi-pin-angle-fill me-1') + tag.span('Save for later')
@@ -25,7 +26,7 @@ module Aeon
     end
 
     def call
-      tag.span(class: 'actions') do
+      tag.span(class: 'actions', data: { controller: 'submit-message' }) do
         safe_join([remove_button, spinner])
       end
     end
