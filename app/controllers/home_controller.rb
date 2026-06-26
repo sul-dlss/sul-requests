@@ -10,7 +10,11 @@ class HomeController < ApplicationController
   before_action :authenticate_user!, only: [:show]
 
   def show
-    @dashboard = Home::Dashboard.new(current_user)
+    @dashboard = if patron_or_group.is_a? Folio::ProxyGroup
+                   Home::Dashboard.new(aeon: Aeon::NullUser.new, patron: patron_or_group)
+                 else
+                   Home::Dashboard.new(aeon: current_user.aeon, patron: patron_or_group)
+                 end
   end
 
   def authenticate_user!
