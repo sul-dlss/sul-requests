@@ -1,0 +1,49 @@
+<%= turbo_frame_tag 'aeon-dashboard' do %>
+  <%= turbo_stream.replace 'aeon-digitization-requests' do %>
+      <%= render Home::SummaryCardComponent.new(
+            id: 'aeon-digitization-requests',
+            title: 'Digitization requests',
+            icon_class: 'bi-printer',
+            label: t('dashboard.digitization_requests.label_html', count: @dashboard.digital_requests.count),
+            path: @dashboard.digital_requests.count.positive? ? aeon_requests_path(kind: 'submitted', filter: 'digitization') : aeon_requests_path(kind: 'completed', filter: 'digitization'),
+            link_label: @dashboard.digital_requests.count.zero? ? 'View past requests' : nil) do |c| %>
+                  <% c.with_status_count(label: t('dashboard.digitization_requests_delivered.label_html', count: @dashboard.recently_delivered_digital_requests.count)) %>
+            <% end %>
+      <% end %>
+
+  <%= turbo_stream.replace 'aeon-reading-room-appointments' do %>
+    <%= render Home::SummaryCardComponent.new(
+          id: 'aeon-reading-room-appointments',
+          title: 'Reading room appointments',
+          icon_class: 'bi-calendar',
+          label: t('dashboard.appointments.label_html', count: @dashboard.appointments.count),
+          path: @dashboard.appointments.count.positive? ? aeon_appointments_path : aeon_requests_path(kind: 'completed', filter: 'reading_room'),
+          link_label: @dashboard.appointments.count.zero? ? 'View past appointments' : nil,
+          secondary_label: t('dashboard.appointment_items.label_html', count: @dashboard.appointment_requests_count)) do |c| %>
+          <% c.with_status_next_up(date: @dashboard.next_appointment_date) %>
+        <% end %>
+  <% end %>
+
+  <%= turbo_stream.replace 'aeon-saved-for-later' do %>
+    <%= render Home::SummaryCardComponent.new(
+          id: 'aeon-saved-for-later',
+          title: 'Saved for later',
+          icon_class: 'bi-pin-angle',
+          label: t('dashboard.saved_for_later.label_html', count: @dashboard.saved_for_later.count),
+          path: @dashboard.saved_for_later.count.positive? ? aeon_requests_path(kind: 'saved_for_later') : nil) do |c| %>
+              <% c.with_status_count(label: 'Requests not complete') if @dashboard.saved_for_later.count.positive? %>
+          <% end %>
+    <% end %>
+
+  <%= turbo_stream.replace 'aeon-activities' do %>
+    <%= render Home::SummaryCardComponent.new(
+          id: 'aeon-activities',
+          title: 'Activities',
+          icon_class: 'bi-person-video3',
+          label: t('dashboard.activities.label_html', count: @dashboard.upcoming_activities.count),
+          path: @dashboard.upcoming_activities.count.positive? ? aeon_activities_path : past_aeon_activities_path,
+          link_label: @dashboard.upcoming_activities.count.zero? ? 'View past activities' : nil) do |c| %>
+          <% c.with_status_next_up(date: @dashboard.next_activity_date) %>
+        <% end %>
+  <% end %>
+<% end if @dashboard.aeon? %>

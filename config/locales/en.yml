@@ -278,51 +278,63 @@ en:
       payment_failed_html: <span class="font-weight-bold">Sorry!</span> Payment failed. Please <a href="mailto:sul-privileges@stanford.edu">contact us</a> for help resolving your fines.
   dashboard:
     borrowed_items:
+      label_placeholder_html: '<div class="placeholder-glow"><span class="placeholder col-8"></span></div>'
       label_html:
         zero: 'No items on loan'
         one: '<span class="fw-semibold">1</span> item currently loaned'
         other: '<span class="fw-semibold">%{count}</span> items currently loaned'
     borrowed_items_due_soon:
+      label_placeholder_html: ''
       label_html:
         zero: ''
         one: '<span class="fw-semibold">1</span> due soon'
         other: '<span class="fw-semibold">%{count}</span> due soon'
+    fines_and_fees:
+      label_placeholder_html: '<div class="placeholder-glow"><span class="placeholder col-8"></span></div>'
     pickup_requests:
+      label_placeholder_html: '<div class="placeholder-glow"><span class="placeholder col-8"></span></div>'
       label_html:
         zero: 'No pickup requests'
         one: '<span class="fw-semibold">1</span> item requested'
         other: '<span class="fw-semibold">%{count}</span> items requested'
     pickup_requests_ready:
+      label_placeholder_html: ''
       label_html:
         zero: ''
         one: '<span class="fw-semibold">1</span> item ready for pickup'
         other: '<span class="fw-semibold">%{count}</span> items ready for pickup'
     digitization_requests:
+      label_placeholder_html: '<div class="placeholder-glow"><span class="placeholder col-8"></span></div>'
       label_html:
         zero: 'No digitization requests'
         one: '<span class="fw-semibold">1</span> item requested'
         other: '<span class="fw-semibold">%{count}</span> items requested'
     digitization_requests_delivered:
+      label_placeholder_html: ''
       label_html:
         zero: ''
         one: '<span class="fw-semibold">1</span> delivered recently via email'
         other: '<span class="fw-semibold">%{count}</span> delivered recently via email'
     appointments:
+      label_placeholder_html: '<div class="placeholder-glow"><span class="placeholder col-8"></span></div>'
       label_html:
         zero: 'No appointments scheduled'
         one: '<span class="fw-semibold">1</span> appointment'
         other: '<span class="fw-semibold">%{count}</span> appointments'
     appointment_items:
+      label_placeholder_html: ''
       label_html:
         zero: 'No items scheduled'
         one: '<span class="fw-semibold">1</span> item scheduled'
         other: '<span class="fw-semibold">%{count}</span> items scheduled'
     saved_for_later:
+      label_placeholder_html: '<div class="placeholder-glow"><span class="placeholder col-8"></span></div>'
       label_html:
         zero: 'No saved items'
         one: '<span class="fw-semibold">1</span> item saved for later'
         other: '<span class="fw-semibold">%{count}</span> items saved for later'
     activities:
+      label_placeholder_html: '<div class="placeholder-glow"><span class="placeholder col-8"></span></div>'
       label_html:
         zero: 'No upcoming activities'
         one: '<span class="fw-semibold">1</span> upcoming activity'
