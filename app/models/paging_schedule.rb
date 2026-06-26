@@ -195,6 +195,8 @@ class PagingSchedule
     # Each location needs a little bit of time to check in the material after delivery
     checkin_processing_hours = Settings.hold_shelf_staff_checkin_delay_hours[destination_library_code] ||
                                Settings.hold_shelf_staff_checkin_delay_hours.default
+    raise ScheduleNotFound unless steps[:delivered_to_destination]
+
     steps[:staff_processed] = steps[:delivered_to_destination].advance(hours: checkin_processing_hours)
 
     steps[:ready] = steps[:staff_processed]
