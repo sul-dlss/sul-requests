@@ -1,28 +1,29 @@
-
-<div class="d-sm-flex mb-2">
-  <h1 class="mt-2 me-3">Activities</h1>
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <button class="nav-link <%= 'active' unless params[:past] %> fs-5" data-bs-toggle="tab" data-bs-target="#active-tab">Current</button>
-    </li>
-    <li class="nav-item">
-      <button class="nav-link <%= 'active' if params[:past] %> fs-5" data-bs-toggle="tab" data-bs-target="#past-tab">Past</button>
-    </li>
-  </ul>
-  <div class="tab-underline-extend flex-grow-1 border-bottom d-none d-sm-block">
-  </div>
-</div>
-
-<div class="tab-content">
-  <div id="active-tab" class="tab-pane fade <%= 'show active' unless params[:past] %>">
-    <turbo-frame src="<%= active_aeon_activities_path %>" <% if params[:past] %>loading="lazy"<% end %> id="active">
-      Loading....
-    </turbo-frame>
+<div class="col-lg-9">
+  <div class="d-sm-flex mb-2">
+    <h1 class="mt-2 me-3">Activities</h1>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <button class="nav-link <%= 'active' unless params[:past] %> fs-5" data-bs-toggle="tab" data-bs-target="#active-tab">Current</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link <%= 'active' if params[:past] %> fs-5" data-bs-toggle="tab" data-bs-target="#past-tab">Past</button>
+      </li>
+    </ul>
+    <div class="tab-underline-extend flex-grow-1 border-bottom d-none d-sm-block">
+    </div>
   </div>
 
-  <div id="past-tab" class="tab-pane fade <%= 'show active' if params[:past] %>">
-    <turbo-frame src="<%= past_aeon_activities_path %>" <% unless params[:past] %>loading="lazy"<% end %> id="past">
-      Loading...
-    </turbo-frame>
+  <div class="tab-content">
+    <div id="active-tab" class="tab-pane fade <%= 'show active' unless params[:past] %>">
+      <turbo-frame src="<%= active_aeon_activities_path %>" <% if params[:past] %>loading="lazy"<% end %> id="active">
+        Loading....
+      </turbo-frame>
+    </div>
+
+    <div id="past-tab" class="tab-pane fade <%= 'show active' if params[:past] %>">
+      <turbo-frame src="<%= past_aeon_activities_path %>" <% unless params[:past] %>loading="lazy"<% end %> id="past">
+        Loading...
+      </turbo-frame>
+    </div>
   </div>
 </div>
