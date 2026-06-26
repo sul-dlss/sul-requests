@@ -1,5 +1,6 @@
 <div class="home-cards d-grid gap-4" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
   <%= render Home::SummaryCardComponent.new(
+        id: 'folio-borrowed-items',
         title: 'Borrowed items',
         icon: 'bi-book',
         count: dashboard.checkouts.count,
@@ -8,6 +9,7 @@
         status: count_callout(label: t('dashboard.borrowed_items_due_soon.label_html', count: dashboard.actionable_borrowed_items.count))) %>
 
   <%= render Home::FinesCardComponent.new(
+        id: 'folio-fines-and-fees',
         title: 'Fees and fines',
         icon: 'bi-cash-coin',
         fines: dashboard.fines,
@@ -17,6 +19,7 @@
         past_path: fines_path(past: 1)) %>
 
   <%= render Home::SummaryCardComponent.new(
+        id: 'folio-pickup-requests',
         title: 'Pickup requests',
         icon: 'bi-bag',
         count: dashboard.pickup_requests.count,
@@ -25,6 +28,7 @@
         status: count_callout(label: t('dashboard.pickup_requests_ready.label_html', count: dashboard.ready_for_pickup.count))) %>
 
   <%= render Home::SummaryCardComponent.new(
+        id: 'aeon-digitization-requests',
         title: 'Digitization requests',
         icon: 'bi-printer',
         count: dashboard.digital_requests.count,
@@ -35,6 +39,7 @@
         status: count_callout(label: t('dashboard.digitization_requests_delivered.label_html', count: dashboard.recently_delivered_digital_requests.count))) %>
 
   <%= render Home::SummaryCardComponent.new(
+        id: 'aeon-reading-room-appointments',
         title: 'Reading room appointments',
         icon: 'bi-calendar',
         count: dashboard.appointments.count,
@@ -46,6 +51,7 @@
         next_up_date: dashboard.next_appointment_date) %>
 
   <%= render Home::SummaryCardComponent.new(
+        id: 'aeon-saved-for-later',
         title: 'Saved for later',
         icon: 'bi-pin-angle',
         count: dashboard.saved_for_later.count,
@@ -54,6 +60,7 @@
         status: (tag.span('Requests not complete', class: 'text-digital-red-dark') if dashboard.saved_for_later.count.positive?)) %>
 
   <%= render Home::SummaryCardComponent.new(
+        id: 'aeon-activities',
         title: 'Activities',
         icon: 'bi-person-video3',
         count: dashboard.upcoming_activities.count,
