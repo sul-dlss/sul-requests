@@ -43,9 +43,9 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#savedForLaterRequests" aria-expanded="true" aria-controls="savedForLaterRequests">
-              <span class="d-flex flex-wrap gap-1 align-items-center">
-                <span class="fs-5 fw-semibold">Eligible items to add</span>
-                <span class="ms-2">Materials associated with <%= @appointment.reading_room.name %>.</span>
+              <span class="d-flex flex-wrap column-gap-2 align-items-center">
+                <span class="fs-5 fw-semibold"><i class="bi bi-pin-angle-fill me-1"></i>Saved for later</span>
+                <span style="margin-top: .15rem">Only materials associated with <%= @appointment.reading_room.name %> are eligible to add</span>
               </span>
               <i class="bi bi-chevron-down accordion-header-icon ms-auto"></i>
             </button>

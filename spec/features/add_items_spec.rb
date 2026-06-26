@@ -97,8 +97,8 @@ RSpec.describe 'Add items modal', :js do
       expect(page).to have_css('#savedForLaterRequestsAccordion li', count: 0)
 
       # Remove scheduled appointment and saved_for_later appointment
-      find("button[data-transaction-number='103']", text: 'Remove').click
-      find("button[data-transaction-number='101']", text: 'Remove').click
+      find("button[data-transaction-number='103']", text: 'Save for later').click
+      find("button[data-transaction-number='101']", text: 'Save for later').click
 
       expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 2)
       expect(page).to have_css('#appointmentRequestsAccordion li', count: 2)

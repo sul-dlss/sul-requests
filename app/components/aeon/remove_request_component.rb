@@ -7,13 +7,26 @@ module Aeon
       @request = request
     end
 
-    def call
-      tag.button class: 'btn btn-link p-0 su-underline',
+    def spinner
+      tag.div(class: 'text-green spinner-message align-content-center d-none') do
+        tag.div(class: 'spinner-border spinner-border-sm me-2', aria: { hidden: true }) +
+          tag.span('Removing and saving for later')
+      end
+    end
+
+    def remove_button
+      tag.button class: 'btn btn-link p-0 su-underline me-2',
                  data: { action: 'click->add-items#remove',
                          appointment_target: '#savedForLaterRequests',
                          transaction_number: @request.transaction_number,
                          title: @request.item_title } do
-        tag.i(class: 'bi bi-x') + tag.span('Remove')
+        tag.i(class: 'bi bi-pin-angle-fill me-1') + tag.span('Save for later')
+      end
+    end
+
+    def call
+      tag.span(class: 'actions') do
+        safe_join([remove_button, spinner])
       end
     end
   end

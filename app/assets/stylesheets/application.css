@@ -990,3 +990,31 @@ summary .disclosure-icon::before {
 [data-home-view="list"] [data-home-view-variant="card"] {
   display: none;
 }
+
+.request.list-group-item {
+  --border-top: 1px solid var(--stanford-20-black);
+  --border-side-bottom: 0;
+  border: var(--border-side-bottom);
+  border-top: var(--border-top);
+}
+
+.request.list-group-item.flash-on-add {
+  background-color: rgb(235, 243, 241);
+  --border-side-bottom: 0.5px solid rgb(var(--stanford-digital-green-rgb));
+  --border-top: 0.5px solid rgb(var(--stanford-digital-green-rgb));
+  animation: flash 1s ease forwards;
+  animation-delay: 4s;
+}
+
+@keyframes flash {
+  from {
+    background-color: rgb(235, 243, 241);
+    --border-side-bottom: 0.5px solid rgb(var(--stanford-digital-green-rgb));
+    --border-top: 0.5px solid rgb(var(--stanford-digital-green-rgb));
+  }
+  to {
+    background-color: transparent;
+    --border-side-bottom: 0;
+    --border-top: 1px solid var(--stanford-20-black);
+  }
+}

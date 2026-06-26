@@ -2,14 +2,22 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   schedule(e) {
-    this.updateElements(e, 'items-added')
+    const data = e.currentTarget.dataset;
+    this.showSpinner(e)
+    setTimeout(() => {
+      this.updateElements(data, 'items-added')
+    }, 1000);
   }
 
-  updateElements(e, eventName){
-    const appointmentRequests = document.querySelector(e.currentTarget.dataset.appointmentTarget);
+  updateElements(data, eventName){
+    const appointmentRequests = document.querySelector(data.appointmentTarget);
+    // if accordion isn't open, open it
+    if (!appointmentRequests.classList.contains('show')){
+      document.querySelector(`[data-bs-target="${data.appointmentTarget}"]`).click();
+    }
     const template = appointmentRequests.querySelector('template')
-    const transactionNumber = e.currentTarget.dataset.transactionNumber;
-    const inAppointments = appointmentRequests.querySelector(`[data-title="${e.currentTarget.dataset.title}"]`)
+    const transactionNumber = data.transactionNumber;
+    const inAppointments = appointmentRequests.querySelector(`[data-title="${data.title}"]`)
     if (!inAppointments){
       let element = this.element.cloneNode(true);
       element.querySelectorAll('li').forEach((li) => {
@@ -18,6 +26,7 @@ export default class extends Controller {
         }
         else { 
           this.updateButtonForm(li, template, eventName);
+          this.addFlashAnimation(li)
           this.element.querySelector(`#${li.id}`).remove()
         }
       })
@@ -25,7 +34,8 @@ export default class extends Controller {
     } else {
       const addTo = this.element.querySelector(`li[data-transaction-number="${transactionNumber}"]`);
       this.updateButtonForm(addTo, template, eventName);
-      inAppointments.querySelector('ul').appendChild(addTo)
+      inAppointments.querySelector('ul').appendChild(addTo);
+      this.addFlashAnimation(addTo)
     }
     if (this.element.querySelectorAll('li').length < 1) this.element.remove()
     const addAmount = eventName == 'items-removed' ? -1 : 1
@@ -33,7 +43,18 @@ export default class extends Controller {
   }
 
   remove(e) {
-    this.updateElements(e, 'items-removed')
+    const data = e.currentTarget.dataset;
+    this.showSpinner(e)
+    setTimeout(() => {
+      this.updateElements(data, 'items-removed')
+    }, 1000);
+  }
+
+showSpinner(e) {
+    e.preventDefault()
+    e.currentTarget.hidden = true;
+    const spinner =  e.currentTarget.nextSibling
+    spinner.classList.toggle('d-none')
   }
 
   enableDisableButton(e) {
@@ -42,13 +63,21 @@ export default class extends Controller {
     })
   }
 
+  addFlashAnimation(li) {
+    li.classList.add('flash-on-add')
+    li.addEventListener('animationend', () => {
+      li.classList.remove('flash-on-add');
+    });
+  }
+
   updateButtonForm(element, template, eventName) {
-    const cloneTemplate = document.importNode(template.content, true)
-    const newButton = cloneTemplate.querySelector('button')
+    const actionTemplate = document.importNode(template.content, true).querySelector('.actions')
+    const newButton = actionTemplate.querySelector('button')
     const oldButton = element.querySelector('button')
     newButton.dataset.title = oldButton.dataset.title
     newButton.dataset.transactionNumber = oldButton.dataset.transactionNumber
-    oldButton.replaceWith(newButton);
+    newButton.hidden = false
+    element.querySelector('.actions').replaceWith(actionTemplate);
     let input = element.querySelector('input') ? element.querySelector('input') : document.createElement("input");
     input.type = 'hidden'
     input.name = `${eventName.replace('-', '_')}[]`
