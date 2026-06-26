@@ -3,8 +3,6 @@
 module Home
   # Home page presenter wrapping user data for both view variants.
   class Dashboard
-    DigitizationStatus = Data.define(:count, :label)
-
     attr_reader :aeon, :patron
 
     def initialize(aeon:, patron:)
@@ -20,10 +18,6 @@ module Home
       @actionable_borrowed_items ||= checkouts.select { |c| c.due_date && c.due_date <= 3.days.from_now }
     end
 
-    def borrowed_items_preview
-      @borrowed_items_preview ||= preview(actionable_borrowed_items, checkouts)
-    end
-
     def fines
       @fines ||= patron.fines
     end
@@ -33,11 +27,11 @@ module Home
     end
 
     def pickup_requests
-      @pickup_requests ||= preview(ready_for_pickup, patron.requests)
+      @pickup_requests ||= patron.requests
     end
 
     def ready_for_pickup
-      @ready_for_pickup ||= patron.requests.select(&:ready_for_pickup?)
+      @ready_for_pickup ||= pickup_requests.select(&:ready_for_pickup?)
     end
 
     def digital_requests
@@ -46,18 +40,6 @@ module Home
 
     def recently_delivered_digital_requests
       @recently_delivered_digital_requests ||= aeon.requests.digitization.recently_delivered.newest_first(&:delivered_date)
-    end
-
-    def digitization_preview_requests
-      preview(recently_delivered_digital_requests, digital_requests)
-    end
-
-    def digitization_status
-      @digitization_status ||= begin
-        count = recently_delivered_digital_requests.count
-        label = count.positive? ? 'delivered recently via email' : 'Recently requested'
-        DigitizationStatus.new(count:, label:)
-      end
     end
 
     def appointments
@@ -87,12 +69,6 @@ module Home
 
     def upcoming_activities
       @upcoming_activities ||= aeon.activities&.active&.upcoming(within: 7.days, fallback: 3)
-    end
-
-    private
-
-    def preview(primary, fallback, limit: 3)
-      primary.presence || fallback.first(limit)
     end
   end
 end
