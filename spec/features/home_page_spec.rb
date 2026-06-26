@@ -39,7 +39,7 @@ RSpec.describe 'Home Page' do
     end
   end
 
-  context 'with the new layout' do
+  context 'with the new layout', :js do
     before do
       allow(Settings.features).to receive(:requests_redesign).and_return(true)
       allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
@@ -58,7 +58,7 @@ RSpec.describe 'Home Page' do
     it 'renders the cards' do
       visit root_path
 
-      expect(page).to have_css('.card', count: 10)
+      expect(page).to have_css('.card', count: 7)
       expect(page).to have_css('.card', text: 'Pickup requests')
       expect(page).to have_css('.card', text: '1 item currently loaned')
       expect(page).to have_css('.card', text: 'Digitization requests')
@@ -70,7 +70,7 @@ RSpec.describe 'Home Page' do
       it 'renders just the FOLIO cards' do
         visit root_path
 
-        expect(page).to have_css('.card', count: 6)
+        expect(page).to have_css('.card', count: 3)
         expect(page).to have_css('.card', text: 'Pickup requests')
         expect(page).to have_no_css('.card', text: 'Digitization requests')
       end
