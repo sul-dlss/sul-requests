@@ -3,13 +3,14 @@
 module Home
   # Generic count-with-link card for the card-view home page.
   class SummaryCardComponent < ViewComponent::Base
-    attr_reader :title, :icon, :label, :count,  :path, :status,
+    attr_reader :id, :title, :icon, :label, :count, :path, :status,
                 :empty_path, :empty_link_label, :next_up_date, :secondary_label
 
     # rubocop:disable Metrics/ParameterLists
-    def initialize(title:, icon:, path:, count:, label: nil, secondary_label: nil, status: nil, empty_path: nil, empty_link_label: nil,
+    def initialize(id:, title:, icon:, path:, count:, label: nil, secondary_label: nil, status: nil, empty_path: nil, empty_link_label: nil,
                    next_up_date: nil)
       # rubocop:enable Metrics/ParameterLists
+      @id = id
       @title = title
       @icon = icon
       @count = count
