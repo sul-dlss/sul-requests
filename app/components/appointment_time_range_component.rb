@@ -14,7 +14,11 @@ class AppointmentTimeRangeComponent < ViewComponent::Base
   end
 
   def time_range
-    "#{l(@appointment.start_time, format: :time_only)} - #{l(@appointment.stop_time, format: :time_only)}"
+    if @appointment.stop_time
+      "#{l(@appointment.start_time, format: :time_only)} - #{l(@appointment.stop_time, format: :time_only)}"
+    else
+      l(@appointment.start_time, format: :time_only)
+    end
   end
 
   def show_hours?
@@ -22,10 +26,17 @@ class AppointmentTimeRangeComponent < ViewComponent::Base
   end
 
   def call
-    values = [tag.span(date, class: ('fw-semibold' if @emphasize_date))]
-    values << tag.span(time_range) if show_hours?
+    values = []
+    values << tag.span(date, class: ('fw-semibold' if @emphasize_date)) if @appointment.start_time
+    values << tag.span(time_range) if show_time?
     values << tag.span(@location) if @location
 
     safe_join(values, tag.i(class: 'bi bi-dot'))
+  end
+
+  private
+
+  def show_time?
+    @appointment.start_time && show_hours?
   end
 end
