@@ -8,8 +8,15 @@ class HomeController < ApplicationController
   bot_challenge
 
   before_action :authenticate_user!, only: [:show]
+  before_action :load_dashboard
 
-  def show
+  def show; end
+
+  def show_folio; end
+
+  def show_aeon; end
+
+  def load_dashboard
     @dashboard = if patron_or_group.is_a? Folio::ProxyGroup
                    Home::Dashboard.new(aeon: Aeon::NullUser.new, patron: patron_or_group)
                  else

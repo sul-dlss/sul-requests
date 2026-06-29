@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'home#show'
+  get 'home/folio', to: 'home#show_folio', as: :folio_dashboard
+  get 'home/aeon', to: 'home#show_aeon', as: :aeon_dashboard
+
   get "/feature_flags", to: "feature_flags#index", as: :feature_flags
   post "/feature_flags", to: "feature_flags#update"
   match "/404", to: 'errors#not_found', via: :all

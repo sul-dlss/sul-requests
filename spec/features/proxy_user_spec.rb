@@ -78,7 +78,7 @@ RSpec.describe 'Proxy User' do
     end
   end
 
-  context 'when on the home page' do
+  context 'when on the home page', :js do
     it 'displays the sponsor information' do
       visit root_path
 

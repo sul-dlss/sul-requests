@@ -39,7 +39,7 @@ RSpec.describe 'Home Page' do
     end
   end
 
-  context 'with the new layout' do
+  context 'with the new layout', :js do
     before do
       allow(Settings.features).to receive(:requests_redesign).and_return(true)
       allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)

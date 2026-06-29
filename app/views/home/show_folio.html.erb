@@ -1,0 +1,35 @@
+<%= turbo_frame_tag 'folio-dashboard' do %>
+  <%= turbo_stream.replace 'folio-borrowed-items' do %>
+    <%= render Home::SummaryCardComponent.new(
+          id: 'folio-borrowed-items',
+          title: 'Borrowed items',
+          icon_class: 'bi-book',
+          label: t('dashboard.borrowed_items.label_html', count: @dashboard.checkouts.count),
+          path: @dashboard.checkouts.count.positive? ? checkouts_path : nil ) do |c| %>
+              <% c.with_status_count(label: t('dashboard.borrowed_items_due_soon.label_html', count: @dashboard.actionable_borrowed_items.count)) %>
+          <% end %>
+  <% end %>
+
+  <%= turbo_stream.replace 'folio-fines-and-fees' do %>
+    <%= render Home::FinesCardComponent.new(
+          id: 'folio-fines-and-fees',
+          title: 'Fees and fines',
+          icon: 'bi-cash-coin',
+          fines: @dashboard.fines,
+          balance: @dashboard.balance,
+          patron_key: current_user.patron.key,
+          path: fines_path,
+          past_path: fines_path(past: 1)) %>
+  <% end %>
+
+  <%= turbo_stream.replace 'folio-pickup-requests' do %>
+    <%= render Home::SummaryCardComponent.new(
+          id: 'folio-pickup-requests',
+          title: 'Pickup requests',
+          icon_class: 'bi-bag',
+          label: t('dashboard.pickup_requests.label_html', count: @dashboard.pickup_requests.count),
+          path: @dashboard.pickup_requests.count.positive? ? folio_requests_path : nil) do |c| %>
+              <% c.with_status_count(label: t('dashboard.pickup_requests_ready.label_html', count: @dashboard.ready_for_pickup.count)) %>
+          <% end %>
+  <% end %>
+<% end if @dashboard.folio? %>

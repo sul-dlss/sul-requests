@@ -4,7 +4,7 @@
   <% end %>
 
   <% c.with_actions do %>
-    <%= render Home::PayNowFormComponent.new(fines: fines, balance: balance, patron_key: patron_key) %>
+    <%= render Home::PayNowFormComponent.new(fines: fines, balance: balance, patron_key: patron_key) if balance %>
   <% end %>
 
   <% c.with_body(classes: %w[pt-1]) do %>
@@ -13,7 +13,7 @@
       <p class="mb-1">No fees or fines</p>
       <%= render Home::ArrowLinkComponent.new(label: 'View past fees/fines', path: past_path, classes: ['stretched-link']) %>
     <% else %>
-      <p class="mb-1"><span class="fw-semibold"><%= number_to_currency(balance) %></span> balance</p>
+      <p class="mb-1"><span class="fw-semibold"><%= number_to_currency(balance) if balance %></span> balance</p>
       <%= render Home::ArrowLinkComponent.new(label: 'View details', path: path, classes: ['stretched-link']) %>
     <% end %>
   <% end %>
