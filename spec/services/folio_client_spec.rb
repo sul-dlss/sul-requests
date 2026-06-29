@@ -22,7 +22,7 @@ RSpec.describe FolioClient do
     subject(:response) { client.renew_checkout(checkout) }
 
     let(:checkout) do
-      double(patron_key: '9af85395-3104-5fc9-88ab-15554765c2d2', item_id: '6d9a4f99-d144-51cf-92d7-3edbfc588abe')
+      double(renew_patron_key: '9af85395-3104-5fc9-88ab-15554765c2d2', item_id: '6d9a4f99-d144-51cf-92d7-3edbfc588abe')
     end
 
     let(:record_one) do
