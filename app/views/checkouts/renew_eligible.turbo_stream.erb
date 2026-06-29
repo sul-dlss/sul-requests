@@ -1,10 +1,18 @@
-<% @responses.select(&:success?).each do |response| %>
+<% @responses.each do |response| %>
   <%= turbo_stream.replace(dom_id(response.checkout)) do %>
-    <%= render Folio::CheckoutComponent.new(checkout: response.updated_checkout, patron: patron_or_group) %>
+    <% if response.success? %>
+      <%= render Folio::CheckoutComponent.new(checkout: response.updated_checkout, patron: patron_or_group, renewal_view: true) %>
+    <% else %>
+      <%= render Folio::CheckoutComponent.new(checkout: response.checkout, patron: patron_or_group) %>
+    <% end %>
   <% end %>
 <% end %>
 
-<%= turbo_stream.prepend('main') do %>
+<%= turbo_stream.replace('renew-all-button') do %>
+  <%= render 'checkouts/renew_all_button' %>
+<% end %>
+
+<%= turbo_stream.prepend_all('.checkouts-list') do %>
   <% success = I18n.t('mylibrary.renew_all_items.success_html', count: @responses.select(&:success?).length).html_safe if @responses.select(&:success?).any? %>
   <% error_list = capture do %>
   <ul>
@@ -14,5 +22,5 @@
   </ul>
   <% end %>
   <% error = I18n.t('mylibrary.renew_all_items.error_html', count: @responses.reject(&:success?).length, items: error_list).html_safe if @responses.reject(&:success?).any? %>
-  <%= render 'shared/flashes', flash: { success: success, error: error} %>
+  <%= render 'shared/flashes', flash: { success: success, error: error}, classes: '' %>
 <% end %>

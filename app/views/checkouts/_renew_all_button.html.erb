@@ -1,14 +1,19 @@
-<% if patron_or_group.checkouts.any?(&:renewable?) %>
-  <% if patron_or_group.can_renew? %>
-      <% renewable_count = patron_or_group.checkouts.count(&:renewable?) %>
-      <%= form_tag renew_eligible_checkouts_path, method: :post do %>
-        <%= button_tag class: 'btn btn-primary btn-sm text-nowrap',
-                        data: { turbo_submits_with: t('mylibrary.renew_all_items.in_progress_html', count: renewable_count) },
-                        type: 'submit' do %>
-          <i class="bi bi-arrow-repeat me-1"></i> Renew <%= pluralize(renewable_count, 'eligible item') %>
+<div id="renew-all-button">
+  <% if @checkouts.any?(&:renewable?) %>
+    <% if patron_or_group.can_renew? %>
+        <% renewable_count = @checkouts.count(&:renewable?) %>
+        <%= form_tag renew_eligible_checkouts_path, method: :post do %>
+          <%= button_tag class: 'btn btn-primary btn-sm text-nowrap',
+                          data: { turbo_submits_with: t('mylibrary.renew_all_items.in_progress_html', count: renewable_count) },
+                          onclick: 'window.dispatchEvent(new CustomEvent("renew-all"))',
+                          type: 'submit' do %>
+            <i class="bi bi-arrow-repeat me-1"></i> Renew eligible items (<%= renewable_count %>)
+          <% end %>
         <% end %>
-      <% end %>
+    <% else %>
+      <button disabled class="btn btn-sm"><i class="bi bi-arrow-repeat me-1"></i> Renewals blocked</button>
+    <% end %>
   <% else %>
-    <button disabled class="btn btn-sm"><i class="bi bi-arrow-repeat me-1"></i> Renewals blocked</button>
+    <button disabled class="btn btn-sm"><i class="bi bi-arrow-repeat me-1"></i> Nothing is eligible to renew</button>
   <% end %>
-<% end %>
+</div>

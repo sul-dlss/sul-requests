@@ -3,16 +3,17 @@
 module Folio
   # Render a single checkout for a patron
   class CheckoutComponent < ViewComponent::Base
-    attr_reader :checkout, :patron
+    attr_reader :checkout, :patron, :renewal_view
 
     delegate :sul_icon, :today_with_time_or_date, :detail_link_to_searchworks, to: :helpers
 
     delegate :renewable?, :lost?, :recalled?, :renewal_blocked_by_hold?, :claimed_returned?, :unseen_renewals_remaining, :renewal_count,
              :reserve_item?, :location, :too_soon_to_renew?, :item_category_non_renewable?, to: :checkout, private: true
 
-    def initialize(checkout:, patron:)
+    def initialize(checkout:, patron:, renewal_view: false)
       @checkout = checkout
       @patron = patron
+      @renewal_view = renewal_view
       super()
     end
 

@@ -21,6 +21,7 @@ class CheckoutsController < ApplicationController
 
   def renew # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     @response = FolioClient.new.renew_checkout(@checkout)
+    update_checkouts([@response.updated_checkout]) if @response.success?
 
     respond_to do |format|
       format.html do
@@ -38,9 +39,10 @@ class CheckoutsController < ApplicationController
   # Renew all eligible items for a patron
   #
   # POST /checkouts/renew_eligible
-  def renew_eligible
+  def renew_eligible # rubocop:disable Metrics/AbcSize
     eligible_renewals = @checkouts.select(&:renewable?)
     @responses = eligible_renewals.map { |checkout| FolioClient.new.renew_checkout(checkout) }
+    update_checkouts(@responses.select(&:success?).map(&:updated_checkout))
 
     respond_to do |format|
       format.html do
@@ -67,6 +69,11 @@ class CheckoutsController < ApplicationController
     @checkout = @checkouts.find { |checkout| checkout.item_id == params[:id] }
 
     raise ActiveRecord::RecordNotFound, 'Checkout not found' if @checkout.nil?
+  end
+
+  def update_checkouts(updated_checkouts)
+    updates = updated_checkouts.index_by(&:id)
+    @checkouts = @checkouts.map { |checkout| updates[checkout.id] || checkout }
   end
 
   def bulk_renewal_success_flash(responses)

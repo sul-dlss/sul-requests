@@ -246,17 +246,16 @@ en:
     subject: Stanford Libraries PIN reset
   mylibrary:
     renew_item:
-      in_progress_html: <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Renewing this item
-      success_html: <span class="font-weight-bold">Success!</span> "%{title}" was renewed.
+      success_html: Successfully renewed 1 item.
       error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{title}" was not renewed.
       deny_access: An unexpected error has occurred
     renew_all_items:
       in_progress_html:
-        one: <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Renewing 1 eligible item
-        other: <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Renewing %{count} eligible items
+        one: <span class="spinner-border spinner-border-sm me-1" style="vertical-align:center;" role="status" aria-hidden="true"></span> Renewing 1 item
+        other: <span class="spinner-border spinner-border-sm me-1" style="vertical-align:center;" role="status" aria-hidden="true"></span> Renewing %{count} items
       success_html:
-        one: <span class="font-weight-bold">Success!</span> 1 item was renewed.
-        other: <span class="font-weight-bold">Success!</span> %{count} items were renewed.
+        one: Successfully renewed 1 item.
+        other: Successfully renewed %{count} items.
       error_html:
         one: <span class="font-weight-bold">Sorry!</span> 1 item was not renewed, possibly due to a connection failure. Try again or contact us for help. %{items}
         other: <span class="font-weight-bold">Sorry!</span> %{count} items were not renewed, possibly due to a connection failure. Try again or contact us for help. %{items}

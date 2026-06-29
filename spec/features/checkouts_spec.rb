@@ -31,10 +31,10 @@ RSpec.describe 'Checkout Page' do
   it 'has checkout data' do
     visit checkouts_path
 
-    expect(page).to have_css('ul.checkouts', count: 1)
-    expect(page).to have_css('ul.checkouts li', count: 1)
+    expect(page).to have_css('ul.checkouts-list', count: 1)
+    expect(page).to have_css('ul.checkouts-list li', count: 1)
 
-    within(first('ul.checkouts li')) do
+    within(first('ul.checkouts-list li')) do
       expect(page).to have_text(/Blue-collar Broadway/)
       expect(page).to have_text('Call number: PN2277 .N7 W48 2015')
     end
@@ -48,10 +48,10 @@ RSpec.describe 'Checkout Page' do
     it 'has recall data' do
       visit checkouts_path
 
-      expect(page).to have_css('ul.checkouts', count: 1)
-      expect(page).to have_css('ul.checkouts li', count: 1)
+      expect(page).to have_css('ul.checkouts-list', count: 1)
+      expect(page).to have_css('ul.checkouts-list li', count: 1)
 
-      within(first('ul.checkouts li')) do
+      within(first('ul.checkouts-list li')) do
         expect(page).to have_text 'Recalled'
         expect(page).to have_text(/Sci-fi architecture./)
         expect(page).to have_text 'Call number: NA1 .A16'
@@ -68,10 +68,10 @@ RSpec.describe 'Checkout Page' do
     it 'has overdue messaging data' do
       visit checkouts_path
 
-      expect(page).to have_css('ul.checkouts', count: 1)
-      expect(page).to have_css('ul.checkouts li', count: 1)
+      expect(page).to have_css('ul.checkouts-list', count: 1)
+      expect(page).to have_css('ul.checkouts-list li', count: 1)
 
-      within(first('ul.checkouts li')) do
+      within(first('ul.checkouts-list li')) do
         expect(page).to have_text 'Overdue'
         expect(page).to have_text 'Accruing $1.00/day until returned'
         expect(page).to have_text(/Sci-fi architecture./)
@@ -86,10 +86,10 @@ RSpec.describe 'Checkout Page' do
     it 'has reserve messaging data' do
       visit checkouts_path
 
-      expect(page).to have_css('ul.checkouts', count: 1)
-      expect(page).to have_css('ul.checkouts li', count: 1)
+      expect(page).to have_css('ul.checkouts-list', count: 1)
+      expect(page).to have_css('ul.checkouts-list li', count: 1)
 
-      within(first('ul.checkouts li')) do
+      within(first('ul.checkouts-list li')) do
         expect(page).to have_text 'NOTE: This item must be returned to the Green Library'
         expect(page).to have_text 'Renew in person'
         expect(page).to have_text('Blue-collar Broadway')
@@ -113,7 +113,7 @@ RSpec.describe 'Checkout Page' do
   it 'shows other data in the footer' do
     visit checkouts_path
 
-    within(first('ul.checkouts li')) do
+    within(first('ul.checkouts-list li')) do
       expect(page).to have_text 'Barcode: 36105212981729'
     end
   end
@@ -121,7 +121,7 @@ RSpec.describe 'Checkout Page' do
   it 'translates the library code from the response into a name' do
     visit checkouts_path
 
-    within(first('ul.checkouts li')) do
+    within(first('ul.checkouts-list li')) do
       expect(page).to have_text 'Library: Green Library'
     end
   end
@@ -140,7 +140,7 @@ RSpec.describe 'Checkout Page' do
       expect(page).to have_css('.dropdown-toggle', text: 'Sort (Title)')
       expect(page).to have_css('.active[data-sortable-sort-param="title"]', visible: :all)
 
-      within(first('ul.checkouts li')) do
+      within(first('ul.checkouts-list li')) do
         expect(page).to have_text(/Blue-collar Broadway/)
       end
     end
