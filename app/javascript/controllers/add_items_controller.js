@@ -2,8 +2,8 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   schedule(e) {
+    e.preventDefault()
     const data = e.currentTarget.dataset;
-    this.showSpinner(e)
     setTimeout(() => {
       this.updateElements(data, 'items-added')
     }, 1000);
@@ -43,18 +43,11 @@ export default class extends Controller {
   }
 
   remove(e) {
+    e.preventDefault()
     const data = e.currentTarget.dataset;
-    this.showSpinner(e)
     setTimeout(() => {
       this.updateElements(data, 'items-removed')
     }, 1000);
-  }
-
-showSpinner(e) {
-    e.preventDefault()
-    e.currentTarget.hidden = true;
-    const spinner =  e.currentTarget.nextSibling
-    spinner.classList.toggle('d-none')
   }
 
   enableDisableButton(e) {

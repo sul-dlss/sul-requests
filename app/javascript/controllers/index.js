@@ -90,3 +90,6 @@ application.register("view-container-contents", ViewContainerContentsController)
 
 import AddItemsController from "./add_items_controller"
 application.register("add-items", AddItemsController)
+
+import SubmitMessageController from "./submit_message_controller"
+application.register("submit-message", SubmitMessageController)
