@@ -2,19 +2,13 @@
   <div class="d-flex align-items-center justify-content-between mb-4">
     <h1 class="mb-0">Requests</h1>
     <% if @requests.any? %>
-    <div class="dropdown" data-sortable-target="menu">
-      <button class="btn btn-outline-primary btn-sm dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Sort (Not needed after)
-      </button>
-
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="library" data-sortable-label-param="Sort (Deliver to)">Deliver to</button></li>
-        <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="date" data-sortable-label-param="Sort (Not needed after)">Not needed after</button></li>
-        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort (Title)">Title</button></li>
-        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="author" data-sortable-label-param="Sort (Author)">Author name</button></li>
-        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="callNumber" data-sortable-label-param="Sort (Call number)">Call number</button></li>
-      </ul>
-    </div>
+      <%= render SortableDropdownComponent.new(button_label: 'not needed after') do |component| %>
+        <% component.with_list_item(label: 'deliver to', field: 'library') %>
+        <% component.with_list_item(label: 'not needed after', field: 'date') %>
+        <% component.with_list_item(label: 'title', field: 'title') %>
+        <% component.with_list_item(label: 'author name', field: 'author') %>
+        <% component.with_list_item(label: 'call number', field: 'callNumber') %>
+      <% end %>
     <% end %>
   </div>
   <% if @requests.any? %>

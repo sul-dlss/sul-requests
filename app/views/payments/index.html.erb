@@ -2,18 +2,12 @@
   <div id="payments" class="page-section" data-controller="sortable" data-sortable-sort-value="date">
     <% if @payments.any? %>
       <div class="d-flex justify-content-end">
-        <div class="dropdown" data-sortable-target="menu">
-          <button class="btn btn-outline-primary mb-2 dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Sort (Date paid)
-          </button>
-
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="status" data-sortable-label-param="Sort (Reason)">Reason</button></li>
-            <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="date" data-sortable-label-param="Sort (Date paid)">Date paid</button></li>
-            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort (Title)">Title</button></li>
-            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="fee" data-sortable-label-param="Sort (Amount)">Amount</button></li>
-          </ul>
-        </div>
+        <%= render SortableDropdownComponent.new(button_label: 'date paid') do |component| %>
+          <% component.with_list_item(label: 'reason', field: 'status') %>
+          <% component.with_list_item(label: 'date paid', field: 'date') %>
+          <% component.with_list_item(label: 'title', field: 'title') %>
+          <% component.with_list_item(label: 'amount', field: 'fee') %>
+        <% end %>
       </div>
     <% else %>
       <span>There is no history on this account.</span>

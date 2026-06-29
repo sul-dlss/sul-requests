@@ -1,13 +1,8 @@
 <div data-controller="sortable">
-  <div class="btn-group" data-sortable-target="menu">
-    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-      Sort by ...
-    </button>
-    <ul class="dropdown-menu">
-      <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-label-param="Sort by title" data-sortable-sort-param="title">Title</button></li>
-      <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-label-param="Sort by price" data-sortable-sort-param="price">Price</button></li>
-    </ul>
-  </div>
+  <%= render SortableDropdownComponent.new do |component| %>
+    <% component.with_list_item(label: 'title', field: 'title') %>
+    <% component.with_list_item(label: 'price', field: 'price') %>
+  <% end %>
 
   <ul data-sortable-target="list" aria-live="polite">
     <li data-title-sort-value="Banana" data-price-sort-value="50">Banana $.50</li>
