@@ -65,7 +65,7 @@ module Aeon
     end
 
     def self.sites(location)
-      location_mapping = { 'ARS' => ['ARS'], 'David Ramsey Map Center' => ['RUMSEY'], 'East Asia Library' => ['EASTASIA'],
+      location_mapping = { 'ARS' => ['ARS'], 'David Rumsey Map Center' => ['RUMSEY'], 'East Asia Library' => ['EASTASIA'],
                            nil => %w[ARS RUMSEY EASTASIA SPECUA] }
       return location_mapping[location] if location_mapping.key?(location)
 
