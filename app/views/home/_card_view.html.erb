@@ -2,11 +2,11 @@
   <%= render Home::SummaryCardComponent.new(
         id: 'folio-borrowed-items',
         title: 'Borrowed items',
-        icon: 'bi-book',
-        count: dashboard.checkouts.count,
+        icon_class: 'bi-book',
         label: t('dashboard.borrowed_items.label_html', count: dashboard.checkouts.count),
-        path: checkouts_path,
-        status: count_callout(label: t('dashboard.borrowed_items_due_soon.label_html', count: dashboard.actionable_borrowed_items.count))) %>
+        path: dashboard.checkouts.count.positive? ? checkouts_path : nil ) do |c| %>
+            <% c.with_status_count(label: t('dashboard.borrowed_items_due_soon.label_html', count: dashboard.actionable_borrowed_items.count)) %>
+        <% end if dashboard.folio? %>
 
   <%= render Home::FinesCardComponent.new(
         id: 'folio-fines-and-fees',
@@ -16,57 +16,54 @@
         balance: dashboard.balance,
         patron_key: current_user.patron.key,
         path: fines_path,
-        past_path: fines_path(past: 1)) %>
+        past_path: fines_path(past: 1)) if dashboard.folio? %>
 
   <%= render Home::SummaryCardComponent.new(
         id: 'folio-pickup-requests',
         title: 'Pickup requests',
-        icon: 'bi-bag',
-        count: dashboard.pickup_requests.count,
+        icon_class: 'bi-bag',
         label: t('dashboard.pickup_requests.label_html', count: dashboard.pickup_requests.count),
-        path: folio_requests_path,
-        status: count_callout(label: t('dashboard.pickup_requests_ready.label_html', count: dashboard.ready_for_pickup.count))) %>
+        path: dashboard.pickup_requests.count.positive? ? folio_requests_path : nil) do |c| %>
+            <% c.with_status_count(label: t('dashboard.pickup_requests_ready.label_html', count: dashboard.ready_for_pickup.count)) %>
+        <% end if dashboard.folio? %>
 
   <%= render Home::SummaryCardComponent.new(
         id: 'aeon-digitization-requests',
         title: 'Digitization requests',
-        icon: 'bi-printer',
-        count: dashboard.digital_requests.count,
+        icon_class: 'bi-printer',
         label: t('dashboard.digitization_requests.label_html', count: dashboard.digital_requests.count),
-        path: aeon_requests_path(kind: 'submitted', filter: 'digitization'),
-        empty_path: aeon_requests_path(kind: 'completed', filter: 'digitization'),
-        empty_link_label: 'View past requests',
-        status: count_callout(label: t('dashboard.digitization_requests_delivered.label_html', count: dashboard.recently_delivered_digital_requests.count))) %>
+        path: dashboard.digital_requests.count.positive? ? aeon_requests_path(kind: 'submitted', filter: 'digitization') : aeon_requests_path(kind: 'completed', filter: 'digitization'),
+        link_label: dashboard.digital_requests.count.zero? ? 'View past requests' : nil) do |c| %>
+            <% c.with_status_count(label: t('dashboard.digitization_requests_delivered.label_html', count: dashboard.recently_delivered_digital_requests.count)) %>
+        <% end if dashboard.aeon? %>
 
   <%= render Home::SummaryCardComponent.new(
         id: 'aeon-reading-room-appointments',
         title: 'Reading room appointments',
-        icon: 'bi-calendar',
-        count: dashboard.appointments.count,
+        icon_class: 'bi-calendar',
         label: t('dashboard.appointments.label_html', count: dashboard.appointments.count),
-        path: aeon_appointments_path,
-        empty_path: aeon_requests_path(kind: 'completed', filter: 'reading_room'),
-        empty_link_label: 'View past appointments',
-        secondary_label: t('dashboard.appointment_items.label_html', count: dashboard.appointment_requests_count),
-        next_up_date: dashboard.next_appointment_date) %>
+        path: dashboard.appointments.count.positive? ? aeon_appointments_path : aeon_requests_path(kind: 'completed', filter: 'reading_room'),
+        link_label: dashboard.appointments.count.zero? ? 'View past appointments' : nil,
+        secondary_label: t('dashboard.appointment_items.label_html', count: dashboard.appointment_requests_count)) do |c| %>
+        <% c.with_status_next_up(date: dashboard.next_appointment_date) %>
+      <% end if dashboard.aeon? %>
 
   <%= render Home::SummaryCardComponent.new(
         id: 'aeon-saved-for-later',
         title: 'Saved for later',
-        icon: 'bi-pin-angle',
-        count: dashboard.saved_for_later.count,
+        icon_class: 'bi-pin-angle',
         label: t('dashboard.saved_for_later.label_html', count: dashboard.saved_for_later.count),
-        path: aeon_requests_path(kind: 'saved_for_later'),
-        status: (tag.span('Requests not complete', class: 'text-digital-red-dark') if dashboard.saved_for_later.count.positive?)) %>
+        path: dashboard.saved_for_later.count.positive? ? aeon_requests_path(kind: 'saved_for_later') : nil) do |c| %>
+            <% c.with_status_count(label: 'Requests not complete') if dashboard.saved_for_later.count.positive? %>
+        <% end if dashboard.aeon? %>
 
   <%= render Home::SummaryCardComponent.new(
         id: 'aeon-activities',
         title: 'Activities',
-        icon: 'bi-person-video3',
-        count: dashboard.upcoming_activities.count,
+        icon_class: 'bi-person-video3',
         label: t('dashboard.activities.label_html', count: dashboard.upcoming_activities.count),
-        path: aeon_activities_path,
-        empty_path: past_aeon_activities_path,
-        empty_link_label: 'View past activities',
-        next_up_date: dashboard.next_activity_date) %>
+        path: dashboard.upcoming_activities.count.positive? ? aeon_activities_path : past_aeon_activities_path,
+        link_label: dashboard.upcoming_activities.count.zero? ? 'View past activities' : nil) do |c| %>
+        <% c.with_status_next_up(date: dashboard.next_activity_date) %>
+      <% end if dashboard.aeon? %>
 </div>

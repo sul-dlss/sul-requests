@@ -10,6 +10,9 @@ module Home
       @patron = patron
     end
 
+    def folio? = patron.present?
+    def aeon? = aeon.present?
+
     def checkouts
       @checkouts ||= patron.checkouts.sort_by { |c| c.sort_key(:due_date) }
     end

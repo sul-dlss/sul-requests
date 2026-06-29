@@ -1,9 +1,7 @@
-<% if sso_user? %>
-  <h1 class="visually-hidden">My Library Account Home</h1>
-  <div class="row">
-    <div class="col-lg-9">
-      <%= render 'card_view', dashboard: @dashboard %>
-    </div>
-    <%= render 'questions_aside' %>
+<h1 class="visually-hidden">My Library Account Home</h1>
+<div class="row">
+  <div class="col-lg-9">
+    <%= render 'card_view', dashboard: @dashboard %>
   </div>
-<% end %>
+  <%= render 'questions_aside' %>
+</div>

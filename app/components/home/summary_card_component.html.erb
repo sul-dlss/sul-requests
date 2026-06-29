@@ -1,13 +1,9 @@
 <%= render Home::FlatCardComponent.new(id: id) do |c| %>
   <% c.with_title do %>
-    <i class="bi <%= icon %> text-60-black fs-4"></i>
+    <%= icon %>
   <% end %>
 
-  <% if next_up_date %>
-    <% c.with_actions do %>
-      <span class="text-digital-red-dark">Next up: <span class="fw-semibold"><%= next_up_date.strftime('%b %-d, %Y') %></span></span>
-    <% end %>
-  <% elsif status.present? %>
+  <% if status? %>
     <% c.with_actions do %>
       <%= status %>
     <% end %>
@@ -15,20 +11,13 @@
 
   <% c.with_body(classes: %w[pt-1]) do %>
     <h2 class="mb-1"><%= title %></h2>
-    <% if empty? %>
-      <p class="mb-1"><%= label %></p>
-      <% if empty_path %>
-        <%= render Home::ArrowLinkComponent.new(label: empty_link_label, path: empty_path, classes: ['stretched-link']) %>
+    <p class="mb-1">
+      <%= label %>
+      <% if secondary_label.present? %>
+        <i class="bi bi-dot"></i>
+        <%= secondary_label %>
       <% end %>
-    <% else %>
-      <p class="mb-1">
-        <%= label %>
-        <% if secondary_label.present? %>
-          <i class="bi bi-dot"></i>
-          <%= secondary_label %>
-        <% end %>
-      </p>
-      <%= render Home::ArrowLinkComponent.new(label: 'View details', path: path, classes: ['stretched-link']) %>
-    <% end %>
+    </p>
+    <%= render Home::ArrowLinkComponent.new(label: link_label, path: path, classes: ['stretched-link']) if path %>
   <% end %>
 <% end %>
