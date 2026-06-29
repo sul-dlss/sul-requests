@@ -90,6 +90,10 @@ module Folio
       unseen_renewals_remaining.positive?
     end
 
+    def renew_patron_key
+      record.dig('details', 'userId')
+    end
+
     def patron_key
       record.dig('details', 'proxyUserId') || record.dig('details', 'userId')
     end

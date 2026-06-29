@@ -281,7 +281,7 @@ class FolioClient
   end
 
   def renew_checkout(checkout)
-    response = renew_item_by_id(checkout.patron_key, checkout.item_id)
+    response = renew_item_by_id(checkout.renew_patron_key, checkout.item_id)
 
     RenewCheckoutResponse.new(response, checkout)
   end

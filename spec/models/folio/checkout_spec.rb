@@ -60,6 +60,38 @@ RSpec.describe Folio::Checkout do
     expect(checkout.key).to eq '6f951192-b633-40a0-8112-73a191b55a8a'
   end
 
+  describe '#renew_patron_key' do
+    it 'returns the userId from the checkout' do
+      expect(checkout.renew_patron_key).to eq 'f1058c51-ba4d-47a5-b919-c71c67b04685'
+    end
+  end
+
+  describe '#patron_key' do
+    it 'returns the userId from the checkout' do
+      expect(checkout.patron_key).to eq 'f1058c51-ba4d-47a5-b919-c71c67b04685'
+    end
+  end
+
+  context 'with a proxy checkout' do
+    subject(:proxy_checkout) do
+      described_class.new(proxy_record.with_indifferent_access, '3684a786-6671-4268-8ed0-9db82ebca60b')
+    end
+
+    let(:proxy_record) { record.deep_merge('details' => { 'proxyUserId' => 'proxy-user-id' }) }
+
+    describe '#renew_patron_key' do
+      it 'still returns the original userId from the checkout' do
+        expect(checkout.renew_patron_key).to eq 'f1058c51-ba4d-47a5-b919-c71c67b04685'
+      end
+    end
+
+    describe '#patron_key' do
+      it 'returns the proxyUserId from the checkout' do
+        expect(proxy_checkout.patron_key).to eq 'proxy-user-id'
+      end
+    end
+  end
+
   describe 'lost?' do
     let(:record) do
       { 'id' => 'dbc35cdf-0fbb-5fbe-8988-b4fa628365c7',
