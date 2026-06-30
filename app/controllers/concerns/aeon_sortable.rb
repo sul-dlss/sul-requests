@@ -5,18 +5,9 @@ module AeonSortable
   extend ActiveSupport::Concern
 
   SORT_OPTIONS = {
-    'request_type' => {
-      label: 'Sort by request type',
-      sort: ->(requests) { requests.sort_by { |r| [r.digital? ? 0 : 1, r.title.to_s, -r.creation_date.to_i, r.sort_key] } },
-      only_for_filters: %w[all]
-    },
     'title' => {
       label: 'Sort by title',
       sort: ->(requests) { requests.sort_by { |r| [r.title.to_s, r.sort_key] } }
-    },
-    'date_added' => {
-      label: 'Sort by date added',
-      sort: ->(requests) { requests.newest_first }
     },
     'date_modified' => {
       label: 'Sort by date modified',
@@ -31,7 +22,7 @@ module AeonSortable
     }
   }.freeze
 
-  DEFAULT_SORT = 'date_added'
+  DEFAULT_SORT = 'date_modified'
 
   included do
     helper_method :current_aeon_sort, :available_aeon_sort_options
