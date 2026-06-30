@@ -434,13 +434,12 @@ summary .disclosure-icon::before {
   grid-template-columns: 1fr;
   grid-template-areas:
     "title"
-    "select"
-    "actions";
+    "select";
 
   @media (min-width: 768px) {
     grid-template-columns: 1fr auto;
     grid-template-areas:
-      "title  actions"
+      "title"
       "select select";
   }
 
@@ -448,12 +447,8 @@ summary .disclosure-icon::before {
     grid-template-columns: auto 1fr;
     grid-template-areas:
       "title   select"
-      "actions select";
+      "select";
     align-items: center;
-
-    .appt-select {
-      justify-content: flex-end;
-    }
   }
 }
 
@@ -462,7 +457,6 @@ summary .disclosure-icon::before {
   grid-template-columns: 1fr;
   grid-template-areas:
     "title"
-    "actions"
     "select";
 
   .appt-select {
@@ -471,13 +465,17 @@ summary .disclosure-icon::before {
 }
 
 .appt-title   { grid-area: title; }
-.appt-actions { grid-area: actions; }
 .appt-select  { grid-area: select; }
 
 #reading:has(.appointments-item:only-child),
 #pickup:has(.appointments-item:only-child) {
   .hide-when-1-item {
     display: none;
+  }
+
+  .appointments-item, .appointments-container {
+    padding: 0;
+    margin: 0;
   }
 }
 
@@ -520,6 +518,27 @@ summary .disclosure-icon::before {
   box-decoration-break: clone;
 }
 
+.digitization-accordion .accordion-collapse .accordion-body {
+  --bs-accordion-body-padding-y: 0.5rem 1rem;
+}
+
+.digitization-header {
+ .accordion-header {
+  padding-top: .5rem;
+  padding-bottom: .25rem;
+ }
+
+ .actions {
+    padding-left: 1rem;
+    background-color: var(--bs-accordion-active-bg);
+    padding-bottom: .5rem;
+  }
+}
+
+.selected-items-container .appointments-item:not(:only-child) .selected-item-title {
+  padding-left: 0;
+}
+
 .selected-items-container .appointments-item:only-child,
 .selected-items-container .accordion-item:only-child,
 .selected-items-container .activity-item
@@ -531,6 +550,23 @@ summary .disclosure-icon::before {
   .accordion-button {
     background-color: transparent;
     border-width: 0;
+  }
+
+  .appt-title, .digitization-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+
+    .accordion-header {
+      margin: 0;
+      padding: 0;
+    }
+
+    .actions {
+      padding: 5px 4px 3px 0px;
+      background-color: var(--stanford-fog-light);
+    }
   }
 
   .selected-item-status, .selected-item-remove, .disclosure-icon {
@@ -718,14 +754,13 @@ summary .disclosure-icon::before {
   grid-template-areas:
     "id"
     "detail"
-    "actions"
     "footer";
 
   @media (min-width: 768px) and (max-width: 991.98px),
          (min-width: 1200px) {
     grid-template-columns: 1fr auto;
     grid-template-areas:
-      "id     actions"
+      "id"
       "detail detail"
       "footer footer";
   }
@@ -737,7 +772,6 @@ summary .disclosure-icon::before {
     "id"
     "detail"
     "fulfillment"
-    "actions"
     "footer";
 
   @media (min-width: 576px) {
@@ -745,14 +779,14 @@ summary .disclosure-icon::before {
     grid-template-areas:
       "id          id"
       "detail      detail"
-      "fulfillment actions"
+      "fulfillment"
       "footer      footer";
   }
 
   @media (min-width: 992px) {
     grid-template-columns: 1fr 19.5rem 3rem;
     grid-template-areas:
-      "id     fulfillment actions"
+      "id     fulfillment"
       "detail detail      detail"
       "footer footer      footer";
   }
@@ -767,7 +801,6 @@ summary .disclosure-icon::before {
 .request.list-group-item > .rgi-id      { grid-area: id; }
 .request.list-group-item > .rgi-detail  { grid-area: detail; }
 .request.list-group-item > .request-fulfillment { grid-area: fulfillment; }
-.request.list-group-item > .rgi-actions { grid-area: actions; }
 .request.list-group-item > .rgi-footer  { grid-area: footer; }
 
 .confirmation-request-summary {
@@ -1017,4 +1050,8 @@ summary .disclosure-icon::before {
     --border-side-bottom: 0;
     --border-top: 1px solid var(--stanford-20-black);
   }
+}
+
+div:empty {
+  display: none;
 }

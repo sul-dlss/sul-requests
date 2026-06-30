@@ -16,9 +16,5 @@ module Aeon
     def accordion?
       @accordion
     end
-
-    def save_for_later?
-      object.nil?
-    end
   end
 end
