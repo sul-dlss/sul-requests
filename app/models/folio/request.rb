@@ -96,24 +96,18 @@ module Folio
       end
     end
 
-    # rubocop:disable Metrics/MethodLength
     def sort_key(key)
       sort_key = case key
-                 when :library
-                   [service_point_code, title, author, shelf_key]
                  when :date
                    [*date_sort_key, title, author, shelf_key]
                  when :title
                    [title, author, shelf_key]
-                 when :author
-                   [author, title, shelf_key]
-                 when :call_number
-                   [shelf_key]
+                 when :date_modified
+                   [-1 * placed_date.to_i, title, author, shelf_key]
                  end
 
       sort_key.join('---')
     end
-    # rubocop:enable Metrics/MethodLength
 
     def date_sort_key
       [
