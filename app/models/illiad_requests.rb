@@ -61,23 +61,17 @@ class IlliadRequests
     end
     alias id key
 
-    # rubocop:disable Metrics/MethodLength
     def sort_key(key)
       sort_key = case key
-                 when :library
-                   [library_code, title, author, call_number]
                  when :date
                    [*date_sort_key, title, author, call_number]
                  when :title
                    [title, author, call_number]
-                 when :author
-                   [author, title, call_number]
-                 when :call_number
-                   [call_number]
+                 when :date_modified
+                   [-1 * placed_date.to_i, title, author, call_number]
                  end
       sort_key.join('---')
     end
-    # rubocop:enable Metrics/MethodLength
 
     def date_sort_key
       (expiration_date || Folio::Request::END_OF_DAYS).strftime('%FT%T')
