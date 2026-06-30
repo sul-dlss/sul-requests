@@ -156,3 +156,10 @@ label.btn-close {
 .mn-2 {
   margin: -0.5rem !important;
 }
+
+/* Override bootstrap tabs to give them a more visible decoration */
+.nav-tabs .nav-link:not(.active):hover {
+  background-color: var(--bs-nav-tabs-link-hover-bg);
+  border-color: rgba(var(--stanford-digital-blue-dark-rgb), 1);
+  text-decoration: underline;
+}
