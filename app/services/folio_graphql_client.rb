@@ -340,6 +340,8 @@ class FolioGraphqlClient
                                         effectiveCallNumberComponents {
                                           callNumber
                                         }
+                                        enumeration
+                                        volume
                                         permanentLocation {
                                           code
                                         }
