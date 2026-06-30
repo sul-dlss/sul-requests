@@ -112,6 +112,29 @@ RSpec.describe AeonClient do
       expect(request).to be_a(Aeon::Request)
       expect(request.transaction_number).to eq('123')
     end
+
+    it 'raises an ApiError carrying request/response context on a server error' do
+      payload = AeonClient::RequestData.with_defaults.with(
+        username: 'jdoe',
+        item_title: 'Test Request'
+      )
+
+      stub_request(:post, 'https://aeon.example.com/api/Requests/create')
+        .with(body: payload.as_json.to_json)
+        .to_return(status: 500, body: { message: 'oh no an Aeon error' }.to_json,
+                   headers: { 'Content-Type' => 'application/json' })
+
+      expect { client.create_request(payload) }.to raise_error(AeonClient::ApiError) do |error|
+        expect(error.message).to eq('Aeon API POST /api/Requests/create failed: 500')
+        expect(error.to_honeybadger_context).to include(
+          status: 500,
+          method: 'POST',
+          url: 'https://aeon.example.com/api/Requests/create',
+          response_body: { 'message' => 'oh no an Aeon error' }
+        )
+        expect(error.to_honeybadger_context[:request_body]).to include('"username":"jdoe"')
+      end
+    end
   end
 
   describe '#update_request_route' do

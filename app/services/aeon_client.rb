@@ -2,7 +2,33 @@
 
 # Client for the Aeon API
 class AeonClient
-  class ApiError < StandardError; end
+  # Accepts a Faraday::Response or plain message to report on Aeon API errors
+  class ApiError < StandardError
+    attr_reader :response
+
+    def initialize(response_or_message)
+      if response_or_message.is_a?(Faraday::Response)
+        @response = response_or_message
+        super("Aeon API #{response.env.method.to_s.upcase} #{response.env.url.path} failed: #{response.status}")
+      else
+        super
+      end
+    end
+
+    def to_honeybadger_context
+      return {} unless response
+
+      env = response.env
+      {
+        status: response.status,
+        method: env.method.to_s.upcase,
+        url: env.url.to_s,
+        request_body: env.request_body,
+        response_body: response.body
+      }
+    end
+  end
+
   class NotFoundError < ApiError; end
 
   DEFAULT_HEADERS = {
@@ -99,7 +125,7 @@ class AeonClient
     when 204, 404
       true
     else
-      raise ApiError, "Aeon API error: #{response.status}"
+      raise ApiError, response
     end
   end
 
@@ -297,7 +323,7 @@ class AeonClient
     elsif faraday_response.status == 404
       not_found
     else
-      raise ApiError, "Aeon API error: #{faraday_response.status}"
+      raise ApiError, faraday_response
     end
   end
 end
