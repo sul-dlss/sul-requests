@@ -13,6 +13,9 @@
   --bs-card-border-color: var(--stanford-20-black);
   --bs-tertiary-bg-rgb: var(--stanford-fog-light-rgb);
   --bs-light-border-subtle: var(--stanford-10-black);
+
+  /* Custom bootstrap-esque variable for the nav-tabs hover background color. */
+  --bs-nav-tabs-link-hover-bg: rgba(var(--stanford-digital-blue-dark-rgb), 0.05);
 }
 
 body {
