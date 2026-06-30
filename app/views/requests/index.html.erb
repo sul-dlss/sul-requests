@@ -20,9 +20,53 @@
   <ul id="requests" class="requests p-0" data-sortable-target="list observe" aria-live="polite">
   </ul>
 
-  <%= turbo_frame_tag :folio_requests, src: folio_requests_path(async: true) %>
-  <%= turbo_frame_tag :aeon_requests, src: aeon_requests_path(async: true, kind: 'submitted') unless patron_or_group.is_a? Folio::ProxyGroup %>
-  <%= turbo_frame_tag :ill_requests, src: ill_requests_path(async: true) unless patron_or_group.is_a? Folio::ProxyGroup %>
+  <%= turbo_frame_tag :folio_requests, src: folio_requests_path(async: true) do %>
+    <%= render CardComponent.new(element: 'div', classes: 'request placeholder-glow', aria: { hidden: true }) do |c| %>
+      <% c.with_title do %>
+        <div class="col-6">
+          <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
+            <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white placeholder]).with_content('Pickup') %>
+          </div>
+
+          <div class="placeholder w-100 h2"></div>
+          <div class="placeholder w-100"></div>
+        </div>
+      <% end %>
+
+      <% c.with_body do %>
+        <div class="bg-white px-3 py-2 d-flex column-gap-4 row-gap-2 justify-content-between align-items-start flex-wrap flex-md-nowrap">
+          <div class="placeholder col-4"></div>
+          <div class="col-5"></div>
+          <div class="placeholder col-1"></div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= turbo_frame_tag :aeon_requests, src: aeon_requests_path(async: true, kind: 'submitted') do %>
+    <%= render CardComponent.new(element: 'div', classes: 'request placeholder-glow', aria: { hidden: true }) do |c| %>
+      <% c.with_title do %>
+        <div class="col-6">
+          <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
+            <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white placeholder]).with_content('Reading room use') %>
+          </div>
+
+          <div class="placeholder w-100 h2"></div>
+          <div class="placeholder w-100"></div>
+        </div>
+      <% end %>
+
+      <% c.with_body do %>
+        <div class="bg-white px-3 py-2 d-flex column-gap-4 row-gap-2 justify-content-between align-items-start flex-wrap flex-md-nowrap">
+          <div class="placeholder col-4"></div>
+          <div class="col-5"></div>
+          <div class="placeholder col-1"></div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end unless patron_or_group.is_a? Folio::ProxyGroup %>
+
+  <%= turbo_frame_tag :ill_requests, src: ill_requests_path(async: true) %>
 </div>
 
 <div class="page-section">
