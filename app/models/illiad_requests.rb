@@ -64,11 +64,11 @@ class IlliadRequests
     def sort_key(key)
       sort_key = case key
                  when :date
-                   [*date_sort_key, title, author, call_number]
+                   [placed_date.strftime('%FT%T'), title, author, call_number]
                  when :title
                    [title, author, call_number]
-                 when :date_modified
-                   [-1 * placed_date.to_i, title, author, call_number]
+                 when :default
+                   [date_sort_key, title, author, call_number]
                  end
       sort_key.join('---')
     end

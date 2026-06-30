@@ -186,8 +186,23 @@ module Aeon
       reference_number || transaction_number
     end
 
-    def sort_key
+    def default_sort_key
       [call_number || '', pad_digits_for_sorting(item_volume || ''), id || ''].join('___')
+    end
+
+    def sort_key(key = nil) # rubocop:disable Metrics/AbcSize
+      sort_key = case key
+                 when :title
+                   [title, default_sort_key]
+                 when :date
+                   [(transaction_date || 100.years.from_now).strftime('%FT%T'), title, default_sort_key]
+                 when :default
+                   [(appointment&.start_time || 100.years.from_now).strftime('%FT%T'), title, default_sort_key]
+                 else
+                   [default_sort_key]
+                 end
+
+      sort_key.join('---')
     end
 
     def pad_digits_for_sorting(str)

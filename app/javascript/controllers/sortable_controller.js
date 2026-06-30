@@ -1,9 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['list', 'menu', 'observe']
+  static targets = ['list', 'menu', 'observe', 'subgroup']
   static values = {
-    sort: String
+    sort: String,
+    filter: String
   }
 
   connect() {
@@ -62,23 +63,28 @@ export default class extends Controller {
   resort() {
     if (!this.sortValue || !this.hasListTarget) return;
 
-    const items = this.listTarget.children;
+    this.resortChildren(this.listTarget, this.sortValue + 'SortValue');
 
+    this.subgroupTargets.forEach(subgroup => {
+      this.resortChildren(subgroup, this.sortValue + 'SortValue');
+    });
+  }
+
+  resortChildren(target, sortValue) {
+    const items = target.children;
     const sortedItems = Array.from(items).sort((a, b) => {
-      const aValue = a.dataset[this.sortValue + 'SortValue'] || '';
-      const bValue = b.dataset[this.sortValue + 'SortValue'] || '';
+      const aValue = a.dataset[sortValue] || '';
+      const bValue = b.dataset[sortValue] || '';
 
       if (aValue < bValue) return -1;
       if (aValue > bValue) return 1;
       return 0;
     });
 
-    // TODO: sort subgroups too.
-
     if (Array.from(items).every((item, index) => item === sortedItems[index])) {
       return;
     }
 
-    sortedItems.forEach(item => this.listTarget.appendChild(item));
+    sortedItems.forEach(item => target.appendChild(item));
   }
 }

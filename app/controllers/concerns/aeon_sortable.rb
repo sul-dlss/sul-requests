@@ -7,22 +7,21 @@ module AeonSortable
   SORT_OPTIONS = {
     'title' => {
       label: 'Sort by title',
-      sort: ->(requests) { requests.sort_by { |r| [r.title.to_s, r.sort_key] } }
+      sort: ->(requests) { requests.sort_by { |r| r.sort_key(:title) } }
     },
-    'date_modified' => {
+    'date' => {
       label: 'Sort by date modified',
-      sort: ->(requests) { requests.newest_first(&:transaction_date) }
+      sort: ->(requests) { requests.sort_by { |r| r.sort_key(:date) } }
     },
-    'appointment_time' => {
-      label: 'Sort by appointment time',
+    'default' => {
+      label: 'Sort by default',
       sort: lambda { |requests|
-        requests.sort_by { |r| [r.appointment&.start_time || Time.zone.local(9999), r.title.to_s, r.sort_key] }
-      },
-      only_for_filters: %w[all reading_room]
+        requests.sort_by { |r| r.sort_key(:default) }
+      }
     }
   }.freeze
 
-  DEFAULT_SORT = 'date_modified'
+  DEFAULT_SORT = 'default'
 
   included do
     helper_method :current_aeon_sort, :available_aeon_sort_options
@@ -39,7 +38,6 @@ module AeonSortable
   end
 
   def available_aeon_sort_options
-    filter = respond_to?(:current_aeon_filter, true) ? current_aeon_filter : 'all'
-    SORT_OPTIONS.select { |_, option| option[:only_for_filters].nil? || option[:only_for_filters].include?(filter) }
+    SORT_OPTIONS
   end
 end

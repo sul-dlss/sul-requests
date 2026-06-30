@@ -1,4 +1,4 @@
-<div id="requests" class="page-section col-lg-9" data-controller="sortable google-cover-image" data-sortable-sort-value="date">
+<div id="requests" class="page-section col-lg-9" data-controller="sortable google-cover-image" data-sortable-sort-value="default">
   <div class="d-flex align-items-center justify-content-between mb-4">
     <h1 class="mb-0">Requests</h1>
     <% if @requests.any? %>
@@ -8,8 +8,8 @@
       </button>
 
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="date" data-sortable-label-param="Sort (Not needed after)">Not needed after</button></li>
-        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="date_modified" data-sortable-label-param="Sort (Date modified)">Date modified</button></li>
+        <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="default" data-sortable-label-param="Sort (Not needed after)">Not needed after</button></li>
+        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="date" data-sortable-label-param="Sort (Date modified)">Date modified</button></li>
         <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort (Title)">Title</button></li>
       </ul>
     </div>

@@ -1,4 +1,4 @@
-<%= render CardComponent.new id: request_group.dom_id, element: element, classes: 'request-group' do |c| %>
+<%= render CardComponent.new id: request_group.dom_id, element: element, classes: 'request-group', data: { 'default-sort-value': request_group.sort_key(:default), 'title-sort-value': request_group.sort_key(:title), 'date-sort-value': request_group.sort_key(:date)} do |c| %>
   <% c.with_title do %>
     <div class="flex-grow-1">
       <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
@@ -23,7 +23,7 @@
   <% end %>
 
   <% c.with_body do %>
-    <ul class="list-group list-group-flush gap-2">
+    <ul class="list-group list-group-flush gap-2" data-sortable-target="subgroup">
       <%= render Aeon::RequestGroupItemComponent.with_collection(requests) %>
     </ul>
   <% end %>

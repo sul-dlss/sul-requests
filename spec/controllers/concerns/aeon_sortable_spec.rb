@@ -23,8 +23,8 @@ RSpec.describe AeonSortable do
   let(:request_b_digitial) do
     build(:aeon_request, :digitized,
           item_title: 'Bananas',
-          creation_date: now - 2.days,
-          transaction_date: now - 1.day)
+          creation_date: now - 5.days,
+          transaction_date: now - 4.days)
   end
 
   let(:request_c_with_appointment) do
@@ -44,12 +44,12 @@ RSpec.describe AeonSortable do
   end
 
   describe '#sort_aeon_requests' do
-    context 'with date_modified sort (default)' do
+    context 'with default sort (default)' do
       let(:sort_param) { nil }
 
       it 'sorts by transaction_date descending' do
         result = controller.send(:sort_aeon_requests, requests)
-        expect(result.map(&:title)).to eq %w[Bananas Carrots Apples]
+        expect(result.map(&:title)).to eq %w[Apples Carrots Bananas]
       end
     end
 
@@ -62,21 +62,21 @@ RSpec.describe AeonSortable do
       end
     end
 
-    context 'with appointment_time sort' do
-      let(:sort_param) { 'appointment_time' }
+    context 'with date sort' do
+      let(:sort_param) { 'date' }
 
-      it 'sorts by appointment start_time, requests without appointments appearing last' do
+      it 'sorts by request created/modified time' do
         result = controller.send(:sort_aeon_requests, requests)
-        expect(result.map(&:title)).to eq %w[Apples Carrots Bananas]
+        expect(result.map(&:title)).to eq %w[Bananas Apples Carrots]
       end
     end
 
     context 'with an invalid sort param' do
       let(:sort_param) { 'invalid' }
 
-      it 'falls back to date_modified sort' do
+      it 'falls back to default sort' do
         result = controller.send(:sort_aeon_requests, requests)
-        expect(result.map(&:title)).to eq %w[Bananas Carrots Apples]
+        expect(result.map(&:title)).to eq %w[Apples Carrots Bananas]
       end
     end
   end
@@ -94,7 +94,7 @@ RSpec.describe AeonSortable do
       let(:sort_param) { 'invalid' }
 
       it 'returns the default sort' do
-        expect(controller.send(:current_aeon_sort)).to eq 'date_modified'
+        expect(controller.send(:current_aeon_sort)).to eq 'default'
       end
     end
 
@@ -102,7 +102,7 @@ RSpec.describe AeonSortable do
       let(:sort_param) { nil }
 
       it 'returns the default sort' do
-        expect(controller.send(:current_aeon_sort)).to eq 'date_modified'
+        expect(controller.send(:current_aeon_sort)).to eq 'default'
       end
     end
   end
@@ -128,7 +128,7 @@ RSpec.describe AeonSortable do
 
       it 'includes all sort options' do
         expect(filterable_controller.send(:available_aeon_sort_options).keys)
-          .to eq %w[title date_modified appointment_time]
+          .to eq %w[title date default]
       end
     end
 
@@ -137,7 +137,7 @@ RSpec.describe AeonSortable do
 
       it 'excludes request_type and appointment_time' do
         expect(filterable_controller.send(:available_aeon_sort_options).keys)
-          .to eq %w[title date_modified]
+          .to eq %w[title date default]
       end
     end
 
@@ -146,7 +146,7 @@ RSpec.describe AeonSortable do
 
       it 'excludes request_type but includes appointment_time' do
         expect(filterable_controller.send(:available_aeon_sort_options).keys)
-          .to eq %w[title date_modified appointment_time]
+          .to eq %w[title date default]
       end
     end
 
@@ -155,7 +155,7 @@ RSpec.describe AeonSortable do
       let(:filter_param) { 'digitization' }
 
       it 'falls back to default sort' do
-        expect(filterable_controller.send(:current_aeon_sort)).to eq 'date_modified'
+        expect(filterable_controller.send(:current_aeon_sort)).to eq 'default'
       end
     end
   end

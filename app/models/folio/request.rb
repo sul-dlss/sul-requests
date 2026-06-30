@@ -99,11 +99,11 @@ module Folio
     def sort_key(key)
       sort_key = case key
                  when :date
-                   [*date_sort_key, title, author, shelf_key]
+                   [placed_date&.strftime('%FT%T'), title, author, shelf_key]
                  when :title
                    [title, author, shelf_key]
-                 when :date_modified
-                   [-1 * placed_date.to_i, title, author, shelf_key]
+                 when :default
+                   [*date_sort_key, title, author, shelf_key]
                  end
 
       sort_key.join('---')
@@ -111,8 +111,7 @@ module Folio
 
     def date_sort_key
       [
-        (expiration_date || END_OF_DAYS).strftime('%FT%T'),
-        (fill_by_date || END_OF_DAYS).strftime('%FT%T')
+        (expiration_date || fill_by_date || END_OF_DAYS).strftime('%FT%T')
       ]
     end
 
