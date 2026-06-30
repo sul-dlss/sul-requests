@@ -6,7 +6,7 @@ class AeonClient
   class ApiError < StandardError
     attr_reader :response
 
-    def initialize(response_or_message)
+    def initialize(response_or_message = nil)
       if response_or_message.is_a?(Faraday::Response)
         @response = response_or_message
         super("Aeon API #{response.env.method.to_s.upcase} #{response.env.url.path} failed: #{response.status}")
