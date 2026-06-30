@@ -172,6 +172,40 @@ RSpec.describe SubmitAeonPatronRequestJob do
       end
     end
 
+    context 'when create_request raises an ApiError' do
+      let(:folio_instance) { build(:special_collections_single_holding) }
+      let(:request_type) { 'scan' }
+      let(:data) do
+        {
+          barcodes: ['12345678'], aeon_item: {
+            folio_instance.items.first.id => { requested_pages: '23', for_publication: 'false', additional_information: 'info' }
+          }
+        }
+      end
+      let(:response) do
+        Faraday.new do |b|
+          b.adapter(:test) { |s| s.post('/Requests/create') { [500, {}, '{"err":"error message"}'] } }
+        end.post('/Requests/create', '{"username":"aeon_user"}')
+      end
+
+      before do
+        allow(stub_aeon_client).to receive(:create_request).and_raise(AeonClient::ApiError.new(response))
+      end
+
+      it 'logs the error to aeon_api_responses and re-raises' do
+        expect { described_class.perform_now(request) }.to raise_error(AeonClient::ApiError)
+
+        log = request.aeon_api_responses.find_by(item_id: folio_instance.items.first.id)
+        expect(log.response_data).to include(
+          'status' => 500,
+          'method' => 'POST',
+          'request_body' => '{"username":"aeon_user"}',
+          'response_body' => '{"err":"error message"}'
+        )
+        expect(log.request_data).to include('username' => 'aeon_user')
+      end
+    end
+
     context 'with multi item digitization request' do
       let(:folio_instance) { build(:special_collections_holdings) }
       let(:request_type) { 'scan' }
