@@ -104,8 +104,10 @@
             data: { bs_toggle: 'collapse' },
             aria: { expanded: false, controls: subseries_id } do %>
         <i class="bi bi-chevron-right disclosure-icon"></i>
-        <span class="<%= 'series-title' if display_group.hierarchy.empty? %>"><%= display_group.title %></span>
-        <span class="badge bg-dark-subtle text-dark fw-normal rounded-pill"><%= display_group.contents.count %></span>
+        <span class="<%= 'series-title' if display_group.hierarchy.empty? %>">
+          <%= display_group.title %>
+          <span class="badge bg-dark-subtle text-dark fw-normal rounded-pill ms-1 align-middle"><%= display_group.contents.count %></span>
+        </span>
       <% end %>
       <%# Subseries content (recursive) %>
       <div id="<%= subseries_id %>" class="collapse mt-2 ms-3" data-archives-series-target="content">
