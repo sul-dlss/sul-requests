@@ -172,13 +172,21 @@ RSpec.describe SubmitAeonPatronRequestJob do
       end
     end
 
-    context 'when create_request raises an ApiError' do
-      let(:folio_instance) { build(:special_collections_single_holding) }
+    context 'when some items in a multi-item request fail' do
       let(:request_type) { 'scan' }
+      let(:folio_instance) do
+        items = %w[111 222 333].map do |barcode|
+          build(:item, barcode: barcode, base_callnumber: "CALL #{barcode}",
+                       status: 'Available', effective_location: build(:spec_coll_location))
+        end
+        build(:special_collections_holdings, items: items)
+      end
       let(:data) do
         {
-          barcodes: ['12345678'], aeon_item: {
-            folio_instance.items.first.id => { requested_pages: '23', for_publication: 'false', additional_information: 'info' }
+          barcodes: %w[111 222 333], aeon_item: {
+            folio_instance.items[0].id => { requested_pages: '1', for_publication: 'false', additional_information: 'first' },
+            folio_instance.items[1].id => { requested_pages: '2', for_publication: 'false', additional_information: 'second' },
+            folio_instance.items[2].id => { requested_pages: '3', for_publication: 'false', additional_information: 'third' }
           }
         }
       end
@@ -189,20 +197,32 @@ RSpec.describe SubmitAeonPatronRequestJob do
       end
 
       before do
-        allow(stub_aeon_client).to receive(:create_request).and_raise(AeonClient::ApiError.new(response))
+        allow(stub_aeon_client).to receive(:create_request).and_invoke(
+          ->(_) { raise AeonClient::ApiError, response },
+          ->(_) { Aeon::Request.new },
+          ->(_) { raise AeonClient::ApiError, response }
+        )
+        allow(Honeybadger).to receive(:notify)
       end
 
-      it 'logs the error to aeon_api_responses and re-raises' do
-        expect { described_class.perform_now(request) }.to raise_error(AeonClient::ApiError)
+      it 'logs every item, notifies Honeybadger per failure, and raises SubmissionFailure' do
+        expect { described_class.perform_now(request) }
+          .to raise_error(SubmitAeonPatronRequestJob::SubmissionFailure, /Failed to create 2 Aeon request/)
 
-        log = request.aeon_api_responses.find_by(item_id: folio_instance.items.first.id)
-        expect(log.response_data).to include(
+        expect(Honeybadger).to have_received(:notify).twice.with(an_instance_of(AeonClient::ApiError))
+
+        rows = request.aeon_api_responses
+        expect(rows.count).to eq(3)
+        error_rows = rows.select { |r| r.response_data['status'] == 500 }
+        expect(error_rows.size).to eq(2)
+
+        expect(error_rows.first.response_data).to include(
           'status' => 500,
           'method' => 'POST',
           'request_body' => '{"username":"aeon_user"}',
           'response_body' => '{"err":"error message"}'
         )
-        expect(log.request_data).to include('username' => 'aeon_user')
+        expect(error_rows.first.request_data).to include('username' => 'aeon_user')
       end
     end
 

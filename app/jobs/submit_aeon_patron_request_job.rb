@@ -3,6 +3,19 @@
 ##
 # Rails Job to submit a request to ILLiad for handling (and possible rerouting)
 class SubmitAeonPatronRequestJob < ApplicationJob
+  # Raised when one or more items in a patron request fail to submit to Aeon.
+  class SubmissionFailure < StandardError
+    def initialize(patron_request, count)
+      @patron_request_id = patron_request.id
+      @count = count
+      super("Failed to create #{count} Aeon request(s) for patron_request #{patron_request.id}")
+    end
+
+    def to_honeybadger_context
+      { patron_request_id: @patron_request_id, aeon_api_error_count: @count }
+    end
+  end
+
   # Per-item fields that are meaningful to Aeon for each request_type. Hidden accordion sections
   # in the form still submit their inputs, so we drop anything that doesn't belong before building
   # the Aeon payload.
@@ -47,7 +60,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     rescue AeonClient::ApiError => e
       failures << e
     end
-    raise failures.first if failures.any?
+    report_failures(patron_request, failures)
   end
 
   def perform_ead_request(patron_request, activity_id: nil)
@@ -59,7 +72,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     rescue AeonClient::ApiError => e
       failures << e
     end
-    raise failures.first if failures.any?
+    report_failures(patron_request, failures)
   end
 
   def common_aeon_data_from_patron_request(patron_request, volume_params, activity_id) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -129,9 +142,6 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     (volume_params || {}).slice(*fields)
   end
 
-  # Runs the block and logs the outcome (success or AeonClient::ApiError) to
-  # aeon_api_responses so failures show up on the patron-request page, then
-  # re-raises any error for the caller to collect.
   def record_aeon_response(patron_request, item_id, request)
     response_data = yield.as_json
     write_aeon_response(patron_request, item_id, request, response_data)
@@ -143,5 +153,12 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   def write_aeon_response(patron_request, item_id, request, response_data)
     patron_request.aeon_api_responses.where(item_id: item_id).delete_all
     patron_request.aeon_api_responses.create(item_id: item_id, request_data: request.as_json, response_data: response_data)
+  end
+
+  def report_failures(patron_request, failures)
+    return if failures.empty?
+
+    failures.each { |failure| Honeybadger.notify(failure) }
+    raise SubmissionFailure.new(patron_request, failures.size)
   end
 end
