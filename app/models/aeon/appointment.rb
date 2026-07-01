@@ -70,7 +70,7 @@ module Aeon
     end
 
     def cancelled?
-      appointment_status == 'Cancelled'
+      appointment_status == 'Cancelled' || (requests.none? && !editable?)
     end
 
     def edit_policy
