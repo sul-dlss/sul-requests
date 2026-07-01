@@ -5,7 +5,7 @@
     <div>
       <% if @patron_request.ead_doc.repository %>
         <h3>
-          <%= link_to @patron_request.ead_doc.repository_contact[:website] do %>
+          <%= link_to @patron_request.ead_doc.repository_contact[:website], target: '_blank' do %>
             <%= @patron_request.ead_doc.repository %><i class="bi bi-arrow-up-right ms-1"></i>
           <% end %>
         </h3>
@@ -31,7 +31,7 @@
     <div>
         <h3>
           <% if library.reading_room_url %>
-            <%= link_to library.reading_room_url do %>
+            <%= link_to library.reading_room_url, target: '_blank' do %>
               <%= library.label %><i class="bi bi-arrow-up-right ms-1"></i>
             <% end %>
           <% else %>
