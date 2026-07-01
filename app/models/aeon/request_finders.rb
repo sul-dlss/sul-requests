@@ -64,7 +64,7 @@ module Aeon
     # different timestamp accessor (e.g. `&:transaction_date`).
     def newest_first(&date_block)
       date_block ||= :creation_date.to_proc
-      self.class.new(requests.sort_by { |r| [-date_block.call(r).change(sec: 0).to_i, r.title.to_s, r.sort_key] })
+      self.class.new(requests.sort_by { |r| [-date_block.call(r).change(sec: 0).to_i, r.title.to_s, r.default_sort_key] })
     end
 
     def saved_for_later

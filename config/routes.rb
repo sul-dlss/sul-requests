@@ -56,6 +56,7 @@ Rails.application.routes.draw do
 
   # requests#new is a legacy route for redirecting old-style requests to the new patron_requests
   get 'requests/new', to: 'requests#new', as: :new_request
+  get 'requests/unified', to: 'requests#index', as: :unified_requests
   resources :folio_requests, except: [:new, :create], path: 'requests'
   resources :ill_requests, only: [:index]
 

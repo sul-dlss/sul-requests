@@ -29,6 +29,18 @@ module Folio
       item.dig('effectiveCallNumberComponents', 'callNumber')
     end
 
+    def full_call_number
+      [call_number, volume, enumeration].compact.join(' ')
+    end
+
+    def volume
+      item['volume']
+    end
+
+    def enumeration
+      item['enumeration']
+    end
+
     def shelf_key
       item['effectiveShelvingOrder']
     end

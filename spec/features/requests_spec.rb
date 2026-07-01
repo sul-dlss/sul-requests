@@ -61,7 +61,7 @@ RSpec.describe 'Request Page' do
       expect(page).to have_css('.dropdown-toggle', text: 'Sort (Not needed after)')
       click_on 'Sort (Not needed after)'
 
-      within '[data-sortable-target="menu"] .dropdown-menu' do
+      within '[data-sortable-target="sortMenu"] .dropdown-menu' do
         click_on 'Title'
       end
 

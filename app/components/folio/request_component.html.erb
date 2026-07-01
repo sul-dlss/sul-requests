@@ -1,4 +1,4 @@
-<%= render CardComponent.new(element: 'li', id: dom_id(request), classes: 'request', data: { 'date-sort-value': request.sort_key(:date), 'title-sort-value': request.sort_key(:title), 'date_modified-sort-value': request.sort_key(:date_modified)  }) do |c| %>
+<%= render CardComponent.new(element: 'li', id: dom_id(request), classes: 'request', data: { 'filter-value': 'pickup', 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date)}) do |c| %>
   <% c.with_title do %>
     <div class="flex-grow-1">
       <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
@@ -8,8 +8,8 @@
       <div>
         <%= tag.h2 request.title || 'Not available', class: @title_classes %>
         <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
-          <% if request.call_number.present? %>
-            <span>Call number: <%= request.call_number %></span>
+          <% if request.full_call_number.present? %>
+            <span>Call number: <%= request.full_call_number %></span>
           <% end %>
           <span>
             <%= detail_link_to_searchworks(request.catkey) %>

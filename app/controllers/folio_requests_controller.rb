@@ -15,7 +15,9 @@ class FolioRequestsController < ApplicationController
   #
   # GET /requests
   # GET /requests.json
-  def index; end
+  def index
+    render 'async' and return if params[:async]
+  end
 
   # Renders a form for editing a request/hold
   #

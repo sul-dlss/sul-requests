@@ -10,7 +10,7 @@ module Aeon
     delegate :each, to: :requests
 
     delegate :submitted?, :base_callnumber, :call_number, :date, :digital?, :activity?,
-             :document_type, :ead_number, :multi_item_selector?, :title, :group_key, :status, to: :first
+             :document_type, :ead_number, :multi_item_selector?, :title, :group_key, :sort_key, :status, to: :first
 
     def self.from_requests(requests)
       requests.group_by(&:group_key).values.map { |group| new(group) }

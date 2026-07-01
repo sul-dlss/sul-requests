@@ -1,0 +1,7 @@
+<%= turbo_frame_tag :aeon_requests do %>
+  <turbo-stream action="append" target="requests">
+    <template>
+      <%= render Aeon::RequestGroupComponent.with_collection(@aeon_request_groups, element: 'li') %>
+    </template>
+  </turbo-stream>
+<% end %>

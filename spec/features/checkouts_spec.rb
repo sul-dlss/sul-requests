@@ -133,7 +133,7 @@ RSpec.describe 'Checkout Page' do
       expect(page).to have_css('.dropdown-toggle', text: 'Sort (Due date)')
       click_on 'Sort (Due date)'
 
-      within '[data-sortable-target="menu"] .dropdown-menu' do
+      within '[data-sortable-target="sortMenu"] .dropdown-menu' do
         click_on 'Title'
       end
 

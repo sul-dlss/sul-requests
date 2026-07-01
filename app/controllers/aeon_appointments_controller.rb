@@ -67,7 +67,7 @@ class AeonAppointmentsController < ApplicationController
     authorize! :read, @appointment
 
     requests = @aeon_requests.for_reading_room(@appointment.reading_room).saved_for_later.sort_by do |x|
-      [x.title, x.sort_key, -1 * x.creation_date.to_i]
+      [x.title, x.default_sort_key, -1 * x.creation_date.to_i]
     end
     @aeon_request_groups = Aeon::RequestGrouping.from_requests(requests)
   end
