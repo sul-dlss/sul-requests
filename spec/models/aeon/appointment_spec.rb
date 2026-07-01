@@ -78,6 +78,19 @@ RSpec.describe Aeon::Appointment do
     end
   end
 
+  describe '#cancelled?' do
+    it 'is true when appointment_status is Cancelled' do
+      appointment = build(:aeon_appointment, appointment_status: 'Cancelled')
+      expect(appointment).to be_cancelled
+    end
+
+    it 'is cancelled if the appointment is not editable and has no requests assigned' do
+      appointment = build(:aeon_appointment, requests: [], start_time: 1.week.ago)
+
+      expect(appointment).to be_cancelled
+    end
+  end
+
   describe 'validations' do
     let(:reading_room) { build(:aeon_reading_room) }
     let(:appointment) do
