@@ -3,6 +3,19 @@
 ##
 # Rails Job to submit a request to ILLiad for handling (and possible rerouting)
 class SubmitAeonPatronRequestJob < ApplicationJob
+  # Raised when one or more items in a patron request fail to submit to Aeon.
+  class SubmissionFailure < StandardError
+    def initialize(patron_request, count)
+      @patron_request_id = patron_request.id
+      @count = count
+      super("Failed to create #{count} Aeon request(s) for patron_request #{patron_request.id}")
+    end
+
+    def to_honeybadger_context
+      { patron_request_id: @patron_request_id, aeon_api_error_count: @count }
+    end
+  end
+
   # Per-item fields that are meaningful to Aeon for each request_type. Hidden accordion sections
   # in the form still submit their inputs, so we drop anything that doesn't belong before building
   # the Aeon payload.
@@ -40,25 +53,26 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   end
 
   def perform_folio_request(patron_request, activity_id: nil)
+    failures = []
     patron_request.selected_items.each do |folio_item|
       request = as_aeon_create_request_data(patron_request, folio_item, aeon_item_for(patron_request, folio_item.id), activity_id)
-      response = submit_aeon_request(request)
-
-      patron_request.aeon_api_responses.where(item_id: folio_item.id).delete_all
-      patron_request.aeon_api_responses.create(item_id: folio_item.id, request_data: request.as_json, response_data: response.as_json)
+      record_aeon_response(patron_request, folio_item.id, request) { submit_aeon_request(request) }
+    rescue AeonClient::ApiError => e
+      failures << e
     end
+    report_failures(patron_request, failures)
   end
 
   def perform_ead_request(patron_request, activity_id: nil)
+    failures = []
     patron_request.aeon_item.each_value do |volume_params|
       request = as_aeon_create_ead_request_data(patron_request, relevant_aeon_fields(patron_request, volume_params), activity_id)
-      response = submit_aeon_request(request)
-
       item_id = "#{request.call_number} #{request.item_volume}"
-
-      patron_request.aeon_api_responses.where(item_id: item_id).delete_all
-      patron_request.aeon_api_responses.create(item_id: item_id, request_data: request.as_json, response_data: response.as_json)
+      record_aeon_response(patron_request, item_id, request) { submit_aeon_request(request) }
+    rescue AeonClient::ApiError => e
+      failures << e
     end
+    report_failures(patron_request, failures)
   end
 
   def common_aeon_data_from_patron_request(patron_request, volume_params, activity_id) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -126,5 +140,25 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   def relevant_aeon_fields(patron_request, volume_params)
     fields = AEON_ITEM_FIELDS_BY_REQUEST_TYPE[patron_request.request_type] || []
     (volume_params || {}).slice(*fields)
+  end
+
+  def record_aeon_response(patron_request, item_id, request)
+    response_data = yield.as_json
+    write_aeon_response(patron_request, item_id, request, response_data)
+  rescue AeonClient::ApiError => e
+    write_aeon_response(patron_request, item_id, request, e.to_honeybadger_context)
+    raise
+  end
+
+  def write_aeon_response(patron_request, item_id, request, response_data)
+    patron_request.aeon_api_responses.where(item_id: item_id).delete_all
+    patron_request.aeon_api_responses.create(item_id: item_id, request_data: request.as_json, response_data: response_data)
+  end
+
+  def report_failures(patron_request, failures)
+    return if failures.empty?
+
+    failures.each { |failure| Honeybadger.notify(failure) }
+    raise SubmissionFailure.new(patron_request, failures.size)
   end
 end
