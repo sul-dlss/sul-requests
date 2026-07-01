@@ -108,6 +108,20 @@
       <%= render AccordionStepComponent.new(request: f.object, id: 'pickup', classes: [('d-none' if scan_pickup)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'pickup', action: 'item-selector:changed@document->accordion-form#enableAnyNextButtons' }, submit: true) do |c| %>
         <% c.with_title.with_content('Pickup request') %>
         <% c.with_body do %>
+          <% if f.object.origin_location_code == 'SAL3-PAGE-SP' && Time.zone.now.before?(Time.zone.parse('2026-08-15')) %>
+              <div class="alert alert-info d-flex" role="alert">
+                <div class="bi bi-info-circle-fill d-flex justify-content-center display-6 col-1 ms-3 align-self-center text-primary"></div>
+                <div class="p-3 flex-grow-1">
+                  <div class="d-flex align-items-center gap-2">
+                    <div>
+                    <span class="fw-semibold d-block">Notice about Special Collections Reading Room closure</span>
+                    The Department of Special Collections Reading Room and Barchas Room will be closed to researchers, faculty, and staff from Monday, June 15th through Friday, August 14th to accommodate a major facilities project.
+                    </div>
+                  </div>
+                </div>
+              </div>
+           <% end %>
+
           <%= render 'pickup_destination', f: %>
           <%= render 'not_needed_after_date', f: f if f.object.mediateable? && f.object.requires_needed_date? %>
 
@@ -212,7 +226,20 @@
             <%= queue_length_display(f.object.selectable_items.first, prefix: 'Item status: ', title_only: f.object.title_only?) %>
           </div>
         </div>
-        <% if f.object.mediateable? && f.object.requires_needed_date? %>
+
+        <% if f.object.origin_location_code == 'SAL3-PAGE-SP' && Time.zone.now.before?(Time.zone.parse('2026-08-15')) %>
+            <div class="alert alert-info d-flex" role="alert">
+              <div class="bi bi-info-circle-fill d-flex justify-content-center display-6 col-1 ms-3 align-self-center text-primary"></div>
+              <div class="p-3 flex-grow-1">
+                <div class="d-flex align-items-center gap-2">
+                  <div>
+                  <span class="fw-semibold d-block">Notice about upcoming closure</span>
+                  The Department of Special Collections Reading Room and Barchas Room will be closed to researchers, faculty, and staff from Monday, June 15th through Friday, August 14th to accommodate a major facilities project.
+                  </div>
+                </div>
+              </div>
+            </div>
+        <% elsif f.object.mediateable? && f.object.requires_needed_date? %>
             <div class="alert alert-info d-flex" role="alert">
               <div class="bi bi-info-circle-fill d-flex justify-content-center display-6 col-1 ms-3 align-self-center text-primary"></div>
               <div class="p-3 flex-grow-1">
