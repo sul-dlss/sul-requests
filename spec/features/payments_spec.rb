@@ -43,7 +43,7 @@ RSpec.describe 'Payments History' do
         expect(page).to have_css('.dropdown-toggle', text: 'Sort (Date paid)')
         click_on 'Sort (Date paid)'
 
-        within '[data-sortable-target="menu"] .dropdown-menu' do
+        within '[data-sortable-target="sortMenu"] .dropdown-menu' do
           click_on 'Reason'
         end
         expect(page).to have_css('.dropdown-toggle', text: 'Sort (Reason)')

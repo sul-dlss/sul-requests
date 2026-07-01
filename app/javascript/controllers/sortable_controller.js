@@ -1,17 +1,18 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['list', 'menu', 'observe', 'subgroup']
+  static targets = ['list', 'sortMenu', 'filterMenu', 'observe', 'subgroup']
   static values = {
     sort: String,
-    filter: String
+    filter: { type: String, default: '' }
   }
 
   connect() {
     if (!this.sortValue) {
-      this.sortValue = this.menuTarget.querySelector('[data-sortable-sort-param]').dataset.sortableSortParam;
+      this.sortValue = this.sortMenuTarget.querySelector('[data-sortable-sort-param]').dataset.sortableSortParam;
     } else {
       this.resort();
+      this.refilter();
     }
   }
 
@@ -23,6 +24,7 @@ export default class extends Controller {
     // this.sorting = true;
     this.debounceTimeout = setTimeout(() => {
       this.resort();
+      this.refilter();
     }, 30);
   }
 
@@ -44,22 +46,43 @@ export default class extends Controller {
 
     this.sortValue = event.params['sort']
   }
-  
+
+  filter(event) {
+    event.preventDefault()
+
+    this.filterValue = event.params['filter']
+  }
+
   sortValueChanged() {
     this.resort();
-    this.updateMenu();
+    this.updateSortMenu();
   }
 
-  updateMenu() {
-    if (!this.hasMenuTarget) return;
+  filterValueChanged() {
+    this.refilter();
+    this.updateFilterMenu();
+  }
 
-    this.menuTarget.querySelector('.active')?.classList?.remove('active');
-    const activeSort =  this.menuTarget.querySelector('[data-sortable-sort-param="' + this.sortValue + '"]');
+  updateSortMenu() {
+    if (!this.hasSortMenuTarget) return;
+
+    this.sortMenuTarget.querySelector('.active')?.classList?.remove('active');
+    const activeSort =  this.sortMenuTarget.querySelector('[data-sortable-sort-param="' + this.sortValue + '"]');
 
     activeSort?.classList?.add('active');
-    this.menuTarget.querySelector('.dropdown-toggle').textContent = activeSort?.dataset?.sortableLabelParam || 'Sort';
+    this.sortMenuTarget.querySelector('.dropdown-toggle').textContent = activeSort?.dataset?.sortableLabelParam || 'Sort';
   }
-  
+
+  updateFilterMenu() {
+    if (!this.hasFilterMenuTarget) return;
+
+    this.filterMenuTarget.querySelector('.active')?.classList?.remove('active');
+    const activeFilter =  this.filterMenuTarget.querySelector('[data-sortable-filter-param="' + this.filterValue + '"]');
+
+    activeFilter?.classList?.add('active');
+    this.filterMenuTarget.querySelector('.dropdown-toggle').textContent = activeFilter?.dataset?.sortableLabelParam || 'All requests';
+  }
+
   resort() {
     if (!this.sortValue || !this.hasListTarget) return;
 
@@ -67,6 +90,16 @@ export default class extends Controller {
 
     this.subgroupTargets.forEach(subgroup => {
       this.resortChildren(subgroup, this.sortValue + 'SortValue');
+    });
+  }
+
+  refilter() {
+    if (!this.hasListTarget) return;
+
+    Array.from(this.listTarget.children).forEach(item => {
+      const itemFilterValue = item.dataset.filterValue;
+
+      item.hidden = (this.filterValue == '' || this.filterValue == itemFilterValue) ? false : true;
     });
   }
 

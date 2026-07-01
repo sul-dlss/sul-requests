@@ -2,16 +2,31 @@
   <div class="d-flex justify-content-between">
     <h1>Submitted requests</h1>
 
-    <div class="dropdown" data-sortable-target="menu">
-      <button class="btn btn-outline-primary btn-sm dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Default sort
-      </button>
+    <div class="d-flex gap-2">
+      <div class="dropdown" data-sortable-target="sortMenu">
+        <button class="btn btn-outline-primary btn-sm dropdown-toggle" id="dropdownSortMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Default sort
+        </button>
 
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="default" data-sortable-label-param="Default sort">default</button></li>
-        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="date" data-sortable-label-param="Sort by date modified">date modified</button></li>
-        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort by title">title</button></li>
-      </ul>
+        <ul class="dropdown-menu" aria-labelledby="dropdownSortMenuLink">
+          <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="default" data-sortable-label-param="Default sort">default</button></li>
+          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="date" data-sortable-label-param="Sort by date modified">date modified</button></li>
+          <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort by title">title</button></li>
+        </ul>
+      </div>
+
+      <div class="dropdown" data-sortable-target="filterMenu">
+        <button class="btn btn-outline-primary btn-sm dropdown-toggle" id="dropdownFilterMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        All requests
+        </button>
+
+        <ul class="dropdown-menu" aria-labelledby="dropdownFilterMenuLink">
+          <li><button class="dropdown-item active" data-action="click->sortable#filter" data-sortable-label-param="All requests">All requests</button></li>
+          <li><button class="dropdown-item" data-action="click->sortable#filter" data-sortable-filter-param="digitization" data-sortable-label-param="Digitization">Digitization</button></li>
+          <li><button class="dropdown-item" data-action="click->sortable#filter" data-sortable-filter-param="pickup" data-sortable-label-param="Pickup">Pickup</button></li>
+          <li><button class="dropdown-item" data-action="click->sortable#filter" data-sortable-filter-param="reading room" data-sortable-label-param="Reading room use">Reading room use</button></li>
+        </ul>
+      </div>
     </div>
   </div>
 
