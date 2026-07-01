@@ -51,6 +51,8 @@ gem 'web-console', group: :development
 # Specify Nokogiri to address security concerns
 gem 'nokogiri', '>= 1.7.1'
 
+gem 'marc', '~> 1.4' # For computing FOLIO formats from the searchworks_traject_indexer rules
+
 # rack is a webserver interface used by rails.
 gem 'rack'
 
