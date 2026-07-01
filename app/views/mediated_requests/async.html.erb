@@ -1,0 +1,7 @@
+<%= turbo_frame_tag :mediated_requests do %>
+  <turbo-stream action="append" target="requests">
+    <template>
+      <%= render MediatedRequestComponent.with_collection(@requests) %>
+    </template>
+  </turbo-stream>
+<% end %>

@@ -195,9 +195,9 @@ module Aeon
                  when :title
                    [title, default_sort_key]
                  when :date
-                   [(transaction_date || 100.years.from_now).strftime('%FT%T'), title, default_sort_key]
+                   [(transaction_date || 100.years.from_now.end_of_day).strftime('%FT%T'), title, default_sort_key]
                  when :default
-                   [(appointment&.start_time || 100.years.from_now).strftime('%FT%T'), title, default_sort_key]
+                   [(appointment&.start_time || 100.years.from_now.end_of_day).strftime('%FT%T'), title, default_sort_key]
                  else
                    [default_sort_key]
                  end
