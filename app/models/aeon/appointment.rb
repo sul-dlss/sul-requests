@@ -78,6 +78,8 @@ module Aeon
     end
 
     def editable?
+      return true unless start_time
+
       start_time.after?(edit_policy.days.from_now)
     end
 
