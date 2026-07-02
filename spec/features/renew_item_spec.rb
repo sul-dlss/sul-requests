@@ -42,17 +42,21 @@ RSpec.describe 'Renew item', :js do
   it 'enabled through checkout page' do
     visit checkouts_path
 
-    within(first('ul.checkouts li')) do
+    within(first('ul.checkouts-list li')) do
       click_on 'Renew'
     end
-    expect(page).to have_css '.flash_messages', text: 'Success!'
+
+    expect(page).to have_button('Nothing is eligible to renew', disabled: true)
+    expect(page).to have_text 'Renewed until: Jun 13, 2025'
   end
 
   it 'has a button to renew all items' do
     visit checkouts_path
 
-    click_on 'Renew 1 eligible item'
+    click_on 'Renew eligible items (1)'
 
-    expect(page).to have_css '.flash_messages', text: 'Success!'
+    expect(page).to have_button('Nothing is eligible to renew', disabled: true)
+    expect(page).to have_text 'Renewed until: Jun 13, 2025'
+    expect(page).to have_css '.flash_messages', text: 'Successfully renewed 1 item'
   end
 end

@@ -1,6 +1,6 @@
 <% if @checkouts.any? %>
   <div id="checkouts" class="page-section col-lg-9" data-controller="sortable google-cover-image" data-sortable-sort-value="dueDate">
-    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap row-gap-2">
+    <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2">
       <h1 class="mb-0">Borrowed (checked out) items</h1>
       <div class="d-flex gap-2 align-items-center">
         <div class="dropdown" data-sortable-target="sortMenu">
@@ -21,12 +21,12 @@
       </div>
     </div>
 
-    <ul class="checkouts p-0" data-sortable-target="list" aria-live="polite">
+    <ul class="checkouts-list p-0 mt-4" data-sortable-target="list" aria-live="polite">
       <%= render Folio::CheckoutComponent.with_collection(@checkouts, patron: patron_or_group) %>
     </ul>
   </div>
 <% else %>
-  <div id="checkouts" class="page-section">
+  <div id="checkouts" class="page-section mt-4">
     <h1>Borrowed (checked out) items</h1>
     <h2>Checked out: <%= @checkouts.length %><%= " (#{patron_or_group.remaining_checkouts} remaining)" if patron_or_group.remaining_checkouts %></h2>
   </div>

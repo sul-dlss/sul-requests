@@ -1,14 +1,16 @@
-<% if @response.success? %>
-  <%= turbo_stream.replace(dom_id(@response.checkout)) do %>
-    <%= render Folio::CheckoutComponent.new(checkout: @response.updated_checkout, patron: patron_or_group) %>
+<%= turbo_stream.replace(dom_id(@response.checkout)) do %>
+  <% if @response.success? %>
+    <%= render Folio::CheckoutComponent.new(checkout: @response.updated_checkout, patron: patron_or_group, renewal_view: true) %>
+  <% else %>
+    <%= render Folio::CheckoutComponent.new(checkout: @response.checkout, patron: patron_or_group) %>
   <% end %>
 <% end %>
 
-<%= turbo_stream.prepend('main') do %>
-  <% if @response.success? %>
-    <% success = I18n.t('mylibrary.renew_item.success_html', title: @response.checkout.title) %>
-  <% else %>
-    <% error = I18n.t('mylibrary.renew_item.error_html', title: @response.checkout.title) %>
-  <% end %>
-  <%= render 'shared/flashes', flash: { success: success, error: error} %>
+<%= turbo_stream.replace('renew-all-button') do %>
+  <%= render 'checkouts/renew_all_button' %>
 <% end %>
+
+<%= turbo_stream.prepend_all('.checkouts-list') do %>
+  <% error = I18n.t('mylibrary.renew_item.error_html', title: @response.checkout.title) %>
+  <%= render 'shared/flashes', flash: { error: error}, classes: '' %>
+<% end unless @response.success? %>

@@ -55,7 +55,7 @@ RSpec.describe 'Proxy User' do
       click_on 'Switch to proxy'
       click_on 'Proxy for: Shea Sponsor'
 
-      expect(page).to have_css('.checkouts li', count: 2)
+      expect(page).to have_css('.checkouts-list li', count: 2)
 
       expect(page).to have_text('Music, sound, language, theater')
       expect(page).to have_text('See this sound')

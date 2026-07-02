@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe CheckoutsController do
   let(:user) { CurrentUser.new(username: 'somesunetid', patron_key: '513a9054-5897-11ee-8c99-0242ac120002', shibboleth: true) }
-  let(:mock_patron) { instance_double(Folio::Patron, key: '513a9054-5897-11ee-8c99-0242ac120002', checkouts:) }
+  let(:mock_patron) { instance_double(Folio::Patron, key: '513a9054-5897-11ee-8c99-0242ac120002', checkouts:, all_checkouts: checkouts) }
   let(:mock_client) { instance_double(FolioClient, ping: true) }
   let(:checkouts) { [] }
 
@@ -51,7 +51,7 @@ RSpec.describe CheckoutsController do
 
   describe '#renew' do
     let(:api_response) { instance_double(FolioClient::RenewCheckoutResponse, success?: true, checkout: checkouts[0], updated_checkout: checkouts[0]) }
-    let(:checkouts) { [instance_double(Folio::Checkout, item_id: '123', item_category_non_renewable?: false, sort_key: nil)] }
+    let(:checkouts) { [instance_double(Folio::Checkout, id: '123', item_id: '123', item_category_non_renewable?: false, sort_key: nil)] }
 
     before do
       allow(mock_client).to receive(:renew_checkout).and_return(api_response)
@@ -61,7 +61,7 @@ RSpec.describe CheckoutsController do
       it 'renews the item and sets flash messages' do
         post :renew, params: { id: '123' }
 
-        expect(flash[:success]).to include('Success!')
+        expect(flash[:success]).to include('Successfully renewed 1 item')
       end
 
       it 'renews the item and redirects to checkouts_path' do
@@ -94,7 +94,7 @@ RSpec.describe CheckoutsController do
     end
 
     context 'when the requested item is not eligible even though Folio does not stop us' do
-      let(:checkouts) { [instance_double(Folio::Checkout, item_id: '123', sort_key: nil, item_category_non_renewable?: true)] }
+      let(:checkouts) { [instance_double(Folio::Checkout, item_id: '123', id: '123', sort_key: nil, item_category_non_renewable?: true)] }
 
       it 'does not renew the item and sets flash messages' do
         expect { post :renew, params: { id: '123' } }.to raise_error(CheckoutException)
@@ -106,21 +106,31 @@ RSpec.describe CheckoutsController do
     let(:api_response) { { success: [checkouts[0]], error: [checkouts[1]] } }
     let(:checkouts) do
       [
-        instance_double(Folio::Checkout, key: '1', renewable?: true, item_id: '123', title: 'ABC', sort_key: nil),
-        instance_double(Folio::Checkout, key: '2', renewable?: true, item_id: '456', sort_key: nil,
+        instance_double(Folio::Checkout, key: '1', id: '1', renewable?: true, item_id: '123', title: 'ABC', sort_key: nil),
+        instance_double(Folio::Checkout, key: '2', id: '2', renewable?: true, item_id: '456', sort_key: nil,
                                          title: 'Principles of optics : electromagnetic theory of ' \
                                                 'propagation, interference and diffraction of light'),
-        instance_double(Folio::Checkout, key: '3', renewable?: false, item_id: '789', sort_key: nil, title: 'Not')
+        instance_double(Folio::Checkout, key: '3', id: '3', renewable?: false, item_id: '789', sort_key: nil, title: 'Not')
       ]
     end
 
+    let(:renewal_response_one) do
+      instance_double(FolioClient::RenewCheckoutResponse,
+                      success?: true,
+                      updated_checkout: checkouts[0],
+                      checkout: checkouts[0])
+    end
+
+    let(:renewal_response_two) do
+      instance_double(FolioClient::RenewCheckoutResponse,
+                      success?: false,
+                      updated_checkout: checkouts[1],
+                      checkout: checkouts[1])
+    end
+
     before do
-      allow(mock_client).to receive(:renew_checkout).with(having_attributes(key: '1')).and_return(instance_double(FolioClient::RenewCheckoutResponse,
-                                                                                                                  success?: true,
-                                                                                                                  checkout: checkouts[0]))
-      allow(mock_client).to receive(:renew_checkout).with(having_attributes(key: '2')).and_return(instance_double(FolioClient::RenewCheckoutResponse,
-                                                                                                                  success?: false,
-                                                                                                                  checkout: checkouts[1]))
+      allow(mock_client).to receive(:renew_checkout).with(having_attributes(key: '1')).and_return(renewal_response_one)
+      allow(mock_client).to receive(:renew_checkout).with(having_attributes(key: '2')).and_return(renewal_response_two)
     end
 
     it 'sends renewal requests to Folio for eligible items' do
@@ -133,12 +143,8 @@ RSpec.describe CheckoutsController do
     context 'when successful' do
       before { post :renew_eligible }
 
-      it 'sets a success flash message' do
-        expect(flash[:success]).to include('Success!')
-      end
-
       it 'includes the number of renewed items' do
-        expect(flash[:success]).to include('1 item was renewed')
+        expect(flash[:success]).to include('Successfully renewed 1 item')
       end
     end
 
