@@ -1,57 +1,51 @@
-    <div class="d-flex text-nowrap align-items-baseline align-self-start justify-content-xl-end">
-      <% if request.cancelled? %>
-        <form action="<%= resubmit_aeon_request_path(transaction_number) %>" method="PATCH">
-          <button type="submit" class="btn btn-link btn-sm su-underline resubmit" aria-label="Resubmit request"><i class="bi bi-arrow-clockwise"></i> Resubmit</button>
-        </form>
+<div class="d-flex text-nowrap align-items-baseline align-self-start justify-content-xl-end">
+  <% if include_bulk_actions %>
+    <span>
+      <input type="checkbox" class="form-check-input" id="delete-bulk-<%= request.id %>"
+        data-action="change->request-bulk-delete#updateDeleteButton request-bulk-delete#updateSelectAll"
+        data-request-bulk-delete-target="select" data-id="<%= request.id %>">
+      <%= label_tag "delete-bulk-#{request.id}", 'Select', class: 'ms-1 me-3 small form-check-label fw-normal' %>
+    </span>
+  <% end %>
+  <% if helpers.can? :edit, request %>
+    <%= link_to edit_aeon_request_path(request), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open' } do %>
+      <% if !request.saved_for_later? && !request.cancelled? %>
+        <i class="bi bi-pencil-fill me-1 align-middle"></i><span class="visually-hidden">Edit request</span>
+      <% elsif request.digital? %>
+        <i class="bi bi-file-earmark-plus me-1 align-middle"></i> Add instructions
       <% else %>
-        <% if include_bulk_actions %>
-          <span>
-            <input type="checkbox" class="form-check-input" id="delete-bulk-<%= request.id %>"
-              data-action="change->request-bulk-delete#updateDeleteButton request-bulk-delete#updateSelectAll"
-              data-request-bulk-delete-target="select" data-id="<%= request.id %>">
-            <%= label_tag "delete-bulk-#{request.id}", 'Select', class: 'ms-1 me-3 small form-check-label fw-normal' %>
-          </span>
-        <% end %>
-        <% if helpers.can? :edit, request %>
-          <%= link_to edit_aeon_request_path(request), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open' } do %>
-            <% if request.saved_for_later? && request.digital? %>
-              <i class="bi bi-file-earmark-plus me-1 align-middle"></i> Add instructions
-            <% elsif request.saved_for_later? && !request.digital? %>
-              <i class="bi bi-calendar-plus me-1 align-middle"></i> Add appointment
-            <% else %>
-              <i class="bi bi-pencil-fill me-1 align-middle"></i><span class="visually-hidden">Edit request</span>
-            <% end %>
-          <% end %>
-        <% end %>
-        <% if helpers.can? :destroy, request %>
-          <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#delete-<%= transaction_number %>">
-            <i class="bi bi-trash align-middle"></i><span class="visually-hidden">Delete <%= title %> request</span>
-          </button>
-        <% end %>
+        <i class="bi bi-calendar-plus me-1 align-middle"></i> Add appointment
       <% end %>
-      <!-- Delete modal -->
-      <%= render ModalComponent.new(id: "delete-#{transaction_number}") do |component| %>
-        <% component.with_title.with_content('Delete request?') %>
-        <% component.with_body do %>
-          <div class="d-flex flex-column gap-3">
-            <div class="text-lagunita-dark"><%= request_type %></div>
-            <div class="d-flex flex-column gap-1">
-              <div class="text-wrap fw-semibold"><%= title %></div>
-              <% if request.base_callnumber.present? %>
-                <div>Call number: <%= request.base_callnumber %></div>
-              <% end %>
-              <%= render Aeon::RequestItemIdentifierComponent.new(request:, classes: ['fw-semibold', 'selected-item-title', 'px-1'], wrapper_tag: :div, wrapper_classes: ['text-wrap']) %>
-            </div>
-            <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'mb-0'], with_icon: false) do %>
-              <span class="fw-semibold text-wrap">This action cannot be undone.</span>
-            <% end %>
-          </div>
-        <% end %>
-        <% component.with_footer do %>
-          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-          <%= form_with url: aeon_request_path(transaction_number), method: 'delete' do %>
-            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+    <% end %>
+  <% end %>
+  <% if !request.cancelled? && helpers.can?(:destroy, request) %>
+    <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#delete-<%= transaction_number %>">
+      <i class="bi bi-trash align-middle"></i><span class="visually-hidden">Delete <%= title %> request</span>
+    </button>
+  <% end %>
+  <!-- Delete modal -->
+  <%= render ModalComponent.new(id: "delete-#{transaction_number}") do |component| %>
+    <% component.with_title.with_content('Delete request?') %>
+    <% component.with_body do %>
+      <div class="d-flex flex-column gap-3">
+        <div class="text-lagunita-dark"><%= request_type %></div>
+        <div class="d-flex flex-column gap-1">
+          <div class="text-wrap fw-semibold"><%= title %></div>
+          <% if request.base_callnumber.present? %>
+            <div>Call number: <%= request.base_callnumber %></div>
           <% end %>
+          <%= render Aeon::RequestItemIdentifierComponent.new(request:, classes: ['fw-semibold', 'selected-item-title', 'px-1'], wrapper_tag: :div, wrapper_classes: ['text-wrap']) %>
+        </div>
+        <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'mb-0'], with_icon: false) do %>
+          <span class="fw-semibold text-wrap">This action cannot be undone.</span>
         <% end %>
+      </div>
+    <% end %>
+    <% component.with_footer do %>
+      <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
+      <%= form_with url: aeon_request_path(transaction_number), method: 'delete' do %>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
       <% end %>
-    </div>
+    <% end %>
+  <% end %>
+</div>
