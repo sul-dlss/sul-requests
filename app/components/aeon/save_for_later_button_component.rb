@@ -23,7 +23,9 @@ module Aeon
     end
 
     def spinner
-      tag.span(class: 'spinner-border spinner-border-sm me-2', aria: { hidden: true }) + tag.span('Saving ...')
+      tag.div(class: 'px-2 py-1 text-green submit-message align-content-center') do
+        tag.div(class: 'spinner-border spinner-border-sm me-2', aria: { hidden: true }) + tag.span('Removing and saving for later')
+      end
     end
   end
 end
