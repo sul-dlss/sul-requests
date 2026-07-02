@@ -1,0 +1,34 @@
+<div id="requests" class="page-section col-lg-9" data-controller="sortable google-cover-image" data-sortable-sort-value="default">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h1 class="mb-0">Mediated Requests</h1>
+    <% if @requests.any? %>
+    <div class="dropdown" data-sortable-target="sortMenu">
+      <button class="btn btn-outline-primary btn-sm dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Sort (Not needed after)
+      </button>
+
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="default" data-sortable-label-param="Sort (Not needed after)">Not needed after</button></li>
+        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="date" data-sortable-label-param="Sort (Date modified)">Date modified</button></li>
+        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort (Title)">Title</button></li>
+      </ul>
+    </div>
+    <% end %>
+  </div>
+  <% if @requests.any? %>
+    <ul class="requests p-0" data-sortable-target="list" aria-live="polite">
+      <%= render MediatedRequestComponent.with_collection(@requests) %>
+    </ul>
+  <% end %>
+</div>
+
+<div class="page-section">
+  <h2>If your request isn't listed</h2>
+  <ul>
+    <li>Requests for material from Special Collections &amp; University Archives, the David Rumsey Map Center, the Archive of Recorded Sound and East Asia Library Special Collections are listed in <%= link_to 'https://stanford.aeon.atlas-sys.com/logon/', target: '_blank' do %>
+      <%= sul_icon :'sharp-open_in_new-24px' %> Aeon.
+    <% end %>
+    </li>
+    <li>Requests requiring approval are not listed here until they have been approved &mdash; typically 1-3 days before your scheduled visit.</li>
+  </ul>
+</div>

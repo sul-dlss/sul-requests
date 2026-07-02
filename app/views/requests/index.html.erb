@@ -80,6 +80,7 @@
   <% end unless patron_or_group.is_a? Folio::ProxyGroup %>
 
   <%= turbo_frame_tag :ill_requests, src: ill_requests_path(async: true) %>
+  <%= turbo_frame_tag :mediated_requests, src: mediated_requests_path(async: true) %>
 <% end %>
 
 <div class="page-section">

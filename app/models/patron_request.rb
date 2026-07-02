@@ -613,6 +613,19 @@ class PatronRequest < ApplicationRecord
   end
   # @!endgroup
 
+  def sort_key(key)
+    case key
+    when :default
+      [(needed_date || 100.years.from_now.end_of_day).strftime('%FT%T'), item_title].join('---')
+    when :title
+      [item_title].join('---')
+    when :date
+      [updated_at.strftime('%FT%T'), item_title].join('---')
+    else
+      raise ArgumentError, "Invalid sort key: #{key}"
+    end
+  end
+
   private
 
   # @return [Folio::ServicePoint] the selected service point for pickup
