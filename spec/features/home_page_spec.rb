@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Home Page' do
+  before do
+    allow(IlliadRequests).to receive(:new).and_return(instance_double(IlliadRequests, requests: []))
+  end
+
   describe 'layout' do
     before do
       visit root_path
@@ -70,9 +74,10 @@ RSpec.describe 'Home Page' do
       it 'renders just the FOLIO cards' do
         visit root_path
 
-        expect(page).to have_css('.card', count: 3)
+        expect(page).to have_css('.card', count: 4)
         expect(page).to have_css('.card', text: 'Pickup requests')
-        expect(page).to have_no_css('.card', text: 'Digitization requests')
+        expect(page).to have_css('.card', text: 'Digitization requests')
+        expect(page).to have_no_css('.card', text: 'Reading room appointments')
       end
     end
 
@@ -83,6 +88,7 @@ RSpec.describe 'Home Page' do
         visit root_path
 
         expect(page).to have_css('.card', count: 4)
+        expect(page).to have_css('.card', text: 'Reading room appointments')
         expect(page).to have_css('.card', text: 'Digitization requests')
         expect(page).to have_no_css('.card', text: 'Pickup requests')
       end

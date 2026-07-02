@@ -1,4 +1,4 @@
-<div class="page-section col-9" data-controller="sortable google-cover-image" data-sortable-sort-value="default">
+<%= tag.div class: 'page-section col-9', data: { controller: 'sortable google-cover-image', 'sortable-sort-value': 'default', 'sortable-filter-value': params[:filter] } do %>
   <div class="d-flex justify-content-between mb-4">
     <h1>Submitted requests</h1>
 
@@ -80,7 +80,7 @@
   <% end unless patron_or_group.is_a? Folio::ProxyGroup %>
 
   <%= turbo_frame_tag :ill_requests, src: ill_requests_path(async: true) %>
-</div>
+<% end %>
 
 <div class="page-section">
   <h2>If your request isn't listed</h2>

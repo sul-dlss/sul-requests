@@ -6,5 +6,5 @@
   <%= render 'questions_aside' %>
 </div>
 
-<%= turbo_frame_tag 'folio-dashboard', src: folio_dashboard_path if @dashboard.folio? %>
+<%= turbo_frame_tag 'folio-dashboard', src: folio_dashboard_path(include_illiad: !@dashboard.aeon?) if @dashboard.folio? %>
 <%= turbo_frame_tag 'aeon-dashboard', src: aeon_dashboard_path if @dashboard.aeon? %>
