@@ -93,3 +93,6 @@ application.register("add-items", AddItemsController)
 
 import SubmitMessageController from "./submit_message_controller"
 application.register("submit-message", SubmitMessageController)
+
+import Checkoutscontroller from "./checkouts_controller"
+application.register("checkouts", Checkoutscontroller)

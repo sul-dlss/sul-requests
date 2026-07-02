@@ -14,18 +14,20 @@
       <span class="text-digital-red-dark"><%= header_message %></span>
     </div>
      <% if patron.can_renew? && renewable? %>
-      <%= form_tag renew_checkout_path(checkout.item_id), data: { controller: 'submit-message' }, method: :post do %>
+      <%= form_tag renew_checkout_path(checkout.item_id), method: :post do %>
         <%= hidden_field_tag :item_id, checkout.item_id %>
         <%= hidden_field_tag :title, checkout.title %>
         <%= hidden_field_tag :group, params[:group] if params[:group] %>
+        <% message = capture do %>
+        <div class="text-green submit-message">
+          <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>Renewing
+        </div>
+        <% end %>
         <%= button_tag class: 'btn btn-outline-primary btn-xs',
-                        data: { submit_message_target: 'button', action: 'click->submit-message#showMessage renew-all@window->submit-message#showMessage' },
+                        data: { turbo_submits_with: message, 'checkouts-target': 'renew' },
                         type: 'submit' do %>
           <i class="bi bi-arrow-repeat me-1"></i>Renew
         <% end %>
-        <div class="text-green d-none" data-submit-message-target="message">
-          <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>Renewing
-        </div>
       <% end %>
     <% elsif !renewable? %>
         <button disabled class="btn btn-outline-primary btn-disabled btn-xs"><i class="bi bi-arrow-repeat me-1"></i><%= non_renewable_reason %></button>
