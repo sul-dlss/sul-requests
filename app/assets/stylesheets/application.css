@@ -1018,3 +1018,14 @@ summary .disclosure-icon::before {
     --border-top: 1px solid var(--stanford-20-black);
   }
 }
+
+button:has(.submit-message) {
+  background: transparent !important;
+  border: none !important;
+  padding: none !important;
+  text-decoration: none;
+}
+
+.dropdown-toggle:has(.submit-message)::after {
+  display: none;
+}
