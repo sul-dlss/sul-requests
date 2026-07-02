@@ -1,8 +1,8 @@
-<%= render CardComponent.new(element: 'li', id: dom_id(request), classes: 'request', data: { 'filter-value': 'pickup', 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) }) do |c| %>
+<%= render CardComponent.new(element: 'li', id: dom_id(request), classes: 'request', data: { 'filter-value': request.scan_type? ? 'digitization' : 'pickup', 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) }) do |c| %>
   <% c.with_title do %>
     <div class="flex-grow-1">
       <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
-        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup') %>
+        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content(request.scan_type? ? 'Digitization' : 'Pickup') %>
       </div>
 
       <div>
