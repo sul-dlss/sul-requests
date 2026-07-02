@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['list', 'savedItemTemplate', 'section']
+  static targets = ['list', 'savedItemTemplate', 'section', 'selectedItem', 'additionalInformation']
 
   save(event) {
     event.preventDefault()
@@ -26,6 +26,7 @@ export default class extends Controller {
     while (nextItem && !nextItem.offsetParent) nextItem = nextItem.nextElementSibling
     const nextCollapse = nextItem?.querySelector('.accordion-collapse')
     if (nextCollapse) Collapse.getOrCreateInstance(nextCollapse).show()
+    this.hideShowAdditionalInfo()
 
     this.dispatch('changed')
   }
@@ -51,6 +52,7 @@ export default class extends Controller {
       list.querySelectorAll(`[data-content-id="${id}"]`).forEach(el => el.remove())
     })
 
+    this.hideShowAdditionalInfo()
     this.dispatch('changed')
   }
 
@@ -61,9 +63,13 @@ export default class extends Controller {
     })
   }
 
+  hideShowAdditionalInfo() {
+    const hidden = this.selectedItemTargets.every(si => si.classList.contains('d-none'))
+    this.additionalInformationTarget.hidden = hidden
+  }
+
   formItemsFor(id) {
-    return Array.from(this.element.querySelectorAll(`[data-content-id="${id}"]:not([data-toggle-disabled])`))
-      .filter(el => !this.listTargets.some(list => list.contains(el)))
+    return this.selectedItemTargets.filter(si => si.dataset.contentId === id && !si.dataToggleDisabled && !this.listTargets.some(list => list.contains(si)))
   }
 
   makeSavedItem(formItem) {

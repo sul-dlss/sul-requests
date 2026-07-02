@@ -1,0 +1,14 @@
+<div class="actions gap-3 d-flex">
+  <button class="btn btn-link d-none p-0 fs-14" data-action="view-container-contents#openViewModal"
+      data-view-container-contents-target="displayButton" data-item-id="<%= dom_id %>">
+    <i class="bi bi-list-ul me-1"></i><span>View contents</span>
+  </button>
+  <% if save_for_later? %>
+    <button class="btn btn-link p-0 su-underline fs-14" data-action="save-for-later#save" data-save-for-later-id-param="<%= dom_id %>">
+      <i class="bi bi-pin-angle-fill me-1"></i>Save for later
+    </button>
+  <% end %>
+  <button class="btn btn-link p-0 selected-item-remove fs-14" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
+    <i class="bi bi-trash me-1"></i>Delete<span class="visually-hidden"> <%= title %></span>
+  </button>
+</div>

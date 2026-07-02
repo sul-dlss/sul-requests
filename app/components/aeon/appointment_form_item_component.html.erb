@@ -1,23 +1,10 @@
-<li data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="appointments-item rounded mb-2 d-grid row-gap-2 column-gap-3 text-nowrap" data-content-id="<%= dom_id %>">
+<li data-controller="selected-item-form" data-save-for-later-target="selectedItem" data-action="input->selected-item-form#updateStatus" class="appointments-item rounded mb-2 d-grid row-gap-2 column-gap-3 text-nowrap" data-content-id="<%= dom_id %>">
   <i class="bi bi-check2 selected-item-status"></i>
   <div class="appt-title">
     <span class="text-wrap">
       <span class="text-black fw-semibold selected-item-title"><%= title %></span>
-      <button class="btn btn-link d-none" data-action="view-container-contents#openViewModal"
-              data-view-container-contents-target="displayButton" data-item-id="<%= dom_id %>">
-        <i class="bi bi-list-ul"></i><span class="visually-hidden">View contents</span>
-      </button>
     </span>
-  </div>
-  <div class="appt-actions">
-    <% if save_for_later? %>
-    <button class="btn btn-link p-0 ps-1 su-underline fs-14" data-action="save-for-later#save" data-save-for-later-id-param="<%= dom_id %>">
-      <i class="bi bi-pin-angle-fill me-1"></i>Save for later
-    </button>
-    <% end %>
-    <button class="btn btn-link p-0 ps-1 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
-      <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
-    </button>
+    <%= render Aeon::SelectedItemsActionsComponent.new(dom_id:, save_for_later: object.nil?, title:) %>
   </div>
   <%= fields_for base_name, object do |f| %>
     <div class="appt-select d-flex flex-wrap align-items-center column-gap-2 row-gap-1">
