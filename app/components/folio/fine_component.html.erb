@@ -19,6 +19,7 @@
     <h3 class="mb-1 clamp clamp-3"><%= body_title %></h3>
     <% if fine.bib? %>
       <div class="d-flex flex-row gap-3">
+        <%= render FormatIndicatorComponent.new(record: fine) %>
         <div>Call number: <%= fine.call_number %></div>
         <%= detail_link_to_searchworks(fine.catkey) unless fine.from_ill? %>
       </div>

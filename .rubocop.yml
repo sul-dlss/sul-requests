@@ -29,6 +29,12 @@ Lint/MissingSuper:
   Exclude:
     - "app/components/**/*.rb"
 
+# Icon components are single-purpose SVG holders copied verbatim from
+# searchworks. Comments would obscure the re-syncable diff.
+Style/Documentation:
+  Exclude:
+    - "app/components/icons/**/*.rb"
+
 Metrics/BlockLength:
   Exclude:
     - "spec/factories/**/*"

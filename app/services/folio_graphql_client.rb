@@ -366,6 +366,7 @@ class FolioGraphqlClient
                                       author
                                       instance {
                                         hrid
+                                        marcRecord
 
                                         identifiers {
                                           value
@@ -440,6 +441,7 @@ class FolioGraphqlClient
                                       instance {
                                         title
                                         hrid
+                                        marcRecord
                                         contributors {
                                           name
                                         }

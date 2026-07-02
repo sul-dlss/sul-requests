@@ -41,6 +41,17 @@ module Folio
       bib['itemId']
     end
 
+    def document_formats
+      marc_hash = bib.dig('instance', 'marcRecord')
+      return [] unless marc_hash
+
+      Folio::Format.compute(marc_record: MARC::Record.new_from_hash(marc_hash))
+    end
+
+    def document_type
+      document_formats.first
+    end
+
     def identifiers
       salient_identifiers = (bib.dig('instance', 'identifiers') || []).select do |identifier|
         identifier.dig('identifierTypeObject', 'name').in?(%w[ISBN OCLC LCCN])

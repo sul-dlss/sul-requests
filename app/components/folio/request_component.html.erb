@@ -8,6 +8,7 @@
       <div>
         <%= tag.h2 request.title || 'Not available', class: @title_classes %>
         <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
+          <%= render FormatIndicatorComponent.new(record: request) %>
           <% if request.call_number.present? %>
             <span>Call number: <%= request.call_number %></span>
           <% end %>
