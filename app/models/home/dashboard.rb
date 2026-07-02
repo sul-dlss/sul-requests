@@ -3,11 +3,12 @@
 module Home
   # Home page presenter wrapping user data for both view variants.
   class Dashboard
-    attr_reader :aeon, :patron
+    attr_reader :aeon, :patron, :include_illiad
 
-    def initialize(aeon:, patron:)
+    def initialize(aeon:, patron:, include_illiad: false)
       @aeon = aeon
       @patron = patron
+      @include_illiad = include_illiad
     end
 
     def folio? = patron.present?
@@ -38,7 +39,19 @@ module Home
     end
 
     def digital_requests
-      @digital_requests ||= aeon.requests.digitization.submitted.newest_first
+      aeon_digital_requests + illiad_digital_requests
+    end
+
+    def aeon_digital_requests
+      return [] unless aeon?
+
+      @aeon_digital_requests ||= aeon.requests.digitization.submitted.newest_first
+    end
+
+    def illiad_digital_requests
+      return [] unless folio? && include_illiad
+
+      @illiad_digital_requests ||= patron.illiad_requests.select(&:scan_type?)
     end
 
     def recently_delivered_digital_requests

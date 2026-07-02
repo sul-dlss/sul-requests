@@ -1,11 +1,11 @@
 <%= turbo_frame_tag 'aeon-dashboard' do %>
-  <%= turbo_stream.replace 'aeon-digitization-requests' do %>
+  <%= turbo_stream.replace 'aeon-illiad-digitization-requests' do %>
       <%= render Home::SummaryCardComponent.new(
-            id: 'aeon-digitization-requests',
+            id: 'aeon-illiad-digitization-requests',
             title: 'Digitization requests',
             icon_class: 'bi-printer',
             label: t('dashboard.digitization_requests.label_html', count: @dashboard.digital_requests.count),
-            path: @dashboard.digital_requests.count.positive? ? aeon_requests_path(kind: 'submitted', filter: 'digitization') : aeon_requests_path(kind: 'completed', filter: 'digitization'),
+            path: @dashboard.digital_requests.count.positive? ? unified_requests_path(filter: 'digitization') : aeon_requests_path(kind: 'completed', filter: 'digitization'),
             link_label: @dashboard.digital_requests.count.zero? ? 'View past requests' : nil) do |c| %>
                   <% c.with_status_count(label: t('dashboard.digitization_requests_delivered.label_html', count: @dashboard.recently_delivered_digital_requests.count)) %>
             <% end %>

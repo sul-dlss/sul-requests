@@ -32,4 +32,16 @@
               <% c.with_status_count(label: t('dashboard.pickup_requests_ready.label_html', count: @dashboard.ready_for_pickup.count)) %>
           <% end %>
   <% end %>
+
+  <% if params[:include_illiad] %>
+    <%= turbo_stream.replace 'aeon-illiad-digitization-requests' do %>
+      <%= render Home::SummaryCardComponent.new(
+          id: 'aeon-illiad-digitization-requests',
+          title: 'Digitization requests',
+          icon_class: 'bi-printer',
+          label: t('dashboard.digitization_requests.label_html', count: @dashboard.digital_requests.count),
+          path: unified_requests_path(filter: 'digitization'),
+          link_label: nil) %>
+    <% end %>
+  <% end %>
 <% end if @dashboard.folio? %>

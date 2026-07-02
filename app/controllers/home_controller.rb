@@ -18,7 +18,7 @@ class HomeController < ApplicationController
 
   def load_dashboard
     @dashboard = if patron_or_group.is_a? Folio::ProxyGroup
-                   Home::Dashboard.new(aeon: Aeon::NullUser.new, patron: patron_or_group)
+                   Home::Dashboard.new(aeon: Aeon::NullUser.new, patron: patron_or_group, include_illiad: false)
                  else
                    Home::Dashboard.new(aeon: current_user.aeon, patron: patron_or_group)
                  end

@@ -25,14 +25,14 @@
         <% end if dashboard.folio? %>
 
   <%= render Home::SummaryCardComponent.new(
-        id: 'aeon-digitization-requests',
+        id: 'aeon-illiad-digitization-requests',
         title: 'Digitization requests',
         icon_class: 'bi-printer',
         label: t('dashboard.digitization_requests.label_placeholder_html'),
         path: aeon_requests_path(kind: 'submitted', filter: 'digitization'),
         link_label: nil) do |c| %>
             <% c.with_status_count(label: t('dashboard.digitization_requests_delivered.label_placeholder_html')) %>
-        <% end if dashboard.aeon? %>
+        <% end if dashboard.aeon? || dashboard.folio? %>
 
   <%= render Home::SummaryCardComponent.new(
         id: 'aeon-reading-room-appointments',
