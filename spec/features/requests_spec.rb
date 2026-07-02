@@ -58,14 +58,14 @@ RSpec.describe 'Request Page' do
     visit folio_requests_path
 
     within '#requests' do
-      expect(page).to have_css('.dropdown-toggle', text: 'Sort (Not needed after)')
-      click_on 'Sort (Not needed after)'
+      expect(page).to have_css('.dropdown-toggle', text: 'Sort by default')
+      click_on 'Sort by default'
 
       within '[data-sortable-target="sortMenu"] .dropdown-menu' do
-        click_on 'Title'
+        click_on 'title'
       end
 
-      expect(page).to have_css('.dropdown-toggle', text: 'Sort (Title)')
+      expect(page).to have_css('.dropdown-toggle', text: 'Sort by title')
       expect(page).to have_css('.active[data-sortable-sort-param="title"]', visible: :all)
 
       within(first('ul.requests li')) do
