@@ -27,5 +27,24 @@ RSpec.describe 'ILL Request Page' do
     visit ill_requests_path
 
     expect(page).to have_css('.requests li', count: 1)
+    expect(page).to have_css('li .status-pill', text: 'Pickup')
+  end
+
+  context 'with a scan request' do
+    let(:illiad_requests) do
+      [
+        IlliadRequests::Request.new({
+                                      'CreationDate' => '2024-01-01T00:00:00Z',
+                                      'PhotoJournalTitle' => 'Some Journal'
+                                    })
+      ]
+    end
+
+    it 'has request data' do
+      visit ill_requests_path
+
+      expect(page).to have_css('.requests li', count: 1)
+      expect(page).to have_css('li .status-pill', text: 'Digitization')
+    end
   end
 end
