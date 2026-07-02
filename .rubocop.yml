@@ -32,6 +32,7 @@ Lint/MissingSuper:
 Style/Documentation:
   Exclude:
     - "spec/**/*.rb"
+    - "app/components/icons/**/*.rb"
 
 Metrics/BlockLength:
   Exclude:

@@ -1,9 +1,7 @@
 <%= tag.h2 record.title || 'Not available', class: @title_classes %>
 <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
   <span>
-    <%= render Icons::DocumentBox1Component.new classes: 'me-1 align-text-bottom' %>
-    <%= document_type %>
-    <% if record.date.present? %> (<%= record.date %>)<% end %>
+    <%= render FormatIndicatorComponent.new(record: record) %><% if record.date.present? %> (<%= record.date %>)<% end %>
   </span>
   <% if call_number.present? %>
     <span>Call number: <%= call_number %></span>

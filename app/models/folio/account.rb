@@ -100,6 +100,17 @@ module Folio
       record.dig('item', 'holdingsRecord', 'callNumber')
     end
 
+    def document_formats
+      marc_hash = record.dig('item', 'instance', 'marcRecord')
+      return [] unless marc_hash
+
+      Folio::Format.compute(marc_record: MARC::Record.new_from_hash(marc_hash))
+    end
+
+    def document_type
+      document_formats.first
+    end
+
     def barcode
       record.dig('item', 'barcode')
     end

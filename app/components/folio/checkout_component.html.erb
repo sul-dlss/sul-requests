@@ -50,6 +50,7 @@
       <div>
         <h3 class="mb-1 clamp clamp-3"><%= checkout.title %></h3>
         <div class="d-flex flex-row flex-wrap position-relative justify-content-start gap-3 mb-1">
+          <%= render FormatIndicatorComponent.new(record: checkout) %>
           <div>Call number: <%= checkout.call_number %></div>
           <%= detail_link_to_searchworks(checkout.catkey) unless checkout.from_ill? %>
         </div>

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Icons
-  # Copied + adapted from Searchworks' Icons::SulIconsComponent and Blacklgiht's Blacklight::Icons::IconComponent
+  # Copied + adapted from Searchworks' Icons::SulIconsComponent and Blacklight's Blacklight::Icons::IconComponent
   class SulIconsComponent < ViewComponent::Base
     attr_reader :classes
 

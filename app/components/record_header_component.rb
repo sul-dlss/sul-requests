@@ -10,11 +10,6 @@ class RecordHeaderComponent < ViewComponent::Base
     @title_classes = Array(title_classes)
   end
 
-  def document_type
-    # TODO: this will contain logic based on Aeon values
-    record.document_type.presence&.upcase_first
-  end
-
   def call_number
     record.base_callnumber.presence
   end
