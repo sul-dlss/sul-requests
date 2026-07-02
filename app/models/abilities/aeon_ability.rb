@@ -19,7 +19,8 @@ class AeonAbility
     can [:new, :create], Aeon::Request
 
     can :destroy, Aeon::Request do |request|
-      owner?(aeon_user:, record: request) || member_of_request_activity?(aeon_user:, request:)
+      (owner?(aeon_user:, record: request) || member_of_request_activity?(aeon_user:, request:)) &&
+        !request.cancelled?
     end
     can :update, Aeon::Request do |request|
       (owner?(aeon_user:, record: request) || member_of_request_activity?(aeon_user:, request:)) &&
