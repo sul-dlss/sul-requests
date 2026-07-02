@@ -1,32 +1,34 @@
 <%= tag.li id: dom_id(request), class: classes + ['request'], data: { 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) } do %>
-  <div class="rgi-id d-flex align-items-center">
-    <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
+  <turbo-frame>
+    <div class="rgi-id d-flex align-items-center">
+      <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
 
-    <% if remove_from_appointment? %>
-      <% if request.activity? %>
-        <%= render Aeon::RemoveFromActivityButtonComponent.new(request:) %>
-      <% else %>
-        <%= render Aeon::SaveForLaterButtonComponent.new(request:) %>
+      <% if remove_from_appointment? %>
+        <% if request.activity? %>
+          <%= render Aeon::RemoveFromActivityButtonComponent.new(request:) %>
+        <% else %>
+          <%= render Aeon::SaveForLaterButtonComponent.new(request:) %>
+        <% end %>
       <% end %>
+    </div>
+
+    <div class="rgi-detail pb-1">
+      <%= render Aeon::RequestItemDetailComponent.new(request:) %>
+    </div>
+
+    <%= render Aeon::RequestFulfillmentComponent.new(request:) if fulfillment? %>
+
+    <% if actions? %>
+      <div class="rgi-actions">
+        <%= render Aeon::RequestActionsComponent.new(request:) %>
+      </div>
     <% end %>
-  </div>
 
-  <div class="rgi-detail pb-1">
-    <%= render Aeon::RequestItemDetailComponent.new(request:) %>
-  </div>
-
-  <%= render Aeon::RequestFulfillmentComponent.new(request:) if fulfillment? %>
-
-  <% if actions? %>
-    <div class="rgi-actions">
-      <%= render Aeon::RequestActionsComponent.new(request:) %>
-    </div>
-  <% end %>
-
-  <% if footer? %>
-    <div class="rgi-footer pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
-      <div>Request #<%= transaction_number %></div>
-      <div>Date added/modified: <%= l(transaction_date, format: :full) %></div>
-    </div>
-  <% end %>
+    <% if footer? %>
+      <div class="rgi-footer pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
+        <div>Request #<%= transaction_number %></div>
+        <div>Date added/modified: <%= l(transaction_date, format: :full) %></div>
+      </div>
+    <% end %>
+  </turbo-frame>
 <% end %>
