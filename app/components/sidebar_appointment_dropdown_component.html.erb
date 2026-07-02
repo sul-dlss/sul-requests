@@ -1,4 +1,9 @@
-<%= form_with(model: request, data: { turbo: true, controller: 'appointment-select-submit', action: 'submit->appointment-select-submit#handleSubmit'}) do |f| %>
-  <%= hidden_field_tag 'sidebar', true %>
-  <%= render 'aeon_appointments/dropdown', appointments: selectable_appointments, reading_room_id: request.reading_room.id %>
-<% end %>
+<span data-controller="submit-message">
+  <%= form_with(model: request, data: { turbo: true, submit_message_target: 'button', action: 'submit->submit-message#showMessage'}) do |f| %>
+    <%= hidden_field_tag 'sidebar', true %>
+    <%= render 'aeon_appointments/dropdown', appointments: selectable_appointments, reading_room_id: request.reading_room.id %>
+  <% end %>
+  <div class="text-green spinner-message align-content-center d-none" data-submit-message-target="message">
+    <div class="spinner-border spinner-border-sm me-2" aria-hidden="true"></div><span>Scheduling</span>
+  </div>
+</span>
