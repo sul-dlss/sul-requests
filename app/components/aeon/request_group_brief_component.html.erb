@@ -11,12 +11,14 @@
       <ul class="list-group list-group-flush">
         <% requests.each do |request| %>
           <li id="<%= dom_id(request) %>" data-transaction-number="<%= request.transaction_number %>" class="request list-group-item px-0">
-            <div class="d-flex flex-row align-items-center justify-content-between">
-              <div class="d-flex column-gap-3 text-break flex-wrap">
-                <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
+            <turbo-frame>
+              <div class="d-flex flex-row align-items-center justify-content-between">
+                <div class="d-flex column-gap-3 text-break flex-wrap">
+                  <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
+                </div>
+                <%= render @after_request_item_component.new(request:) if @after_request_item_component %>
               </div>
-              <%= render @after_request_item_component.new(request:) if @after_request_item_component %>
-            </div>
+            </turbo-frame>
           </li>
         <% end %>
       </ul>
