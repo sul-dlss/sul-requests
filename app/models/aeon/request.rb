@@ -77,7 +77,7 @@ module Aeon
       if multi_item_selector?
         [status, title, digital?]
       else
-        [id]
+        [id, status]
       end
     end
 
