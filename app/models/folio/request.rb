@@ -9,7 +9,7 @@ module Folio
     attr_reader :record
 
     # A sufficiently large time used to sort nil values last
-    END_OF_DAYS = 100.years.from_now # rubocop:disable Rails/RelativeDateConstant
+    END_OF_DAYS = 100.years.from_now.end_of_day # rubocop:disable Rails/RelativeDateConstant
 
     def initialize(record)
       @record = record
