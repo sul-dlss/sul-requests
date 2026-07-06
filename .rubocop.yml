@@ -31,7 +31,7 @@ Lint/MissingSuper:
 
 Style/Documentation:
   Exclude:
-    - "spec/component_previews/**/*.rb"
+    - "spec/**/*.rb"
 
 Metrics/BlockLength:
   Exclude:
