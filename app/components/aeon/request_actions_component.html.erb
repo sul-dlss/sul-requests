@@ -8,17 +8,20 @@
     </span>
   <% end %>
   <% if helpers.can? :edit, request %>
-    <%= link_to edit_aeon_request_path(request), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open' } do %>
-      <% if !request.saved_for_later? && !request.cancelled? %>
-        <i class="bi bi-pencil-fill me-1 align-middle"></i><span class="visually-hidden">Edit request</span>
-      <% elsif request.digital? %>
-        <i class="bi bi-file-earmark-plus me-1 align-middle"></i> Add instructions
+    <% labelled_edit_action = request.saved_for_later? || request.cancelled? %>
+    <%= link_to edit_aeon_request_path(request), class: ['btn btn-link btn-sm su-underline p-0 me-sm-2', ('btn-labelled' if labelled_edit_action)], data: { action: 'modal#open' } do %>
+      <% if labelled_edit_action %>
+        <% if request.digital? %>
+          <i class="bi bi-file-earmark-plus me-1 align-middle"></i> Add instructions
+        <% else %>
+          <i class="bi bi-calendar-plus me-1 align-middle"></i> Add appointment
+        <% end %>
       <% else %>
-        <i class="bi bi-calendar-plus me-1 align-middle"></i> Add appointment
+        <i class="bi bi-pencil-fill me-1 align-middle"></i><span class="visually-hidden">Edit request</span>
       <% end %>
     <% end %>
   <% end %>
-  <% if !request.cancelled? && helpers.can?(:destroy, request) %>
+  <% if helpers.can?(:destroy, request) %>
     <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#delete-<%= transaction_number %>">
       <i class="bi bi-trash align-middle"></i><span class="visually-hidden">Delete <%= title %> request</span>
     </button>
