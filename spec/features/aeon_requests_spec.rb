@@ -116,4 +116,28 @@ RSpec.describe 'Requests', :js do
       expect(page).to have_no_text('Slow poetry in America : a poetry quarterly')
     end
   end
+
+  describe 'submitted' do
+    let(:single_submitted_request) do
+      StubAeonClient::Request.create(
+        itemTitle: 'A Book',
+        username: aeon_user.username,
+        webRequestForm: 'single',
+        transactionStatus: 3
+      )
+    end
+
+    before { single_submitted_request }
+
+    it 'removes the empty group card when the last single-item request is deleted' do
+      visit aeon_requests_path(kind: 'submitted')
+
+      expect(page).to have_css('.request-group', text: 'A Book')
+
+      click_on 'Delete A Book'
+      click_on 'Yes - Delete'
+
+      expect(page).to have_no_css('.request-group', text: 'A Book')
+    end
+  end
 end
