@@ -11,6 +11,369 @@ RSpec.describe Folio::Instance do
         "id": "57550106-e809-5a43-92da-1503d84dcc18",
         "hrid": "a6959652",
         "title": "Coffee / Nebiyu Assefa and Joanna Brown",
+        "marcRecord": {
+          "fields": [
+            {
+              "001": "a6959652"
+            },
+            {
+              "003": "SIRSI"
+            },
+            {
+              "008": "070130s2007    enka          000 0 eng d"
+            },
+            {
+              "020": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "9780955506000"
+                  }
+                ]
+              }
+            },
+            {
+              "020": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "095550600X"
+                  }
+                ]
+              }
+            },
+            {
+              "035": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "(Sirsi) cis5764143"
+                  }
+                ]
+              }
+            },
+            {
+              "035": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "(OCoLC-M)213487023"
+                  }
+                ]
+              }
+            },
+            {
+              "035": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "(OCoLC-I)276038905"
+                  }
+                ]
+              }
+            },
+            {
+              "040": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "CaONFJC"
+                  },
+                  {
+                    "c": "CaONFJC"
+                  },
+                  {
+                    "d": "CSt"
+                  }
+                ]
+              }
+            },
+            {
+              "043": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "f-et---"
+                  }
+                ]
+              }
+            },
+            {
+              "050": {
+                "ind1": " ",
+                "ind2": "4",
+                "subfields": [
+                  {
+                    "a": "SB270.E8"
+                  },
+                  {
+                    "b": "A874 2007"
+                  }
+                ]
+              }
+            },
+            {
+              "100": {
+                "ind1": "1",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "Assefa, Nebiuy."
+                  }
+                ]
+              }
+            },
+            {
+              "245": {
+                "ind1": "1",
+                "ind2": "0",
+                "subfields": [
+                  {
+                    "a": "Coffee /"
+                  },
+                  {
+                    "c": "Nebiyu Assefa and Joanna Brown"
+                  }
+                ]
+              }
+            },
+            {
+              "260": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "[Leeds, UK?] :"
+                  },
+                  {
+                    "b": "Jozart Press,"
+                  },
+                  {
+                    "c": "c2007."
+                  }
+                ]
+              }
+            },
+            {
+              "300": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "1 v. (unpaged) :"
+                  },
+                  {
+                    "b": "chiefly ill. (some col.) ;"
+                  },
+                  {
+                    "c": "17 cm."
+                  }
+                ]
+              }
+            },
+            {
+              "500": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "\\"Paintings and sketches, Nebiyu Assefa; photography, Joanna Brown; design and editing, Joanna Brown\\"--Colophon."
+                  }
+                ]
+              }
+            },
+            {
+              "500": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "Ill. on lining papers."
+                  }
+                ]
+              }
+            },
+            {
+              "596": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "31"
+                  }
+                ]
+              }
+            },
+            {
+              "650": {
+                "ind1": " ",
+                "ind2": "0",
+                "subfields": [
+                  {
+                    "a": "Coffee"
+                  },
+                  {
+                    "z": "Ethiopia"
+                  },
+                  {
+                    "v": "Pictorial works."
+                  },
+                  {
+                    "0": "(SIRSI)1005551"
+                  }
+                ]
+              }
+            },
+            {
+              "650": {
+                "ind1": " ",
+                "ind2": "0",
+                "subfields": [
+                  {
+                    "a": "Coffee growers"
+                  },
+                  {
+                    "z": "Ethiopia"
+                  },
+                  {
+                    "x": "Social conditions"
+                  },
+                  {
+                    "v": "Pictorial works."
+                  },
+                  {
+                    "0": "(SIRSI)1084899"
+                  }
+                ]
+              }
+            },
+            {
+              "651": {
+                "ind1": " ",
+                "ind2": "0",
+                "subfields": [
+                  {
+                    "a": "Ethiopia"
+                  },
+                  {
+                    "x": "Social life and customs"
+                  },
+                  {
+                    "v": "Pictorial works."
+                  },
+                  {
+                    "0": "(SIRSI)2109225"
+                  }
+                ]
+              }
+            },
+            {
+              "700": {
+                "ind1": "1",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "Brown, Joanna."
+                  },
+                  {
+                    "0": "(SIRSI)2025118"
+                  }
+                ]
+              }
+            },
+            {
+              "999": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "c": "0"
+                  },
+                  {
+                    "h": "GREEN-H"
+                  }
+                ]
+              }
+            },
+            {
+              "910": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "MONORECUnit/14 January 2008/ejh"
+                  }
+                ]
+              }
+            },
+            {
+              "910": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "MARCUnit/1 February 2008/rjrCoutts"
+                  }
+                ]
+              }
+            },
+            {
+              "918": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "6959652"
+                  }
+                ]
+              }
+            },
+            {
+              "035": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "(Sirsi) cis5764143"
+                  }
+                ]
+              }
+            },
+            {
+              "035": {
+                "ind1": " ",
+                "ind2": " ",
+                "subfields": [
+                  {
+                    "a": "(Sirsi) cis5764143"
+                  }
+                ]
+              }
+            },
+            {
+              "999": {
+                "ind1": "f",
+                "ind2": "f",
+                "subfields": [
+                  {
+                    "i": "7b6afc90-40fe-5179-b7a0-c137e85e3511"
+                  },
+                  {
+                    "s": "7340051c-ad1a-5ba6-a5a4-ad0b97cb0bbd"
+                  }
+                ]
+              }
+            }
+          ],
+          "leader": "01288cam a2200361 a 4500"
+        },
         "identifiers": [
           {
             "value": "9780955506000",
@@ -136,6 +499,20 @@ RSpec.describe Folio::Instance do
     subject { data.format }
 
     it { is_expected.to eq ['unspecified'] }
+  end
+
+  describe '#document_formats' do
+    subject(:document_formats) { data.document_formats }
+
+    it 'computes formats from the marcRecord using the SW indexer rules' do
+      expect(document_formats).to eq ['Book']
+    end
+  end
+
+  describe '#document_type' do
+    subject { data.document_type }
+
+    it { is_expected.to eq 'Book' }
   end
 
   describe '#isbn' do

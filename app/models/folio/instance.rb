@@ -31,14 +31,15 @@ module Folio
         end,
         electronic_access: json.fetch('electronicAccess', []),
         edition: json.fetch('editions', []),
-        holdings_records: json.fetch('holdingsRecords', []).map { |hr| Folio::HoldingsRecord.from_hash(hr) }
+        holdings_records: json.fetch('holdingsRecords', []).map { |hr| Folio::HoldingsRecord.from_hash(hr) },
+        marc_hash: json['marcRecord']
       )
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     # rubocop:disable Metrics/MethodLength, Metrics/ParameterLists
     def initialize(id:, hrid: '', title: '', contributors: [], pub_date: nil, pub_place: nil, publisher: nil, format: nil,
-                   isbn: [], oclcn: [], electronic_access: [], edition: [], holdings_records: [])
+                   isbn: [], oclcn: [], electronic_access: [], edition: [], holdings_records: [], marc_hash: nil)
       @id = id
       @hrid = hrid
       @title = title
@@ -52,6 +53,7 @@ module Folio
       @electronic_access = electronic_access
       @edition = edition
       @holdings_records = holdings_records
+      @marc_hash = marc_hash
     end
     # rubocop:enable Metrics/MethodLength, Metrics/ParameterLists
 
@@ -86,9 +88,18 @@ module Folio
     alias base_callnumber call_number
 
     def document_type
+      return document_formats.first if document_formats.any?
       return single_item&.type if format == ['unspecified']
 
       format.presence&.first || single_item&.type
+    end
+
+    def marc_record
+      @marc_record ||= @marc_hash && MARC::Record.new_from_hash(@marc_hash)
+    end
+
+    def document_formats
+      @document_formats ||= Folio::Format.compute(marc_record:)
     end
 
     def item_url

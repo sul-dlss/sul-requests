@@ -257,6 +257,9 @@ GEM
       net-imap
       net-pop
       net-smtp
+    marc (1.4.0)
+      nokogiri (~> 1.0)
+      rexml
     marcel (1.2.1)
     matrix (0.4.3)
     mini_mime (1.1.5)
@@ -557,6 +560,7 @@ DEPENDENCIES
   listen
   lograge
   lookbook
+  marc (~> 1.4)
   mysql2
   net-smtp
   nokogiri (>= 1.7.1)

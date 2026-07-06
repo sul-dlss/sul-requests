@@ -84,6 +84,7 @@ class FolioGraphqlClient
             instances(hrid: $hrid) {
               id
               hrid
+              marcRecord
               title
               identifiers {
                 value
@@ -464,6 +465,7 @@ class FolioGraphqlClient
                                       isbn
                                       instance {
                                         hrid
+                                        marcRecord
 
                                         identifiers {
                                           value
