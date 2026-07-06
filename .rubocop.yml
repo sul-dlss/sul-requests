@@ -29,6 +29,10 @@ Lint/MissingSuper:
   Exclude:
     - "app/components/**/*.rb"
 
+Style/Documentation:
+  Exclude:
+    - "spec/component_previews/**/*.rb"
+
 Metrics/BlockLength:
   Exclude:
     - "spec/factories/**/*"
