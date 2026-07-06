@@ -23,8 +23,8 @@ module Aeon
       end
     end
 
-    def include_bulk_actions
-      @request.saved_for_later? && (helpers.can? :edit, @request)
+    def include_bulk_actions?
+      @request.saved_for_later? && helpers.can?(:destroy, request)
     end
   end
 end
