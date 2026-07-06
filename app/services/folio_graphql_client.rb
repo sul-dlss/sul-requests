@@ -117,12 +117,7 @@ class FolioGraphqlClient
                   #{item_fields}
 
                   instance {
-                    id
-                    hrid
-                    title
-                    instanceType {
-                      name
-                    }
+                    #{instance_fields(with_marc_record: false)}
                   }
                 }
                 items {
@@ -132,12 +127,7 @@ class FolioGraphqlClient
                     id
                     callNumber
                     instance {
-                      id
-                      title
-                      hrid
-                      instanceType {
-                        name
-                      }
+                      #{instance_fields(with_marc_record: false)}
                     }
                   }
                 }
@@ -367,14 +357,7 @@ class FolioGraphqlClient
                                       }
                                       author
                                       instance {
-                                        hrid
-
-                                        identifiers {
-                                          value
-                                          identifierTypeObject {
-                                            name
-                                          }
-                                        }
+                                        #{instance_fields}
                                       }
                                       isbn
                                     }
@@ -440,11 +423,7 @@ class FolioGraphqlClient
                                         code
                                       }
                                       instance {
-                                        title
-                                        hrid
-                                        contributors {
-                                          name
-                                        }
+                                        #{instance_fields}
                                       }
                                       holdingsRecord {
                                         callNumber
@@ -464,15 +443,7 @@ class FolioGraphqlClient
                                       itemId
                                       isbn
                                       instance {
-                                        hrid
-                                        marcRecord
-
-                                        identifiers {
-                                          value
-                                          identifierTypeObject {
-                                            name
-                                          }
-                                        }
+                                        #{instance_fields}
                                       }
                                       item {
                                         barcode
@@ -643,6 +614,31 @@ class FolioGraphqlClient
           }
         }
       }
+    GQL
+  end
+
+  def instance_fields(with_marc_record: true)
+    <<-GQL
+        id
+        hrid
+        title
+        #{'marcRecord' if with_marc_record}
+
+        instanceType {
+          name
+        }
+
+        identifiers {
+          value
+          identifierTypeObject {
+            name
+          }
+        }
+
+        contributors {
+          name
+          primary
+        }
     GQL
   end
 
