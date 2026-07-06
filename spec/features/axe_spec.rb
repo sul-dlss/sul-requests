@@ -161,6 +161,95 @@ RSpec.describe 'Accessibility testing', :js do
     expect(page).to be_accessible
   end
 
+  context 'for the folio checkouts page' do
+    let(:mock_client) { instance_double(FolioClient, ping: true, find_effective_loan_policy: {}, find_overdue_fines_policy: {}) }
+    let(:loan_policy) { build(:grad_mono_loans) }
+    let(:patron) { build(:sponsor_patron) }
+    let(:current_user) { CurrentUser.new(username: 'stub_user', patron_key: '513a9054-5897-11ee-8c99-0242ac120002', shibboleth: true) }
+
+    before do
+      allow(FolioClient).to receive(:new).and_return(mock_client)
+      allow(Folio::LoanPolicy).to receive(:new).and_return(loan_policy)
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: '513a9054-5897-11ee-8c99-0242ac120002').and_return(patron)
+      login_as(current_user)
+    end
+
+    it 'validates the checkouts page with items' do
+      visit checkouts_path
+      expect(page).to be_accessible
+    end
+
+    context 'when a patron has overdue items' do
+      let(:patron) { build(:patron_with_overdue_items) }
+
+      it 'validates the checkouts page with overdue messaging' do
+        visit checkouts_path
+        expect(page).to be_accessible
+      end
+    end
+
+    context 'with no checkouts' do
+      let(:patron_info) do
+        {
+          'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [], 'id' => 'userid' },
+          'loans' => [],
+          'holds' => [],
+          'accounts' => []
+        }
+      end
+      let(:patron) { Folio::Patron.new(patron_graphql_response: patron_info) }
+
+      it 'validates the empty checkouts page' do
+        visit checkouts_path
+        expect(page).to be_accessible
+      end
+    end
+  end
+
+  context 'for the folio fines page' do
+    let(:mock_client) { instance_double(FolioClient, ping: true) }
+    let(:patron) { build(:patron_with_fines) }
+    let(:current_user) { CurrentUser.new(username: 'stub_user', patron_key: '513a9054-5897-11ee-8c99-0242ac120002', shibboleth: true) }
+
+    before do
+      allow(FolioClient).to receive(:new).and_return(mock_client)
+      allow(patron).to receive(:checkouts).and_return([])
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: '513a9054-5897-11ee-8c99-0242ac120002').and_return(patron)
+      login_as(current_user)
+    end
+
+    it 'validates the fines page with outstanding fines' do
+      visit fines_path
+      expect(page).to be_accessible
+    end
+
+    context 'with proxy-borrower fines' do
+      let(:patron) { build(:sponsor_patron) }
+
+      it 'validates the fines page with proxy badges' do
+        visit fines_path
+        expect(page).to be_accessible
+      end
+    end
+
+    context 'with no fines' do
+      let(:patron_info) do
+        {
+          'user' => { 'active' => true, 'manualBlocks' => [], 'blocks' => [], 'id' => 'userid' },
+          'loans' => [],
+          'holds' => [],
+          'accounts' => []
+        }
+      end
+      let(:patron) { Folio::Patron.new(patron_graphql_response: patron_info) }
+
+      it 'validates the empty fines page' do
+        visit fines_path
+        expect(page).to be_accessible
+      end
+    end
+  end
+
   context 'for the appointment date picker component' do
     let(:user) { create(:sso_user) }
     let(:current_user) { CurrentUser.new(username: user.sunetid, shibboleth: true) }
