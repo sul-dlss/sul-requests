@@ -3,23 +3,13 @@
 ###
 #  Class to handle creation of ILLiad OpenURL request
 ###
-class IlliadRequests
-  def initialize(user_id)
-    @user_id = user_id
-  end
-
-  def requests
-    request_user_transactions.map { |illiad_result| IlliadRequests::Request.new(illiad_result) }.reject(&:inactive?)
-  end
-
-  private
-
-  def request_user_transactions
-    IlliadClient.new.user_transactions(@user_id)
-  end
-
+module Illiad
   # ILLiad Request class (that duck-types our Folio::Request class)
   class Request
+    def self.where(user_id:)
+      IlliadClient.new.user_transactions(user_id).map { |illiad_result| Illiad::Request.new(illiad_result) }.reject(&:inactive?)
+    end
+
     include ActiveModel::Model
 
     INACTIVE_REQUEST_STATUSES = [
