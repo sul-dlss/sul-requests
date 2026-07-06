@@ -586,3 +586,22 @@ cybersource:
 
 sul_illiad: https://sul-illiad-test.stanford.edu/
 illiad_api_key: 'AbC123'
+
+illiad:
+  noncancellable_statuses:
+    - "Awaiting Renewal OK Processing"
+    - "Awaiting Renewal Request Processing "
+    - "Awaiting Return Label Printing"
+    - "Borrow Direct Lost"
+    - "Checked Out to Customer"
+    - "Claims Returned"
+    - "In Return Address Print Queue"
+    - "In Transit from Customer"
+    - "Item Checked In"
+    - "Lost"
+    - "SearchWorks Hold Recall Processing"
+    - "Cancelled by Customer"
+    - "Cancelled by ILL Staff"
+    - "Delivered to Web"
+    - "Request Finished"
+    - "Awaiting Denied Renewal Processing"
