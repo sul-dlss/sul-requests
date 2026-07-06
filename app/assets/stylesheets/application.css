@@ -393,6 +393,7 @@ summary .disclosure-icon::before {
 }
 
 /* Available time slots get fixed widths to line up in uniform rows/columns */
+.duration-selector .btn,
 #available_appointments .btn {
   width: 6rem;
   text-align: center;
