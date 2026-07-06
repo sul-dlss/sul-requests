@@ -127,7 +127,8 @@ class IlliadRequests
     def ready_for_pickup?
       ready_for_pickup_status = ['Media Microtext Checkout to Customer',
                                  'Special Collections Checked Out to Customer',
-                                 'Customer Notified via E-Mail']
+                                 'Customer Notified via E-Mail',
+                                 'Delivered to Web']
       ready_for_pickup_status.include?(@illiad_result['TransactionStatus'])
     end
 
