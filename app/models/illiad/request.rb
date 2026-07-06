@@ -7,7 +7,11 @@ module Illiad
   # ILLiad Request class (that duck-types our Folio::Request class)
   class Request
     def self.where(user_id:)
-      IlliadClient.new.user_transactions(user_id).map { |illiad_result| Illiad::Request.new(illiad_result) }.reject(&:inactive?)
+      IlliadClient.new.user_transactions(user_id).reject(&:inactive?)
+    end
+
+    def self.from_dynamic(data)
+      new(data)
     end
 
     include ActiveModel::Model

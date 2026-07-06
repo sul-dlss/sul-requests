@@ -46,7 +46,7 @@ RSpec.describe Illiad::Request do
     context 'when successful, it retrieves transaction requests and ignores inactive requests' do
       before do
         stub_request(:get, "#{Settings.sul_illiad}ILLiadWebPlatform/Transaction/UserRequests/#{patron_sunet_id}")
-          .to_return(status: 200, body: transaction_results, headers: {})
+          .to_return(status: 200, body: transaction_results, headers: { 'Content-Type' => 'application/json' })
       end
 
       it 'correctly returns request objects' do
