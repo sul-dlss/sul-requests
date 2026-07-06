@@ -24,7 +24,7 @@ RSpec.describe 'Fines Page' do
     it 'renders a list item for every fine' do
       within('ul.fines') do
         expect(page).to have_css('li', count: 1)
-        expect(page).to have_css('li h3', text: 'Memes and the future of pop culture / by Marcel Danesi')
+        expect(page).to have_css('li h2', text: 'Memes and the future of pop culture / by Marcel Danesi')
         expect(page).to have_css('li .status', text: 'Damaged material')
         expect(page).to have_link('Contact', href: 'mailto:greencirc@stanford.edu')
       end
