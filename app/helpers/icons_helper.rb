@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+# Copied from searchworks' FacetsHelper. Kept as a standalone helper so the
+# icon-lookup logic can be re-synced with searchworks without dragging in
+# Blacklight's FacetsHelperBehavior.
+module IconsHelper
+  def resource_icon_value(values)
+    values = Array(values).flatten.compact
+    values.delete('Microform') if values.length > 1
+    values.delete('Database') if values.length > 1
+    values.delete('Book') if values.length > 1
+    values.first
+  end
+
+  def render_resource_icon(values)
+    value = resource_icon_value(values)
+    return unless Constants::SUL_ICON_COMPONENTS.key?(value)
+
+    render Constants::SUL_ICON_COMPONENTS[value].new
+  end
+end
