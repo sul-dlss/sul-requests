@@ -187,6 +187,8 @@ module Folio
     # There was talk of the 'overdueRecallFine' being relvant in addition to 'overdueFine'
     # if relevant, both would need to be checked, but they have the same structure of {"quantity" => 1.0, "intervalId" => "hour"}
     def overdue_fines_rate
+      return overdue_fines_policy['overdueRecallFine'] if recalled?
+
       overdue_fines_policy['overdueFine']
     end
 
