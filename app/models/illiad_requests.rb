@@ -10,23 +10,12 @@ class IlliadRequests
 
   def requests
     request_user_transactions.map { |illiad_result| IlliadRequests::Request.new(illiad_result) }.reject(&:inactive?)
-  rescue StandardError => e
-    Honeybadger.notify(e, error_message: "Unable to retrieve ILLIAD transactions with #{e}")
-    []
   end
 
   private
 
   def request_user_transactions
-    url = "#{Settings.sul_illiad}ILLiadWebPlatform/Transaction/UserRequests/#{@user_id}"
-    conn = Faraday.new(url: Settings.sul_illiad) do |req|
-      req.headers['ApiKey'] = Settings.illiad_api_key
-      req.headers['Accept'] = 'application/json; version=1'
-      req.adapter Faraday.default_adapter
-    end
-
-    response = conn.get(url)
-    JSON.parse(response.body)
+    IlliadClient.new.user_transactions(@user_id)
   end
 
   # ILLiad Request class (that duck-types our Folio::Request class)

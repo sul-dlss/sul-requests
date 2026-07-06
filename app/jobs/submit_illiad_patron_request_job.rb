@@ -10,10 +10,10 @@ class SubmitIlliadPatronRequestJob < ApplicationJob
     item = patron_request.selected_items.find { |x| x.id == item_id }
     return unless item
 
-    response = IlliadRequest.new(patron_request.illiad_request_params(item)).request!
+    response = IlliadClient.new.create(patron_request.illiad_request_params(item))
 
-    if response.success?
-      illiad_response_data = JSON.parse(response.body).compact_blank || {}
+    if response.present?
+      illiad_response_data = response.compact_blank || {}
       notify_ilb(patron_request, illiad_response_data) if illiad_response_data['Message'].present?
 
       patron_request.illiad_api_responses.where(item_id:).delete_all
