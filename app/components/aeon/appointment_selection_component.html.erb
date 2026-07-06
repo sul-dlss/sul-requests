@@ -15,8 +15,6 @@
     </div>
   </div>
 </div>
-<% else %>
-  <% unless @appointment.reading_room&.day_only_appointments? %>
-    <div class="banner d-flex flex-row text-digital-blue-dark" data-appointment-target="selection"></div>
-  <% end %>
+<% elsif !@appointment.reading_room&.day_only_appointments? %>
+  <div class="banner d-flex flex-row text-digital-blue-dark" data-appointment-target="selection"></div>
 <% end %>
