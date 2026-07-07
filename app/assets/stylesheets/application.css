@@ -435,13 +435,6 @@ summary .disclosure-icon::before {
     "actions";
 
   @media (min-width: 768px) {
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "title  title"
-      "actions select";
-  }
-
-  @media (min-width: 1200px) {
     grid-template-columns: auto 1fr;
     grid-template-areas:
       "title   title"
