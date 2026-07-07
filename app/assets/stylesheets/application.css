@@ -540,7 +540,7 @@ summary .disclosure-icon::before {
 
 /* Completed status styling for selected items */
 .selected-items-container {
-  .accordion-item .accordion-header > div {
+  .accordion-item:not(:only-child) .accordion-header > div {
     margin-inline-start: 1rem;
   }
 
