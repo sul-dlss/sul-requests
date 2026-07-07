@@ -25,6 +25,7 @@
   </ul>
 </form>
 
+<hr>
 
 <form id="reading-accordion2">
   <ul id="reading2" class="appointments-container list-unstyled selected-items-container">
@@ -33,6 +34,37 @@
         title: 'Item 1',
         dom_id: 'item_1',
         appointments: appointments
+      ) %>
+  </ul>
+</form>
+
+<hr>
+
+
+<form id="digitized-accordion">
+  <ul class="accordion digitization-accordion selected-items-container px-0">
+    <%=
+      render Aeon::DigitizationFormItemComponent.new(
+        title: 'Item 1',
+        dom_id: 'item_1'
+      ) %>
+
+    <%=
+      render Aeon::DigitizationFormItemComponent.new(
+        title: 'Item 2',
+        dom_id: 'item_2'
+      ) %>
+  </ul>
+</form>
+
+<hr>
+
+<form id="digitized-accordion2">
+  <ul class="accordion digitization-accordion selected-items-container px-0">
+    <%=
+      render Aeon::DigitizationFormItemComponent.new(
+        title: 'Item 1',
+        dom_id: 'item_1'
       ) %>
   </ul>
 </form>
