@@ -462,6 +462,10 @@ summary .disclosure-icon::before {
   }
 }
 
+#reading:not(:has(.appointments-item)) #additional-information {
+  display: none;
+}
+
 .selected-items-container {
   .accordion-item:last-child .next-item {
     display: none;
