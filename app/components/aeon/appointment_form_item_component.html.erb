@@ -16,7 +16,7 @@
     </button>
     <% end %>
     <button class="btn btn-link p-0 ps-1 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
-      <i class="bi bi-trash"></i><span class="visually-hidden"> Delete <%= title %></span>
+      <i class="bi bi-trash"></i>Delete <span class="visually-hidden"><%= title %></span>
     </button>
   </div>
   <%= fields_for base_name, object do |f| %>
