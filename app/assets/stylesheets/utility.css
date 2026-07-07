@@ -102,34 +102,6 @@ label.btn-close {
   --clamp-lines: 3;
 }
 
-.expand-icon,
-.collapse-icon {
-  .sul-icons {
-    height: 1.5rem;
-    width: 1.5rem;
-
-    svg {
-      fill: var(--stanford-digital-blue);
-      height: 1.5rem;
-      width: 1.5rem;
-    }
-  }
-}
-
-.expand-icon {
-  display: none;
-}
-
-.collapsed {
-  .collapse-icon {
-    display: none;
-  }
-
-  .expand-icon {
-    display: inline;
-  }
-}
-
 .required-label::after {
   content: '*';
   color: var(--stanford-cardinal);

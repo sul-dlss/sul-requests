@@ -5,8 +5,6 @@ module Folio
   class CheckedOutActionsComponent < ViewComponent::Base
     attr_reader :checkout
 
-    delegate :sul_icon, to: :helpers
-
     def initialize(checkout:)
       @checkout = checkout
     end
