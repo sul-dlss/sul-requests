@@ -114,8 +114,8 @@ class AeonClient
     handle_response(response, as_class: Aeon::Appointment)
   end
 
-  def cancel_appointment(appointment_id)
-    response = delete("Appointments/#{appointment_id}")
+  def cancel_appointment(appointment)
+    response = delete("Appointments/#{appointment.id}")
 
     case response.status
     when 204, 404
