@@ -7,7 +7,7 @@
 
 %>
 <form id="reading-accordion">
-  <ul id="reading" class="appointments-container list-unstyled">
+  <ul id="reading" class="appointments-container list-unstyled selected-items-container">
     <%= 
       render Aeon::AppointmentFormItemComponent.new(
         title: 'Item 1',
@@ -20,6 +20,18 @@
       render Aeon::AppointmentFormItemComponent.new(
         title: 'Item 2',
         dom_id: 'item_2',
+        appointments: appointments
+      ) %>
+  </ul>
+</form>
+
+
+<form id="reading-accordion2">
+  <ul id="reading2" class="appointments-container list-unstyled selected-items-container">
+    <%=
+      render Aeon::AppointmentFormItemComponent.new(
+        title: 'Item 1',
+        dom_id: 'item_1',
         appointments: appointments
       ) %>
   </ul>
