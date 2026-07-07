@@ -1,14 +1,15 @@
 <%= tag.li id: dom_id(request), class: classes + ['request'], data: { 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) } do %>
-  <turbo-frame>
     <div class="rgi-id d-flex align-items-center">
       <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
 
       <% if remove_from_appointment? %>
-        <% if request.activity? %>
-          <%= render Aeon::RemoveFromActivityButtonComponent.new(request:) %>
-        <% else %>
-          <%= render Aeon::SaveForLaterButtonComponent.new(request:) %>
-        <% end %>
+        <turbo-frame>
+          <% if request.activity? %>
+            <%= render Aeon::RemoveFromActivityButtonComponent.new(request:) %>
+          <% else %>
+            <%= render Aeon::SaveForLaterButtonComponent.new(request:) %>
+          <% end %>
+        </turbo-frame>
       <% end %>
     </div>
 
@@ -20,7 +21,9 @@
 
     <% if actions? %>
       <div class="rgi-actions">
-        <%= render Aeon::RequestActionsComponent.new(request:) %>
+        <turbo-frame>
+          <%= render Aeon::RequestActionsComponent.new(request:) %>
+        </turbo-frame>
       </div>
     <% end %>
 
@@ -30,5 +33,4 @@
         <div>Date added/modified: <%= l(transaction_date, format: :full) %></div>
       </div>
     <% end %>
-  </turbo-frame>
 <% end %>
