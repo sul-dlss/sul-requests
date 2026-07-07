@@ -13,17 +13,17 @@
       <span id="title_<%= dom_id %>" class="text-wrap">
         <span class="text-black fw-semibold selected-item-title"><%= title %></span>
       </span>
-      <div class="digitization-actions position-relative d-flex gap-2 z-3">
-        <button class="btn btn-link p-0 ps-1 d-none su-underline fs-14" data-action="view-container-contents#openViewModal"
+      <div class="digitization-actions d-flex gap-2">
+        <button class="btn btn-link p-0 ps-1 position-relative z-3 d-none su-underline fs-14" data-action="view-container-contents#openViewModal"
                 data-view-container-contents-target="displayButton" data-item-id="<%= dom_id %>">
           <i class="bi bi-list-ul me-1"></i>View contents
         </button>
         <% if save_for_later? %>
-          <button class="btn btn-link p-0 ps-1 z-3 su-underline fs-14 text-nowrap" data-action="save-for-later#save" data-save-for-later-id-param="<%= dom_id %>">
+          <button class="btn btn-link p-0 ps-1 position-relative z-3 su-underline fs-14 text-nowrap" data-action="save-for-later#save" data-save-for-later-id-param="<%= dom_id %>">
           <i class="bi bi-pin-angle-fill me-1"></i>Save for later
         </button>
         <% end %>
-        <button class="btn btn-link p-0 ps-1 su-underline fs-14 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
+        <button class="btn btn-link p-0 ps-1 position-relative z-3 su-underline fs-14 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
           <i class="bi bi-trash"></i>Delete <span class="visually-hidden"><%= title %></span>
         </button>
       </div>
