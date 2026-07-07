@@ -425,13 +425,9 @@ summary .disclosure-icon::before {
   display: none;
 }
 
-/* Hint to avoid wrapping only the view contents button */
-.text-wrap:has(.selected-item-title) {
-  text-wrap: pretty;
-}
-
 .appointments-item {
   padding: 0.5rem 1rem 0.5rem 1rem;
+  row-gap: 0.25rem;
   grid-template-columns: 1fr;
   grid-template-areas:
     "title"
@@ -439,16 +435,9 @@ summary .disclosure-icon::before {
     "actions";
 
   @media (min-width: 768px) {
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "title  actions"
-      "select select";
-  }
-
-  @media (min-width: 1200px) {
     grid-template-columns: auto 1fr;
     grid-template-areas:
-      "title   select"
+      "title   title"
       "actions select";
     align-items: center;
 
@@ -460,11 +449,11 @@ summary .disclosure-icon::before {
 
 .appointments-item:only-child {
   padding-left: 0;
-  grid-template-columns: 1fr;
+  row-gap: 1.5rem;
+  grid-template-columns: auto 1fr;
   grid-template-areas:
-    "title"
-    "actions"
-    "select";
+    "title actions"
+    "select select";
 
   .appt-select {
     justify-content: flex-start;
@@ -474,6 +463,16 @@ summary .disclosure-icon::before {
 .appt-title   { grid-area: title; }
 .appt-actions { grid-area: actions; }
 .appt-select  { grid-area: select; }
+
+.digitization-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordion-item:only-child .digitization-title {
+  flex-direction: row;
+  align-items: center;
+}
 
 #reading:has(.appointments-item:only-child),
 #pickup:has(.appointments-item:only-child) {
@@ -534,7 +533,7 @@ summary .disclosure-icon::before {
     border-width: 0;
   }
 
-  .selected-item-status, .selected-item-remove, .disclosure-icon {
+  .selected-item-status, .selected-item-remove, .disclosure-icon, .accordion-header-icon {
     display: none;
   }
 }

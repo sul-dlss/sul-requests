@@ -1,4 +1,4 @@
-<div class="row p-3 pt-0 gap-3 flex-column flex-md-row">
+<div class="row p-3 pt-0 gap-4 flex-column flex-md-row">
   <% appointments = current_user.aeon.appointments.for_site(f.object.aeon_site) %>
   <div id="new-appt-alert">
     <% if appointments.blank? %>
@@ -14,9 +14,9 @@
 
   <%= render Aeon::ReadingRoomBriefComponent.new(reading_room: f.object.aeon_reading_room) %>
 
-  <div class="mt-3">
+  <div>
     <%= render 'save_for_later' %>
-    <ul class="appointments-container list-unstyled selected-items-container" data-item-selector-target="selectedItems" data-template="#appointmentTemplate">
+    <ul class="appointments-container list-unstyled selected-items-container mb-0" data-item-selector-target="selectedItems" data-template="#appointmentTemplate">
       <% if f.object.selectable_items.one? %>
         <%= render Aeon::AppointmentFormItemComponent.new(title: f.object.selectable_items.first.callnumber, dom_id: f.object.selectable_items.first.id, base_name: "patron_request[aeon_item][#{f.object.selectable_items.first.id}]", reading_room_id: f.object.aeon_reading_room.id, appointments: appointments) %>
       <% end %>
@@ -27,7 +27,7 @@
     </template>
   </div>
 
-  <div class="mt-3 mb-2" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
+  <div class="mb-2" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
     <%= f.label :aeon_reading_special, 'Additional information', :class => 'fw-bold py-2' %>
     <%= f.text_area :aeon_reading_special, :class => 'form-control', rows: 3, maxlength: 255, data: { action: "input->char-counter#updateCharCounter"} %>
     <p class="form-text text-secondary d-flex justify-content-between">
