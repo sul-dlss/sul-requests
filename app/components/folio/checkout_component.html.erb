@@ -48,7 +48,7 @@
   <% c.with_body(classes: 'bg-white') do %>
     <div class="d-flex justify-content-between gap-5">
       <div>
-        <h3 class="mb-1 clamp clamp-3"><%= checkout.title %></h3>
+        <h2 class="h3 mb-1 clamp clamp-3"><%= checkout.title %></h2>
         <div class="d-flex flex-row flex-wrap position-relative justify-content-start gap-3 mb-1">
           <%= render FormatIndicatorComponent.new(record: checkout) %>
           <div>Call number: <%= checkout.call_number %></div>

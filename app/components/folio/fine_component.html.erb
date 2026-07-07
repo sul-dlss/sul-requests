@@ -16,7 +16,7 @@
     <% end %>
   <% end %>
   <% c.with_body(classes: 'bg-white') do %>
-    <h3 class="mb-1 clamp clamp-3"><%= body_title %></h3>
+    <h2 class="h3 mb-1 clamp clamp-3"><%= body_title %></h2>
     <% if fine.bib? %>
       <div class="d-flex flex-row gap-3">
         <%= render FormatIndicatorComponent.new(record: fine) %>
