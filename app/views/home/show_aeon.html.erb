@@ -41,7 +41,7 @@
           title: 'Activities',
           icon_class: 'bi-person-video3',
           label: t('dashboard.activities.label_html', count: @dashboard.upcoming_activities.count),
-          path: @dashboard.upcoming_activities.count.positive? ? aeon_activities_path : past_aeon_activities_path,
+          path: @dashboard.upcoming_activities.count.positive? ? aeon_activities_path : aeon_activities_path(past: 'true'),
           link_label: @dashboard.upcoming_activities.count.zero? ? 'View past activities' : nil) do |c| %>
           <% c.with_status_next_up(date: @dashboard.next_activity_date) %>
         <% end %>
