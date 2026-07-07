@@ -52,16 +52,17 @@
               Requests
             </button>
             <ul class="dropdown-menu">
-              <li><%= link_to 'Submitted requests (unified)', unified_requests_url, class: 'dropdown-item' %></li>
-              <% if current_user.patron.present? %>
-              <li><%= link_to 'FOLIO requests', folio_requests_url, class: 'dropdown-item' %></li>
-              <li><%= link_to 'ILL requests', ill_requests_url, class: 'dropdown-item' %></li>
-              <% end %>
+              <li><%= link_to 'Submitted requests', unified_requests_url, class: 'dropdown-item' %></li>
               <% if current_user.aeon.present? %>
               <li><%= link_to 'Saved for later', aeon_requests_url(kind: 'saved_for_later'), class: 'dropdown-item' %></li>
-              <li><%= link_to 'Submitted requests', aeon_requests_url(kind: 'submitted'), class: 'dropdown-item' %></li>
               <li><%= link_to 'Cancelled requests', aeon_requests_url(kind: 'cancelled'), class: 'dropdown-item' %></li>
               <li><%= link_to 'Completed requests', aeon_requests_url(kind: 'completed'), class: 'dropdown-item' %></li>
+              <% end %>
+
+              <% if can? :manage, :site %>
+                <li><%= link_to 'FOLIO requests', folio_requests_url, class: 'dropdown-item' %></li>
+                <li><%= link_to 'ILL requests', ill_requests_url, class: 'dropdown-item' %></li>
+                <li><%= link_to 'Submitted Aeon requests', aeon_requests_url(kind: 'submitted'), class: 'dropdown-item' %></li>
               <% end %>
             </ul>
           <% end %>
