@@ -3,34 +3,17 @@
 ###
 #  Class to handle creation of ILLiad OpenURL request
 ###
-class IlliadRequests
-  def initialize(user_id)
-    @user_id = user_id
-  end
-
-  def requests
-    request_user_transactions.map { |illiad_result| IlliadRequests::Request.new(illiad_result) }.reject(&:inactive?)
-  rescue StandardError => e
-    Honeybadger.notify(e, error_message: "Unable to retrieve ILLIAD transactions with #{e}")
-    []
-  end
-
-  private
-
-  def request_user_transactions
-    url = "#{Settings.sul_illiad}ILLiadWebPlatform/Transaction/UserRequests/#{@user_id}"
-    conn = Faraday.new(url: Settings.sul_illiad) do |req|
-      req.headers['ApiKey'] = Settings.illiad_api_key
-      req.headers['Accept'] = 'application/json; version=1'
-      req.adapter Faraday.default_adapter
-    end
-
-    response = conn.get(url)
-    JSON.parse(response.body)
-  end
-
+module Illiad
   # ILLiad Request class (that duck-types our Folio::Request class)
   class Request
+    def self.where(user_id:)
+      IlliadClient.new.user_transactions(user_id).reject(&:inactive?)
+    end
+
+    def self.from_dynamic(data)
+      new(data)
+    end
+
     include ActiveModel::Model
 
     INACTIVE_REQUEST_STATUSES = [

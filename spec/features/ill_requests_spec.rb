@@ -10,9 +10,9 @@ RSpec.describe 'ILL Request Page' do
 
   let(:illiad_requests) do
     [
-      IlliadRequests::Request.new({
-                                    'CreationDate' => '2024-01-01T00:00:00Z'
-                                  })
+      Illiad::Request.new({
+                            'CreationDate' => '2024-01-01T00:00:00Z'
+                          })
     ]
   end
 
@@ -33,10 +33,10 @@ RSpec.describe 'ILL Request Page' do
   context 'with a scan request' do
     let(:illiad_requests) do
       [
-        IlliadRequests::Request.new({
-                                      'CreationDate' => '2024-01-01T00:00:00Z',
-                                      'PhotoJournalTitle' => 'Some Journal'
-                                    })
+        Illiad::Request.new({
+                              'CreationDate' => '2024-01-01T00:00:00Z',
+                              'PhotoJournalTitle' => 'Some Journal'
+                            })
       ]
     end
 

@@ -6,12 +6,12 @@ RSpec.describe IllRequestsController do
   let(:mock_patron) { instance_double(Folio::Patron, illiad_requests:, key: '513a9054-5897-11ee-8c99-0242ac120002') }
   let(:illiad_requests) do
     [
-      IlliadRequests::Request.new({
-                                    'CreationDate' => '2024-01-01T00:00:00Z'
-                                  }),
-      IlliadRequests::Request.new({
-                                    'CreationDate' => '2024-05-01T00:00:00Z'
-                                  })
+      Illiad::Request.new({
+                            'CreationDate' => '2024-01-01T00:00:00Z'
+                          }),
+      Illiad::Request.new({
+                            'CreationDate' => '2024-05-01T00:00:00Z'
+                          })
     ]
   end
 

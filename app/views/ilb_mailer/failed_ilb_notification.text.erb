@@ -4,7 +4,7 @@ https://searchworks.stanford.edu/view/<%= @patron_request.instance_hrid %>
 
 However, there was a problem with the ILLiad API request:
 
-<%= @illiad_response&.dig('Message') %>
+<%= @illiad_response %>
 
 <% if @patron_request.scan? %>
   Title:

@@ -251,7 +251,7 @@ module Folio
     def illiad_requests
       return [] unless username
 
-      IlliadRequests.new(username).requests
+      @illiad_requests ||= Illiad::Request.where(user_id: username)
     end
 
     ##

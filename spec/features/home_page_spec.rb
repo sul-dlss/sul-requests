@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Home Page' do
   before do
-    allow(IlliadRequests).to receive(:new).and_return(instance_double(IlliadRequests, requests: []))
+    allow(Illiad::Request).to receive(:where).and_return([])
   end
 
   describe 'layout' do

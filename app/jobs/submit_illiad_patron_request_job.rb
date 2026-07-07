@@ -6,29 +6,29 @@ class SubmitIlliadPatronRequestJob < ApplicationJob
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
-  def perform(patron_request, item_id) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def perform(patron_request, item_id)
     item = patron_request.selected_items.find { |x| x.id == item_id }
     return unless item
 
-    response = IlliadRequest.new(patron_request.illiad_request_params(item)).request!
-
-    if response.success?
-      illiad_response_data = JSON.parse(response.body).compact_blank || {}
-      notify_ilb(patron_request, illiad_response_data) if illiad_response_data['Message'].present?
-
-      patron_request.illiad_api_responses.where(item_id:).delete_all
-      patron_request.illiad_api_responses.create(item_id:, response_data: illiad_response_data)
-
-      illiad_response_data
-    else
-      notify_ilb(patron_request)
-      nil
+    record_illiad_response(patron_request, item_id) do
+      IlliadClient.new.create(patron_request.illiad_request_params(item))
     end
   end
 
   private
 
-  def notify_ilb(patron_request, illiad_response = nil)
-    IlbMailer.failed_ilb_notification(patron_request, illiad_response).deliver_later
+  def record_illiad_response(patron_request, item_id)
+    record = yield
+    write_illiad_response(patron_request, item_id, record.as_json)
+    record
+  rescue IlliadClient::ApiError => e
+    write_illiad_response(patron_request, item_id, e.to_honeybadger_context)
+    IlbMailer.failed_ilb_notification(patron_request, e.response.body).deliver_later
+    nil
+  end
+
+  def write_illiad_response(patron_request, item_id, response_data)
+    patron_request.illiad_api_responses.where(item_id: item_id).delete_all
+    patron_request.illiad_api_responses.create(item_id: item_id, response_data: response_data)
   end
 end
