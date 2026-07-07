@@ -11,6 +11,10 @@ module Aeon
       Current.aeon_client
     end
 
+    def self.where(username:)
+      aeon_client.activities&.select { |activity| activity.users.any? { |user| user.username == username } } || []
+    end
+
     def self.find(id)
       return nil if id.nil?
 

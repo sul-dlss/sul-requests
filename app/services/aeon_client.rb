@@ -65,10 +65,6 @@ class AeonClient
     end
   end
 
-  def activities_for(username:)
-    activities&.select { |activity| activity.users.map(&:username).include?(username) }
-  end
-
   # Fetch requests for a user by their Aeon username
   # @param username [String] the user's Aeon username
   # @return [Array<Aeon::Request>]

@@ -127,7 +127,7 @@ RSpec.describe 'Accessibility testing', :js do
       instance_double(AeonClient,
                       find_user: aeon_user,
                       find_queue: queue,
-                      activities_for: [],
+                      activities: [],
                       appointments_for: [appointment])
     end
 
@@ -258,7 +258,7 @@ RSpec.describe 'Accessibility testing', :js do
     let(:stub_aeon_client) do
       instance_double(AeonClient,
                       find_user: aeon_user,
-                      activities_for: [],
+                      activities: [],
                       closures: [],
                       appointments_for: [],
                       available_appointments: [],
