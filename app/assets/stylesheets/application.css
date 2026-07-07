@@ -471,6 +471,16 @@ summary .disclosure-icon::before {
 .appt-actions { grid-area: actions; }
 .appt-select  { grid-area: select; }
 
+.digitization-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordion-item:only-child .digitization-title {
+  flex-direction: row;
+  align-items: center;
+}
+
 #reading:has(.appointments-item:only-child),
 #pickup:has(.appointments-item:only-child) {
   .hide-when-1-item {
@@ -530,7 +540,7 @@ summary .disclosure-icon::before {
     border-width: 0;
   }
 
-  .selected-item-status, .selected-item-remove, .disclosure-icon {
+  .selected-item-status, .selected-item-remove, .disclosure-icon, .accordion-header-icon {
     display: none;
   }
 }

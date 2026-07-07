@@ -8,14 +8,12 @@
         aria: { expanded: !accordion?, controls: "content_#{dom_id}", labelledby: "title_#{dom_id}" },
         disabled: !accordion?
     ) %>
-    <div class="d-flex flex-column flex-lg-row align-items-lg-center flex-grow-1 justify-content-lg-between">
-      <div class="d-flex align-items-center">
-        <i class="bi bi-check2 selected-item-status"></i>
-        <span id="title_<%= dom_id %>" class="text-wrap">
-          <span class="text-black fw-semibold selected-item-title"><%= title %></span>
-        </span>
-      </div>
-      <div class="d-flex position-relative d-flex gap-2 z-3">
+    <i class="bi bi-check2 selected-item-status"></i>
+    <div class="digitization-title gap-2 flex-grow-1">
+      <span id="title_<%= dom_id %>" class="text-wrap">
+        <span class="text-black fw-semibold selected-item-title"><%= title %></span>
+      </span>
+      <div class="digitization-actions position-relative d-flex gap-2 z-3">
         <button class="btn btn-link p-0 ps-1 d-none su-underline fs-14" data-action="view-container-contents#openViewModal"
                 data-view-container-contents-target="displayButton" data-item-id="<%= dom_id %>">
           <i class="bi bi-list-ul me-1"></i>View contents
