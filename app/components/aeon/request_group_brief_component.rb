@@ -7,7 +7,7 @@ module Aeon
 
     attr_reader :classes
 
-    def initialize(after_request_item_component: nil, classes: %w[request-group border rounded p-3], data: {}, **)
+    def initialize(after_request_item_component: nil, classes: %w[request-group mb-3 border rounded p-3], data: {}, **)
       @after_request_item_component = after_request_item_component
       @classes = Array(classes)
       @data = data
