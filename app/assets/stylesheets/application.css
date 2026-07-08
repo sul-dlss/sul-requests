@@ -427,37 +427,20 @@ summary .disclosure-icon::before {
 
 .appointments-item {
   padding: 0.5rem 1rem 0.5rem 1rem;
-  row-gap: 0.25rem;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "title"
-    "select"
-    "actions";
+}
 
-  @media (min-width: 768px) {
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-      "title   title"
-      "actions select";
-    align-items: center;
+.appt-stuff {
+  flex-direction: column-reverse;
+}
 
-    .appt-select {
-      justify-content: flex-end;
-    }
+@media (min-width: 768px) {
+  .appt-stuff {
+    flex-direction: row;
   }
 }
 
 .appointments-item:only-child {
   padding-left: 0;
-  row-gap: 1.5rem;
-  grid-template-columns: auto 1fr;
-  grid-template-areas:
-    "title actions"
-    "select select";
-
-  .appt-select {
-    justify-content: flex-start;
-  }
 }
 
 .appt-title   { grid-area: title; }
