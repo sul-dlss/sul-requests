@@ -2,7 +2,7 @@
   <% if limit? %>
     <span class="me-2">Item limit: <span data-progress-bar-target="count"><%= count %></span>/<%= limit %></span>
 
-    <div class="progress d-none d-sm-flex" aria-hidden="true">
+    <div class="progress item-limit-progress d-none d-sm-flex" aria-hidden="true">
       <div class="progress-bar" data-progress-bar-target="bar"></div>
     </div>
   <% else %>
