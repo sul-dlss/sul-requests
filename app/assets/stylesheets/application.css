@@ -951,11 +951,6 @@ summary .disclosure-icon::before {
   pointer-events: none;
 }
 
-/* Remove after we go live and don't have beta banner */
-.bg-illuminating-light {
- background: rgb(var(--stanford-illuminating-light-rgb));
-}
-
 /* Everything after: remove when we add feedback form to component library */
 #feedback-form .new-tab-link {
   width: 100%;

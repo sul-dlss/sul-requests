@@ -105,6 +105,11 @@ input[type="radio"] {
   background-color: rgba(var(--stanford-digital-green-dark-rgb), .08);
 }
 
+/* Remove after we go live and don't have beta banner */
+.bg-illuminating-light {
+ background: rgb(var(--stanford-illuminating-light-rgb));
+}
+
 .bg-jungle-green {
   background-color: rgba(var(--stanford-jungle-green-rgb), 1);
 }
