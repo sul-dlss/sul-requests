@@ -11,19 +11,28 @@ export default class extends Controller {
     if (!formItem) return
 
     const id = formItem.dataset.contentId
-    const originSection = this.sectionTargets.find(section => section.contains(formItem))
-    if (originSection) this.clearRequiredInputs(originSection, id)
-
-    this.formItemsFor(id).forEach(item => {
-      item.classList.add('d-none')
-      item.setAttribute('data-saved-for-later', '')
-    })
-
-    this.listTargets.forEach(list => list.appendChild(this.makeSavedItem(formItem)))
 
     // Auto-expand the next visible sibling if this section uses expand/collapse
     let nextItem = formItem.nextElementSibling
     while (nextItem && !nextItem.offsetParent) nextItem = nextItem.nextElementSibling
+
+    // move all the form items (acorss all the different sections) into the saved-for-later state
+    this.formItemsFor(id).forEach(item => {
+      const section = item.closest('[data-save-for-later-target="section"]')
+      const savedForLaterList = section.querySelector('[data-save-for-later-target="list"]')
+      const savedItem = this.makeSavedItem(item)
+      const appt = item.querySelector('input[name$="[appointment_id]"]')
+      if (appt) {
+        appt.value = ''
+        appt.dispatchEvent(new Event('input', { bubbles: true }))
+      }
+      const template = document.createElement('template')
+      template.content.replaceChildren(item);
+      savedItem.appendChild(template);
+      savedForLaterList.appendChild(savedItem)
+    })
+
+
     const nextCollapse = nextItem?.querySelector('.accordion-collapse')
     if (nextCollapse) Collapse.getOrCreateInstance(nextCollapse).show()
 
@@ -38,27 +47,17 @@ export default class extends Controller {
 
     const id = savedClone.dataset.contentId
 
-    this.formItemsFor(id).forEach(item => {
-      item.classList.remove('d-none')
-      item.removeAttribute('data-saved-for-later')
-      // Re-run selected-item-form validation now that the item is visible again.
-      item.querySelectorAll('[data-required-for-submit]').forEach(input => {
-        input.dispatchEvent(new Event('input', { bubbles: true }))
-      })
-    })
-
-    this.listTargets.forEach(list => {
-      list.querySelectorAll(`[data-content-id="${id}"]`).forEach(el => el.remove())
-    })
+    this.sectionTargets.forEach(section => {
+      const savedForLaterList = section.querySelector('[data-save-for-later-target="list"]')
+      const savedItem = savedForLaterList.querySelector(`[data-content-id="${id}"]`);
+      const template = savedItem.querySelector('template')
+      const rehydratedItem = document.importNode(template.content, true)
+      const selectedItemList = section.querySelector('[data-item-selector-target="selectedItems"]')
+      selectedItemList.appendChild(rehydratedItem)
+      savedItem.remove();
+    });
 
     this.dispatch('changed')
-  }
-
-  clearRequiredInputs(section, id) {
-    section.querySelectorAll(`[data-content-id="${id}"] [data-required-for-submit]`).forEach(input => {
-      input.value = ''
-      input.dispatchEvent(new Event('input', { bubbles: true }))
-    })
   }
 
   formItemsFor(id) {
