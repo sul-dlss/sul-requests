@@ -36,3 +36,22 @@
       ) %>
   </ul>
 </form>
+
+
+<form id="reading-accordion3" class="col-lg-9 selected-items-container">
+  <div class="save-for-later border rounded p-3 mb-3">
+    <h3 class="h4 text-cardinal"><i class="bi bi-pin-angle-fill me-2 text-digital-red"></i>Save for later</h3>
+    <ul class="list-unstyled mb-0" data-save-for-later-target="list">
+      <li class="saved-item">Saved for later item</li>
+    </ul>
+  </div>
+
+  <ul id="reading3" class="appointments-container list-unstyled">
+    <%=
+      render Aeon::AppointmentFormItemComponent.new(
+        title: 'Item 1',
+        dom_id: 'item_1',
+        appointments: appointments
+      ) %>
+  </ul>
+</form>
