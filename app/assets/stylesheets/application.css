@@ -688,10 +688,6 @@ summary .disclosure-icon::before {
   --bs-btn-disabled-border-color: rgba(var(--stanford-cardinal-rgb), 0.3);
 }
 
-.modal-location .hide-when-1-item {
-  display: none;
-}
-
 #aeon-appointments-frame .card {
   --bs-card-border-color: var(--stanford-20-black);
 }
