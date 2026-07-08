@@ -20,16 +20,6 @@ class AeonRequestsController < ApplicationController
     render 'async' and return if params[:async]
   end
 
-  def resubmit
-    authorize! :update, @aeon_request
-
-    @updated_aeon_request = Aeon::UpdateRequestService.new(@aeon_request, { status: 'Submitted by User' }).call
-
-    respond_to do |format|
-      format.turbo_stream { update_turbo_stream }
-    end
-  end
-
   def save_for_later
     authorize! :update, @aeon_request
 

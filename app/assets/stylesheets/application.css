@@ -721,6 +721,31 @@ summary .disclosure-icon::before {
   }
 }
 
+.cancelled.request.list-group-item {
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "id"
+    "detail"
+    "actions"
+    "footer";
+
+  @media (min-width: 576px) {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "id          id"
+      "detail      actions"
+      "footer      footer";
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "id      actions"
+      "detail       detail"
+      "footer       footer";
+  }
+}
+
 .list-group:has(.request.list-group-item .request-fulfillment) .request.list-group-item {
   grid-template-columns: 1fr;
   grid-template-areas:
@@ -739,18 +764,24 @@ summary .disclosure-icon::before {
       "footer      footer";
   }
 
-  @media (min-width: 992px) {
-    grid-template-columns: 1fr 19.5rem 3rem;
-    grid-template-areas:
-      "id     fulfillment actions"
-      "detail detail      detail"
-      "footer footer      footer";
+  &:not(.cancelled) {
+    @media (min-width: 992px) {
+      grid-template-columns: 1fr 19.5rem 3rem;
+      grid-template-areas:
+        "id     fulfillment actions"
+        "detail detail      detail"
+        "footer footer      footer";
+    }
   }
-}
 
-.list-group:has(.request.list-group-item .request-fulfillment):has(.btn.resubmit) .request.list-group-item {
-  @media (min-width: 992px) {
-    grid-template-columns: 1fr 19.5rem 5.5rem;
+  &.cancelled {
+    @media (min-width: 992px) {
+      grid-template-columns: 1fr 19.5rem 8rem;
+      grid-template-areas:
+        "id     fulfillment actions"
+        "detail detail      detail"
+        "footer footer      footer";
+    }
   }
 }
 
