@@ -198,3 +198,15 @@ input[type="radio"] {
 .text-80-black {
   color: var(--stanford-80-black);
 }
+
+.progress {
+  --bs-progress-bg: var(--stanford-20-black);
+}
+
+.progress-bar.text-bg-success {
+  --bs-success-rgb: var(--stanford-digital-green-rgb);
+}
+
+.progress-bar.text-bg-danger {
+  --bs-danger-rgb: var(--stanford-digital-red-light-rgb);
+}
