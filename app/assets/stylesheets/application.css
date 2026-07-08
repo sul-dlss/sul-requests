@@ -702,10 +702,6 @@ summary .disclosure-icon::before {
   caret-color: transparent;
 }
 
-.request-group {
-  margin-bottom: 1rem;
-}
-
 /* Hide the last bottom border on the Aeon bulk delete modal */
 #delete-bulk .request-group:not([hidden]):not(:has(~ .request-group:not([hidden]))) {
   --bs-border-width: 0;
