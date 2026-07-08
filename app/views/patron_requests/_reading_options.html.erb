@@ -12,7 +12,7 @@
     <% end %>
   </div>
 
-  <%= render Aeon::ReadingRoomBriefComponent.new(reading_room: f.object.aeon_reading_room) %>
+  <%= render Aeon::ReadingRoomBriefComponent.new(reading_room: f.object.aeon_reading_room, create_appointment: true) %>
 
   <div>
     <%= render 'save_for_later' %>
