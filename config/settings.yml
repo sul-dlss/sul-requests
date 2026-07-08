@@ -168,15 +168,14 @@ libraries:
       library_slug: eal
       location_slug: library-circulation
   EDUCATION:
-    label: Education Library (at SAL1&2)
-    instructions: The Education Library is closed for construction. Request items for pickup at another library.
+    label: Education Library (Cubberley)
     contact_info:
       phone: "(650) 723-2121"
       email: cubberley@stanford.edu
     hold_pseudopatron: HOLD@ED
-    hours: # Use SAL 1+2 hours while EDUCATION is closed
-      library_slug: sal12
-      location_slug: operations
+    hours:
+      library_slug: cubberley
+      location_slug: library-circulation
     iplc_pickup_location_code: STA_GREEN
   ENG:
     label: Engineering Library (Terman)
