@@ -960,31 +960,58 @@ summary .disclosure-icon::before {
   min-height: 196px;
 }
 
-.request.list-group-item {
-  --border-top: 1px solid var(--stanford-20-black);
+.request {
+  --border-top: 0;
   --border-side-bottom: 0;
+  --flash-border-top-end: 0; /* default end-state for border-top after flash */
+  --border-radius: 0;
+  padding: var(--padding);
   border: var(--border-side-bottom);
   border-top: var(--border-top);
+  border-radius: var(--border-radius);
 }
 
-.request.list-group-item.flash-on-add {
+.request.list-group-item {
+  --border-top: 1px solid var(--stanford-20-black);
+  --flash-border-top-end: 1px solid var(--stanford-20-black);
+  --padding: 0.5rem 0;
+}
+
+.request.flash-on-add {
   background-color: rgb(235, 243, 241);
+  --border-radius: 2px;
+  --padding: 0.5rem;
   --border-side-bottom: 0.5px solid rgb(var(--stanford-digital-green-rgb));
   --border-top: 0.5px solid rgb(var(--stanford-digital-green-rgb));
-  animation: flash 1s ease forwards;
-  animation-delay: 4s;
+  animation: slideUp 0.5s ease-out forwards,
+             flash 1s ease-out 4s forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes flash {
   from {
     background-color: rgb(235, 243, 241);
+    --border-radius: 2px;
+    --padding: 0.5rem;
     --border-side-bottom: 0.5px solid rgb(var(--stanford-digital-green-rgb));
     --border-top: 0.5px solid rgb(var(--stanford-digital-green-rgb));
   }
   to {
     background-color: transparent;
     --border-side-bottom: 0;
-    --border-top: 1px solid var(--stanford-20-black);
+    --border-radius: 0;
+    --padding: 0.5rem 0;
+    --border-top: var(--flash-border-top-end);
   }
 }
 

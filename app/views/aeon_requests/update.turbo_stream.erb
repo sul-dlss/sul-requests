@@ -27,6 +27,13 @@
   <%= turbo_stream.replace(dom_id(appointment)) do %>
     <%= render Aeon::AppointmentComponent.new(appointment: appointment, all_requests: @update_response.next_requests) %>
   <% end %>
+  <% @update_response.updated_requests.requests.each do |request| %>
+    <% if request.submitted? %>
+      <%= turbo_stream.replace(dom_id(request), Aeon::RequestGroupItemComponent.new(request:, classes: ['flash-on-add'], actions: false, remove_from_appointment: true, fulfillment: false, footer: false)) %>
+    <% else %>
+      <%= turbo_stream.replace(dom_id(request), Aeon::RequestGroupBriefListItemComponent.new(request:, after_request_item_component: SidebarAppointmentDropdownComponent, additional_classes: 'flash-on-add')) %>
+    <% end %>
+  <% end %>
 
   <%= turbo_stream.replace_all ".#{dom_id(appointment, :option)}" do %>
     <%= render Aeon::AppointmentOptionComponent.new(appointment: appointment, name: 'aeon_request[appointment_id]', data_action: nil) %>
