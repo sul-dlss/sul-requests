@@ -12,9 +12,18 @@ export default class extends Controller {
 
     const id = formItem.dataset.contentId
 
-    // Auto-expand the next visible sibling if this section uses expand/collapse
-    let nextItem = formItem.nextElementSibling
-    while (nextItem && !nextItem.offsetParent) nextItem = nextItem.nextElementSibling
+    if (formItem.classList.contains('accordion-item') && formItem.querySelector('.accordion-collapse.show')) {
+      // Auto-expand the next sibling that is not completed, or wrap around to the first incomplete sibling
+      const siblings = Array.from(formItem.parentElement.children)
+      const currentIndex = siblings.indexOf(formItem)
+      let nextItem = siblings.slice(currentIndex + 1).find(item => item.matches('[data-selected-item-form-status-value="incomplete"]'))
+      if (!nextItem) {
+        nextItem = siblings.slice(0, currentIndex).find(item => item.matches('[data-selected-item-form-status-value="incomplete"]'))
+      }
+
+      const nextCollapse = nextItem?.querySelector('.accordion-collapse')
+      if (nextCollapse) Collapse.getOrCreateInstance(nextCollapse).show()
+    }
 
     // move all the form items (acorss all the different sections) into the saved-for-later state
     this.formItemsFor(id).forEach(item => {
@@ -31,10 +40,6 @@ export default class extends Controller {
       savedItem.appendChild(template);
       savedForLaterList.appendChild(savedItem)
     })
-
-
-    const nextCollapse = nextItem?.querySelector('.accordion-collapse')
-    if (nextCollapse) Collapse.getOrCreateInstance(nextCollapse).show()
 
     this.dispatch('changed')
   }
