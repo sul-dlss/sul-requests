@@ -421,10 +421,6 @@ summary .disclosure-icon::before {
   font-weight: normal;
 }
 
-.selected-items-container .accordion-item:last-child .next-item {
-  display: none;
-}
-
 .appointments-item {
   padding: 0.5rem 1rem 0.5rem 1rem;
   row-gap: 0.25rem;
@@ -481,65 +477,56 @@ summary .disclosure-icon::before {
   }
 }
 
-.selected-items-container .appointments-item:not(:only-child) {
-  /* .border */
-  border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
-  /* explicitly setting position:relative on its parent 
-  clips overflow from .possibly-visually-hidden-appointments-label */
-  position: relative;
-  /* .bg-light */
-  --bs-bg-opacity: 1;
-  background: rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) !important;
-
-  .possibly-visually-hidden-appointments-label {
-    /* .visually-hidden */
-    width: 1px !important;
-    height: 1px !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    border:0 !important;
-    position:absolute !important
-  }
-
-  .create-appointment-section {
-    display: none;
-  }
-}
-
-.selected-item-title {
-  background-color: var(--stanford-fog-light);
-  padding-bottom: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-top: 4px;
-  margin-bottom: 1rem;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-
-.selected-items-container .appointments-item:only-child,
-.selected-items-container .accordion-item:only-child,
-.selected-items-container .activity-item
-{
-  --bs-accordion-border-width: 0;
-  --bs-accordion-active-bg: transparent;
-  --bs-accordion-btn-bg: transparent;
-
-  .accordion-button {
-    background-color: transparent;
-    border-width: 0;
-  }
-
-  .selected-item-status, .selected-item-remove, .disclosure-icon, .accordion-header-icon {
-    display: none;
-  }
-}
-
-/* Completed status styling for selected items */
 .selected-items-container {
+  .accordion-item:last-child .next-item {
+    display: none;
+  }
+
+  .appointments-item:not(:only-child) {
+    /* .border */
+    border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+    /* explicitly setting position:relative on its parent
+    clips overflow from .possibly-visually-hidden-appointments-label */
+    position: relative;
+    /* .bg-light */
+    --bs-bg-opacity: 1;
+    background: rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) !important;
+
+    .possibly-visually-hidden-appointments-label {
+      /* .visually-hidden */
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border:0 !important;
+      position:absolute !important
+    }
+
+    .create-appointment-section {
+      display: none;
+    }
+  }
+
+  .appointments-item:only-child,
+  .accordion-item:only-child,
+  .activity-item
+  {
+    --bs-accordion-border-width: 0;
+    --bs-accordion-active-bg: transparent;
+    --bs-accordion-btn-bg: transparent;
+
+    .accordion-button {
+      background-color: transparent;
+      border-width: 0;
+    }
+
+    .selected-item-status, .selected-item-remove, .disclosure-icon, .accordion-header-icon {
+      display: none;
+    }
+  }
   .accordion-item .accordion-header > div {
     margin-inline-start: 1rem;
   }
@@ -601,6 +588,17 @@ summary .disclosure-icon::before {
   .accordion-item .selected-item-status {
     display: none;
   }
+}
+
+.selected-item-title {
+  background-color: var(--stanford-fog-light);
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  margin-bottom: 1rem;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .confirmation {
