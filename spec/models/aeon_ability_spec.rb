@@ -121,7 +121,7 @@ RSpec.describe AeonAbility do
       let(:other_activity) { build(:aeon_activity, id: 99) }
 
       before do
-        allow(request).to receive_messages(saved_for_later?: true)
+        allow(request).to receive_messages(saved_for_later?: true, cancelled?: false)
         allow(aeon_user).to receive(:activities).and_return([other_activity])
       end
 
