@@ -9,7 +9,7 @@
   <% end %>
 
   <% if helpers.can? :edit, request %>
-    <%= link_to edit_aeon_request_path(request), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open' } do %>
+    <%= link_to edit_aeon_request_path(request), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open', modal_header: 'Edit request' } do %>
       <% if request.saved_for_later? || request.cancelled? %>
         <% if request.digital? %>
           <i class="bi bi-file-earmark-plus me-1 align-middle"></i> Add instructions

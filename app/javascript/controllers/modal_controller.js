@@ -20,6 +20,8 @@ export default class extends Controller {
     const containingModal = event.currentTarget.closest('.modal');
 
     const modal = this.createModal({backdrop: containingModal == null})
+    modal.querySelector('.modal-header h1').innerHTML = event.currentTarget.dataset.modalHeader || ''
+
     const url = new URL(event.currentTarget.href)
 
     // append modal=true to the URL so that the server can respond with the appropriate variant
