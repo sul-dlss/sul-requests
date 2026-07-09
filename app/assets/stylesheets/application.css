@@ -929,7 +929,6 @@ summary .disclosure-icon::before {
   }
 
   .request-item-identifier {
-    margin-left: 1rem;
     padding: 0.25rem 0.5rem;
   }
 }
@@ -965,31 +964,18 @@ summary .disclosure-icon::before {
   min-height: 196px;
 }
 
-.request {
-  --border-top: 0;
-  --border-side-bottom: 0;
-  --flash-border-top-end: 0; /* default end-state for border-top after flash */
-  --border-radius: 0;
-  padding: var(--padding);
-  border: var(--border-side-bottom);
-  border-top: var(--border-top);
-  border-radius: var(--border-radius);
-}
-
-.request.list-group-item {
-  --border-top: 1px solid var(--stanford-20-black);
-  --flash-border-top-end: 1px solid var(--stanford-20-black);
-  --padding: 0.5rem 0;
-}
 
 .request.flash-on-add {
-  background-color: rgb(235, 243, 241);
-  --border-radius: 2px;
-  --padding: 0.5rem;
-  --border-side-bottom: 0.5px solid rgb(var(--stanford-digital-green-rgb));
-  --border-top: 0.5px solid rgb(var(--stanford-digital-green-rgb));
+  box-shadow: inset 0px 0px 0px 0.5px rgb(var(--stanford-digital-green-rgb)), inset 0px 0px 0px 50px rgb(235, 243, 241);
   animation: slideUp 0.5s ease-out forwards,
              flash 1s ease-out 4s forwards;
+}
+
+.appointment .request.flash-on-add {
+  margin-inline-start: -1rem;
+  margin-inline-end: -1rem;
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
 }
 
 @keyframes slideUp {
@@ -1005,18 +991,10 @@ summary .disclosure-icon::before {
 
 @keyframes flash {
   from {
-    background-color: rgb(235, 243, 241);
-    --border-radius: 2px;
-    --padding: 0.5rem;
-    --border-side-bottom: 0.5px solid rgb(var(--stanford-digital-green-rgb));
-    --border-top: 0.5px solid rgb(var(--stanford-digital-green-rgb));
+    box-shadow: inset 0px 0px 0px 0.5px rgb(var(--stanford-digital-green-rgb)), inset 0px 0px 0px 50px rgb(235, 243, 241);
   }
   to {
-    background-color: transparent;
-    --border-side-bottom: 0;
-    --border-radius: 0;
-    --padding: 0.5rem 0;
-    --border-top: var(--flash-border-top-end);
+    box-shadow: inset 0px 0px 0px 0px transparent, inset 0px 0px 0px 0px transparent;
   }
 }
 

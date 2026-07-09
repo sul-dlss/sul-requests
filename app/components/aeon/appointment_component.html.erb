@@ -1,4 +1,4 @@
-<%= render CardComponent.new id: dom_id(appointment), data: { 'appointments-list-target': 'appointment' } do |c| %>
+<%= render CardComponent.new id: dom_id(appointment), classes: ['appointment'], data: { 'appointments-list-target': 'appointment' } do |c| %>
   <% c.with_title do %>
     <h2 class="card-title mb-0 h4 d-flex flex-wrap gap-3">
       <%= render Aeon::AppointmentDateTimeComponent.new(appointment: appointment, location: appointment.reading_room.name) %>
