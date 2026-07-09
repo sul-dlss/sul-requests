@@ -139,7 +139,6 @@ label.btn-close {
   text-decoration: underline;
 }
 
-
 @layer framework {
   .mb-last-child-0:last-child {
     margin-bottom: 0 !important;
@@ -152,4 +151,8 @@ label.btn-close {
   .border-last-child-bottom-0:last-child {
     border-bottom: none !important;
   }
+}
+
+.text-pretty {
+  text-wrap: pretty;
 }
