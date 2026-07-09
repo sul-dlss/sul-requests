@@ -8,7 +8,7 @@ module Home
       next_up: lambda { |date:|
         if date
           tag.span(class: 'text-digital-red-dark') do
-            tag.span('Next up: ') + tag.span(date.strftime('%b %-d, %Y'), class: 'fw-semibold')
+            tag.span('Next up: ') + tag.span(date.strftime('%b %-d, %Y'), class: 'fs-5 fw-semibold')
           end
         end
       },
