@@ -25,7 +25,7 @@
 
   <% c.with_footer do %>
     <%= render Aeon::AppointmentLimitComponent.from_appointment(appointment) %>
-    <%= link_to "Add items", items_path, class: 'btn btn-outline-primary btn-sm add-items-button', data: { action: 'modal#open', disabled: (true if eligible_saved_for_later_requests.none?), reading_room_id: reading_room_id } if add_item_allowed? %>
+    <%= link_to "Add items", items_path, class: 'btn btn-outline-primary btn-sm add-items-button', data: { action: 'modal#open', modal_header: 'Add items', disabled: (true if eligible_saved_for_later_requests.none?), reading_room_id: reading_room_id } if add_item_allowed? %>
   <% end %>
 
 <% end %>

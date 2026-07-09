@@ -8,7 +8,7 @@
           <button class="btn btn-outline-primary d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#saved_for_later_aeon_requests_sidebar" aria-controls="saved_for_later_aeon_requests_sidebar">
             Saved for later
           </button>
-          <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary', data: { action: 'modal#open' } %>
+          <%= link_to 'Create new appointment', new_aeon_appointment_path, class: 'btn btn-primary', data: { action: 'modal#open', modal_header: 'Create new appointment' } %>
         </div>
       </div>
     </div>
