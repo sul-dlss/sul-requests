@@ -303,22 +303,6 @@ summary .disclosure-icon::before {
   }
 }
 
-.request-group-per-appointment.request-group.card  {
-  box-shadow: none;
-  border: 0;
-  border-top: var(--bs-border-width) solid var(--bs-border-color);
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-}
-
-.request-group-per-appointment.request-group.card:first-child {
-  border-top: 0;
-}
-
-.request-group-per-appointment.request-group.card:last-child {
-  margin-bottom: 0;
-}
-
 #available_appointments .btn-check[disabled]+.btn {
   display: none;
 }
@@ -610,13 +594,6 @@ summary .disclosure-icon::before {
   .accordion {
     --bs-accordion-border-width: 0;
     --bs-accordion-border-radius: 0;
-  }
-  
-  .request {
-    border-bottom: 1px solid var(--stanford-20-black);
-    &:last-child {
-      border-bottom: none;
-    }
   }
 }
 
