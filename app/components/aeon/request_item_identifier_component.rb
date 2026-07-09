@@ -7,7 +7,7 @@ module Aeon
 
     delegate :ead?, :volume, to: :request
 
-    def initialize(request:, classes: %w[request-item-identifier fw-semibold], wrapper_tag: nil, wrapper_classes: [])
+    def initialize(request:, classes: %w[request-item-identifier fw-semibold text-pretty], wrapper_tag: nil, wrapper_classes: [])
       @request = request
       @classes = Array(classes)
       @wrapper_tag = wrapper_tag

@@ -138,3 +138,7 @@ label.btn-close {
   border-color: rgba(var(--stanford-digital-blue-dark-rgb), 1);
   text-decoration: underline;
 }
+
+.text-pretty {
+  text-wrap: pretty;
+}
