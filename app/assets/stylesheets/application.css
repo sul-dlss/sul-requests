@@ -929,7 +929,6 @@ summary .disclosure-icon::before {
   }
 
   .request-item-identifier {
-    background-color: var(--stanford-fog-light);
     margin-left: 1rem;
     padding: 0.25rem 0.5rem;
   }
