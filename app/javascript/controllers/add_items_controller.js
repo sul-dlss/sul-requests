@@ -58,8 +58,8 @@ export default class extends Controller {
 
   addFlashAnimation(li) {
     li.classList.add('flash-on-add')
-    li.addEventListener('animationend', () => {
-      li.classList.remove('flash-on-add');
+    li.addEventListener('animationend', (e) => {
+      if (e.animationName == 'flash') li.classList.remove('flash-on-add');
     });
   }
 
