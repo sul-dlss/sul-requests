@@ -9,18 +9,7 @@
         <% end %>
       </div>
       <ul class="list-group list-group-flush">
-        <% requests.each do |request| %>
-          <li id="<%= dom_id(request) %>" data-transaction-number="<%= request.transaction_number %>" class="request list-group-item px-0">
-              <div class="d-flex flex-row align-items-center justify-content-between">
-                <div class="d-flex column-gap-3 text-break flex-wrap">
-                  <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
-                </div>
-                <turbo-frame>
-                  <%= render @after_request_item_component.new(request:) if @after_request_item_component %>
-                </turbo-frame>
-              </div>
-          </li>
-        <% end %>
+        <%= render Aeon::RequestGroupBriefListItemComponent.with_collection(requests, after_request_item_component: @after_request_item_component) %>
       </ul>
     </div>
   </div>
