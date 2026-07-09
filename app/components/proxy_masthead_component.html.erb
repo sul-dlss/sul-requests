@@ -18,8 +18,8 @@
       </div>
     <% end %>
 
-    <% unless personal? %>
-      <button class="btn btn-link text-poppy-darker su-underline" data-bs-toggle="modal" data-bs-target="#proxy-group" aria-label="View proxy group">
+    <% if selected.proxies.any? %>
+      <button class="btn btn-link <%= 'text-poppy-darker' unless personal? %> su-underline" data-bs-toggle="modal" data-bs-target="#proxy-group" aria-label="View proxy group">
         <i class="bi bi-people align-middle me-1" aria-hidden></i><span class="d-none d-md-inline">View proxy group</span>
       </button>
     <% end %>
@@ -75,4 +75,4 @@
   <% c.with_footer do %>
     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
   <% end %>
-<% end %>
+<% end if selected.proxies.any? %>
