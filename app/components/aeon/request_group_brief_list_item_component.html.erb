@@ -1,0 +1,10 @@
+<li id="<%= dom_id(request) %>" data-transaction-number="<%= request.transaction_number %>" class="<%= classes.join(' ') %>">
+  <div class="d-flex flex-row align-items-center justify-content-between">
+    <div class="d-flex column-gap-3 text-break flex-wrap">
+      <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
+    </div>
+    <turbo-frame>
+      <%= render @after_request_item_component.new(request:) if @after_request_item_component %>
+    </turbo-frame>
+  </div>
+</li>
