@@ -113,14 +113,15 @@ class AeonRequestsController < ApplicationController
 
   def load_aeon_request
     @aeon_request = @aeon_requests.find(params[:id])
-    @aeon_request_group = @aeon_request_groups.find { |request_group| request_group.requests.include?(@aeon_request.id) }
   end
 
   def load_aeon_requests
     @aeon_requests = if params[:kind] == 'activity'
-                       current_user.aeon.all_requests.for_activities
-                     else
+                       current_user.aeon.own_and_activity_requests.for_activities
+                     elsif action_name == 'index'
                        current_user.aeon.requests
+                     else
+                       current_user.aeon.own_and_activity_requests
                      end
   end
 
