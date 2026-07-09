@@ -11,12 +11,12 @@
           <%= render AlertComponent.new(type: :info, classes: ['mb-0', 'mt-3', 'border-0', 'shadow-none'], with_icon: false) do %>
             <strong><%= pluralize(appointment.requests.length, 'item') %></strong> <%= 'is'.pluralize(appointment.requests.length) %> assigned to this appointment.
             <div class="d-flex gap-1">
-              <%= f.radio_button :cancel_items, false %>
-              <%= f.label :cancel_items_false, 'Save items and schedule later' %>
+              <%= f.radio_button :cancel_items, false, id: dom_id(appointment, :cancel_items_false) %>
+              <%= f.label dom_id(appointment, :cancel_items_false), 'Save items and schedule later' %>
             </div>
             <div class="d-flex gap-1">
-              <%= f.radio_button :cancel_items, true %>
-              <%= f.label :cancel_items_true, 'Delete requested items' %>
+              <%= f.radio_button :cancel_items, true, id: dom_id(appointment, :cancel_items_true) %>
+              <%= f.label dom_id(appointment, :cancel_items_true), 'Delete requested items' %>
             </div>
           <% end %>
         <% end %>
