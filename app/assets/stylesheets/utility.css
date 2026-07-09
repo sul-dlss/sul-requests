@@ -138,3 +138,18 @@ label.btn-close {
   border-color: rgba(var(--stanford-digital-blue-dark-rgb), 1);
   text-decoration: underline;
 }
+
+
+@layer framework {
+  .mb-last-child-0:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .border-first-child-top-0:last-child {
+    border-top: none !important;
+  }
+
+  .border-last-child-bottom-0:last-child {
+    border-bottom: none !important;
+  }
+}
