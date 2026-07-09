@@ -14,7 +14,7 @@ module Folio
       case fine_status
       when 'PAID'
         %w[fine-status bg-green text-green]
-      when 'WAIVED'
+      else
         %w[fine-status bg-stanford-20-black text-black]
       end
     end
