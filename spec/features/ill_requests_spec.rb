@@ -47,4 +47,35 @@ RSpec.describe 'ILL Request Page' do
       expect(page).to have_css('li .status-pill', text: 'Digitization')
     end
   end
+
+  describe 'creating a new request' do
+    before do
+      allow(IlliadClient).to receive(:new).and_return(mock_ill_client)
+    end
+
+    let(:mock_ill_client) do
+      instance_double(IlliadClient, create: true)
+    end
+
+    it 'submits the request to ILLiad' do
+      visit new_ill_request_path
+
+      fill_in 'Title', with: 'Test Title'
+      fill_in 'Author', with: 'Test Author'
+      fill_in 'Link', with: 'AI told me this exists'
+      fill_in 'Date of publication', with: '2032'
+      fill_in 'ISBN', with: '1234567890'
+
+      click_button 'Submit request'
+
+      expect(page).to have_text('Your request has been submitted to Interlibrary Loan.')
+      expect(mock_ill_client).to have_received(:create).with(hash_including(
+                                                               'LoanTitle' => 'Test Title',
+                                                               'LoanAuthor' => 'Test Author',
+                                                               'CitedIn' => 'AI told me this exists',
+                                                               'LoanDate' => '2032',
+                                                               'ISSN' => '1234567890'
+                                                             ))
+    end
+  end
 end
