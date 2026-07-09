@@ -1,0 +1,111 @@
+<h1>Book or media request</h1>
+
+<p class="fw-semibold mb-4">We are not able to provide access to electronic books and streaming media through interlibrary loan.</p>
+
+<div class="row">
+  <%= form_with model: Illiad::Request, url: ill_requests_path, data: { turbo: false }, class: 'col-7 me-5' do |f| %>
+
+    <div class="mb-3">
+      <%= f.label :title, class: 'form-label fw-semibold redesign-required-label' %>
+      <%= f.text_field :title, required: true, class: 'form-control', maxlength: 255 %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :author, 'Author/editors', class: 'form-label fw-semibold redesign-required-label' %>
+      <%= f.text_field :author, required: true, class: 'form-control', maxlength: 255 %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :CitedIn, 'Link or citation for this item', class: 'form-label fw-semibold redesign-required-label' %>
+      <%= f.text_field :CitedIn, required: true, class: 'form-control' %>
+
+      <div class="form-text">Examples are a WorldCat link, publisher link, website link, or citation from a specific journal article or book.</div>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :ISSN, 'ISBN (International Standard Book Number)', class: 'form-label fw-semibold' %>
+      <%= f.text_field :ISSN, class: 'form-control w-auto', size: 20 %>
+      <div class="form-text">Numerals and hyphens only. Provide only one version of the ISBN. 13-digit version preferred.</div>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :ESPNumber, 'OCLC number (WorldCat accession number)', class: 'form-label fw-semibold' %>
+      <%= f.text_field :ESPNumber, class: 'form-control w-auto', size: 20 %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :ItemInfo2, 'Volume', class: 'form-label fw-semibold' %>
+      <%= f.text_field :ItemInfo2, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :LoanPublisher, 'Publisher', class: 'form-label fw-semibold' %>
+      <%= f.text_field :LoanPublisher, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :LoanPlace, 'Place of publication', class: 'form-label fw-semibold' %>
+      <%= f.text_field :LoanPlace, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :LoanDate, 'Date of publication', class: 'form-label fw-semibold' %>
+      <%= f.text_field :LoanDate, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :LoanEdition, 'Edition', class: 'form-label fw-semibold' %>
+      <%= f.text_field :LoanEdition, class: 'form-control' %>
+    </div>
+
+    <fieldset class="mb-3 radio-button-group">
+      <legend class="fs-6 form-label fw-semibold">Will you accept an alternate edition of this item?</legend>
+
+
+      <div class="form-check form-check-inline">
+        <%= f.radio_button :AcceptAlternateEdition, true, class: 'form-check-input' %>
+        <%= f.label :AcceptAlternateEdition, 'Yes', value: true, class: 'form-check-label' %>
+      </div>
+
+      <div class="form-check form-check-inline">
+        <%= f.radio_button :AcceptAlternateEdition, false, class: 'form-check-input' %>
+        <%= f.label :AcceptAlternateEdition, 'No', value: false, class: 'form-check-label' %>
+      </div>
+    </fieldset>
+
+    <div class="mb-3">
+      <%= f.label :NotWantedAfter, 'Not wanted after date', class: 'form-label fw-semibold' %>
+      <%= f.date_field :NotWantedAfter, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.submit 'Submit request', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+
+  <aside class="col-3">
+    <% library = Settings.libraries.ILL %>
+    <h2>Contact information</h2>
+    <div>
+        <h3>
+          <% if library.reading_room_url %>
+            <%= link_to library.reading_room_url, target: '_blank' do %>
+              <%= library.label %><i class="bi bi-arrow-up-right ms-1"></i>
+            <% end %>
+          <% else %>
+            <%= library.label %>
+          <% end %>
+        </h3>
+        <% if library.contact_info&.phone %>
+          <p class="mb-1">
+            <span class="fw-semibold">Phone: </span><%= library.contact_info.phone %>
+          </p>
+        <% end %>
+        <% if library.contact_info&.email %>
+          <p>
+            <span class="fw-semibold">Email: </span><%= mail_to library.contact_info.email, class: 'su-underline' %>
+          </p>
+        <% end %>
+    </div>
+  </aside>
+</div>

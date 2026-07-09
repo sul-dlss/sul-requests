@@ -16,7 +16,36 @@ class IllRequestsController < ApplicationController
     render 'async' and return if params[:async]
   end
 
+  def new
+    authorize! :create, Illiad::Request
+  end
+
+  def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+    authorize! :create, Illiad::Request
+
+    illiad_create_params = create_params.except(:title, :author, :NotWantedAfter, :AcceptAlternateEdition).to_h.merge(
+      ProcessType: 'Borrowing',
+      WebRequestForm: 'LoanRequest',
+      RequestType: 'Loan',
+      LoanTitle: create_params[:title],
+      LoanAuthor: create_params[:author],
+      Username: current_patron.username,
+      UserInfo1: current_patron.blocked? ? 'Blocked' : nil,
+      UserInfo5: current_patron.barcode,
+      AcceptAlternateEdition: ActiveModel::Type::Boolean.new.cast(create_params[:AcceptAlternateEdition]) ? 'E Version Acceptable' : '',
+      NotWantedAfter: not_wanted_after_param.strftime('%Y-%m-%d')
+    ).compact_blank
+
+    IlliadClient.new.create(illiad_create_params)
+
+    redirect_to root_path, notice: 'Your request has been submitted to Interlibrary Loan.'
+  end
+
   private
+
+  def current_patron
+    current_user.patron
+  end
 
   def load_requests
     @requests = patron_or_group.illiad_requests.sort_by { |request| request.sort_key(:date) }
@@ -25,5 +54,22 @@ class IllRequestsController < ApplicationController
   def load_request
     @request = @requests.find { |r| r.key == params['id'] }
     raise RequestException, 'Error' unless @request
+  end
+
+  def not_wanted_after_param
+    return 1.year.from_now if create_params[:NotWantedAfter].blank?
+
+    Date.parse(create_params[:NotWantedAfter])
+  rescue StandardError
+    1.year.from_now
+  end
+
+  def create_params
+    illiad_params = %w[
+      CitedIn ISSN ESPNumber ItemInfo2
+      LoanPublisher LoanPlace LoanDate LoanEdition AcceptAlternateEdition
+      Notes NotWantedAfter
+    ]
+    params.require(:illiad_request).permit(:title, :author, *illiad_params)
   end
 end
