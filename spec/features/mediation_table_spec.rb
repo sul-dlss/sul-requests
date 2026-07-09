@@ -362,7 +362,9 @@ RSpec.describe 'Mediation table', :js do
         within 'td.needed_date' do
           # click the link to open the calendar widget
           click_on I18n.l(Time.zone.today, format: :quick)
-          fill_in 'Needed on', with: new_date
+          click_on I18n.l(Time.zone.today, format: :short)
+          click_on 'Next month'
+          click_on new_date.day
           click_on 'ok'
         end
       end

@@ -30,12 +30,10 @@ export default class extends Controller {
    }
 
   connect() {
-    const initial = this.inputTarget.value ? this.inputTarget.value : null
-
     this.monthStatus = new Map() // key -> "pending" | "done"
 
     // set the initially focused value to the selected day, or the first available day
-    this.focusedValue = initial || this.#toIsoDate(this.nextEnabledDateOnOrAfter(new Date(this.todayValue), 1));
+    this.focusedValue = this.inputTarget.value || this.#toIsoDate(this.nextEnabledDateOnOrAfter(new Date(this.todayValue), 1));
     this.element.addEventListener("keydown", this.#handleKeydown)
   }
 

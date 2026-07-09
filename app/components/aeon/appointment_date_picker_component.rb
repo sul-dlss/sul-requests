@@ -7,14 +7,12 @@ module Aeon
   #   <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f) %>
   #   <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f,
   #             data: { 'date-picker-disabled-value': ['2026-05-01'], 'date-picker-marked-value': ['2026-05-10'] }) %>
-  class AppointmentDatePickerComponent < ViewComponent::Base
-    attr_reader :key, :form, :reading_room, :data
+  class AppointmentDatePickerComponent < DatePickerComponent
+    attr_reader :reading_room
 
-    def initialize(key, form: nil, reading_room: nil, data: {})
-      @key = key
-      @form = form
+    def initialize(key, reading_room: nil, **)
+      super(key, **)
       @reading_room = reading_room || form.object.reading_room
-      @data = data
     end
 
     def min # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
@@ -28,17 +26,6 @@ module Aeon
       (reading_room&.policies || []).filter_map do |policy|
         policy.appointment_max_lead_days.days.from_now.to_date.iso8601 if policy.appointment_max_lead_days
       end.max
-    end
-
-    def lead_time
-      return unless max
-
-      days = (max.to_date - Time.zone.today).to_i
-      if days < 365
-        pluralize(days, 'day')
-      else
-        pluralize(days / 365, 'year')
-      end
     end
 
     def open_days

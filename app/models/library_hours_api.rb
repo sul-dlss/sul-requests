@@ -67,6 +67,10 @@ module LibraryHoursApi
       hours.select(&:open?)
     end
 
+    def closed_days
+      hours.reject(&:open?)
+    end
+
     def hours
       return [] if data.blank?
 

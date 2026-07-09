@@ -1,7 +1,9 @@
 <div class="p-3 pt-0">
     <% if f.object.mediateable? %>
         <%= f.label :needed_date, 'I plan to visit on:', class: 'required-label py-2' %>
-        <%= f.date_field :needed_date, required: true, min: f.object.earliest_delivery_estimate['date'], value: f.object.earliest_delivery_estimate['date'], class: 'form-control' %>
+        <%= render DatePickerComponent.new(:needed_date, form: f, data: { min: f.object.earliest_delivery_estimate['date'],
+                date_picker_availability_url_value: closures_path(f.object.pickup_service_point.library.hours_codes),
+                action: 'change->accordion-form#reenableNextButtons' }) %>
     <% else %>
         <%= f.label :needed_date, 'Not needed after', class: 'required-label py-2' %>
         <%= f.date_field :needed_date, required: true, min: Date.today, value: Time.zone.today + 1.year, class: 'form-control' %>

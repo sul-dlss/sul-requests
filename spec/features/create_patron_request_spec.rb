@@ -147,6 +147,9 @@ RSpec.describe 'Creating a request', :js do
       it 'creates a mediated page request' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'ART-LOCKED-LARGE')
 
+        click_on 'Select a date'
+        first('td[role="gridcell"]:not(:has(button:disabled))').click
+
         expect do
           perform_enqueued_jobs do
             click_on 'Submit request'
@@ -175,7 +178,10 @@ RSpec.describe 'Creating a request', :js do
         check 'ABC 456'
         click_on 'Continue'
 
-        fill_in 'I plan to visit on:', with: today.next_week(:monday)
+        click_on 'Select a date'
+        next_monday = today.next_week(:monday)
+        click_on 'Next month' if today.month != next_monday.month
+        click_on next_monday.day
 
         expect do
           perform_enqueued_jobs do

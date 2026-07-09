@@ -41,6 +41,8 @@ Rails.application.routes.draw do
   get 'paging_schedule/from/:origin_library(/to/:destination)' => 'paging_schedule#show', as: :paging_schedule
   get 'paging_schedule/from/:origin_library/to/:destination/:date' => 'paging_schedule#open', as: :open_hours
 
+  get '/library_hours/:library_slug/location/:location_slug/closures', to: 'library_hours#closures', as: :closures
+
   # Archives requests route - handles EAD XML from archives.stanford.edu
   get 'archives_requests/new', to: 'patron_requests#new', as: :new_archives_request
 
