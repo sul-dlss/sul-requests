@@ -1,0 +1,9 @@
+<fieldset class="mb-3 radio-button-group">
+  <legend class="fs-6 fw-semibold redesign-required-label">Available time slots</legend>
+</fieldset>
+<div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
+<div class="selection-message">Select a date and duration to see available appointments.</div>
+<label class="visually-hidden-focusable required-placeholder">
+  Loading avaiable appointments.
+  <%= f.text_field :start_time, class: 'visually-hidden-focusable', required: true %>
+</label>
