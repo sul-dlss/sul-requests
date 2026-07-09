@@ -82,14 +82,3 @@
   <%= turbo_frame_tag :ill_requests, src: ill_requests_path(async: true) %>
   <%= turbo_frame_tag :mediated_requests, src: mediated_requests_path(async: true) %>
 <% end %>
-
-<div class="page-section">
-  <h2>If your request isn't listed</h2>
-  <ul>
-    <li>Requests for material from Special Collections &amp; University Archives, the David Rumsey Map Center, the Archive of Recorded Sound and East Asia Library Special Collections are listed in <%= link_to 'https://stanford.aeon.atlas-sys.com/logon/', target: '_blank' do %>
-      <%= render Icons::OpenInNewComponent.new %> Aeon.
-    <% end %>
-    </li>
-    <li>Requests requiring approval are not listed here until they have been approved &mdash; typically 1-3 days before your scheduled visit.</li>
-  </ul>
-</div>
