@@ -14,7 +14,7 @@ class FormatIndicatorComponent < ViewComponent::Base
 
   def call
     tag.span(safe_join([
-                         tag.span(icon, class: 'me-1 align-text-bottom'),
+                         tag.span(icon, class: 'me-1 align-text-bottom', aria: { hidden: true }),
                          @record.document_type
                        ]))
   end

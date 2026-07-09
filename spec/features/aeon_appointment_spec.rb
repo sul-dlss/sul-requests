@@ -225,7 +225,7 @@ RSpec.describe 'Appointments', :js do
       expect(page).to have_css '.modal'
       perform_enqueued_jobs do
         expect(page).to have_text 'Cancel appointment?'
-        choose('cancel_items_false')
+        choose('Save items and schedule later')
         expect(page).to have_text '1 item is assigned to this appointment.'
         click_on 'Yes, cancel appointment'
       end
@@ -243,7 +243,7 @@ RSpec.describe 'Appointments', :js do
       expect(page).to have_css '.modal'
       perform_enqueued_jobs do
         expect(page).to have_text 'Cancel appointment?'
-        choose('cancel_items_true')
+        choose('Delete requested items')
         expect(page).to have_text '1 item is assigned to this appointment.'
         click_on 'Yes, cancel appointment'
       end

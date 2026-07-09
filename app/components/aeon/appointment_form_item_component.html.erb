@@ -6,15 +6,15 @@
   <div class="appt-actions d-flex flex-wrap gap-2">
     <button class="btn btn-link p-0 ps-1 d-none su-underline fs-14" data-action="view-container-contents#openViewModal"
             data-view-container-contents-target="displayButton" data-item-id="<%= dom_id %>">
-      <i class="bi bi-list-ul me-1"></i>View contents
+      <i class="bi bi-list-ul me-1" aria-hidden></i>View contents
     </button>
     <% if save_for_later? %>
     <button class="btn btn-link p-0 ps-1 su-underline fs-14" data-action="save-for-later#save" data-save-for-later-id-param="<%= dom_id %>">
-      <i class="bi bi-pin-angle-fill me-1"></i>Save for later
+      <i class="bi bi-pin-angle-fill me-1" aria-hidden></i>Save for later
     </button>
     <% end %>
     <button class="btn btn-link p-0 ps-1 su-underline fs-14 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
-      <i class="bi bi-trash"></i>Delete <span class="visually-hidden"><%= title %></span>
+      <i class="bi bi-trash" aria-hidden></i>Delete <span class="visually-hidden"><%= title %></span>
     </button>
   </div>
   <%= fields_for base_name, object do |f| %>

@@ -2,7 +2,7 @@
   <h2 class="h3"><%= title %></h2>
   <ul class="list-unstyled mb-0">
     <% requests.each do |request| %>
-      <li class="request accordion accordion-flush">
+      <li class="request accordion accordion-flush border-bottom border-last-child-bottom-0">
         <div class="accordion-item">
           <div class="accordion-header bg-white accordion-button px-0 collapsed d-flex align-items-center justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#<%= dom_id(request, :accordion) %>" aria-expanded="false" aria-controls="<%= dom_id(request, :accordion) %>" id="<%= dom_id(request, :heading) %>">
             <div class="confirmation-request-summary">

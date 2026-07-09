@@ -30,6 +30,8 @@ class PatronAbility
     # anyone can start to create an Aeon page
     can [:new, :create], PatronRequest, &:aeon_page?
 
+    can [:new, :create], Illiad::Request
+
     can :create, PatronRequest do |request|
       request.selected_items.all? { |item| request.scan? ? can?(:scan, item) : can?(:request, item) }
     end

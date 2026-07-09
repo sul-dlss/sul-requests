@@ -9,7 +9,7 @@ module Aeon
 
     attr_reader :classes
 
-    def initialize(request_group:, classes: %w[card rounded-0 px-3 py-2 mb-3])
+    def initialize(request_group:, classes: %w[card rounded-0 px-3 py-2 mb-3 border-0 border-top border-first-child-top-0 mb-last-child-0])
       @request_group = request_group
       @classes = Array(classes)
     end
