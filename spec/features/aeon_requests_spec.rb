@@ -140,4 +140,109 @@ RSpec.describe 'Requests', :js do
       expect(page).to have_no_css('.request-group', text: 'A Book')
     end
   end
+
+  describe 'attached to an activity' do
+    let(:activity) do
+      StubAeonClient::Activity.create(
+        beginDate: Time.zone.local(2026, 2, 19, 12, 0, 0).iso8601,
+        endDate: Time.zone.local(2026, 2, 19, 13, 0, 0).iso8601,
+        name: 'A Class Visit',
+        activityType: 'Class visit',
+        active: true,
+        activityStatus: 'Pending',
+        location: 'Special Collections',
+        users: [aeon_user],
+        id: 42
+      )
+    end
+
+    let(:activity_request) do
+      StubAeonClient::Request.create(
+        requestFor: { type: 'Activity', reference: 42 },
+        itemTitle: 'An Activity Book',
+        username: aeon_user.username,
+        webRequestForm: 'multiple',
+        transactionStatus: 1
+      )
+    end
+
+    before do
+      activity
+      activity_request
+    end
+
+    it 'removes the request from its activity when deleted' do
+      visit aeon_activities_path
+
+      expect(page).to have_text('An Activity Book')
+
+      click_on 'Remove An Activity Book from activity'
+
+      expect(page).to have_no_text('An Activity Book')
+    end
+
+    context 'when the activity has other request groups' do
+      let(:other_activity_request) do
+        StubAeonClient::Request.create(
+          requestFor: { type: 'Activity', reference: 42 },
+          itemTitle: 'Another Activity Book',
+          username: aeon_user.username,
+          webRequestForm: 'multiple',
+          transactionStatus: 1
+        )
+      end
+
+      before { other_activity_request }
+
+      it 'removes the empty group card while keeping the other group visible' do
+        visit aeon_activities_path
+
+        expect(page).to have_text('An Activity Book')
+        expect(page).to have_text('Another Activity Book')
+
+        click_on 'Remove An Activity Book from activity'
+
+        expect(page).to have_no_text('An Activity Book')
+        expect(page).to have_text('Another Activity Book')
+      end
+    end
+
+    context 'when the request belongs to another member of the activity' do
+      let(:other_aeon_user) { StubAeonClient::User.create(username: 'other@stanford.edu', authType: 'Default') }
+
+      let(:activity) do
+        StubAeonClient::Activity.create(
+          beginDate: Time.zone.local(2026, 2, 19, 12, 0, 0).iso8601,
+          endDate: Time.zone.local(2026, 2, 19, 13, 0, 0).iso8601,
+          name: 'A Class Visit',
+          activityType: 'Class visit',
+          active: true,
+          activityStatus: 'Pending',
+          location: 'Special Collections',
+          users: [aeon_user, other_aeon_user],
+          id: 42
+        )
+      end
+
+      let(:activity_request) do
+        StubAeonClient::Request.create(
+          requestFor: { type: 'Activity', reference: 42 },
+          itemTitle: 'An Activity Book',
+          username: other_aeon_user.username,
+          webRequestForm: 'multiple',
+          transactionStatus: 1
+        )
+      end
+
+      it 'removes the request from its activity when deleted' do
+        visit aeon_activities_path
+
+        expect(page).to have_text('An Activity Book')
+
+        click_on 'Remove An Activity Book from activity'
+
+        expect(page).to have_no_text('An Activity Book')
+      end
+    end
+  end
 end

@@ -12,10 +12,14 @@ module Aeon
     end
 
     def requests
-      @requests ||= all_requests
+      @requests ||= own_requests
     end
 
-    def all_requests
+    def own_and_activity_requests
+      Aeon::RequestFinders.new([])
+    end
+
+    def own_requests
       Aeon::RequestFinders.new([])
     end
 

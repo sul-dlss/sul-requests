@@ -99,9 +99,9 @@ RSpec.describe 'Activities', :js do
     expect(page).to have_text(/Exhibit/m)
     expect(page).to have_no_text('Activity2')
 
-    expect(page).to have_text('title1', count: 1)
+    expect(page).to have_css('h3', text: 'title1', count: 1)
     expect(page).to have_no_text('title2')
-    expect(page).to have_text('title3', count: 1)
+    expect(page).to have_css('h3', text: 'title3', count: 1)
     expect(page).to have_text('No items have been requested for this activity.', count: 1)
   end
 end

@@ -33,12 +33,20 @@ module Aeon
       auth_type == 'Default'
     end
 
-    def all_requests
-      @all_requests ||= Aeon::RequestFinders.new(self.class.aeon_client.requests_for(username:))
+    def own_requests
+      @own_requests ||= Aeon::RequestFinders.new(self.class.aeon_client.requests_for(username:))
+    end
+
+    # All requests this user can see: own records plus submitted requests
+    # from shared activities (which may be owned by other activity members).
+    def own_and_activity_requests
+      @own_and_activity_requests ||= Aeon::RequestFinders.new(
+        (own_requests.to_a + activities.flat_map { |a| a.requests.to_a }).uniq(&:id)
+      )
     end
 
     def requests
-      @requests ||= all_requests.reject(&:activity?)
+      @requests ||= own_requests.reject(&:activity?)
     end
 
     def activities

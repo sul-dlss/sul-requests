@@ -57,18 +57,22 @@ module Aeon
                         end
     end
 
-    def activities_to_update # rubocop:disable Metrics/AbcSize
-      activities = requests_to_update.reject { |r1, r2| r1.activity_id == r2.activity_id }
-                                     .flat_map { |r1, r2| [r1.activity, r2.activity] }
-                                     .flatten
-                                     .compact.uniq(&:id)
-                                     .map do |activity|
-        activity.tap do |appt|
-          appt.requests = next_requests.for_activity(activity)
-        end
-      end
+    def activities_to_update
+      requests_to_update.select { |r1, r2| activity_display_affected?(r1, r2) }
+                        .flat_map { |r1, r2| [r1.activity, r2.activity] }
+                        .flatten
+                        .compact.uniq(&:id).map do |activity|
+                          activity.tap do |appt|
+                            appt.requests = next_requests.for_activity(activity)
+                          end
+                        end
+    end
 
-      activities.select { |activity| activity.requests.none? }
+    private
+
+    def activity_display_affected?(updated, original)
+      updated.activity_id != original.activity_id ||
+        (updated.activity? && updated.status != original.status)
     end
   end
 end
