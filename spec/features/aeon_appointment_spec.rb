@@ -15,7 +15,7 @@ RSpec.describe 'Appointments', :js do
   end
   let(:appointment_start_time) { 1.week.from_now }
   let(:reading_room) { StubAeonClient::ReadingRoom.find_by(name: 'Field Reading Room') }
-  let(:draft_request) do
+  let(:saved_for_later_request) do
     StubAeonClient::Request.create(
       callNumber: 'PR9195.1 .S56 NO.1',
       itemTitle: 'Slow poetry in America : a poetry quarterly',
@@ -37,7 +37,7 @@ RSpec.describe 'Appointments', :js do
   end
 
   before do
-    draft_request
+    saved_for_later_request
     submitted_request
 
     login_as(current_user)
@@ -147,7 +147,7 @@ RSpec.describe 'Appointments', :js do
     end
   end
 
-  describe 'assigning a draft request to an appointment' do
+  describe 'assigning a saved-for-later request to an appointment' do
     it 'moves the request into the appointment' do
       within '#saved_for_later_aeon_requests_sidebar' do
         click_on 'Appointment'
@@ -161,7 +161,7 @@ RSpec.describe 'Appointments', :js do
   end
 
   describe 'with multiple requests' do
-    let(:second_draft_request) do
+    let(:second_saved_for_later_request) do
       StubAeonClient::Request.create(
         callNumber: 'PR9195.1 .S56 NO.2',
         itemTitle: 'Slow poetry in America : a poetry quarterly',
@@ -172,14 +172,14 @@ RSpec.describe 'Appointments', :js do
     end
 
     before do
-      second_draft_request
+      second_saved_for_later_request
     end
 
-    describe 'assigning a draft request to an appointment' do
+    describe 'assigning a saved-for-later request to an appointment' do
       it 'moves the request into the appointment' do # rubocop:disable RSpec/ExampleLength
         visit aeon_appointments_path
         within '#saved_for_later_aeon_requests_sidebar' do
-          within "#aeon_request_#{draft_request.id}" do
+          within "#aeon_request_#{saved_for_later_request.id}" do
             click_on 'Appointment'
           end
           expect(page).to have_text("#{I18n.l(1.week.from_now, format: :date_only)} 1 item")
@@ -192,7 +192,7 @@ RSpec.describe 'Appointments', :js do
         end
 
         within '#saved_for_later_aeon_requests_sidebar' do
-          within "#aeon_request_#{second_draft_request.id}" do
+          within "#aeon_request_#{second_saved_for_later_request.id}" do
             click_on 'Appointment'
           end
           expect(page).to have_text("#{I18n.l(1.week.from_now, format: :date_only)} 2 items")
@@ -207,7 +207,7 @@ RSpec.describe 'Appointments', :js do
           expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
           expect(page).to have_text('Item limit: 3/10')
 
-          within "#aeon_request_#{second_draft_request.id}" do
+          within "#aeon_request_#{second_saved_for_later_request.id}" do
             click_on 'Save for later'
           end
         end
@@ -215,6 +215,51 @@ RSpec.describe 'Appointments', :js do
         within '#saved_for_later_aeon_requests_sidebar' do
           expect(page).to have_text('Slow poetry in America')
         end
+      end
+    end
+  end
+
+  describe 'reaching the appointment item limit' do
+    let(:third_saved_for_later_request) do
+      StubAeonClient::Request.create(
+        callNumber: 'PR9195.1 .S56 NO.3',
+        itemTitle: 'Slow poetry in America : a poetry quarterly',
+        username: aeon_user.username,
+        webRequestForm: 'multiple',
+        site: 'SPECUA'
+      )
+    end
+
+    before do
+      # Lower the SPECUA limit so assigning one saved-for-later request pushes
+      # the appointment (which already has submitted_request in it) to its cap.
+      allow(Settings.aeon.item_limits).to receive(:[]).and_call_original
+      allow(Settings.aeon.item_limits).to receive(:[]).with('SPECUA').and_return(2)
+
+      third_saved_for_later_request
+      visit aeon_appointments_path
+    end
+
+    it "disables the appointment in every other request's picker once it is full" do
+      date_label = I18n.l(1.week.from_now, format: :date_only).to_s
+
+      within '#saved_for_later_aeon_requests_sidebar' do
+        within "#aeon_request_#{saved_for_later_request.id}" do
+          click_on 'Appointment'
+        end
+        expect(page).to have_text("#{date_label} 1 item")
+        click_on date_label
+      end
+
+      within '#aeon_appointments' do
+        expect(page).to have_text('Item limit: 2/2')
+      end
+
+      within '#saved_for_later_aeon_requests_sidebar' do
+        within "#aeon_request_#{third_saved_for_later_request.id}" do
+          click_on 'Appointment'
+        end
+        expect(page).to have_button(text: /#{Regexp.escape(date_label)}.*2 items/, disabled: true)
       end
     end
   end
