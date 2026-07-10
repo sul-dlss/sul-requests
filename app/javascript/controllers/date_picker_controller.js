@@ -196,18 +196,22 @@ export default class extends Controller {
 
     // Fallback: if focusedValue is outside this month or disabled, use the first enabled day
     let focusedBtn = this.gridTarget.querySelector("button[tabindex='0']")
+
     if (!focusedBtn || focusedBtn.disabled) {
       focusedBtn = this.gridTarget.querySelector("button:not(:disabled)")
       if (focusedBtn) {
         focusedBtn.tabIndex = 0
         this.focusedValue = focusedBtn.dataset.datePickerDateParam
       }
+    } else if(!focusedBtn.disabled) {
+      // make sure we keep focus on the button.
+      // This will go away during fetchMonthAvailability because focusedValue/focusedBtn is already set
+      focusedBtn?.focus({ focusVisible: true })
     }
 
     this.#isPrevNextDisabled()
     this.#fetchMonthAvailability(year, month)
     this.#fetchMonthAvailability(...this.#nextMonth(year, month))
-    this.#updateAvailabilityStatus()
   }
 
   // --- private ---
