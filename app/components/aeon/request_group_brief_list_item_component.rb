@@ -9,7 +9,7 @@ module Aeon
 
     def initialize(request: [], after_request_item_component: nil, additional_classes: [])
       @after_request_item_component = after_request_item_component
-      @classes = %w[request list-group-item] + Array(additional_classes)
+      @classes = %w[request list-group-item py-1] + Array(additional_classes)
       @request = request
     end
   end
