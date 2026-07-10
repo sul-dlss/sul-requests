@@ -454,6 +454,11 @@ summary .disclosure-icon::before {
   align-items: center;
 }
 
+/* Don't show delete icon for save for later when there is no item selector */
+.accordion:not(:has(#items-accordion)) .saved-for-later-remove {
+  display: none;
+}
+
 #reading:has(.appointments-item:only-child):not(:has(.saved-item)),
 #reading:not(:has(.appointments-item)),
 #pickup:has(.appointments-item:only-child):not(:has(.saved-item)) {
