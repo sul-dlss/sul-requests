@@ -210,3 +210,38 @@ input[type="radio"] {
 .progress-bar.text-bg-danger {
   --bs-danger-rgb: var(--stanford-digital-red-light-rgb);
 }
+
+.btn-cardinal {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: rgba(var(--stanford-cardinal-rgb), 1);
+  --bs-btn-border-color: rgba(var(--stanford-cardinal-rgb), 1);
+
+  --bs-btn-hover-bg: var(--stanford-digital-red-dark);
+  --bs-btn-hover-border-color: var(--stanford-digital-red-dark);
+  --bs-btn-active-bg: var(--stanford-digital-red-darker);
+  --bs-btn-active-border-color: var(--stanford-digital-red-darker);
+
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: rgba(var(--stanford-cardinal-rgb), 1);
+  --bs-btn-disabled-border-color: rgba(var(--stanford-cardinal-rgb), 1);
+  --bs-btn-disabled-opacity: 0.65;
+}
+
+.btn-outline-cardinal {
+  --bs-btn-border-color: var(--stanford-cardinal);
+  --bs-btn-color: var(--stanford-cardinal);
+  --bs-btn-hover-color: var(--stanford-digital-red-dark);
+  --bs-btn-hover-border-color: var(--stanford-digital-red-dark);
+  --bs-btn-active-border-color: var(--stanford-digital-red-darker);
+  --bs-btn-active-color: var(--stanford-digital-red-darker);
+
+  --bs-btn-disabled-bg: white;
+  --bs-btn-hover-bg: white;
+  --bs-btn-active-bg: white;
+  --bs-btn-bg: white;
+}
+
+.btn-cardinal + .dropdown-menu,
+.btn-outline-cardinal + .dropdown-menu {
+  --bs-dropdown-link-active-bg: var(--stanford-cardinal);
+}
