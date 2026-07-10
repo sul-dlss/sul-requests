@@ -33,6 +33,4 @@
     </nav>
   </div>
 </div>
-<div id="feedback-form" class="feedback-form-container collapse">
-    <%= render template: 'feedback_forms/new' unless current_page?(feedback_form_path) %>
-</div>
+<%= render 'feedback_forms/modal' unless current_page?(feedback_form_path) %>
