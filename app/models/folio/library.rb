@@ -24,7 +24,15 @@ module Folio
     end
 
     def contact_info
-      Settings.libraries[code]&.contact_info
+      settings_data&.contact_info
+    end
+
+    def hours_codes
+      settings_data&.hours&.to_h
+    end
+
+    def settings_data
+      Settings.libraries[code]
     end
 
     def to_h
