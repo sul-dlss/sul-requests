@@ -973,9 +973,13 @@ summary .disclosure-icon::before {
   min-height: 196px;
 }
 
+.group-brief-card .request {
+  --bs-list-group-item-padding-x: 0;
+}
 
 .request.flash-on-add {
   border-radius: 4px;
+  --bs-list-group-item-padding-x: 0.25rem;
   box-shadow: inset 0px 0px 0px 0.5px rgb(var(--stanford-digital-green-rgb)), inset 0px 0px 0px 50px rgb(235, 243, 241);
   animation: slideUp 0.5s ease-out forwards,
              flash 1s ease-out 4s forwards;
@@ -1002,10 +1006,12 @@ summary .disclosure-icon::before {
 @keyframes flash {
   from {
     border-radius: 4px;
+    --bs-list-group-item-padding-x: 0.25rem;
     box-shadow: inset 0px 0px 0px 0.5px rgb(var(--stanford-digital-green-rgb)), inset 0px 0px 0px 50px rgb(235, 243, 241);
   }
   to {
     border-radius: 0px;
+    --bs-list-group-item-padding-x: 0;
     box-shadow: inset 0px 0px 0px 0px transparent, inset 0px 0px 0px 0px transparent;
   }
 }
