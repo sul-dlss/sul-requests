@@ -219,6 +219,51 @@ RSpec.describe 'Appointments', :js do
     end
   end
 
+  describe 'reaching the appointment item limit' do
+    let(:third_saved_for_later_request) do
+      StubAeonClient::Request.create(
+        callNumber: 'PR9195.1 .S56 NO.3',
+        itemTitle: 'Slow poetry in America : a poetry quarterly',
+        username: aeon_user.username,
+        webRequestForm: 'multiple',
+        site: 'SPECUA'
+      )
+    end
+
+    before do
+      # Lower the SPECUA limit so assigning one saved-for-later request pushes
+      # the appointment (which already has submitted_request in it) to its cap.
+      allow(Settings.aeon.item_limits).to receive(:[]).and_call_original
+      allow(Settings.aeon.item_limits).to receive(:[]).with('SPECUA').and_return(2)
+
+      third_saved_for_later_request
+      visit aeon_appointments_path
+    end
+
+    it "disables the appointment in every other request's picker once it is full" do
+      date_label = I18n.l(1.week.from_now, format: :date_only).to_s
+
+      within '#saved_for_later_aeon_requests_sidebar' do
+        within "#aeon_request_#{draft_request.id}" do
+          click_on 'Appointment'
+        end
+        expect(page).to have_text("#{date_label} 1 item")
+        click_on date_label
+      end
+
+      within '#aeon_appointments' do
+        expect(page).to have_text('Item limit: 2/2')
+      end
+
+      within '#saved_for_later_aeon_requests_sidebar' do
+        within "#aeon_request_#{third_saved_for_later_request.id}" do
+          click_on 'Appointment'
+        end
+        expect(page).to have_button(text: /#{Regexp.escape(date_label)}.*2 items/, disabled: true)
+      end
+    end
+  end
+
   describe 'delete appointment modal' do
     it 'moves requests into saved for later' do
       click_on 'Delete appointment'
