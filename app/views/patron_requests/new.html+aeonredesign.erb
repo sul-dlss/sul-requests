@@ -191,9 +191,9 @@
   <li class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center saved-item border-bottom py-1">
     <span data-role="title"></span>
     <div class="text-nowrap">
-      <button class="su-underline btn btn-link fs-14 ps-0" data-action="save-for-later#restore">Undo</button>
-      <button class="btn btn-link p-0 ps-1" data-action="item-selector#remove" aria-label="Delete __TITLE__" data-item-selector-id-param="__ID__">
-        <i class="bi bi-trash"></i>
+      <button class="su-underline btn btn-link fs-14 ps-0 text-nowrap" data-action="save-for-later#restore">Undo</button>
+      <button class="btn btn-link p-0 ps-1 fs-14 saved-for-later-remove" data-action="item-selector#remove" aria-label="Delete __TITLE__" data-item-selector-id-param="__ID__">
+        <i class="bi bi-trash"></i><span class="visually-hidden">Delete __TITLE__</span>
       </button>
     </div>
   </li>
