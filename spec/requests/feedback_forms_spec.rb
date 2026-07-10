@@ -24,6 +24,17 @@ RSpec.describe 'FeedbackForm', type: :feature do
       expect(page).to have_text 'Send feedback'
       expect(page).to have_no_css '.requests-captcha'
     end
+  end
+
+  context 'when opening the feedback modal from the header', :js do
+    before { stub_current_user(user) }
+
+    it 'opens the modal when the header Feedback link is clicked' do
+      visit root_path
+      click_on 'Feedback'
+      expect(page).to have_css('#feedback-form.modal.show', visible: :visible)
+      expect(page).to have_css('.modal-title', text: 'Send Feedback')
+    end
 
     # TODO_SW_2024: Wait for page after homepage to be created to add
     # it 'feedback form should be shown filled out and submitted' do
