@@ -90,7 +90,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       site: patron_request.aeon_site,
       special_request: if patron_request.request_type == 'scan'
                          volume_params['additional_information']
-                       else
+                       elsif volume_params['appointment_id'].present?
                          patron_request.aeon_reading_special
                        end,
       username: patron_request.user.aeon.username,
