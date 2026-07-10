@@ -1,5 +1,6 @@
+<% reporting_url = request.referer %>
 <h1 class="mt-2 mx-3">Send feedback</h1>
 <div class="bg-stanford-10-black py-1 px-2 my-0 mx-3">
-  Reporting from: <span class="reporting-from-field"><%= request.referer %></span>
+  Reporting from: <span class="reporting-from-field"><%= reporting_url %></span>
 </div>
-<%= render 'feedback_forms/form', close_button: false %>
+<%= render 'feedback_forms/form', close_button: false, reporting_url: reporting_url %>

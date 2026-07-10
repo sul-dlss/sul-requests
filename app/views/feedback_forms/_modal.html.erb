@@ -10,10 +10,10 @@
   <% end %>
   <% component.with_banner do %>
     <div class="bg-stanford-10-black py-1 px-3">
-      Reporting from: <span class="reporting-from-field"><%= request.referer %></span>
+      Reporting from: <span class="reporting-from-field"><%= request.original_url %></span>
     </div>
   <% end %>
   <% component.with_body(classes: []) do %>
-    <%= render 'feedback_forms/form' %>
+    <%= render 'feedback_forms/form', reporting_url: request.original_url %>
   <% end %>
 <% end %>
