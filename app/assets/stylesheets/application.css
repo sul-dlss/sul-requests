@@ -1011,3 +1011,8 @@ button:has(.submit-message) {
 .dropdown-toggle:has(.submit-message)::after {
   display: none;
 }
+
+
+#reading:not(:has(.appointments-item)) #additional-information  {
+  display: none;
+}

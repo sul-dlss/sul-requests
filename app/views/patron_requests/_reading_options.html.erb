@@ -27,7 +27,7 @@
     </template>
   </div>
 
-  <div class="mb-2" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
+  <div class="mb-2" id="additional-information" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
     <%= f.label :aeon_reading_special, 'Additional information', :class => 'fw-bold py-2' %>
     <%= f.text_area :aeon_reading_special, :class => 'form-control', rows: 3, maxlength: 255, data: { action: "input->char-counter#updateCharCounter"} %>
     <p class="form-text text-secondary d-flex justify-content-between">
