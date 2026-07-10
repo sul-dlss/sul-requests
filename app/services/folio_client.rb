@@ -455,6 +455,10 @@ class FolioClient
     authenticated_request(path, method: :post, **)
   end
 
+  def put(path, **)
+    authenticated_request(path, method: :put, **)
+  end
+
   def get_json(path, **)
     parse_json(get(path, **))
   end
