@@ -55,6 +55,7 @@ export default class extends Controller {
     this.sectionTargets.forEach(section => {
       const savedForLaterList = section.querySelector('[data-save-for-later-target="list"]')
       const savedItem = savedForLaterList.querySelector(`[data-content-id="${id}"]`);
+      if (!savedItem) return;
       const template = savedItem.querySelector('template')
       const rehydratedItem = document.importNode(template.content, true)
       const selectedItemList = section.querySelector('[data-item-selector-target="selectedItems"]')
