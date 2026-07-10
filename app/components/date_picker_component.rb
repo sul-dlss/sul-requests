@@ -1,37 +1,27 @@
 # frozen_string_literal: true
 
-# Renders the custom Stimulus date-picker for the appointment date field.
+# Renders the custom Stimulus date picker. A DatePicker::Schedule supplies the
+# domain-specific window, open days, closures, and (optionally) an availability
+# URL the picker probes per visible month.
 #
 # Usage:
 #   <%= render DatePickerComponent.new(:date, form: f) %>
 #   <%= render DatePickerComponent.new(:date, form: f,
-#             data: { 'date-picker-disabled-value': ['2026-05-01'], 'date-picker-marked-value': ['2026-05-10'] }) %>
+#             schedule: DatePicker::LibrarySchedule.new(library: pickup.library)) %>
 class DatePickerComponent < ViewComponent::Base
-  attr_reader :key, :form, :data
+  attr_reader :key, :form, :data, :schedule
 
-  def initialize(key, form: nil, data: {})
+  def initialize(key, form: nil, data: {}, schedule: DatePicker::Schedule.new)
     @key = key
     @form = form
     @data = data
-  end
-
-  def open_days
-    Date::DAYNAMES
-  end
-
-  def min
-    Time.zone.today.iso8601
-  end
-
-  # TODO: See if this is right or if we want fewer years
-  def max
-    (Time.zone.today + 3.years).iso8601
+    @schedule = schedule
   end
 
   def lead_time
-    return unless max
+    return unless schedule.max
 
-    days = (max.to_date - Time.zone.today).to_i
+    days = (schedule.max.to_date - Time.zone.today).to_i
     if days < 365
       pluralize(days, 'day')
     else
@@ -39,12 +29,14 @@ class DatePickerComponent < ViewComponent::Base
     end
   end
 
-  def controller_data
-    data.merge(controller: "date-picker #{data[:controller]}").reverse_merge(
-      'date-picker-min-value': min,
-      'date-picker-max-value': max,
-      'date-picker-open-days-value': open_days,
-      'date-picker-today-value': Time.zone.today.iso8601
-    )
+  def controller_data # rubocop:disable Metrics/AbcSize
+    data.merge(controller: "date-picker #{data[:controller]}".strip).reverse_merge(
+      'date-picker-today-value': Time.zone.today.iso8601,
+      'date-picker-min-value': schedule.min,
+      'date-picker-max-value': schedule.max,
+      'date-picker-open-days-value': schedule.open_days,
+      'date-picker-availability-url-value': schedule.availability_url,
+      'date-picker-disabled-value': schedule.disabled_dates.presence
+    ).compact
   end
 end

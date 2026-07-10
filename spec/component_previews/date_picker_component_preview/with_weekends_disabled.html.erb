@@ -1,0 +1,3 @@
+<%= form_with(model: Aeon::Appointment.new, url: '#') do |f| %>
+  <%= render DatePickerComponent.new(:date, form: f, data: { 'date-picker-open-days-value': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] }) %>
+<% end %>

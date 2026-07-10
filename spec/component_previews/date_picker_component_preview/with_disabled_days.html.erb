@@ -7,5 +7,5 @@
   disabled = (individual + range).map(&:iso8601)
 %>
 <%= form_with(model: Aeon::Appointment.new, url: '#') do |f| %>
-  <%= render Aeon::AppointmentDatePickerComponent.new(:date, form: f, data: { 'date-picker-disabled-value': disabled }) %>
+  <%= render DatePickerComponent.new(:date, form: f, data: { 'date-picker-disabled-value': disabled }) %>
 <% end %>
