@@ -929,7 +929,6 @@ summary .disclosure-icon::before {
   }
 
   .request-item-identifier {
-    margin-left: 1rem;
     padding: 0.25rem 0.5rem;
   }
 }
@@ -965,31 +964,37 @@ summary .disclosure-icon::before {
   min-height: 196px;
 }
 
-.request.list-group-item {
-  --border-top: 1px solid var(--stanford-20-black);
-  --border-side-bottom: 0;
-  border: var(--border-side-bottom);
-  border-top: var(--border-top);
+
+.request.flash-on-add {
+  box-shadow: inset 0px 0px 0px 0.5px rgb(var(--stanford-digital-green-rgb)), inset 0px 0px 0px 50px rgb(235, 243, 241);
+  animation: slideUp 0.5s ease-out forwards,
+             flash 1s ease-out 4s forwards;
 }
 
-.request.list-group-item.flash-on-add {
-  background-color: rgb(235, 243, 241);
-  --border-side-bottom: 0.5px solid rgb(var(--stanford-digital-green-rgb));
-  --border-top: 0.5px solid rgb(var(--stanford-digital-green-rgb));
-  animation: flash 1s ease forwards;
-  animation-delay: 4s;
+.appointment .request.flash-on-add {
+  margin-inline-start: -1rem;
+  margin-inline-end: -1rem;
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes flash {
   from {
-    background-color: rgb(235, 243, 241);
-    --border-side-bottom: 0.5px solid rgb(var(--stanford-digital-green-rgb));
-    --border-top: 0.5px solid rgb(var(--stanford-digital-green-rgb));
+    box-shadow: inset 0px 0px 0px 0.5px rgb(var(--stanford-digital-green-rgb)), inset 0px 0px 0px 50px rgb(235, 243, 241);
   }
   to {
-    background-color: transparent;
-    --border-side-bottom: 0;
-    --border-top: 1px solid var(--stanford-20-black);
+    box-shadow: inset 0px 0px 0px 0px transparent, inset 0px 0px 0px 0px transparent;
   }
 }
 
