@@ -6,7 +6,7 @@ module Aeon
     attr_reader :title, :dom_id, :object, :base_name, :appointments
 
     def initialize(title:, dom_id:, object: nil, base_name: nil, reading_room_id: nil, appointments: []) # rubocop:disable Metrics/ParameterLists
-      @title = title
+      @title = title.presence || '(no call number)'
       @dom_id = dom_id
       @object = object
       @base_name = base_name || "item[#{dom_id}]"
