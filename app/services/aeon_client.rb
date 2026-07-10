@@ -196,6 +196,7 @@ class AeonClient
       {
         appointmentID: appointment_id&.to_i,
         callNumber: call_number&.strip&.truncate(255, omission:),
+        documentType: document_type&.strip&.truncate(255, omission:),
         eadNumber: ead_number&.strip&.truncate(255, omission:),
         forPublication: for_publication,
         format: format&.truncate(255, omission:),
