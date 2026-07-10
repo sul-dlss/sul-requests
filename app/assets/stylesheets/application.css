@@ -966,6 +966,7 @@ summary .disclosure-icon::before {
 
 
 .request.flash-on-add {
+  border-radius: 4px;
   box-shadow: inset 0px 0px 0px 0.5px rgb(var(--stanford-digital-green-rgb)), inset 0px 0px 0px 50px rgb(235, 243, 241);
   animation: slideUp 0.5s ease-out forwards,
              flash 1s ease-out 4s forwards;
@@ -991,9 +992,11 @@ summary .disclosure-icon::before {
 
 @keyframes flash {
   from {
+    border-radius: 4px;
     box-shadow: inset 0px 0px 0px 0.5px rgb(var(--stanford-digital-green-rgb)), inset 0px 0px 0px 50px rgb(235, 243, 241);
   }
   to {
+    border-radius: 0px;
     box-shadow: inset 0px 0px 0px 0px transparent, inset 0px 0px 0px 0px transparent;
   }
 }
