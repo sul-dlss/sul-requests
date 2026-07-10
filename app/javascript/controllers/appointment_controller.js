@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["availability", "duration", "fieldset", "selection"]
+  static targets = ["availability", "duration", "fieldset", "selection", "placeholder"]
   static values = {
     availabilityRoute: String
   }
@@ -26,6 +26,8 @@ export default class extends Controller {
 
     if (!date) return;
 
+    this.updateFormStatus();
+
     const url =new URL(this.availabilityRouteValue);
     url.searchParams.append('date', date);
     url.searchParams.append('selected', startTime);
@@ -36,17 +38,7 @@ export default class extends Controller {
   }
 
   get availabilityPlaceholder() {
-    const label = document.createElement('label');
-    label.classList.add('visually-hidden-focusable', 'required-placeholder');
-    label.textContent = 'Loading avaiable appointments.';
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.classList.add('visually-hidden-focusable');
-    input.name = 'aeon_appointment[start_time]';
-    input.required = true;
-    label.appendChild(input);
-
-    return label;
+    return this.placeholderTarget.content.cloneNode(true);
   }
 
   updateBanner() {
@@ -80,12 +72,10 @@ export default class extends Controller {
   }
 
   updateFormStatus() {
-  const formData = new FormData(this.element);
-    if (!formData.get('aeon_appointment[duration]') || !formData.get('aeon_appointment[date]')) {
-      this.availabilityTarget.classList.add('form-incomplete');
-    } else {
-      this.availabilityTarget.classList.remove('form-incomplete');
-    }
+    const formData = new FormData(this.element);
+    const hasDate = !!formData.get('aeon_appointment[date]');
+    const hasDuration = !!formData.get('aeon_appointment[duration]');
+    this.availabilityTarget.classList.toggle('form-incomplete', !hasDate || !hasDuration);
   }
 
   applyDurationFilter() {

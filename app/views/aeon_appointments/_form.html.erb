@@ -54,22 +54,11 @@
         </p>
       <% end %>
       <turbo-frame id="available_appointments" <% unless @appointment.id %>class="form-incomplete"<% end %> data-action="turbo:frame-load->appointment#applyDurationFilter turbo:frame-load->appointment#filterDurationFields" data-appointment-target="availability" src="<%= available_aeon_reading_room_url(@appointment.reading_room_id, date: (@appointment.date unless @appointment.persisted?), duration: @appointment.duration, appointment_id: @appointment.id, selected: (l(@appointment.start_time, format: :time_only) if @appointment.start_time)) if @appointment.reading_room_id %>">
-        <fieldset class="mb-3 radio-button-group">
-          <legend class="fs-6 fw-semibold redesign-required-label">Available time slots</legend>
-          <% if @appointment.reading_room_id && @appointment.date %>
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          <% end %>
-        </fieldset>
-
-        <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
-        <div class="selection-message">Select a date and duration to see available appointments.</div>
-        <label class="visually-hidden-focusable required-placeholder">
-          Loading avaiable appointments.
-          <%= f.text_field :start_time, class: 'visually-hidden-focusable', required: true %>
-        </label>
+        <%= render 'availability_loading', f: f %>
       </turbo-frame>
+      <template data-appointment-target="placeholder">
+        <%= render 'availability_loading', f: f %>
+      </template>
     <% end %>
     <% if @appointment.requests.any? %>
       <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'w-fit'], with_icon: false) do %>
