@@ -15,7 +15,7 @@ RSpec.describe 'Appointments', :js do
   end
   let(:appointment_start_time) { 1.week.from_now }
   let(:reading_room) { StubAeonClient::ReadingRoom.find_by(name: 'Field Reading Room') }
-  let(:draft_request) do
+  let(:saved_for_later_request) do
     StubAeonClient::Request.create(
       callNumber: 'PR9195.1 .S56 NO.1',
       itemTitle: 'Slow poetry in America : a poetry quarterly',
@@ -37,7 +37,7 @@ RSpec.describe 'Appointments', :js do
   end
 
   before do
-    draft_request
+    saved_for_later_request
     submitted_request
 
     login_as(current_user)
@@ -147,7 +147,7 @@ RSpec.describe 'Appointments', :js do
     end
   end
 
-  describe 'assigning a draft request to an appointment' do
+  describe 'assigning a saved-for-later request to an appointment' do
     it 'moves the request into the appointment' do
       within '#saved_for_later_aeon_requests_sidebar' do
         click_on 'Appointment'
@@ -161,7 +161,7 @@ RSpec.describe 'Appointments', :js do
   end
 
   describe 'with multiple requests' do
-    let(:second_draft_request) do
+    let(:second_saved_for_later_request) do
       StubAeonClient::Request.create(
         callNumber: 'PR9195.1 .S56 NO.2',
         itemTitle: 'Slow poetry in America : a poetry quarterly',
@@ -172,14 +172,14 @@ RSpec.describe 'Appointments', :js do
     end
 
     before do
-      second_draft_request
+      second_saved_for_later_request
     end
 
-    describe 'assigning a draft request to an appointment' do
+    describe 'assigning a saved-for-later request to an appointment' do
       it 'moves the request into the appointment' do # rubocop:disable RSpec/ExampleLength
         visit aeon_appointments_path
         within '#saved_for_later_aeon_requests_sidebar' do
-          within "#aeon_request_#{draft_request.id}" do
+          within "#aeon_request_#{saved_for_later_request.id}" do
             click_on 'Appointment'
           end
           expect(page).to have_text("#{I18n.l(1.week.from_now, format: :date_only)} 1 item")
@@ -192,7 +192,7 @@ RSpec.describe 'Appointments', :js do
         end
 
         within '#saved_for_later_aeon_requests_sidebar' do
-          within "#aeon_request_#{second_draft_request.id}" do
+          within "#aeon_request_#{second_saved_for_later_request.id}" do
             click_on 'Appointment'
           end
           expect(page).to have_text("#{I18n.l(1.week.from_now, format: :date_only)} 2 items")
@@ -207,7 +207,7 @@ RSpec.describe 'Appointments', :js do
           expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
           expect(page).to have_text('Item limit: 3/10')
 
-          within "#aeon_request_#{second_draft_request.id}" do
+          within "#aeon_request_#{second_saved_for_later_request.id}" do
             click_on 'Save for later'
           end
         end
@@ -244,7 +244,7 @@ RSpec.describe 'Appointments', :js do
       date_label = I18n.l(1.week.from_now, format: :date_only).to_s
 
       within '#saved_for_later_aeon_requests_sidebar' do
-        within "#aeon_request_#{draft_request.id}" do
+        within "#aeon_request_#{saved_for_later_request.id}" do
           click_on 'Appointment'
         end
         expect(page).to have_text("#{date_label} 1 item")
