@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <%= link_to 'Cancel', :back, class: 'btn btn-outline-primary', data: { dismiss: 'modal' } if request.variant.include?(:modal) %>
+    <%= link_to 'Cancel', :back, class: 'btn btn-outline-primary', data: { 'bs-dismiss': 'modal' } if request.variant.include?(:modal) %>
     <%= button_tag 'Submit request', class: 'btn btn-primary', type: 'submit', data: { 'bs-dismiss': 'modal' } %>
   </div>
 <% end %>
