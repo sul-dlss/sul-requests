@@ -1,0 +1,7 @@
+<%= turbo_stream.replace(dom_id(@request, :no_changes)) do %>
+<!-- no change needed until we display the data-->
+<% end %>
+
+<% if params[:cancel] %>
+  <%= turbo_stream.remove(dom_id(@request)) %>
+<% end %>
