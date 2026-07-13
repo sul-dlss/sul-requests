@@ -45,7 +45,7 @@ class FolioRequestsController < ApplicationController
     handle_change_pickup_expiration if params['not_needed_after'].present? &&
                                        params['not_needed_after'] != params['current_fill_by_date']
 
-    redirect_to folio_requests_path(group: params[:group])
+    redirect_to folio_requests_path
   end
 
   # Handles form submission for canceling requests/holds/etc in FOLIO
@@ -61,7 +61,7 @@ class FolioRequestsController < ApplicationController
       flash[:error] = t 'mylibrary.request.cancel.error_html', title: params['title']
     end
 
-    redirect_to folio_requests_path(group: params[:group])
+    redirect_to folio_requests_path
   end
 
   private
@@ -110,6 +110,6 @@ class FolioRequestsController < ApplicationController
   def deny_access
     flash[:error] = 'An unexpected error has occurred'
 
-    redirect_to folio_requests_path(group: params[:group])
+    redirect_to folio_requests_path
   end
 end

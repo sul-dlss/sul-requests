@@ -97,16 +97,6 @@ RSpec.describe FolioRequestsController do
         end
       end
 
-      context 'with a group request' do
-        let(:mock_client) { instance_double(FolioClient, change_pickup_service_point: api_response, ping: true) }
-
-        it 'renews the item and redirects to folio_requests_path' do
-          patch :update, params: { id: '123', service_point: 'Other library', group: true }
-
-          expect(response).to redirect_to folio_requests_path(group: true)
-        end
-      end
-
       context "when the request key does not match any of the patron's requests" do
         it 'does not renew the item and sets flash messages' do
           patch :update, params: { id: 'some_other_request_key' }
@@ -158,14 +148,6 @@ RSpec.describe FolioRequestsController do
           delete :destroy, params: { id: '123' }
           expect(response).to redirect_to folio_requests_path
         end
-      end
-    end
-
-    context 'with a group request' do
-      it 'renews the item and redirects to folio_requests_path' do
-        delete :destroy, params: { id: '123', group: true }
-
-        expect(response).to redirect_to folio_requests_path(group: true)
       end
     end
 
