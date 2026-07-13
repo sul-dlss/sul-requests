@@ -50,7 +50,7 @@ RSpec.describe FolioRequestsController do
       let(:api_response) { instance_double(Faraday::Response, status: 204) }
 
       let(:requests) do
-        [instance_double(Folio::Request, key: '123', sort_key: nil)]
+        [instance_double(Folio::Request, key: '123', sort_key: nil, record: {})]
       end
 
       let(:mock_client) { instance_double(FolioClient, ping: true) }

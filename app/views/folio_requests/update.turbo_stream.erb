@@ -1,3 +1,3 @@
-<%= turbo_stream.replace(dom_id(@request, :no_changes)) do %>
-<!-- no change needed until we display the data-->
+<%= turbo_stream.replace(dom_id(@request)) do %>
+  <%= render Folio::RequestComponent.new(request: @request, patron: patron_or_group) %>
 <% end %>

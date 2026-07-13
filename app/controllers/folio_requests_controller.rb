@@ -80,12 +80,15 @@ class FolioRequestsController < ApplicationController
   end
 
   def handle_change_pickup_service_point(ils_client: FolioClient.new)
-    response_flash_message(response: ils_client.change_pickup_service_point(@request.key, service_point_param),
+    response = ils_client.change_pickup_service_point(@request.key, service_point_param)
+    response_flash_message(response: response,
                            translation_key: 'change_pickup_service_point')
+    @request.record.merge!('pickupLocationId' => service_point_param) if response.status == 204
   end
 
   def handle_change_pickup_expiration(ils_client: FolioClient.new)
-    response_flash_message(response: ils_client.change_pickup_expiration(@request.key, pickup_expiration_param),
+    response = ils_client.change_pickup_expiration(@request.key, pickup_expiration_param)
+    response_flash_message(response: response,
                            translation_key: 'change_pickup_expiration')
   end
 

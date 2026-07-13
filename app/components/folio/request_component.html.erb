@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <div class="rgi-actions d-flex text-nowrap align-items-baseline justify-content-xl-end">
+      <div class="rgi-actions d-flex text-nowrap align-items-baseline justify-content-xl-end" data-turbo-prefetch="false">
         <% if patron.can_modify_requests? %>
           <% unless request.ready_for_pickup? %>
             <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open', modal_header: 'Edit request' } do %>
