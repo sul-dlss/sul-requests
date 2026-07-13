@@ -15,15 +15,6 @@
         <%= date_field_tag :not_needed_after, @request.fill_by_date.strftime('%Y-%m-%d'), class: 'form-control' %>
       </div>
     <% end %>
-    <div class="form-group pb-3">
-      <div class="form-text">
-        Cancel this request
-      </div>
-      <div class="form-check ml-3">
-        <%= check_box_tag :cancel, 'cancel', false, class: 'form-check-input' %>
-        <%= label_tag :cancel, 'I no longer need this item', class: 'form-check-label' %>
-      </div>
-    </div>
   </div>
   <div class="modal-footer">
     <%= link_to 'Cancel', :back, class: 'btn btn-outline-primary', data: { dismiss: 'modal' } if request.variant.include?(:modal) %>
