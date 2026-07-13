@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe CheckoutsController do
   let(:user) { CurrentUser.new(username: 'somesunetid', patron_key: '513a9054-5897-11ee-8c99-0242ac120002', shibboleth: true) }
-  let(:mock_patron) { instance_double(Folio::Patron, key: '513a9054-5897-11ee-8c99-0242ac120002', checkouts:, all_checkouts: checkouts) }
+  let(:mock_patron) { instance_double(Folio::Patron, key: '513a9054-5897-11ee-8c99-0242ac120002', checkouts: checkouts) }
   let(:mock_client) { instance_double(FolioClient, ping: true) }
   let(:checkouts) { [] }
 

@@ -17,7 +17,7 @@ module Folio
     end
 
     def checkouts
-      sponsor.all_checkouts.select(&:proxy_checkout?)
+      sponsor.checkouts.select(&:proxy_checkout?)
     end
 
     def requests

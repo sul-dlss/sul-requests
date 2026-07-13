@@ -228,13 +228,8 @@ module Folio
       all_accounts.select(&:closed?)
     end
 
-    def all_checkouts
-      @all_checkouts ||= patron_graphql_response['loans']&.map { |checkout| Checkout.new(checkout, patron_group_id) }
-    end
-
-    # Self checkouts
     def checkouts
-      all_checkouts.reject(&:proxy_checkout?) || []
+      @checkouts ||= patron_graphql_response['loans']&.map { |checkout| Checkout.new(checkout, patron_group_id) } || []
     end
 
     # this is all requests including self and group/proxy
@@ -244,7 +239,7 @@ module Folio
 
     # Self requests from FOLIO
     def requests
-      @requests ||= folio_requests.reject(&:proxy_request?)
+      @requests ||= folio_requests
     end
 
     # ILLIAD requests are retrieved separately
