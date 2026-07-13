@@ -8,6 +8,7 @@ class FolioRequestsController < ApplicationController
 
   before_action :load_requests
   before_action :load_request, except: [:index]
+  before_action :set_variant, only: [:edit]
 
   rescue_from RequestException, with: :deny_access
 
@@ -64,6 +65,10 @@ class FolioRequestsController < ApplicationController
   end
 
   private
+
+  def set_variant
+    request.variant = :modal if params[:modal]
+  end
 
   def load_requests
     @requests = patron_or_group.requests.sort_by { |request| request.sort_key(:date) }
