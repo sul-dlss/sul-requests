@@ -33,7 +33,7 @@ class SiteAbility
       can :toggle, :feature_flags
     end
 
-    can :toggle, :feature_flags if Settings.feature_flag_groups.any? { |v| user.ldap_groups.include?(v) }
+    can :toggle, :feature_flags if Settings.feature_flag_groups.intersect?(user.ldap_groups)
 
     # Adminstrators for origins or destinations should be able to
     # manage requests originating or arriving to their library.
