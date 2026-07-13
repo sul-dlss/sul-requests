@@ -8,7 +8,16 @@ RSpec.describe 'Renew item', :js do
   include ActiveSupport::Testing::TimeHelpers
 
   let(:mock_client) { instance_double(FolioClient, ping: true, find_effective_loan_policy: {}) }
-  let(:patron) do
+  let(:patron) { patron_with_a_single_checkout }
+
+  let(:patron_with_a_single_checkout) do
+    loans = sponsor_patron.send(:patron_graphql_response).fetch('loans').first(1)
+    patron_graphql_response = sponsor_patron.send(:patron_graphql_response).merge('loans' => loans)
+
+    Folio::Patron.new(patron_graphql_response:)
+  end
+
+  let(:sponsor_patron) do
     build(:sponsor_patron)
   end
 

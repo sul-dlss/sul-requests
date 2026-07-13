@@ -72,7 +72,6 @@ module Folio
       true
     end
 
-    def all_checkouts = []
     def checkouts = []
     def all_accounts = []
     def fines = []

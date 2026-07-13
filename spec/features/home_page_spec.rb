@@ -64,7 +64,7 @@ RSpec.describe 'Home Page' do
 
       expect(page).to have_css('.card', count: 7)
       expect(page).to have_css('.card', text: 'Pickup requests')
-      expect(page).to have_css('.card', text: '1 item currently loaned')
+      expect(page).to have_css('.card', text: '3 items currently loaned')
       expect(page).to have_css('.card', text: 'Digitization requests')
     end
 

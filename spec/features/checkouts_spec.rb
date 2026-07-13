@@ -32,7 +32,7 @@ RSpec.describe 'Checkout Page' do
     visit checkouts_path
 
     expect(page).to have_css('ul.checkouts-list', count: 1)
-    expect(page).to have_css('ul.checkouts-list li', count: 1)
+    expect(page).to have_css('ul.checkouts-list li', count: 3)
 
     within(first('ul.checkouts-list li')) do
       expect(page).to have_text(/Blue-collar Broadway/)
@@ -87,7 +87,7 @@ RSpec.describe 'Checkout Page' do
       visit checkouts_path
 
       expect(page).to have_css('ul.checkouts-list', count: 1)
-      expect(page).to have_css('ul.checkouts-list li', count: 1)
+      expect(page).to have_css('ul.checkouts-list li', count: 3)
 
       within(first('ul.checkouts-list li')) do
         expect(page).to have_text 'NOTE: This item must be returned to the Green Library'
