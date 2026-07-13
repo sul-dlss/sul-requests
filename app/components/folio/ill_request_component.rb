@@ -12,5 +12,9 @@ module Folio
       @patron = patron
       super()
     end
+
+    def type_label
+      request.scan_type? ? 'Digitization' : 'Pickup'
+    end
   end
 end

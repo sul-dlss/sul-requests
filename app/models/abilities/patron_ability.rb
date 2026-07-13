@@ -32,6 +32,10 @@ class PatronAbility
 
     can [:new, :create], Illiad::Request
 
+    can [:destroy], Illiad::Request do |request|
+      Settings.illiad.noncancellable_statuses.exclude?(request.status)
+    end
+
     can :create, PatronRequest do |request|
       request.selected_items.all? { |item| request.scan? ? can?(:scan, item) : can?(:request, item) }
     end

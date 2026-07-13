@@ -31,6 +31,10 @@ module Illiad
       @illiad_result = illiad_result
     end
 
+    def status
+      @illiad_result['TransactionStatus']
+    end
+
     def inactive?
       INACTIVE_REQUEST_STATUSES.include? @illiad_result['TransactionStatus']
     end
