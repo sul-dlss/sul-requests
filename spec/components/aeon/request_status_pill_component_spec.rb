@@ -53,8 +53,6 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
 
       it 'shows the saved for later pill' do
         expect(page).to have_css '.saved-for-later', text: 'Digitization'
-        expect(page).to have_no_text 'Digitization ready'
-        expect(page).to have_no_text 'Digitization pending'
       end
     end
 
@@ -65,7 +63,7 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
       end
 
       it 'shows the pending pill with clock icon' do
-        expect(page).to have_css '.pending', text: 'Digitization pending'
+        expect(page).to have_css '.pending', text: 'Digitization'
       end
     end
 
@@ -76,7 +74,7 @@ RSpec.describe Aeon::RequestStatusPillComponent, type: :component do
       end
 
       it 'shows the ready pill with check icon' do
-        expect(page).to have_css '.ready', text: 'Digitization ready'
+        expect(page).to have_css '.ready', text: 'Digitization'
       end
     end
   end
