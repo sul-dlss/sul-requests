@@ -33,7 +33,7 @@ export default class extends Controller {
     url.searchParams.append('selected', startTime);
     url.searchParams.append('duration', apptDuration);
 
-    this.availabilityTarget.replaceChildren(this.availabilityPlaceholder);
+    if (this.hasPlaceholderTarget) this.availabilityTarget.replaceChildren(this.availabilityPlaceholder);
     this.availabilityTarget.src = url.toString();
   }
 
