@@ -69,6 +69,13 @@ module Aeon
       open_hours.find { |h| h.day_of_week == date.wday }
     end
 
+    # For day-only reading rooms, the appointment range covering the room's open hours on the given date.
+    def day_only_appointment_range(date)
+      return unless day_only_appointments? && date
+
+      open_hours_on(date)&.range_on(date)
+    end
+
     # Dates where a closure covers the entire span of open hours for that day.
     def fully_closed_dates
       @fully_closed_dates ||= closures.flat_map do |closure|
@@ -119,9 +126,30 @@ module Aeon
       @next_appointment ||= available_appointments(Time.zone.now.to_date, include_next_available: true)&.first
     end
 
+    # Available appointments for a date, deconflicted against the user's other appointments in this room.
+    def deconflicted_available_appointments(date, user:, excluding_id: nil, include_next_available: false)
+      Aeon::AppointmentDeconflictionService.new(
+        available_appointments: available_appointments(date, include_next_available:),
+        existing_appointments: existing_appointments_for(user, excluding_id:)
+      ).call
+    end
+
+    # Whether Aeon has an available slot covering the given range, after deconflicting against the
+    # user's other appointments in this reading room.
+    def available_at?(range:, user:, excluding_id: nil)
+      duration = range.end - range.begin
+      deconflicted_available_appointments(range.begin.to_date, user:, excluding_id:).any? do |a|
+        a.start_time.to_i == range.begin.to_i && a.maximum_appointment_length >= duration
+      end
+    end
+
     def persisted? = id.present?
 
     private
+
+    def existing_appointments_for(user, excluding_id:)
+      user.appointments.for_reading_room(self).reject { |a| a.id == excluding_id }
+    end
 
     def format_hours(reading_room_open_hours)
       "#{reading_room_open_hours.open_time.strftime('%-l:%M')} - #{reading_room_open_hours.close_time.strftime('%-l:%M %P')}"

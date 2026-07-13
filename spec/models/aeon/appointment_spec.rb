@@ -180,6 +180,40 @@ RSpec.describe Aeon::Appointment do
         end
       end
 
+      context 'when the Aeon client rejects the create' do
+        let(:client) { instance_double(AeonClient) }
+
+        before do
+          allow(Current).to receive(:aeon_client).and_return(client)
+          allow(client).to receive(:create_appointment).and_raise(AeonClient::ApiError.new('boom'))
+          allow(Honeybadger).to receive(:notify)
+        end
+
+        it 'returns false, notifies Honeybadger, and adds a base error mentioning "created"' do
+          expect(appointment.save).to be false
+          expect(Honeybadger).to have_received(:notify).with(instance_of(AeonClient::ApiError))
+          expect(appointment.errors[:base].first).to include('could not be created')
+        end
+      end
+
+      context 'when the Aeon client rejects the update' do
+        let(:appointment) do
+          build(:aeon_appointment, id: 42, reading_room: reading_room, start_time: start_time, stop_time: stop_time)
+        end
+        let(:client) { instance_double(AeonClient) }
+
+        before do
+          allow(Current).to receive(:aeon_client).and_return(client)
+          allow(client).to receive(:update_appointment).and_raise(AeonClient::ApiError.new('boom'))
+          allow(Honeybadger).to receive(:notify)
+        end
+
+        it 'returns false and adds a base error mentioning "updated"' do
+          expect(appointment.save).to be false
+          expect(appointment.errors[:base].first).to include('could not be updated')
+        end
+      end
+
       context 'when persisted' do
         let(:appointment) do
           build(:aeon_appointment, id: 42, reading_room: reading_room, start_time: start_time, stop_time: stop_time)
@@ -206,6 +240,56 @@ RSpec.describe Aeon::Appointment do
             expect(client).not_to have_received(:update_appointment)
           end
         end
+      end
+    end
+
+    context 'when validating slot availability' do
+      let(:user) { instance_double(Aeon::User, appointments: user_appointments) }
+      let(:user_appointments) { instance_double(Aeon::AppointmentFinders) }
+      let(:appointment) do
+        build(:aeon_appointment, reading_room: reading_room, start_time: start_time, stop_time: stop_time, user: user)
+      end
+      let(:start_time) { Time.zone.parse('2026-03-16T09:00:00-07:00') }
+      let(:stop_time)  { Time.zone.parse('2026-03-16T16:45:00-07:00') }
+
+      before do
+        allow(user_appointments).to receive(:for_reading_room).with(reading_room).and_return([])
+      end
+
+      context 'when Aeon returns no availability for the date' do
+        before do
+          allow(reading_room).to receive(:available_appointments).with(start_time.to_date, include_next_available: false).and_return([])
+        end
+
+        it 'is invalid on :date for day-only rooms' do
+          expect(appointment).not_to be_valid
+          expect(appointment.errors[:date]).to include('is not available')
+        end
+      end
+
+      context 'when Aeon returns a slot but not long enough for the requested duration' do
+        before do
+          allow(reading_room).to receive(:available_appointments).with(start_time.to_date, include_next_available: false).and_return(
+            [Aeon::AvailableAppointment.new(start_time: start_time, maximum_appointment_length: 1.hour)]
+          )
+        end
+
+        it { expect(appointment).not_to be_valid }
+      end
+
+      context 'when the user already has an appointment covering the requested span' do
+        let(:existing) do
+          build(:aeon_appointment, id: 99, start_time: start_time, stop_time: stop_time)
+        end
+
+        before do
+          allow(user_appointments).to receive(:for_reading_room).with(reading_room).and_return([existing])
+          allow(reading_room).to receive(:available_appointments).with(start_time.to_date, include_next_available: false).and_return(
+            [Aeon::AvailableAppointment.new(start_time: start_time, maximum_appointment_length: 8.hours)]
+          )
+        end
+
+        it { expect(appointment).not_to be_valid }
       end
     end
 

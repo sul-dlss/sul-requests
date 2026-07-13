@@ -14,6 +14,7 @@ module Aeon
     validate :stop_after_start,    if: -> { start_time && stop_time }
     validate :within_open_hours,   if: -> { reading_room && start_time && stop_time }
     validate :not_during_closure,  if: -> { reading_room && start_time && stop_time }
+    validate :slot_available,      if: -> { reading_room && start_time && stop_time && user && errors.empty? }
 
     def self.from_dynamic(dyn) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       new(
@@ -87,7 +88,7 @@ module Aeon
 
     def persisted? = id.present?
 
-    def save # rubocop:disable Metrics/AbcSize, Naming/PredicateMethod
+    def save # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       return false unless valid?
 
       if persisted?
@@ -100,6 +101,15 @@ module Aeon
         self.available_to_proxies = saved.available_to_proxies
       end
       true
+    rescue AeonClient::ApiError => e
+      Honeybadger.notify(e)
+      action = persisted? ? 'updated' : 'created'
+      errors.add(:base, "This appointment could not be #{action}. Please refresh and try again.")
+      false
+    end
+
+    def range
+      start_time..stop_time if start_time && stop_time
     end
 
     private
@@ -108,27 +118,28 @@ module Aeon
       errors.add(:stop_time, 'must be after start time') if stop_time <= start_time
     end
 
-    def within_open_hours # rubocop:disable Metrics/AbcSize
+    def within_open_hours
       hours = reading_room.open_hours_on(start_time)
-
-      unless hours
-        return errors.add(:date, 'is outside reading room hours') if reading_room.day_only_appointments?
-
-        return errors.add(:start_time, 'is outside reading room hours')
-      end
+      return errors.add(time_error_field, 'is outside reading room hours') unless hours
 
       range = hours.range_on(start_time.to_date)
-      errors.add(:start_time, 'is outside reading room hours') if start_time < range.begin || stop_time > range.end
+      errors.add(time_error_field, 'is outside reading room hours') if start_time < range.begin || stop_time > range.end
     end
 
     def not_during_closure
-      return unless reading_room.closures.any? { |c| c.range.overlap?(start_time..stop_time) }
+      return unless reading_room.closures.any? { |c| c.range.overlap?(range) }
 
-      if reading_room.day_only_appointments?
-        errors.add(:date, 'is during a reading room closure')
-      else
-        errors.add(:start_time, 'is during a reading room closure')
-      end
+      errors.add(time_error_field, 'is during a reading room closure')
+    end
+
+    def slot_available
+      return if reading_room.available_at?(range:, user:, excluding_id: id)
+
+      errors.add(time_error_field, 'is not available')
+    end
+
+    def time_error_field
+      reading_room.day_only_appointments? ? :date : :start_time
     end
   end
 end

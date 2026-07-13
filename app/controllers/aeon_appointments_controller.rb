@@ -90,7 +90,8 @@ class AeonAppointmentsController < ApplicationController
       name: appointment_params[:name],
       reading_room_id: reading_room&.id,
       reading_room: reading_room,
-      username: current_user.aeon.username
+      username: current_user.aeon.username,
+      user: current_user.aeon
     )
   end
 
@@ -113,31 +114,30 @@ class AeonAppointmentsController < ApplicationController
   end
 
   def start_time_param
-    return day_only_range&.begin if reading_room&.day_only_appointments?
+    return day_only_appointment_range&.begin if day_only_appointment_range
     return unless appointment_params[:start_time]
 
-    parse_time(appointment_params[:start_time])
+    parse_time(appointment_params[:date], appointment_params[:start_time])
   end
 
   def stop_time_param
-    return day_only_range&.end if reading_room&.day_only_appointments?
+    return day_only_appointment_range&.end if day_only_appointment_range
 
     stop_time = appointment_params[:stop_time]
     duration = appointment_params[:duration]
-    return parse_time(stop_time) if stop_time
+    return parse_time(appointment_params[:date], stop_time) if stop_time
 
     start_time_param + duration.to_i.seconds if start_time_param && duration
   end
 
-  def parse_time(time)
-    Time.zone.parse("#{appointment_params[:date]}T#{time}")
+  def parse_time(date, time)
+    Time.zone.parse("#{date}T#{time}")
   end
 
-  def day_only_range
+  def day_only_appointment_range
     return if appointment_params[:date].blank?
 
-    date = Date.parse(appointment_params[:date])
-    reading_room&.open_hours_on(date)&.range_on(date)
+    reading_room&.day_only_appointment_range(Date.parse(appointment_params[:date]))
   end
 
   def appointment_params

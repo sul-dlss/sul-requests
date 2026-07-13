@@ -13,6 +13,12 @@
       </ul>
     <% end %>
 
+    <% if @appointment.errors[:base].any? %>
+      <p class="error-message text-danger">
+        <%= @appointment.errors.full_messages_for(:base).join(", ") %>
+      </p>
+    <% end %>
+
     <div class="mb-3">
       <%= f.label :date, class: "form-label fw-semibold redesign-required-label" %>
       <% existing_appointments = @appointments.for_reading_room(@appointment.reading_room).map(&:date).map(&:iso8601) %>
