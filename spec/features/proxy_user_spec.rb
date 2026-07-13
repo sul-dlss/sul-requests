@@ -30,6 +30,7 @@ RSpec.describe 'Proxy User' do
     allow(Folio::Patron).to receive(:find_by).with(patron_key: patron.key).and_return(patron)
     allow(mock_client).to receive(:extended_user_info).with(sponsor.key).and_return(sponsor.send(:extended_user_info))
     allow(mock_client).to receive(:extended_patron_info).with(sponsor.key).and_return(sponsor.send(:patron_graphql_response))
+    allow(patron).to receive(:illiad_requests).and_return([])
 
     login_as(CurrentUser.new(username: 'stub_user', patron_key: patron.key, shibboleth: true))
   end
