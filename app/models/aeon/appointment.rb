@@ -70,7 +70,9 @@ module Aeon
     end
 
     def cancelled?
-      appointment_status == 'Cancelled' || (requests.none? && !editable?)
+      appointment_status == 'Cancelled'
+      # TODO: Restore or delete this requests/editable check (e.g., after caching, remediation)
+      # appointment_status == 'Cancelled' || (requests.none? && !editable?)
     end
 
     def edit_policy
