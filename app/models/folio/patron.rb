@@ -3,9 +3,11 @@
 module Folio
   # Model for working with FOLIO Patron information
   class Patron
-    def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, **_kwargs) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-      user_info = folio_client.find_user_by_id(patron_key) if patron_key.present?
-      user_info ||= folio_client.find_user_by_barcode(library_id) if library_id.present?
+    def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, **_kwargs) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity,Metrics/MethodLength
+      response = folio_client.patron_graphql_response(patron_key) if patron_key.present?
+      return Folio::Patron.new(patron_graphql_response: response) if response
+
+      user_info = folio_client.find_user_by_barcode(library_id) if library_id.present?
       user_info ||= folio_client.find_user_by_university_id(library_id) if library_id.present?
       user_info ||= folio_client.find_user_by_legacy_barcode(library_id) if library_id.present?
       user_info ||= folio_client.find_user_by_sunetid(sunetid) if sunetid.present?
@@ -273,11 +275,11 @@ module Folio
     private
 
     def extended_user_info
-      @extended_user_info ||= folio_client.extended_user_info(id)
+      @extended_user_info ||= patron_graphql_response&.dig('user')
     end
 
     def patron_graphql_response
-      @patron_graphql_response ||= folio_client.extended_patron_info(id)
+      @patron_graphql_response ||= folio_client.patron_graphql_response(id)
     end
 
     def valid_proxy_relation?(info)
@@ -289,8 +291,11 @@ module Folio
     end
 
     def patron_group_id
-      # FOLIO APIs return a UUID here
-      user_info['patronGroup'] || extended_user_info&.dig('patronGroup', 'id')
+      # REST /users returns patronGroup as a UUID string; GraphQL returns it as an
+      # object and exposes the UUID separately as patronGroupId.
+      user_info['patronGroupId'] ||
+        (user_info['patronGroup'] if user_info['patronGroup'].is_a?(String)) ||
+        extended_user_info&.dig('patronGroup', 'id')
     end
 
     # Get all the sponsors for this patron

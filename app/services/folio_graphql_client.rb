@@ -219,298 +219,320 @@ class FolioGraphqlClient
     data.dig('data', 'loanPolicies')
   end
 
-  def extended_user_info(patron_uuid)
+  # Fetch user + patron data in a single GraphQL round-trip.
+  # Returns a hash shaped like the patron node, with the user node merged in under 'user',
+  # so it is directly consumable by Folio::Patron.new(patron_graphql_response:).
+  def patron_graphql_response(patron_uuid)
     data = post_json('/', json: {
-                       query: "query Query($patronId: UUID!) {
-                                 user(id: $patronId) {
-                                    id
-                                    username
-                                    barcode
-                                    active
-                                    personal {
-                                      email
-                                      lastName
-                                      firstName
-                                      preferredFirstName
-                                    }
-                                    proxiesFor {
-                                      userId
-                                      requestForSponsor
-                                      status
-                                      expirationDate
-                                      user {
-                                        id
-                                        barcode
-                                        personal {
-                                          firstName
-                                          preferredFirstName
-                                          lastName
-                                        }
-                                      }
-                                    }
-                                    proxiesOf {
-                                      proxyUserId
-                                      requestForSponsor
-                                      status
-                                      expirationDate
-                                      proxyUser {
-                                        id
-                                        barcode
-                                        personal {
-                                          firstName
-                                          preferredFirstName
-                                          lastName
-                                        }
-                                      }
-                                    }
-                                    expirationDate
-                                    externalSystemId
-                                    patronGroup {
-                                      id
-                                      desc
-                                      group
-                                      limits {
-                                        conditionId
-                                        id
-                                        patronGroupId
-                                        value
-                                        condition {
-                                          blockBorrowing
-                                          blockRenewals
-                                          blockRequests
-                                          message
-                                          name
-                                          valueType
-                                        }
-                                      }
-                                    }
-                                    blocks {
-                                      message
-                                    }
-                                    manualBlocks {
-                                      desc
-                                    }
-                                    patronGroupId
-                                  }
-                              }",
+                       query: patron_graphql_query,
                        variables: { patronId: patron_uuid }
                      })
+    return nil if data.nil?
 
     Honeybadger.notify(data['errors'].pluck('message').join("\n"), context: { patron_uuid: }) if data.key?('errors')
 
-    data.dig('data', 'user')
-  end
+    user_node = data.dig('data', 'user')
+    return nil if user_node.nil?
 
-  def extended_patron_info(patron_uuid)
-    data = post_json('/', json: {
-                       query: "query Query($patronId: UUID!) {
-                                patron(id: $patronId) {
-                                  id
-                                  holds {
-                                    requestDate
-                                    item {
-                                      instanceId
-                                      title
-                                      itemId
-
-                                      item {
-                                        circulationNotes {
-                                          id
-                                          noteType
-                                          note
-                                          source {
-                                            personal {
-                                              lastName
-                                            }
-                                            id
-                                          }
-                                          date
-                                          staffOnly
-                                        }
-                                        effectiveShelvingOrder
-                                        effectiveCallNumberComponents {
-                                          callNumber
-                                        }
-                                        enumeration
-                                        volume
-                                        permanentLocation {
-                                          code
-                                        }
-                                        effectiveLocation {
-                                          id
-                                          code
-                                          details {
-                                            pageServicePoints {
-                                              code
-                                              id
-                                              discoveryDisplayName
-                                              pickupLocation
-                                            }
-                                          }
-                                        }
-                                        holdingsRecord {
-                                          effectiveLocation {
-                                            id
-                                            code
-                                          }
-                                        }
-                                      }
-                                      author
-                                      instance {
-                                        #{instance_fields}
-                                      }
-                                      isbn
-                                    }
-                                    requestId
-                                    status
-                                    expirationDate
-                                    details {
-                                      holdShelfExpirationDate
-                                      proxyUserId
-                                      proxy {
-                                        firstName
-                                        lastName
-                                        barcode
-                                      }
-                                    }
-                                    pickupLocationId
-                                    pickupLocation {
-                                      code
-                                    }
-                                    queueTotalLength
-                                    queuePosition
-                                    cancellationReasonId
-                                    canceledByUserId
-                                    cancellationAdditionalInformation
-                                    canceledDate
-                                    patronComments
-                                  }
-                                  accounts {
-                                    id
-                                    userId
-                                    remaining
-                                    dateCreated
-                                    amount
-                                    loanId
-                                    loan {
-                                      proxyUserId
-                                    }
-                                    status {
-                                      name
-                                    }
-                                    feeFine {
-                                      feeFineType
-                                    }
-                                    actions {
-                                      dateAction
-                                      typeAction
-                                    }
-                                    metadata {
-                                      createdDate
-                                    }
-                                    paymentStatus {
-                                      name
-                                    }
-                                    item {
-                                      id
-                                      barcode
-                                      effectiveShelvingOrder
-                                      effectiveLocation {
-                                        id
-                                        code
-                                      }
-                                      permanentLocation {
-                                        code
-                                      }
-                                      instance {
-                                        #{instance_fields}
-                                      }
-                                      holdingsRecord {
-                                        callNumber
-                                        effectiveLocation {
-                                          id
-                                          code
-                                        }
-                                      }
-                                    }
-                                  }
-                                  loans {
-                                    id
-                                    item {
-                                      title
-                                      author
-                                      instanceId
-                                      itemId
-                                      isbn
-                                      instance {
-                                        #{instance_fields}
-                                      }
-                                      item {
-                                        barcode
-                                        id
-                                        status {
-                                          date
-                                          name
-                                        }
-                                        effectiveShelvingOrder
-                                        effectiveCallNumberComponents {
-                                          callNumber
-                                        }
-                                        permanentLoanTypeId
-                                        temporaryLoanTypeId
-                                        materialTypeId
-                                        effectiveLocationId
-                                        effectiveLocation {
-                                          id
-                                          code
-                                        }
-                                        permanentLocation {
-                                          code
-                                        }
-                                        holdingsRecord {
-                                          effectiveLocation {
-                                            id
-                                            code
-                                          }
-                                        }
-                                        queueTotalLength
-                                      }
-                                    }
-                                    loanDate
-                                    dueDate
-                                    overdue
-                                    details {
-                                      renewalCount
-                                      dueDateChangedByRecall
-                                      dueDateChangedByHold
-                                      proxyUserId
-                                      userId
-                                      status {
-                                        name
-                                      }
-                                      feesAndFines {
-                                        amountRemainingToPay
-                                      }
-                                    }
-                                  }
-                                  totalCharges {
-                                    isoCurrencyCode
-                                    amount
-                                  }
-                                  totalChargesCount
-                                  totalLoans
-                                  totalHolds
-                                }
-                              }",
-                       variables: { patronId: patron_uuid }
-                     })
-
-    Honeybadger.notify(data['errors'].pluck('message').join("\n"), context: { patron_uuid: }) if data.key?('errors')
-
-    data.dig('data', 'patron')
+    patron_node = data.dig('data', 'patron') || {}
+    patron_node.merge('user' => user_node)
   end
 
   # rubocop:enable Metrics/MethodLength
+
+  # A convenience method so it is easy to copy the giant query for testing
+  def patron_graphql_query
+    <<~GQL
+      query PatronGraphqlResponse($patronId: UUID!) {
+        user(id: $patronId) { #{user_fields} }
+        patron(id: $patronId) { #{patron_fields} }
+      }
+    GQL
+  end
+
+  def user_fields
+    <<-GQL
+      id
+      username
+      barcode
+      active
+      personal {
+        email
+        lastName
+        firstName
+        preferredFirstName
+        phone
+        addresses {
+          addressLine1
+          addressLine2
+          city
+          region
+          countryId
+          postalCode
+          primaryAddress
+          addressTypeId
+        }
+      }
+      proxiesFor {
+        userId
+        requestForSponsor
+        status
+        expirationDate
+        user {
+          id
+          barcode
+          personal {
+            firstName
+            preferredFirstName
+            lastName
+          }
+        }
+      }
+      proxiesOf {
+        proxyUserId
+        requestForSponsor
+        status
+        expirationDate
+        proxyUser {
+          id
+          barcode
+          personal {
+            firstName
+            preferredFirstName
+            lastName
+          }
+        }
+      }
+      expirationDate
+      externalSystemId
+      patronGroup {
+        id
+        desc
+        group
+        limits {
+          conditionId
+          id
+          patronGroupId
+          value
+          condition {
+            blockBorrowing
+            blockRenewals
+            blockRequests
+            message
+            name
+            valueType
+          }
+        }
+      }
+      blocks {
+        message
+      }
+      manualBlocks {
+        desc
+      }
+      patronGroupId
+    GQL
+  end
+
+  def patron_fields
+    <<-GQL
+      id
+      holds {
+        requestDate
+        item {
+          instanceId
+          title
+          itemId
+          item {
+            circulationNotes {
+              id
+              noteType
+              note
+              source {
+                personal {
+                  lastName
+                }
+                id
+              }
+              date
+              staffOnly
+            }
+            effectiveShelvingOrder
+            effectiveCallNumberComponents {
+              callNumber
+            }
+            enumeration
+            volume
+            permanentLocation {
+              code
+            }
+            effectiveLocation {
+              id
+              code
+              details {
+                pageServicePoints {
+                  code
+                  id
+                  discoveryDisplayName
+                  pickupLocation
+                }
+              }
+            }
+            holdingsRecord {
+              effectiveLocation {
+                id
+                code
+              }
+            }
+          }
+          author
+          instance {
+            #{instance_fields}
+          }
+          isbn
+        }
+        requestId
+        status
+        expirationDate
+        details {
+          holdShelfExpirationDate
+          proxyUserId
+          proxy {
+            firstName
+            lastName
+            barcode
+          }
+        }
+        pickupLocationId
+        pickupLocation {
+          code
+        }
+        queueTotalLength
+        queuePosition
+        cancellationReasonId
+        canceledByUserId
+        cancellationAdditionalInformation
+        canceledDate
+        patronComments
+      }
+      accounts {
+        id
+        userId
+        remaining
+        dateCreated
+        amount
+        loanId
+        loan {
+          proxyUserId
+        }
+        status {
+          name
+        }
+        feeFine {
+          feeFineType
+        }
+        actions {
+          dateAction
+          typeAction
+        }
+        metadata {
+          createdDate
+        }
+        paymentStatus {
+          name
+        }
+        item {
+          id
+          barcode
+          effectiveShelvingOrder
+          effectiveLocation {
+            id
+            code
+          }
+          permanentLocation {
+            code
+          }
+          instance {
+            #{instance_fields}
+          }
+          holdingsRecord {
+            callNumber
+            effectiveLocation {
+              id
+              code
+            }
+          }
+        }
+      }
+      loans {
+        id
+        item {
+          title
+          author
+          instanceId
+          itemId
+          isbn
+          instance {
+            #{instance_fields}
+          }
+          item {
+            barcode
+            id
+            status {
+              date
+              name
+            }
+            effectiveShelvingOrder
+            effectiveCallNumberComponents {
+              callNumber
+            }
+            permanentLoanTypeId
+            temporaryLoanTypeId
+            materialTypeId
+            effectiveLocationId
+            effectiveLocation {
+              id
+              code
+            }
+            permanentLocation {
+              code
+            }
+            holdingsRecord {
+              effectiveLocation {
+                id
+                code
+              }
+            }
+            queueTotalLength
+          }
+        }
+        loanDate
+        dueDate
+        overdue
+        details {
+          renewalCount
+          dueDateChangedByRecall
+          dueDateChangedByHold
+          proxyUserId
+          userId
+          status {
+            name
+          }
+          feesAndFines {
+            amountRemainingToPay
+          }
+        }
+      }
+      totalCharges {
+        isoCurrencyCode
+        amount
+      }
+      totalChargesCount
+      totalLoans
+      totalHolds
+    GQL
+  end
+
   def item_fields
     <<-GQL
       id

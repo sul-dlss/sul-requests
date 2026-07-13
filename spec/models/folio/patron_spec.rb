@@ -134,7 +134,7 @@ RSpec.describe Folio::Patron do
     end
 
     describe '#make_request_as_patron?' do
-      let(:folio_client) { instance_double(FolioClient, extended_user_info:) }
+      let(:folio_client) { instance_double(FolioClient) }
       let(:extended_user_info) do
         { 'blocks' => [
           {

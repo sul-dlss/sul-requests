@@ -19,7 +19,7 @@ class FolioClient
 
   attr_reader :base_url
 
-  delegate :loan_policies, :service_points, :patron_info, to: :folio_graphql_client
+  delegate :loan_policies, :service_points, :patron_graphql_response, :patron_info, to: :folio_graphql_client
 
   def initialize(url: Settings.folio.okapi_url, tenant: Settings.folio.tenant)
     uri = URI.parse(url)
@@ -98,8 +98,6 @@ class FolioClient
     response = post('/patron-pin', json: { id: user_id, pin: new_pin })
     check_response(response, title: 'Assign pin', context: { user_id: })
   end
-
-  delegate :extended_user_info, :extended_patron_info, to: :folio_graphql_client
 
   def patron_account(patron_key)
     get_json("/patron/account/#{CGI.escape(patron_key)}", params: {
@@ -409,14 +407,6 @@ class FolioClient
   def find_user_by_sunetid(sunetid)
     user = get_json('/users', params: { query: CqlQuery.new(username: sunetid).to_query })&.dig('users', 0)
     raise ActiveRecord::RecordNotFound, "User with username '#{sunetid}' not found" unless user
-
-    user
-  end
-
-  # Find a user by ID in FOLIO; raise an error if not found
-  def find_user_by_id(user_id)
-    user = get_json("/users/#{user_id}")
-    raise ActiveRecord::RecordNotFound, "User with id '#{user_id}' not found" unless user
 
     user
   end
