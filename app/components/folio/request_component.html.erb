@@ -64,7 +64,7 @@
                 <% end %>
               <% end %>
             <% else %>
-              <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link su-underline p-0' do %>
+              <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0', data: { action: 'modal#open', modal_header: 'Change or cancel request' } do %>
                 <i class="bi bi-pencil-fill me-1 align-middle" aria-hidden></i><span class="visually-hidden">Edit request</span>
               <% end %>
             <% end %>

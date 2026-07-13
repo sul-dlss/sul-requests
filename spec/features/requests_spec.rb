@@ -49,7 +49,7 @@ RSpec.describe 'Request Page' do
     visit edit_folio_request_path('7fa87cfe-df57-4dc7-953b-a5a44ff37d91')
     select('Engineering Library (Terman)', from: 'service_point')
     fill_in('not_needed_after', with: '1999/01/01')
-    click_on 'Change'
+    click_on 'Submit request'
 
     expect(page).to have_css 'div.alert-success', text: 'Success!', count: 2
   end
