@@ -84,7 +84,6 @@ class AeonAppointmentsController < ApplicationController
   end
 
   def build_appointment
-    reading_room = Aeon::ReadingRoom.find(appointment_params[:reading_room_id])
     @appointment = Aeon::Appointment.new(
       start_time: start_time_param,
       stop_time: stop_time_param,
@@ -93,6 +92,12 @@ class AeonAppointmentsController < ApplicationController
       reading_room: reading_room,
       username: current_user.aeon.username
     )
+  end
+
+  def reading_room
+    return unless appointment_params[:reading_room_id]
+
+    @reading_room ||= Aeon::ReadingRoom.find(appointment_params[:reading_room_id])
   end
 
   def load_appointments
@@ -108,19 +113,31 @@ class AeonAppointmentsController < ApplicationController
   end
 
   def start_time_param
+    return day_only_range&.begin if reading_room&.day_only_appointments?
     return unless appointment_params[:start_time]
 
-    Time.zone.parse("#{appointment_params[:date]}T#{appointment_params[:start_time]}")
+    parse_time(appointment_params[:start_time])
   end
 
-  def stop_time_param # rubocop:disable Metrics/AbcSize
-    return unless appointment_params[:stop_time] || (start_time_param && appointment_params[:duration])
+  def stop_time_param
+    return day_only_range&.end if reading_room&.day_only_appointments?
 
-    if appointment_params[:stop_time]
-      Time.zone.parse("#{appointment_params[:date]}T#{appointment_params[:stop_time]}")
-    else
-      start_time_param + appointment_params[:duration].to_i.seconds
-    end
+    stop_time = appointment_params[:stop_time]
+    duration = appointment_params[:duration]
+    return parse_time(stop_time) if stop_time
+
+    start_time_param + duration.to_i.seconds if start_time_param && duration
+  end
+
+  def parse_time(time)
+    Time.zone.parse("#{appointment_params[:date]}T#{time}")
+  end
+
+  def day_only_range
+    return if appointment_params[:date].blank?
+
+    date = Date.parse(appointment_params[:date])
+    reading_room&.open_hours_on(date)&.range_on(date)
   end
 
   def appointment_params

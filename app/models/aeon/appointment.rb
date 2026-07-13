@@ -50,6 +50,8 @@ module Aeon
     end
 
     def requests
+      return [] unless persisted?
+
       @requests ||= (user&.requests&.for_appointment(self) || []).reject(&:cancelled?)
     end
 
