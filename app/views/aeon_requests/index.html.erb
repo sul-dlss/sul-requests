@@ -51,9 +51,20 @@
     </div>
   </div>
   <div class="row">
-    <ol id="requests" class="list-unstyled <% if content_for?(:sidebar) %>col-lg-8 pe-lg-5<% else %>col-xl-9<% end %>">
-      <%= render Aeon::RequestGroupComponent.with_collection(@aeon_request_groups, element: 'li') %>
-    </ol>
+    <div class="<% if content_for?(:sidebar) %>col-lg-8 pe-lg-5<% else %>col-xl-9<% end %>">
+      <% if params[:kind] == 'cancelled' %>
+        <%= render AlertComponent.new(type: :info) do %>
+          Cancelled requests only include requests for rare and distinctive materials. Cancelled requests for circulating items are not available to display.
+        <% end %>
+      <% elsif params[:kind] == 'completed' %>
+        <%= render AlertComponent.new(type: :info) do %>
+          Completed requests only include requests for rare and distinctive materials. Completed requests for circulating items are not shown here.
+        <% end %>
+      <% end %>
+      <ol id="requests" class="list-unstyled">
+        <%= render Aeon::RequestGroupComponent.with_collection(@aeon_request_groups, element: 'li') %>
+      </ol>
+    </div>
 
     <%= content_for(:sidebar) %>
   </div>
