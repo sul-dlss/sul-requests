@@ -116,12 +116,10 @@ class AeonRequestsController < ApplicationController
   end
 
   def load_aeon_requests
-    @aeon_requests = if params[:kind] == 'activity'
+    @aeon_requests = if params[:kind] == 'activity' || params[:activity].present?
                        current_user.aeon.own_and_activity_requests.for_activities
-                     elsif action_name == 'index'
-                       current_user.aeon.requests
                      else
-                       current_user.aeon.own_and_activity_requests
+                       current_user.aeon.requests
                      end
   end
 
