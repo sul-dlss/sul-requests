@@ -1,8 +1,9 @@
 <%= turbo_frame_tag [:patron_request, @patron_request.id, :needed_date] do %>
   <%= form_with model: @patron_request, url: patron_request_needed_date_path(@patron_request) do |f| %>
     <%= f.label :needed_date, class: 'visually-hidden' %>
-    <%= render DatePickerComponent.new(:needed_date, form: f, data: { min: f.object.earliest_delivery_estimate['date'],
-                date_picker_availability_url_value: closures_path(f.object.pickup_service_point.library.hours_codes)}) %>
+    <%= render DatePickerComponent.new(:needed_date, form: f,
+                schedule: DatePicker::LibrarySchedule.new(library: f.object.pickup_service_point.library,
+                                                         min: f.object.earliest_delivery_estimate['date'])) %>
     <%= f.submit 'ok', class: 'btn btn-primary' %>
     <%= link_to 'cancel', patron_request_needed_date_path(@patron_request), class: 'btn btn-secondary' %>
   <% end %>

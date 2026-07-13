@@ -8,7 +8,7 @@ RSpec.describe 'Date picker keyboard navigation', :js do
   # Today is the initial focusedDate (min = today, no reading room in the preview).
   let(:today) { Time.zone.today }
 
-  before { visit '/lookbook/preview/aeon/appointment_date_picker/default' }
+  before { visit '/lookbook/preview/date_picker/default' }
 
   def open_picker
     find('[data-date-picker-target="button"]').click
@@ -138,7 +138,7 @@ RSpec.describe 'Date picker keyboard navigation', :js do
     end
 
     context 'with marked days' do
-      before { visit '/lookbook/preview/aeon/appointment_date_picker/with_marked_days' }
+      before { visit '/lookbook/preview/date_picker/with_marked_days' }
 
       it 'is visible when the current month has marked days' do
         open_picker
@@ -159,7 +159,7 @@ RSpec.describe 'Date picker keyboard navigation', :js do
   end
 
   describe 'skipping disabled dates' do
-    before { visit '/lookbook/preview/aeon/appointment_date_picker/with_disabled_days' }
+    before { visit '/lookbook/preview/date_picker/with_disabled_days' }
 
     it 'ArrowRight skips a disabled date and lands on the next enabled date' do
       open_picker
@@ -173,7 +173,7 @@ RSpec.describe 'Date picker keyboard navigation', :js do
 
   describe 'disabled weekends' do
     before do
-      visit '/lookbook/preview/aeon/appointment_date_picker/with_weekends_disabled'
+      visit '/lookbook/preview/date_picker/with_weekends_disabled'
     end
 
     it 'weekends are disabled' do

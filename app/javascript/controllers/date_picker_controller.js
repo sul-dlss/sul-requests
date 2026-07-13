@@ -9,6 +9,7 @@ import { Controller } from "@hotwired/stimulus"
 //   data-date-picker-max-value              ISO date string; any date after this is disabled, e.g. '"2027-03-01"'
 //   data-date-picker-marked-value           JSON array of ISO dates to mark with a dot, e.g. '["2026-04-23"]'
 //   data-date-picker-availability-url-value Optional URL probed per visible month for { unavailable_dates }
+//   data-date-picker-today-value            Optional ISO date string treated as "today"; defaults to the browser's current date
 //
 // Targets:
 //   input              hidden <input> that holds the selected ISO date value
