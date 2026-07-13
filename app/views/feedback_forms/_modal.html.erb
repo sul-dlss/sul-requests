@@ -1,4 +1,4 @@
-<%= render ModalComponent.new(id: "feedback-form") do |component| %>
+<%= render ModalComponent.new(id: "feedback-form", size: :lg) do |component| %>
   <% component.with_custom_header do %>
     <div class="d-flex flex-row align-items-center flex-wrap w-100">
       <h1 class="modal-title order-1 me-auto h2" id="<%= component.title_id %>">Send Feedback</h1>
@@ -9,11 +9,11 @@
     </div>
   <% end %>
   <% component.with_banner do %>
-    <div class="bg-stanford-10-black py-1 px-3">
-      Reporting from: <span class="reporting-from-field"><%= request.referer %></span>
+    <div class="bg-stanford-10-black py-1 px-3 border">
+      Reporting from: <span class="reporting-from-field"><%= request.original_url %></span>
     </div>
   <% end %>
   <% component.with_body(classes: []) do %>
-    <%= render 'feedback_forms/form' %>
+    <%= render 'feedback_forms/form', reporting_url: request.original_url %>
   <% end %>
 <% end %>

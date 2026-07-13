@@ -1,5 +1,5 @@
 <%= content_tag(:div, class: @classes, id:, tabindex: "-1", aria: {labelledby: title_id, hidden: false}, data:) do %>
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+  <div class="<%= dialog_classes.join(' ') %>">
     <div class="modal-content">
       <% if custom_header %>
         <%= custom_header %>

@@ -1,4 +1,5 @@
 <% close_button = local_assigns.fetch(:close_button, true) %>
+<% reporting_url = local_assigns.fetch(:reporting_url) %>
 <%= form_tag feedback_form_path, method: :post, class:"feedback-form" do %>
   <div class="modal-body">
     <span class="d-none">
@@ -6,7 +7,7 @@
       <%= email_field_tag :email_address %><br>
       <%= hidden_field_tag :user_agent %>
       <%= hidden_field_tag :viewport %>
-      <%= hidden_field_tag :url, request.referer, class:"reporting-from-field" %>
+      <%= hidden_field_tag :url, reporting_url, class:"reporting-from-field" %>
     </span>
     <div class="mb-3">
       <%= label_tag(:name, 'Name', class:"px-0 fw-bold mb-2") %>
