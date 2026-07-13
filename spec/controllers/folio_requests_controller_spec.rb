@@ -59,16 +59,6 @@ RSpec.describe FolioRequestsController do
         allow(FolioClient).to receive(:new).and_return(mock_client)
       end
 
-      context 'when cancel param is sent' do
-        let(:mock_client) { instance_double(FolioClient, cancel_request: api_response, ping: true) }
-
-        it 'cancels the hold and sets the flash message' do
-          patch :update, params: { id: '123', cancel: true }
-
-          expect(flash[:success]).to match(/Success!.*was canceled/)
-        end
-      end
-
       context 'when service_point param is sent' do
         let(:mock_client) { instance_double(FolioClient, change_pickup_service_point: api_response, ping: true) }
 

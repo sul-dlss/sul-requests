@@ -36,8 +36,6 @@ class FolioRequestsController < ApplicationController
   # PATCH /requests/:id
   # PUT /requests/:id
   def update # rubocop:disable Metrics/AbcSize
-    destroy && return if params['cancel'].present?
-
     flash[:success] = []
     flash[:error] = []
 
