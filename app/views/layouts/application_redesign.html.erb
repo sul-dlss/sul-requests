@@ -60,6 +60,7 @@
               <% end %>
 
               <% if can? :manage, :site %>
+                <li><span class="h6 dropdown-header text-cardinal text-uppercase">Admin views</span></li>
                 <li><%= link_to 'FOLIO requests', folio_requests_url, class: 'dropdown-item' %></li>
                 <li><%= link_to 'ILL requests', ill_requests_url, class: 'dropdown-item' %></li>
                 <li><%= link_to 'Submitted Aeon requests', aeon_requests_url(kind: 'submitted'), class: 'dropdown-item' %></li>
