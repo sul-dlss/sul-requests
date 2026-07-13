@@ -28,7 +28,7 @@
           title: 'Pickup requests',
           icon_class: 'bi-bag',
           label: t('dashboard.pickup_requests.label_html', count: @dashboard.pickup_requests.count),
-          path: @dashboard.pickup_requests.count.positive? ? folio_requests_path : nil) do |c| %>
+          path: @dashboard.pickup_requests.count.positive? ? unified_requests_path(filter: 'pickup') : nil) do |c| %>
               <% c.with_status_count(label: t('dashboard.pickup_requests_ready.label_html', count: @dashboard.ready_for_pickup.count)) %>
           <% end %>
   <% end %>
