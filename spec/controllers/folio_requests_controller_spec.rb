@@ -107,7 +107,7 @@ RSpec.describe FolioRequestsController do
         it 'does not renew the item and redirects to folio_requests_path' do
           patch :update, params: { id: 'some_other_request_key' }
 
-          expect(response).to redirect_to folio_requests_path
+          expect(response).to redirect_to unified_requests_path
         end
       end
     end
@@ -132,7 +132,7 @@ RSpec.describe FolioRequestsController do
 
         it 'cancels the hold and redirects to folio_requests_path' do
           delete :destroy, params: { id: '123' }
-          expect(response).to redirect_to folio_requests_path
+          expect(response).to redirect_to unified_requests_path
         end
       end
 
@@ -146,7 +146,7 @@ RSpec.describe FolioRequestsController do
 
         it 'does not cancel the hold and redirects to folio_requests_path' do
           delete :destroy, params: { id: '123' }
-          expect(response).to redirect_to folio_requests_path
+          expect(response).to redirect_to unified_requests_path
         end
       end
     end
@@ -161,7 +161,7 @@ RSpec.describe FolioRequestsController do
       it 'does not renew the item and redirects to folio_requests_path' do
         delete :destroy, params: { id: 'some_other_request_key' }
 
-        expect(response).to redirect_to folio_requests_path
+        expect(response).to redirect_to unified_requests_path
       end
     end
   end
