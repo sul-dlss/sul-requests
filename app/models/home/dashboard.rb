@@ -31,7 +31,7 @@ module Home
     end
 
     def pickup_requests
-      @pickup_requests ||= patron.requests
+      @pickup_requests ||= patron.requests + illiad_physical_requests
     end
 
     def ready_for_pickup
@@ -46,6 +46,12 @@ module Home
       return [] unless aeon?
 
       @aeon_digital_requests ||= aeon.requests.digitization.submitted.newest_first
+    end
+
+    def illiad_physical_requests
+      return [] unless folio?
+
+      @illiad_physical_requests ||= patron.illiad_requests.reject(&:scan_type?)
     end
 
     def illiad_digital_requests
