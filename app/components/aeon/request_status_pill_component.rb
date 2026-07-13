@@ -23,24 +23,11 @@ module Aeon
     end
 
     def status_text
-      reading_room || digitization_status
-    end
-
-    def digitization_status
-      return unless digital?
-
-      case status
-      when :completed
-        'Digitization ready'
-      when :submitted
-        'Digitization pending'
-      else
+      if digital?
         'Digitization'
+      else
+        'Reading room use'
       end
-    end
-
-    def reading_room
-      'Reading room use' unless digital?
     end
   end
 end
