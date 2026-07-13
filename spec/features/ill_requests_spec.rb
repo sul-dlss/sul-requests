@@ -11,7 +11,8 @@ RSpec.describe 'ILL Request Page' do
   let(:illiad_requests) do
     [
       Illiad::Request.new({
-                            'CreationDate' => '2024-01-01T00:00:00Z'
+                            'CreationDate' => '2024-01-01T00:00:00Z',
+                            'TransactionNumber' => '1'
                           })
     ]
   end
@@ -35,9 +36,15 @@ RSpec.describe 'ILL Request Page' do
       [
         Illiad::Request.new({
                               'CreationDate' => '2024-01-01T00:00:00Z',
-                              'PhotoJournalTitle' => 'Some Journal'
+                              'PhotoJournalTitle' => 'Some Journal',
+                              'TransactionNumber' => '2'
                             })
       ]
+    end
+    let(:mock_ill_client) { instance_double(IlliadClient, update_request_route: illiad_requests.first) }
+
+    before do
+      allow(IlliadClient).to receive(:new).and_return(mock_ill_client)
     end
 
     it 'has request data' do
@@ -45,6 +52,14 @@ RSpec.describe 'ILL Request Page' do
 
       expect(page).to have_css('.requests li', count: 1)
       expect(page).to have_css('li .status-pill', text: 'Digitization')
+    end
+
+    it 'can delete the request' do
+      visit ill_requests_path
+      click_button 'Delete Some Journal'
+      expect(page).to have_text 'Delete request?'
+      click_button 'Yes - Delete'
+      expect(page).to have_css('.requests li', count: 0)
     end
   end
 

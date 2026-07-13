@@ -593,6 +593,7 @@ sul_illiad: https://sul-illiad-test.stanford.edu/
 illiad_api_key: 'AbC123'
 
 illiad:
+  cancelled_by_user: "Cancelled by Customer"
   noncancellable_statuses:
     - "Awaiting Renewal OK Processing"
     - "Awaiting Renewal Request Processing "

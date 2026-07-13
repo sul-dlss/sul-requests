@@ -1,8 +1,8 @@
-<%= render CardComponent.new(element: 'li', id: dom_id(request), classes: 'request', data: { 'filter-value': request.scan_type? ? 'digitization' : 'pickup', 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) }) do |c| %>
+<%= render CardComponent.new(element: 'li', id: dom_id(request), classes: 'request', data: { 'filter-value': type_label.downcase, 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) }) do |c| %>
   <% c.with_title do %>
     <div class="flex-grow-1">
       <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
-        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content(request.scan_type? ? 'Digitization' : 'Pickup') %>
+        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content(type_label) %>
       </div>
 
       <div>
@@ -42,6 +42,11 @@
         </div>
 
         <div class="d-flex text-nowrap align-items-baseline align-self-start justify-content-xl-end">
+          <% if helpers.can? :destroy, request %>
+            <button class="btn btn-link su-underline p-0 me-1" data-bs-toggle="modal" data-bs-target="#delete-<%= request.id %>">
+              <i class="bi bi-trash align-middle"></i><span class="visually-hidden">Delete <%= request.title %> request</span>
+            </button>
+          <% end %>
           <% if patron.can_modify_requests? %>
             <div class="illiad-link">
               <a href="<%= request.manage_request_link %>">Manage this request in your ILL account</a>
@@ -50,5 +55,32 @@
         </div>
       </div>
     </div>
+  <% end %>
+<% end %>
+
+<!-- Delete modal -->
+<% if helpers.can? :destroy, request %>
+  <%= render ModalComponent.new(id: "delete-#{request.id}") do |component| %>
+    <% component.with_title.with_content('Delete request?') %>
+    <% component.with_body do %>
+      <div class="d-flex flex-column gap-3">
+        <div class="text-lagunita-dark"><%= type_label %></div>
+        <div class="d-flex flex-column gap-1">
+          <div class="text-wrap fw-semibold"><%= request.title %></div>
+          <% if request.call_number.present? %>
+            <div>Call number: <%= request.call_number %></div>
+          <% end %>
+        </div>
+        <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'mb-0'], with_icon: false) do %>
+          <span class="fw-semibold text-wrap">This action cannot be undone.</span>
+        <% end %>
+      </div>
+    <% end %>
+    <% component.with_footer do %>
+      <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
+      <%= form_with url: ill_request_path(request.id), method: 'delete' do %>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>

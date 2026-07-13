@@ -41,6 +41,16 @@ class IllRequestsController < ApplicationController
     redirect_to root_path, notice: 'Your request has been submitted to Interlibrary Loan.'
   end
 
+  def destroy
+    load_request
+    authorize! :destroy, @request
+    @response = IlliadClient.new.update_request_route(transaction_number: @request.id, status: Settings.illiad.cancelled_by_user)
+    respond_to do |format|
+      format.html { redirect_to unified_requests_path, notice: 'Request cancelled successfully' }
+      format.turbo_stream
+    end
+  end
+
   private
 
   def current_patron
