@@ -29,12 +29,12 @@
   <% end %>
 
   <% c.with_body do %>
-    <div class="bg-white px-3 py-2 d-flex column-gap-4 row-gap-2 justify-content-between align-items-start flex-wrap flex-md-nowrap">
-      <div class="d-flex justify-content-start gap-2">
+    <div class="bg-white px-3 py-2 request-grid">
+      <div class="rgi-id d-flex justify-content-start gap-2">
         <span class="text-body-secondary small">Date added/modified: <span class="text-nowrap"><%= l(request.placed_date, format: :full) %></span></span>
       </div>
 
-      <div class="d-flex flex-grow-1 column-gap-4 row-gap-2 justify-content-between align-items-start flex-wrap flex-md-nowrap">
+      <div class="request-fulfillment d-flex flex-grow-1 column-gap-4 row-gap-2 justify-content-between align-items-start flex-wrap flex-md-nowrap">
         <div>
           <% if request.ready_for_pickup? %>
             <span class="text-green">
@@ -53,46 +53,45 @@
           </div>
         <% end %>
         </div>
+      </div>
 
-        <div class="d-flex text-nowrap align-items-baseline align-self-start justify-content-xl-end">
-          <% if patron.can_modify_requests? %>
-            <% unless request.ready_for_pickup? %>
-              <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0', data: { action: 'modal#open', modal_header: 'Change or cancel request' } do %>
-                <i class="bi bi-pencil-fill me-1 align-middle" aria-hidden></i><span class="visually-hidden">Edit request</span>
-              <% end %>
+      <div class="rgi-actions d-flex text-nowrap align-items-baseline justify-content-xl-end">
+        <% if patron.can_modify_requests? %>
+          <% unless request.ready_for_pickup? %>
+            <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open', modal_header: 'Change or cancel request' } do %>
+              <i class="bi bi-pencil-fill me-1 align-middle" aria-hidden></i><span class="visually-hidden">Edit request</span>
             <% end %>
+          <% end %>
+          <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#<%= dom_id(request, :delete) %>">
+            <i class="bi bi-trash align-middle" aria-hidden></i><span class="visually-hidden">Cancel request</span>
+          </button>
 
-            <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#<%= dom_id(request, :delete) %>">
-              <i class="bi bi-trash align-middle" aria-hidden></i><span class="visually-hidden">Cancel request</span>
-            </button>
-
-            <!-- Delete modal -->
-            <%= render ModalComponent.new(id: dom_id(request, :delete)) do |component| %>
-              <% component.with_title.with_content('Delete request?') %>
-              <% component.with_body do %>
-                <div class="d-flex flex-column gap-3">
-                  <div class="text-lagunita-dark">Pickup</div>
-                  <div class="d-flex flex-column gap-1">
-                    <div class="text-wrap fw-semibold"><%= request.title %></div>
-                    <% if request.full_call_number.present? %>
-                      <div>Call number: <%= request.full_call_number %></div>
-                    <% end %>
-                  </div>
-                  <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'mb-0'], with_icon: false) do %>
-                    <span class="fw-semibold text-wrap">This action cannot be undone.</span>
+          <!-- Delete modal -->
+          <%= render ModalComponent.new(id: dom_id(request, :delete)) do |component| %>
+            <% component.with_title.with_content('Delete request?') %>
+            <% component.with_body do %>
+              <div class="d-flex flex-column gap-3">
+                <div class="text-lagunita-dark">Pickup</div>
+                <div class="d-flex flex-column gap-1">
+                  <div class="text-wrap fw-semibold"><%= request.title %></div>
+                  <% if request.full_call_number.present? %>
+                    <div>Call number: <%= request.full_call_number %></div>
                   <% end %>
                 </div>
-              <% end %>
-
-              <% component.with_footer do %>
-                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-                <%= form_with url: folio_request_path(request.key), method: 'delete' do %>
-                  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+                <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'mb-0'], with_icon: false) do %>
+                  <span class="fw-semibold text-wrap">This action cannot be undone.</span>
                 <% end %>
+              </div>
+            <% end %>
+
+            <% component.with_footer do %>
+              <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
+              <%= form_with url: folio_request_path(request.key), method: 'delete' do %>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
               <% end %>
             <% end %>
           <% end %>
-        </div>
+        <% end %>
       </div>
     </div>
   <% end %>

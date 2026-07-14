@@ -717,6 +717,7 @@ summary .disclosure-icon::before {
   }
 }
 
+.requests:has(.request-grid .request-fulfillment) .request-grid,
 .list-group:has(.request-grid .request-fulfillment) .request-grid {
   grid-template-columns: 1fr;
   grid-template-areas:
