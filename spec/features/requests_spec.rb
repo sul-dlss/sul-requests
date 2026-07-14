@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Request Page' do
+RSpec.describe 'FOLIO Request Page' do
   let(:mock_client) { instance_double(FolioClient, ping: true) }
   let(:patron) do
     build(:sponsor_patron)

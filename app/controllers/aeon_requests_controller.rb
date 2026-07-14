@@ -15,7 +15,7 @@ class AeonRequestsController < ApplicationController
   before_action :set_variant, only: [:index, :edit]
 
   def index
-    authorize! :read, Aeon::Request
+    authorize! :read, Aeon::Request unless params[:async]
 
     render 'async' and return if params[:async]
   end
