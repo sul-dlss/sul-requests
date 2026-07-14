@@ -18,6 +18,8 @@ export default class extends Controller {
   }
 
   refreshAvailability() {
+    if (!this.hasAvailabilityTarget) return;
+
     const formData = new FormData(this.element);
 
     const date = formData.get('aeon_appointment[date]');
@@ -72,6 +74,8 @@ export default class extends Controller {
   }
 
   updateFormStatus() {
+    if (!this.hasAvailabilityTarget) return;
+
     const formData = new FormData(this.element);
     const hasDate = !!formData.get('aeon_appointment[date]');
     const hasDuration = !!formData.get('aeon_appointment[duration]');

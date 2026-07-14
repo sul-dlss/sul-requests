@@ -1,28 +1,24 @@
 <%= form_with(model: Aeon::Appointment.new) do |f| %>
   <turbo-frame id="available_appointments">
-    <% unless @reading_room.day_only_appointments? %>
-      <div class="appointment-slots-container" style="--appointment-slots: <%= @available_appointments.count %>">
-        <fieldset class="mb-3 radio-button-group" data-appointment-target="fieldset" data-max-slot="<%= @appointment_lengths.max %>" data-min-slot="<%= @appointment_lengths.min %>">
-          <legend class="fs-6 fw-semibold redesign-required-label">Available time slots</legend>
-          <div class="flex-wrap gap-3 appointment-slots">
-            <% @available_appointments.each do |appointment| %>
-              <%= f.radio_button :start_time, l(appointment.start_time, format: :time_only), required: true, id: "aeon_appointment_start_time_#{appointment.start_time.to_i}", data: { timestamp: appointment.start_time.to_i, maximum_appointment_length: appointment.maximum_appointment_length, action: 'click->appointment#updateBanner'  }, class: 'btn-check', checked: @selected_time == l(appointment.start_time, format: :time_only) %>
-              <%= f.label "start_time_#{appointment.start_time.to_i}", l(appointment.start_time, format: :time_only), class: 'btn border px-1' %>
-            <% end %>
-          </div>
-        </fieldset>
-        <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
-        <div class="selection-message">Select a date and duration to see available appointments.</div>
-      </div>
-    <% end %>
+    <div class="appointment-slots-container" style="--appointment-slots: <%= @available_appointments.count %>">
+      <fieldset class="mb-3 radio-button-group" data-appointment-target="fieldset" data-max-slot="<%= @appointment_lengths.max %>" data-min-slot="<%= @appointment_lengths.min %>">
+        <legend class="fs-6 fw-semibold redesign-required-label">Available time slots</legend>
+        <div class="flex-wrap gap-3 appointment-slots">
+          <% @available_appointments.each do |appointment| %>
+            <%= f.radio_button :start_time, l(appointment.start_time, format: :time_only), required: true, id: "aeon_appointment_start_time_#{appointment.start_time.to_i}", data: { timestamp: appointment.start_time.to_i, maximum_appointment_length: appointment.maximum_appointment_length, action: 'click->appointment#updateBanner'  }, class: 'btn-check', checked: @selected_time == l(appointment.start_time, format: :time_only) %>
+            <%= f.label "start_time_#{appointment.start_time.to_i}", l(appointment.start_time, format: :time_only), class: 'btn border px-1' %>
+          <% end %>
+        </div>
+      </fieldset>
+      <div class="loading-overlay p-2 mb-2" aria-hidden="true">Loading...</div>
+      <div class="selection-message">Select a date and duration to see available appointments.</div>
+    </div>
     <% if params[:date] && next_appt = @available_appointments.find { |x| x.start_time.to_date > @date } %>
       <div>There are no appointments on <%= l(@date, format: :short) %>. The next available appointment is on <%= l(next_appt.start_time, format: :date_only) %>.</div>
-      <% unless @reading_room.day_only_appointments? %>
-        <label class="visually-hidden-focusable required-placeholder">
-          No avaiable appointments.
-          <%= f.text_field :start_time, class: 'visually-hidden-focusable', required: true %>
-        </label>
-      <% end %>
+      <label class="visually-hidden-focusable required-placeholder">
+        No available appointments.
+        <%= f.text_field :start_time, class: 'visually-hidden-focusable', required: true %>
+      </label>
     <% end %>
   </turbo-frame>
   <turbo-frame id="earliest_appointment">
