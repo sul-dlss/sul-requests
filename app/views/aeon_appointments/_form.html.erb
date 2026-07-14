@@ -25,7 +25,7 @@
       <div class="d-flex align-items-center gap-3">
         <%= render DatePickerComponent.new(:date, form: f,
               schedule: Aeon::AppointmentSchedule.new(reading_room: @appointment.reading_room, appointment_id: @appointment.id, existing_appointments: existing_appointments),
-              data: { action: 'change->appointment#refreshAvailability change->appointment#updateBanner', 'date-picker-marked-value': existing_appointments }) %>
+              data: { action: 'change->appointment#refreshAvailability', 'date-picker-marked-value': existing_appointments }) %>
         <%= turbo_frame_tag 'earliest_appointment', src: available_aeon_reading_room_url(@appointment.reading_room_id, date: Date.today) %>
       </div>
       <% if f.object.errors[:date].any? %>
