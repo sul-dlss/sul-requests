@@ -44,7 +44,6 @@ RSpec.describe RequestsHelper do
     let(:item) do
       Folio::Item.new(
         barcode: '123',
-        type: 'LC',
         base_callnumber: '456',
         material_type: 'book',
         permanent_location: nil,

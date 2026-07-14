@@ -18,7 +18,7 @@ RSpec.describe RecordHeaderComponent, type: :component do
   end
 
   context 'with folio_item with unspecified format' do
-    let(:record) { build(:unspecified_not_on_order) }
+    let(:record) { build(:map_instance) }
 
     it 'shows the header with correct information' do
       expect(page).to have_css 'h2', text: 'Outline map of the Empire of Brazil and adjacent territories.'

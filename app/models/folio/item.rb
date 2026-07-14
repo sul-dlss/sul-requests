@@ -2,11 +2,9 @@
 
 module Folio
   # Represents an item returned from the /inventory-hierarchy/items-and-holdings Folio API
-  # TODO: This wants a "type" attribute, but I don't know how we get the folio version of a holding type.
-  #       See https://github.com/sul-dlss/searchworks_traject_indexer/blob/02192452815de3861dcfafb289e1be8e575cb000/lib/traject/config/sirsi_config.rb#L2379
   # NOTE, barcode and callnumber may be nil. see instance_hrid: 'in00000063826'
   class Item
-    attr_reader :id, :barcode, :status, :type, :public_note, :effective_location, :permanent_location, :temporary_location,
+    attr_reader :id, :barcode, :status, :public_note, :effective_location, :permanent_location, :temporary_location,
                 :material_type, :loan_type, :holdings_record_id, :enumeration, :base_callnumber, :full_enumeration, :queue_length,
                 :instance, :bound_with_holdings_per_item, :bound_with_child_holdings_record
 
@@ -61,9 +59,8 @@ module Folio
     ].freeze
 
     # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength, Metrics/AbcSize
-    def initialize(barcode:, status:,
-                   effective_location:, permanent_location: nil, temporary_location: nil,
-                   type: nil, public_note: nil, material_type: nil, loan_type: nil, enumeration: nil,
+    def initialize(barcode:, status:, effective_location:, permanent_location: nil, temporary_location: nil,
+                   public_note: nil, material_type: nil, loan_type: nil, enumeration: nil,
                    full_enumeration: nil,
                    due_date: nil, id: nil, holdings_record_id: nil, suppressed_from_discovery: false,
                    base_callnumber: nil, queue_length: 0, instance: nil, bound_with_holdings_per_item: [])
@@ -71,7 +68,6 @@ module Folio
       @holdings_record_id = holdings_record_id
       @barcode = barcode.presence || id
       @status = status
-      @type = type
       @public_note = public_note
       @effective_location = effective_location
       @permanent_location = permanent_location || effective_location
@@ -229,7 +225,6 @@ module Folio
             Folio::HoldingsRecord.from_hash(v)
           end || [],
           base_callnumber: dyn.dig('effectiveCallNumberComponents', 'callNumber'),
-          type: dyn.dig('materialType', 'name'),
           full_enumeration: [dyn['volume'], dyn['enumeration'],
                              dyn['chronology']].filter_map(&:presence).join(' '),
           public_note: dyn.fetch('notes').find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),

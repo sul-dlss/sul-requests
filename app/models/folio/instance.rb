@@ -22,7 +22,6 @@ module Folio
         pub_date: json.fetch('publication', []).pick('dateOfPublication'),
         pub_place: json.fetch('publication', []).pick('place'),
         publisher: json.fetch('publication', []).pick('publisher'),
-        format: json.dig('instanceType', 'name'),
         isbn: json.fetch('identifiers', []).filter_map do |identifier|
           identifier.fetch('value') if identifier.dig('identifierTypeObject', 'name') == 'ISBN'
         end,
@@ -38,7 +37,7 @@ module Folio
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     # rubocop:disable Metrics/MethodLength, Metrics/ParameterLists
-    def initialize(id:, hrid: '', title: '', contributors: [], pub_date: nil, pub_place: nil, publisher: nil, format: nil,
+    def initialize(id:, hrid: '', title: '', contributors: [], pub_date: nil, pub_place: nil, publisher: nil,
                    isbn: [], oclcn: [], electronic_access: [], edition: [], holdings_records: [], marc_hash: nil)
       @id = id
       @hrid = hrid
@@ -47,7 +46,6 @@ module Folio
       @pub_date = pub_date
       @pub_place = pub_place
       @publisher = publisher
-      @format = Array(format)
       @isbn = isbn
       @oclcn = oclcn
       @electronic_access = electronic_access
@@ -70,7 +68,7 @@ module Folio
       contributor&.fetch('name')
     end
 
-    attr_reader :id, :pub_date, :pub_place, :publisher, :format
+    attr_reader :id, :pub_date, :pub_place, :publisher
     alias date pub_date
 
     def isbn
@@ -88,10 +86,7 @@ module Folio
     alias base_callnumber call_number
 
     def document_type
-      return document_formats.first if document_formats.any?
-      return single_item&.type if format == ['unspecified']
-
-      format.presence&.first || single_item&.type
+      document_formats&.first
     end
 
     def marc_record
