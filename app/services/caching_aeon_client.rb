@@ -6,6 +6,16 @@ class CachingAeonClient
 
   delegate_missing_to :aeon_client
 
+  def self.flush_caches(username:)
+    Rails.cache.delete("Users/#{username}")
+    Rails.cache.delete("Users/#{username}/requests")
+    Rails.cache.delete("Users/#{username}/requests/activeOnly")
+    Rails.cache.delete("Users/#{username}/appointments")
+    Rails.cache.delete("Users/#{username}/appointments/pendingOnly")
+
+    # POSSIBLE TODO: flush cache of users associated through activities?
+  end
+
   def initialize(aeon_client, cache_lifetime: 5.minutes)
     @aeon_client = aeon_client
     @cache_lifetime = cache_lifetime

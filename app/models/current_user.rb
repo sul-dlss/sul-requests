@@ -4,8 +4,9 @@
 class CurrentUser
   attr_reader :data
 
-  def initialize(data)
+  def initialize(data, flush_caches_on_load: false)
     @data = (data || {}).with_indifferent_access
+    @flush_caches_on_load = flush_caches_on_load
   end
 
   def as_json(...)
@@ -21,7 +22,15 @@ class CurrentUser
                        name_email_user
                      else
                        anonymous_user
-                     end
+                     end.tap { |u| flush_caches_if_needed(u) }
+  end
+
+  def flush_caches_if_needed(user)
+    return unless @flush_caches_on_load
+
+    CachingAeonClient.flush_caches(username: user.email_address) if user.authenticated? && user.email_address.present?
+  ensure
+    @flush_caches_on_load = false
   end
 
   def shibboleth?
@@ -34,6 +43,10 @@ class CurrentUser
 
   def otp_authenticated?
     @otp_authenticated ||= data['otp_authenticated'] || false
+  end
+
+  def flush_caches
+    CachingAeonClient.flush_caches(username: user_id) if user_id.present?
   end
 
   private
