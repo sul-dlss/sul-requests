@@ -8,8 +8,6 @@ RSpec.describe 'Mark As Complete', :js do
     [
       double(:item, barcode: '34567890',
                     temporary_location: nil,
-                    home_location: 'STACKS',
-                    current_location: nil,
                     callnumber: 'ABC 123',
                     hold?: true,
                     pageable?: true,

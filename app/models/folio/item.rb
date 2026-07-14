@@ -94,19 +94,6 @@ module Folio
       self
     end
 
-    # TODO: rename this to 'permanent_location_code' after migration
-    def home_location
-      permanent_location.code
-    end
-
-    def current_location
-      if [STATUS_AVAILABLE, STATUS_PAGED].exclude?(status)
-        status_text
-      elsif permanent_location.code != effective_location&.code
-        effective_location&.code
-      end
-    end
-
     def suppressed_from_discovery?
       @suppressed_from_discovery
     end

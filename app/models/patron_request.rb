@@ -285,12 +285,12 @@ class PatronRequest < ApplicationRecord
   # Item stuff
 
   # @return [Array<Folio::Item>] the items in the origin location
-  def items_in_location
+  def items_in_location # rubocop:disable Metrics/AbcSize
     @items_in_location ||= folio_instance.items.select do |item|
       if item.effective_location.details['searchworksTreatTemporaryLocationAsPermanentLocation'] == 'true'
         item.effective_location.code.in? salient_folio_locations.map(&:code)
       else
-        item.home_location.in? salient_folio_locations.map(&:code)
+        item.permanent_location&.code.in? salient_folio_locations.map(&:code)
       end
     end
   end
