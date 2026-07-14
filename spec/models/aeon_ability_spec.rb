@@ -53,7 +53,7 @@ RSpec.describe AeonAbility do
     end
 
     context 'with a saved for later request they own' do
-      before { allow(request).to receive_messages(saved_for_later?: true) }
+      before { allow(request).to receive_messages(saved_for_later?: true, cancelled?: false) }
 
       it { is_expected.to be_able_to(:update, request) }
       it { is_expected.to be_able_to(:destroy, request) }
@@ -96,7 +96,7 @@ RSpec.describe AeonAbility do
     context "with another user's request" do
       let(:request) { build(:aeon_request, username: 'otheruser@stanford.edu') }
 
-      before { allow(request).to receive_messages(saved_for_later?: true) }
+      before { allow(request).to receive_messages(saved_for_later?: true, cancelled?: false) }
 
       it { is_expected.not_to be_able_to(:update, request) }
       it { is_expected.not_to be_able_to(:destroy, request) }
