@@ -64,6 +64,10 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
+    Rails.cache.clear
+  end
+
+  config.before(:each) do
     stub_request(:get, %r{#{Settings.aeon.api_url}/Users/.*}).
       to_return(status: 404, body: "", headers: {})
     stub_request(:get, %r{#{Settings.aeon.api_url}/Activities}).
