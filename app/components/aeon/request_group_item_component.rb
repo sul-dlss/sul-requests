@@ -9,30 +9,17 @@ module Aeon
 
     delegate :transaction_number, :transaction_date, to: :request
 
-    def initialize(request:, classes: %w[list-group-item request-grid], # rubocop:disable Metrics/ParameterLists
-                   actions: true, fulfillment: true, remove_from_appointment: false, footer: true)
+    def initialize(request:, classes: %w[list-group-item request-grid])
       @request = request
       @classes = Array(classes)
-      @actions = actions
-      @fulfillment = fulfillment
-      @remove_from_appointment = remove_from_appointment
-      @footer = footer
     end
 
-    def actions?
-      @actions
-    end
-
-    def fulfillment?
-      @fulfillment
-    end
-
-    def footer?
-      @footer
-    end
-
-    def remove_from_appointment?
-      @remove_from_appointment
+    def request_sort_data
+      {
+        'default-sort-value': request.sort_key(:default),
+        'title-sort-value': request.sort_key(:title),
+        'date-sort-value': request.sort_key(:date)
+      }
     end
   end
 end
