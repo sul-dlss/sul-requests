@@ -1,36 +1,22 @@
-<%= tag.li id: dom_id(request), class: classes + ['request', request.status], data: { 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) } do %>
+<%= tag.li id: dom_id(request), class: classes + ['request', request.status], data: request_sort_data do %>
     <div class="rgi-id d-flex align-items-center">
       <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
-
-      <% if remove_from_appointment? %>
-        <turbo-frame>
-          <% if request.activity? %>
-            <%= render Aeon::RemoveFromActivityButtonComponent.new(request:) %>
-          <% else %>
-            <%= render Aeon::SaveForLaterButtonComponent.new(request:) %>
-          <% end %>
-        </turbo-frame>
-      <% end %>
     </div>
 
     <div class="rgi-detail pb-1">
       <%= render Aeon::RequestItemDetailComponent.new(request:) %>
     </div>
 
-    <%= render Aeon::RequestFulfillmentComponent.new(request:) if fulfillment? %>
+    <%= render Aeon::RequestFulfillmentComponent.new(request:) %>
 
-    <% if actions? %>
-      <div class="rgi-actions">
-        <turbo-frame>
-          <%= render Aeon::RequestActionsComponent.new(request:) %>
-        </turbo-frame>
-      </div>
-    <% end %>
+    <div class="rgi-actions">
+      <turbo-frame>
+        <%= render Aeon::RequestActionsComponent.new(request:) %>
+      </turbo-frame>
+    </div>
 
-    <% if footer? %>
-      <div class="rgi-footer pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
-        <div>Request #<%= transaction_number %></div>
-        <div>Date added/modified: <%= l(transaction_date, format: :full) %></div>
-      </div>
-    <% end %>
+    <div class="rgi-footer pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
+      <div>Request #<%= transaction_number %></div>
+      <div>Date added/modified: <%= l(transaction_date, format: :full) %></div>
+    </div>
 <% end %>

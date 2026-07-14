@@ -1,0 +1,17 @@
+<%= tag.li id: dom_id(request), class: classes + ['request', request.status], data: request_sort_data do %>
+    <div class="rgi-id d-flex align-items-center">
+      <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
+
+      <turbo-frame>
+        <% if request.activity? %>
+          <%= render Aeon::RemoveFromActivityButtonComponent.new(request:) %>
+        <% else %>
+          <%= render Aeon::SaveForLaterButtonComponent.new(request:) %>
+        <% end %>
+      </turbo-frame>
+    </div>
+
+    <div class="rgi-detail pb-1">
+      <%= render Aeon::RequestItemDetailComponent.new(request:) %>
+    </div>
+<% end %>
