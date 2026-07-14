@@ -28,6 +28,8 @@
             <%= render Folio::FineComponent.new(fine: item, patron: patron_or_group) %>
           <% end %>
         </ul>
+      <% else %>
+        <span>There are no fees or fines on this account.</span>
       <% end %>
       <% if params[:group] && patron.sponsor? %>
         Fines incurred by proxy borrowers appear in the list of fines under their sponsor's Self tab.
