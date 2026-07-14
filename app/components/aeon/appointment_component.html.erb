@@ -6,8 +6,8 @@
   <% end %>
 
   <% c.with_actions do %>
-    <%= render Aeon::EditAppointmentButtonComponent.new(appointment: appointment) %>
-    <%= render Aeon::DeleteAppointmentButtonComponent.new(appointment: appointment) %>
+    <%= render Aeon::AppointmentEditButtonComponent.new(appointment: appointment) %>
+    <%= render Aeon::AppointmentDeleteButtonComponent.new(appointment: appointment) %>
   <% end %>
 
   <% c.with_body do %>

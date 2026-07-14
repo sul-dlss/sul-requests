@@ -2,7 +2,7 @@
 
 module Aeon
   # Render aeon apointment card
-  class CancelAppointmentModalComponent < ViewComponent::Base
+  class AppointmentCancelModalComponent < ViewComponent::Base
     attr_reader :appointment, :id
 
     def initialize(appointment:, id: nil)

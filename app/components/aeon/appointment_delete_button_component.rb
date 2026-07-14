@@ -2,7 +2,7 @@
 
 module Aeon
   # Delete-appointment button paired with a confirmation modal.
-  class DeleteAppointmentButtonComponent < ViewComponent::Base
+  class AppointmentDeleteButtonComponent < ViewComponent::Base
     attr_reader :appointment
 
     def initialize(appointment:)
