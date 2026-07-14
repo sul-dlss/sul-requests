@@ -687,7 +687,7 @@ summary .disclosure-icon::before {
   --bs-border-width: 0;
 }
 
-.request.list-group-item {
+.request-grid {
   display: grid;
   column-gap: 1rem;
   grid-template-columns: 1fr;
@@ -707,14 +707,7 @@ summary .disclosure-icon::before {
   }
 }
 
-.cancelled.request.list-group-item {
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "id"
-    "detail"
-    "actions"
-    "footer";
-
+.cancelled.request-grid {
   @media (min-width: 576px) {
     grid-template-columns: 1fr auto;
     grid-template-areas:
@@ -722,17 +715,10 @@ summary .disclosure-icon::before {
       "detail      actions"
       "footer      footer";
   }
-
-  @media (min-width: 992px) {
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "id      actions"
-      "detail       detail"
-      "footer       footer";
-  }
 }
 
-.list-group:has(.request.list-group-item .request-fulfillment) .request.list-group-item {
+.requests:has(.request-grid .request-fulfillment) .request-grid,
+.list-group:has(.request-grid .request-fulfillment) .request-grid {
   grid-template-columns: 1fr;
   grid-template-areas:
     "id"
@@ -771,11 +757,11 @@ summary .disclosure-icon::before {
   }
 }
 
-.request.list-group-item > .rgi-id      { grid-area: id; }
-.request.list-group-item > .rgi-detail  { grid-area: detail; }
-.request.list-group-item > .request-fulfillment { grid-area: fulfillment; }
-.request.list-group-item > .rgi-actions { grid-area: actions; }
-.request.list-group-item > .rgi-footer  { grid-area: footer; }
+.request-grid > .rgi-id      { grid-area: id; }
+.request-grid > .rgi-detail  { grid-area: detail; }
+.request-grid > .request-fulfillment { grid-area: fulfillment; }
+.request-grid > .rgi-actions { grid-area: actions; }
+.request-grid > .rgi-footer  { grid-area: footer; }
 
 .confirmation-request-summary {
   display: grid;
