@@ -495,12 +495,6 @@ RSpec.describe Folio::Instance do
     it { is_expected.to eq 'c2007' }
   end
 
-  describe '#format' do
-    subject { data.format }
-
-    it { is_expected.to eq ['unspecified'] }
-  end
-
   describe '#document_formats' do
     subject(:document_formats) { data.document_formats }
 

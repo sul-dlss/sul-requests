@@ -110,7 +110,6 @@ FactoryBot.define do
     full_enumeration { '' }
     status { 'Available' }
     public_note { '' }
-    type { '' }
     material_type { build(:book_material_type) }
     loan_type { Folio::LoanType.new(id: '') }
     effective_location { build(:location, code: 'GRE-STACKS') }
@@ -128,7 +127,6 @@ FactoryBot.define do
   factory :instance, class: 'Folio::Instance' do
     id { '1234' }
     title { 'Item Title' }
-    format { 'Book' }
     holdings_records { [build(:holdings_record, items:)] }
     items { [build(:item)] }
 
@@ -139,7 +137,7 @@ FactoryBot.define do
     id { '1234' }
     hrid { 'a1234' }
     title { 'Item Title' }
-    format { 'Book' }
+
     items do
       [
         build(:item,
@@ -162,7 +160,7 @@ FactoryBot.define do
     id { '12345' }
     hrid { 'a12345' }
     title { 'Item Title' }
-    format { 'Book' }
+
     items do
       [
         build(:item,
@@ -177,7 +175,7 @@ FactoryBot.define do
     id { '12345' }
     hrid { 'a12345' }
     title { 'Item Title' }
-    format { 'Book' }
+
     items do
       [
         build(:item,
@@ -192,8 +190,6 @@ FactoryBot.define do
     id { '123' }
 
     title { 'Item Title' }
-
-    format { ['Book'] }
 
     items do
       [
@@ -210,8 +206,6 @@ FactoryBot.define do
 
     title { 'Item Title' }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
@@ -227,8 +221,6 @@ FactoryBot.define do
 
     title { 'Item Title' }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
@@ -243,15 +235,12 @@ FactoryBot.define do
     id { '1234' }
     title { 'Item Title' }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
               barcode: '12345678',
               base_callnumber: 'ABC 123',
-              effective_location: build(:sal_temp_location),
-              type: 'NONCIRC')
+              effective_location: build(:sal_temp_location))
       ]
     end
   end
@@ -262,8 +251,6 @@ FactoryBot.define do
     title { 'Special Collections Item Title' }
     contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
     pub_date { '2018' }
-
-    format { ['Book'] }
 
     items do
       [
@@ -288,7 +275,11 @@ FactoryBot.define do
     contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
     pub_date { '2018' }
 
-    format { ['Book'] }
+    marc_hash do
+      {
+        'leader' => '00000naa a2200000 a 4500'
+      }
+    end
 
     items do
       [
@@ -314,8 +305,6 @@ FactoryBot.define do
       ]
     end
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
@@ -330,8 +319,6 @@ FactoryBot.define do
   factory :sal3_holdings, parent: :instance do
     id { '123456' }
     title { 'SAL3 Item Title' }
-
-    format { ['Book'] }
 
     items do
       [
@@ -353,8 +340,6 @@ FactoryBot.define do
     id { '1234' }
     title { 'SAL Item Title' }
     contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
-
-    format { ['Book'] }
 
     items do
       [
@@ -378,8 +363,6 @@ FactoryBot.define do
     id { '1234' }
     title { 'Green Item Title' }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
@@ -394,8 +377,6 @@ FactoryBot.define do
   factory :page_lp_holdings, parent: :instance do
     id { '1234' }
     title { 'PAGE-LP Item Title' }
-
-    format { ['Book'] }
 
     items do
       [
@@ -412,8 +393,6 @@ FactoryBot.define do
     id { '1234' }
     title { 'PAGE-EN Item Title' }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
@@ -428,8 +407,6 @@ FactoryBot.define do
   factory :page_mp_holdings, parent: :instance do
     id { '1234' }
     title { 'PAGE-MP Item Title' }
-
-    format { ['Book'] }
 
     items do
       [
@@ -450,8 +427,6 @@ FactoryBot.define do
   factory :many_holdings, parent: :instance do
     id { '1234' }
     title { 'Item title' }
-
-    format { ['Book'] }
 
     items do
       [
@@ -488,15 +463,12 @@ FactoryBot.define do
     id { '1234' }
     title { 'Item Title' }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
               barcode: '12345678',
               base_callnumber: 'ABC 123',
-              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-              type: 'LCKSTK')
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'))
       ]
     end
   end
@@ -505,15 +477,12 @@ FactoryBot.define do
     id { '1234' }
     title { 'Item Title' }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
               barcode: '12345678',
               base_callnumber: 'ABC 123',
-              effective_location: build(:location, code: 'ART-STACKS'),
-              type: 'STKS')
+              effective_location: build(:location, code: 'ART-STACKS'))
       ]
     end
   end
@@ -522,73 +491,61 @@ FactoryBot.define do
     id { '1234' }
     title { 'Item Title' }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
               id: 'a',
               barcode: '12345678',
               base_callnumber: 'ABC 123',
-              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-              type: 'LCKSTK'),
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE')),
         build(:item,
               id: 'b',
               barcode: '23456789',
               base_callnumber: 'ABC 456',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-              public_note: 'note for 23456789',
-              type: 'LCKSTK'),
+              public_note: 'note for 23456789'),
         build(:item,
               id: 'c',
               barcode: '34567890',
               base_callnumber: 'ABC 789',
               effective_location: build(:mediated_location, code: 'ART-NEWBOOK'),
-              permanent_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-              type: 'LCKSTK'),
+              permanent_location: build(:mediated_location, code: 'ART-LOCKED-LARGE')),
         build(:item,
               id: 'd',
               barcode: '45678901',
               base_callnumber: 'ABC 012',
               effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-              public_note: 'note for 45678901',
-              type: 'LCKSTK'),
+              public_note: 'note for 45678901'),
         build(:item,
               id: 'e',
               barcode: '56789012',
               base_callnumber: 'ABC 345',
-              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-              type: 'LCKSTK'),
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE')),
         build(:item,
               id: 'f',
               barcode: '67890123',
               base_callnumber: 'ABC 678',
-              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-              type: 'LCKSTK'),
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE')),
         build(:item,
               id: 'g',
               barcode: '78901234',
               base_callnumber: 'ABC 901',
-              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-              type: 'LCKSTK'),
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE')),
         build(:item,
               id: 'h',
               barcode: '89012345',
               base_callnumber: 'ABC 234',
-              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-              type: 'LCKSTK'),
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE')),
         build(:item,
               id: 'i',
               barcode: '90123456',
               base_callnumber: 'ABC 567',
-              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-              type: 'LCKSTK'),
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE')),
         build(:item,
               id: 'j',
               barcode: '01234567',
               base_callnumber: 'ABC 890',
-              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'),
-              type: 'LCKSTK')
+              effective_location: build(:mediated_location, code: 'ART-LOCKED-LARGE'))
       ]
     end
   end
@@ -596,8 +553,6 @@ FactoryBot.define do
   factory :searchable_spec_holdings, parent: :instance do
     id { '1234' }
     title { 'Item Title' }
-
-    format { ['Book'] }
 
     items do
       [
@@ -658,8 +613,6 @@ FactoryBot.define do
     publisher { 'Walter de Gruyter GmbH' }
     edition { ['1st ed.'] }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
@@ -681,8 +634,6 @@ FactoryBot.define do
     id { '1234' }
     title { 'SAL3 stacks item' }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
@@ -698,21 +649,23 @@ FactoryBot.define do
 
     title { 'HAZARDOUS MATERIALS : MANAGING THE INCIDENT.' }
 
-    format { 'unspecified' }
-
     items { [] }
   end
 
-  factory :unspecified_not_on_order, parent: :instance do
+  factory :map_instance, parent: :instance do
     id { 'a43e597a-d4b4-50ec-ad16-7fd49920831a' }
 
     title { 'Outline map of the Empire of Brazil and adjacent territories.' }
 
-    format { 'unspecified' }
+    marc_hash do
+      {
+        'leader' => '00000nem a2200000 a 4500'
+      }
+    end
 
     items do
       [
-        build(:item, type: 'Map')
+        build(:item)
       ]
     end
   end
@@ -724,7 +677,11 @@ FactoryBot.define do
     contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
     pub_date { '2018' }
 
-    format { ['Book'] }
+    marc_hash do
+      {
+        'leader' => '00000naa a2200000 a 4500'
+      }
+    end
 
     items do
       [
@@ -748,8 +705,6 @@ FactoryBot.define do
     title { 'Mixed CREZ holdings' }
     contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
     pub_date { '2018' }
-
-    format { ['Book'] }
 
     items do
       [
@@ -776,8 +731,6 @@ FactoryBot.define do
     contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
     pub_date { '2018' }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
@@ -796,8 +749,6 @@ FactoryBot.define do
     title { 'Empty Barcode Item Title' }
     contributors { [{ 'primary' => true, 'name' => 'John Q. Public' }] }
     pub_date { '2018' }
-
-    format { ['Book'] }
 
     items do
       [
@@ -821,8 +772,6 @@ FactoryBot.define do
     id { '1234' }
     title { 'One Missing item' }
 
-    format { ['Book'] }
-
     items do
       [
         build(:item,
@@ -842,8 +791,6 @@ FactoryBot.define do
   factory :aged_to_lost_holdings, parent: :instance do
     id { '1234' }
     title { 'One lost item' }
-
-    format { ['Book'] }
 
     items do
       [
