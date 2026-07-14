@@ -40,6 +40,7 @@ RSpec.describe 'FOLIO Request Page' do
 
     within('#folio_request_7fa87cfe-df57-4dc7-953b-a5a44ff37d91') do
       click_on 'Cancel'
+      click_on 'Yes - Delete'
     end
 
     expect(page).to have_css '.flash_messages', text: 'Success!'

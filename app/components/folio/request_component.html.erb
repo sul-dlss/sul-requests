@@ -56,44 +56,38 @@
 
         <div class="d-flex text-nowrap align-items-baseline align-self-start justify-content-xl-end">
           <% if patron.can_modify_requests? %>
-            <% if request.ready_for_pickup? %>
-              <%= form_tag folio_request_path(request.key), method: :delete do %>
-                <%= hidden_field_tag :title, request.title %>
-                <%= button_tag class: 'btn btn-link su-underline p-0', type: 'submit' do %>
-                  <i class="bi bi-trash align-middle" aria-hidden></i><span class="visually-hidden">Cancel request</span>
-                <% end %>
-              <% end %>
-            <% else %>
+            <% unless request.ready_for_pickup? %>
               <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0', data: { action: 'modal#open', modal_header: 'Change or cancel request' } do %>
                 <i class="bi bi-pencil-fill me-1 align-middle" aria-hidden></i><span class="visually-hidden">Edit request</span>
               <% end %>
-              <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#<%= dom_id(request, :delete) %>">
-                <i class="bi bi-trash align-middle" aria-hidden></i><span class="visually-hidden">Cancel request</span>
-              </button>
+            <% end %>
 
-              <!-- Delete modal -->
-              <%= render ModalComponent.new(id: dom_id(request, :delete)) do |component| %>
-                <% component.with_title.with_content('Delete request?') %>
-                <% component.with_body do %>
-                  <div class="d-flex flex-column gap-3">
-                    <div class="text-lagunita-dark">Pickup</div>
-                    <div class="d-flex flex-column gap-1">
-                      <div class="text-wrap fw-semibold"><%= request.title %></div>
-                      <% if request.full_call_number.present? %>
-                        <div>Call number: <%= request.full_call_number %></div>
-                      <% end %>
-                    </div>
-                    <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'mb-0'], with_icon: false) do %>
-                      <span class="fw-semibold text-wrap">This action cannot be undone.</span>
+            <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#<%= dom_id(request, :delete) %>">
+              <i class="bi bi-trash align-middle" aria-hidden></i><span class="visually-hidden">Cancel request</span>
+            </button>
+
+            <!-- Delete modal -->
+            <%= render ModalComponent.new(id: dom_id(request, :delete)) do |component| %>
+              <% component.with_title.with_content('Delete request?') %>
+              <% component.with_body do %>
+                <div class="d-flex flex-column gap-3">
+                  <div class="text-lagunita-dark">Pickup</div>
+                  <div class="d-flex flex-column gap-1">
+                    <div class="text-wrap fw-semibold"><%= request.title %></div>
+                    <% if request.full_call_number.present? %>
+                      <div>Call number: <%= request.full_call_number %></div>
                     <% end %>
                   </div>
-                <% end %>
-
-                <% component.with_footer do %>
-                  <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-                  <%= form_with url: folio_request_path(request.key), method: 'delete' do %>
-                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+                  <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'mb-0'], with_icon: false) do %>
+                    <span class="fw-semibold text-wrap">This action cannot be undone.</span>
                   <% end %>
+                </div>
+              <% end %>
+
+              <% component.with_footer do %>
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
+                <%= form_with url: folio_request_path(request.key), method: 'delete' do %>
+                  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
                 <% end %>
               <% end %>
             <% end %>
