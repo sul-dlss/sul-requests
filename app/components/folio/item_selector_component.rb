@@ -5,6 +5,8 @@ module Folio
   class ItemSelectorComponent < ViewComponent::Base
     attr_reader :f
 
+    delegate :sort_holdings, to: :helpers
+
     def initialize(f:) # rubocop:disable Naming/MethodParameterName
       @f = f
       super()

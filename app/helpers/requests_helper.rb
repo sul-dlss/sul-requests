@@ -20,19 +20,6 @@ module RequestsHelper
     "#{prefix}#{item_status} | #{wait_list}"
   end
 
-  def requests_patron_item_selector_label(item, not_requestable: false)
-    status_class = item.checked_out? || not_requestable ? 'unavailable' : item.status_class
-    status_text = if not_requestable
-                    item.status_text == 'Not requestable' ? item.status_text : "Not requestable / #{item.status_text}"
-                  else
-                    item.status_text
-                  end
-    due_date = item.checked_out? ? content_tag(:span, "Due #{item.due_date}", class: 'ms-1 text-danger') : ''
-    content_tag :span, class: "status availability #{status_class}" do
-      availability_bootstrap_icon(status_class) + status_text + due_date
-    end
-  end
-
   def callnumber_label(item) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     location_code = item.effective_location&.code
 
