@@ -26,6 +26,7 @@ export default class extends Controller {
     const firstEmptyDigit = this.digitTargets.find(el => el.value === "");
 
     (firstEmptyDigit || this.digitTargets[this.digitTargets.length - 1]).focus();
+    this.update()
   }
 
   shift(event) {
