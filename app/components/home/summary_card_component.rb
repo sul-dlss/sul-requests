@@ -18,10 +18,10 @@ module Home
       text: ->(text:) { text }
     }
 
-    attr_reader :id, :title, :label, :link_label, :path, :secondary_label
+    attr_reader :id, :classes, :title, :label, :link_label, :path, :secondary_label
 
     # rubocop:disable Metrics/ParameterLists
-    def initialize(id:, title:, icon_class:, path:, label: nil, secondary_label: nil, status: nil, link_label: nil)
+    def initialize(id:, title:, icon_class:, path:, classes: [], label: nil, secondary_label: nil, status: nil, link_label: nil)
       # rubocop:enable Metrics/ParameterLists
       @id = id
       @title = title
@@ -29,6 +29,7 @@ module Home
       @label = label
       @secondary_label = secondary_label
       @path = path
+      @classes = classes
       @status = status
       @link_label = link_label || 'View details'
     end
