@@ -15,7 +15,7 @@ class ShibbolethStrategy < Warden::Strategies::Base
   end
 
   def authenticate!
-    success!(CurrentUser.new({ username: uid, shibboleth: true, ldap_attributes: }))
+    success!(CurrentUser.new({ username: uid, shibboleth: true, ldap_attributes: }, flush_caches_on_load: true))
   end
 
   private
@@ -71,7 +71,7 @@ Warden::Strategies.add(:university_id) do
 
     if user&.key?('patronKey') || user&.key?('id')
       u = { username: params['university_id'], patron_key: user['patronKey'] || user['id'] }
-      success!(CurrentUser.new(u))
+      success!(CurrentUser.new(u, flush_caches_on_load: true))
     else
       fail!('Could not log in')
     end
@@ -90,7 +90,7 @@ Warden::Strategies.add(:register_visitor) do
       fail!('Please enter the one-time passcode sent to your email')
     elsif params['name'].present? && params['patron_email'].present?
       u = { name: params['name'], email: params['patron_email'], shibboleth: false, otp_authenticated: otp_authenticated? }
-      success!(CurrentUser.new(u))
+      success!(CurrentUser.new(u, flush_caches_on_load: true))
     else
       # TODO: Should there be specific wording to this error message?
       fail!('Please supply both name and email')
