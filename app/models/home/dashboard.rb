@@ -84,6 +84,10 @@ module Home
       @saved_for_later ||= aeon.requests.saved_for_later.newest_first
     end
 
+    def activities?
+      aeon.activities.any?
+    end
+
     def next_activity_date
       first_activity = upcoming_activities&.first
       @next_activity_date ||= first_activity&.start_time&.to_date

@@ -62,7 +62,7 @@ RSpec.describe 'Home Page' do
     it 'renders the cards' do
       visit root_path
 
-      expect(page).to have_css('.card', count: 7)
+      expect(page).to have_css('.card', count: 6)
       expect(page).to have_css('.card', text: 'Pickup requests')
       expect(page).to have_css('.card', text: '3 items currently loaned')
       expect(page).to have_css('.card', text: 'Digitization requests')
@@ -87,10 +87,24 @@ RSpec.describe 'Home Page' do
       it 'renders just the Aeon cards' do
         visit root_path
 
-        expect(page).to have_css('.card', count: 4)
+        expect(page).to have_css('.card', count: 3)
         expect(page).to have_css('.card', text: 'Reading room appointments')
         expect(page).to have_css('.card', text: 'Digitization requests')
         expect(page).to have_no_css('.card', text: 'Pickup requests')
+      end
+    end
+
+    context 'with an Aeon user with activities' do
+      let(:patron) { Folio::NullPatron.new }
+
+      before do
+        allow(aeon_user).to receive(:activities).and_return(Aeon::ActivityFinders.new([Aeon::Activity.new]))
+      end
+
+      it 'renders an activities card' do
+        visit root_path
+
+        expect(page).to have_css('.card', text: 'Activities')
       end
     end
   end

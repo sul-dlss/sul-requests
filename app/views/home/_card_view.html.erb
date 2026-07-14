@@ -56,6 +56,7 @@
 
   <%= render Home::SummaryCardComponent.new(
         id: 'aeon-activities',
+        classes: ['d-none'], # suppress the Activities card display because most users won't have any.
         title: 'Activities',
         icon_class: 'bi-person-video3',
         label: t('dashboard.activities.label_placeholder_html'),
