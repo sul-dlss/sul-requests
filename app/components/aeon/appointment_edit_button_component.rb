@@ -2,7 +2,7 @@
 
 module Aeon
   # Edit-appointment button that opens the edit modal.
-  class EditAppointmentButtonComponent < ViewComponent::Base
+  class AppointmentEditButtonComponent < ViewComponent::Base
     attr_reader :appointment
 
     def initialize(appointment:)

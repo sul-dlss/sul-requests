@@ -6,12 +6,12 @@
   <% end %>
 
   <% c.with_actions do %>
-    <%= render Aeon::EditAppointmentButtonComponent.new(appointment: appointment) %>
-    <%= render Aeon::DeleteAppointmentButtonComponent.new(appointment: appointment) %>
+    <%= render Aeon::AppointmentEditButtonComponent.new(appointment: appointment) %>
+    <%= render Aeon::AppointmentDeleteButtonComponent.new(appointment: appointment) %>
   <% end %>
 
   <% c.with_body do %>
-      <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(appointment.grouped_requests) %>
+      <%= render Aeon::AppointmentRequestGroupComponent.with_collection(appointment.grouped_requests) %>
 
       <% if appointment.grouped_requests.none? %>
         <div role="alert" class="d-flex  zero-items-alert align-items-center text-digital-red bg-body py-3 px-4">

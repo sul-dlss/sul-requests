@@ -14,7 +14,7 @@
   <% end %>
 
   <% c.with_body do %>
-    <%= render Aeon::RequestGroupPerAppointmentComponent.with_collection(activity.grouped_requests, classes: %w[activity-request-group card rounded-0 px-3 py-2 mb-2]) %>
+    <%= render Aeon::AppointmentRequestGroupComponent.with_collection(activity.grouped_requests, classes: %w[activity-request-group card rounded-0 px-3 py-2 mb-2]) %>
 
       <% if activity.grouped_requests.none? %>
         <div role="alert" class="d-flex zero-items-alert align-items-center text-digital-red bg-body py-3 px-4">

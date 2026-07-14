@@ -1,6 +1,6 @@
 <% @update_response.requests_to_update.each do |updated_request, original_request| %>
   <% if updated_request.status == original_request.status %>
-    <%= turbo_stream.replace(original_request, Aeon::RequestGroupItemComponent.new(request: updated_request)) %>
+    <%= turbo_stream.replace(original_request, Aeon::RequestGroupItemComponent.new(request: updated_request, classes: ['list-group-item', 'request-grid', 'flash-on-add'])) %>
   <% else %>
     <%# remove the item from the previous group %>
     <%= turbo_stream.remove(original_request) %>
@@ -29,9 +29,10 @@
   <% end %>
   <% @update_response.updated_requests.requests.each do |request| %>
     <% if request.submitted? %>
-      <%= turbo_stream.replace(dom_id(request), Aeon::RequestGroupPerAppointmentItemComponent.new(request:, classes: ['flash-on-add'])) %>
+      <%= turbo_stream.replace(dom_id(request, :appointment), Aeon::AppointmentRequestGroupItemComponent.new(request:, classes: ['flash-on-add'])) %>
+      <%= turbo_stream.remove(dom_id(request, :sidebar)) %>
     <% else %>
-      <%= turbo_stream.replace(dom_id(request), Aeon::RequestGroupBriefListItemComponent.new(request:, after_request_item_component: SidebarAppointmentDropdownComponent, additional_classes: 'flash-on-add')) %>
+      <%= turbo_stream.replace(dom_id(request, :sidebar), Aeon::RequestGroupBriefListItemComponent.new(request:, after_request_item_component: SidebarAppointmentDropdownComponent, additional_classes: 'flash-on-add')) %>
     <% end %>
   <% end %>
 

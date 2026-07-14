@@ -4,7 +4,7 @@ module Aeon
   # Render a group of requests that share the same title and request type
   # Differs in layout from RequestGroupAppointment
   # Appears on aeon_appointment/index page
-  class RequestGroupPerAppointmentComponent < Aeon::RequestGroupComponent
+  class AppointmentRequestGroupComponent < Aeon::RequestGroupComponent
     with_collection_parameter :request_group
 
     attr_reader :classes

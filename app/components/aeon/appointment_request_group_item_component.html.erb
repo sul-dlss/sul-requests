@@ -1,4 +1,4 @@
-<%= tag.li id: dom_id(request), class: classes + ['request', request.status], data: request_sort_data do %>
+<%= tag.li id: dom_id(request, :appointment), class: classes + ['request', request.status], data: request_sort_data do %>
     <div class="rgi-id d-flex align-items-center">
       <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
 
