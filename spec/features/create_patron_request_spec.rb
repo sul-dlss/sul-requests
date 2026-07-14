@@ -109,6 +109,7 @@ RSpec.describe 'Creating a request', :js do
 
       before do
         allow(current_user).to receive(:user_object).and_return(user)
+        stub_request(:post, 'https://illiad-test/ILLiadWebPlatform/Transaction/')
       end
 
       it 'submits the scan request' do
