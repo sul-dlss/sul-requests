@@ -959,7 +959,6 @@ summary .disclosure-icon::before {
   min-height: 196px;
 }
 
-
 .request.flash-on-add {
   border-radius: 4px;
   box-shadow: inset 0px 0px 0px 0.5px rgb(var(--stanford-digital-green-rgb)), inset 0px 0px 0px 50px rgb(235, 243, 241);
@@ -968,6 +967,14 @@ summary .disclosure-icon::before {
 }
 
 .appointment .request.flash-on-add {
+  margin-inline-start: -1rem;
+  margin-inline-end: -1rem;
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+}
+
+#saved_for_later_aeon_requests_sidebar .request {
+  --bs-list-group-item-padding-x: 0;
   margin-inline-start: -1rem;
   margin-inline-end: -1rem;
   padding-inline-start: 1rem;
