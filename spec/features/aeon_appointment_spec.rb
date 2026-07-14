@@ -130,17 +130,17 @@ RSpec.describe 'Appointments', :js do
 
   describe 'saving an active request for later' do
     it 'moves the request into saved for later' do
-      within "#aeon_request_#{submitted_request.id}" do
+      within "#appointment_aeon_request_#{submitted_request.id}" do
         click_on 'Save for later'
         expect(page).to have_no_link 'Add items'
       end
 
       within '#saved_for_later_aeon_requests_sidebar' do
-        expect(page).to have_css "#aeon_request_#{submitted_request.id}"
+        expect(page).to have_css "#sidebar_aeon_request_#{submitted_request.id}"
       end
 
       within '#aeon_appointments' do
-        expect(page).to have_no_css "#aeon_request_#{submitted_request.id}"
+        expect(page).to have_no_css "#appointment_aeon_request_#{submitted_request.id}"
         expect(page).to have_text 'No items have been requested for this appointment.'
         expect(page).to have_link 'Add items'
       end
@@ -179,7 +179,7 @@ RSpec.describe 'Appointments', :js do
       it 'moves the request into the appointment' do # rubocop:disable RSpec/ExampleLength
         visit aeon_appointments_path
         within '#saved_for_later_aeon_requests_sidebar' do
-          within "#aeon_request_#{saved_for_later_request.id}" do
+          within "#sidebar_aeon_request_#{saved_for_later_request.id}" do
             click_on 'Appointment'
           end
           expect(page).to have_text("#{I18n.l(1.week.from_now, format: :date_only)} 1 item")
@@ -192,7 +192,7 @@ RSpec.describe 'Appointments', :js do
         end
 
         within '#saved_for_later_aeon_requests_sidebar' do
-          within "#aeon_request_#{second_saved_for_later_request.id}" do
+          within "#sidebar_aeon_request_#{second_saved_for_later_request.id}" do
             click_on 'Appointment'
           end
           expect(page).to have_text("#{I18n.l(1.week.from_now, format: :date_only)} 2 items")
@@ -207,7 +207,7 @@ RSpec.describe 'Appointments', :js do
           expect(page).to have_text('Slow poetry in America : a poetry quarterly', count: 1)
           expect(page).to have_text('Item limit: 3/10')
 
-          within "#aeon_request_#{second_saved_for_later_request.id}" do
+          within "#appointment_aeon_request_#{second_saved_for_later_request.id}" do
             click_on 'Save for later'
           end
         end
@@ -244,7 +244,7 @@ RSpec.describe 'Appointments', :js do
       date_label = I18n.l(1.week.from_now, format: :date_only).to_s
 
       within '#saved_for_later_aeon_requests_sidebar' do
-        within "#aeon_request_#{saved_for_later_request.id}" do
+        within "#sidebar_aeon_request_#{saved_for_later_request.id}" do
           click_on 'Appointment'
         end
         expect(page).to have_text("#{date_label} 1 item")
@@ -256,7 +256,7 @@ RSpec.describe 'Appointments', :js do
       end
 
       within '#saved_for_later_aeon_requests_sidebar' do
-        within "#aeon_request_#{third_saved_for_later_request.id}" do
+        within "#sidebar_aeon_request_#{third_saved_for_later_request.id}" do
           click_on 'Appointment'
         end
         expect(page).to have_button(text: /#{Regexp.escape(date_label)}.*2 items/, disabled: true)
@@ -277,10 +277,9 @@ RSpec.describe 'Appointments', :js do
       expect(page).to have_no_css '.modal'
       expect(page).to have_no_css "#aeon_appointment_#{appointment.id}"
 
-      # TODO: need to add turbo response to update the sidebar
-      # within '#saved_for_later_aeon_requests_sidebar' do
-      #   expect(page).to have_css "#aeon_request_#{submitted_request.id}"
-      # end
+      within '#saved_for_later_aeon_requests_sidebar' do
+        expect(page).to have_css "#sidebar_aeon_request_#{submitted_request.id}"
+      end
     end
 
     it 'deletes the requests' do
@@ -296,7 +295,7 @@ RSpec.describe 'Appointments', :js do
       expect(page).to have_no_css "#aeon_appointment_#{appointment.id}"
 
       within '#saved_for_later_aeon_requests_sidebar' do
-        expect(page).to have_no_css "#aeon_request_#{submitted_request.id}"
+        expect(page).to have_no_css "#sidebar_aeon_request_#{submitted_request.id}"
       end
     end
   end

@@ -30,8 +30,9 @@
   <% @update_response.updated_requests.requests.each do |request| %>
     <% if request.submitted? %>
       <%= turbo_stream.replace(dom_id(request, :appointment), Aeon::AppointmentRequestGroupItemComponent.new(request:, classes: ['flash-on-add'])) %>
+      <%= turbo_stream.remove(dom_id(request, :sidebar)) %>
     <% else %>
-      <%= turbo_stream.replace(dom_id(request), Aeon::RequestGroupBriefListItemComponent.new(request:, after_request_item_component: SidebarAppointmentDropdownComponent, additional_classes: 'flash-on-add')) %>
+      <%= turbo_stream.replace(dom_id(request, :sidebar), Aeon::RequestGroupBriefListItemComponent.new(request:, after_request_item_component: SidebarAppointmentDropdownComponent, additional_classes: 'flash-on-add')) %>
     <% end %>
   <% end %>
 
