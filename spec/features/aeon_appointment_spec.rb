@@ -45,7 +45,7 @@ RSpec.describe 'Appointments', :js do
   end
 
   describe 'create appointment modal' do
-    it 'opens and closes the create new appointment modal for field reading room' do
+    it 'opens and closes the create new appointment modal for field reading room' do # rubocop:disable RSpec/ExampleLength
       click_on 'Create new appointment'
       expect(page).to have_css '.modal'
       within '.modal' do
@@ -65,11 +65,18 @@ RSpec.describe 'Appointments', :js do
         click_on 'Next month'
 
         first('td[role="gridcell"]:not(:has(button:disabled))').click
-        expect(page).to have_css('#aeon_appointment_start_time', visible: :all)
 
         click_on 'Save'
       end
       expect(page).to have_no_css '.modal'
+
+      # For day-only rooms, the server derives the appointment span from the reading room's open hours
+      created = StubAeonClient::Appointment.last
+      start_time = Time.zone.parse(created.startTime)
+      stop_time = Time.zone.parse(created.stopTime)
+      hours = reading_room.open_range_on(start_time.to_date)
+      expect(start_time).to eq hours.begin
+      expect(stop_time).to eq hours.end
     end
 
     it 'opens and closes the create new appointment modal for ARS' do # rubocop:disable RSpec/ExampleLength
@@ -120,7 +127,6 @@ RSpec.describe 'Appointments', :js do
         click_on 'Next month'
 
         first('td[role="gridcell"]:not(:has(button:disabled))').click
-        expect(page).to have_css('#aeon_appointment_start_time', visible: :all)
 
         click_on 'Save'
       end

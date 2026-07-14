@@ -90,7 +90,6 @@ RSpec.describe 'Requests', :js do
         click_on 'Next month'
 
         first('td[role="gridcell"]:not(:has(button:disabled))').click
-        expect(page).to have_css('#aeon_appointment_start_time', visible: :all)
         click_on 'Save'
 
         within '#aeon-appointments-frame[complete] #aeon_appointments_sidebar' do

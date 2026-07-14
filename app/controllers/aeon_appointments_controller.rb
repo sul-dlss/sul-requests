@@ -84,15 +84,21 @@ class AeonAppointmentsController < ApplicationController
   end
 
   def build_appointment
-    reading_room = Aeon::ReadingRoom.find(appointment_params[:reading_room_id])
     @appointment = Aeon::Appointment.new(
       start_time: start_time_param,
       stop_time: stop_time_param,
       name: appointment_params[:name],
       reading_room_id: reading_room&.id,
       reading_room: reading_room,
-      username: current_user.aeon.username
+      username: current_user.aeon.username,
+      user: current_user.aeon
     )
+  end
+
+  def reading_room
+    return unless appointment_params[:reading_room_id]
+
+    @reading_room ||= Aeon::ReadingRoom.find(appointment_params[:reading_room_id])
   end
 
   def load_appointments
@@ -108,19 +114,30 @@ class AeonAppointmentsController < ApplicationController
   end
 
   def start_time_param
+    return day_only_appointment_range&.begin if day_only_appointment_range
     return unless appointment_params[:start_time]
 
-    Time.zone.parse("#{appointment_params[:date]}T#{appointment_params[:start_time]}")
+    parse_time(appointment_params[:date], appointment_params[:start_time])
   end
 
-  def stop_time_param # rubocop:disable Metrics/AbcSize
-    return unless appointment_params[:stop_time] || (start_time_param && appointment_params[:duration])
+  def stop_time_param
+    return day_only_appointment_range&.end if day_only_appointment_range
 
-    if appointment_params[:stop_time]
-      Time.zone.parse("#{appointment_params[:date]}T#{appointment_params[:stop_time]}")
-    else
-      start_time_param + appointment_params[:duration].to_i.seconds
-    end
+    stop_time = appointment_params[:stop_time]
+    duration = appointment_params[:duration]
+    return parse_time(appointment_params[:date], stop_time) if stop_time
+
+    start_time_param + duration.to_i.seconds if start_time_param && duration
+  end
+
+  def parse_time(date, time)
+    Time.zone.parse("#{date}T#{time}")
+  end
+
+  def day_only_appointment_range
+    return if appointment_params[:date].blank?
+
+    reading_room&.day_only_appointment_range(Date.parse(appointment_params[:date]))
   end
 
   def appointment_params
