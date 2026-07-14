@@ -56,5 +56,9 @@ RSpec.describe 'Fines Page' do
     it 'does not render headers' do
       expect(page).to have_text('Fees and fines')
     end
+
+    it 'has a message' do
+      expect(page).to have_text('There are no fees or fines on this account.')
+    end
   end
 end
