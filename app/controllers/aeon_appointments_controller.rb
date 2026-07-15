@@ -11,7 +11,7 @@ class AeonAppointmentsController < ApplicationController
   before_action :load_appointment, only: [:edit, :update, :destroy, :items]
   before_action :build_appointment, only: [:new, :create]
   before_action :load_reading_rooms, only: [:new]
-  before_action :set_request_variant
+  before_action :set_variant
 
   def index
     authorize! :read, Aeon::Appointment
@@ -73,11 +73,6 @@ class AeonAppointmentsController < ApplicationController
   end
 
   private
-
-  def set_request_variant
-    request.variant = :modal if params[:modal]
-    request.variant = :sidebar if params[:variant] == 'sidebar'
-  end
 
   def load_reading_rooms
     @reading_rooms = Aeon::ReadingRoom.all

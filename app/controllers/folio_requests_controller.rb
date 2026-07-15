@@ -70,10 +70,6 @@ class FolioRequestsController < ApplicationController
 
   private
 
-  def set_variant
-    request.variant = :modal if params[:modal]
-  end
-
   def load_requests
     @requests = patron_or_group.requests.sort_by { |request| request.sort_key(:date) }
   end
