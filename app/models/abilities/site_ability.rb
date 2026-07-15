@@ -43,7 +43,7 @@ class SiteAbility
 
     if admin_libraries.any?
       can :read, :admin
-      can :manage, LibraryLocation, library: admin_libraries
+      can :manage, LibraryLocation, library_code: admin_libraries
       can :create, AdminComment, request: { origin_location_code: admin_libraries.flat_map do |x|
         Folio::Types.libraries.find_by(code: x)&.locations&.map(&:code) || []
       rescue StandardError
@@ -56,7 +56,7 @@ class SiteAbility
 
     if admin_locations.any? # rubocop:disable Style/GuardClause
       can :read, :admin
-      can :manage, LibraryLocation, location: admin_locations
+      can :manage, LibraryLocation, location_code: admin_locations
       can :create, AdminComment, request: { origin_location_code: admin_locations }
       can [:admin, :read, :update], PatronRequest, origin_location_code: admin_locations
     end
