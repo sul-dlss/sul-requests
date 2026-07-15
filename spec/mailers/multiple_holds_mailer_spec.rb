@@ -8,7 +8,7 @@ RSpec.describe MultipleHoldsMailer do
   end
 
   let(:item) do
-    instance_double(Folio::Item, barcode: '36105xxx')
+    instance_double(Folio::Item, barcode: '36105xxx', effective_location: instance_double(Folio::Location, name: 'GREEN-STACKS'))
   end
 
   describe '#multiple_holds_notification' do

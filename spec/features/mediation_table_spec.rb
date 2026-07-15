@@ -85,7 +85,7 @@ RSpec.describe 'Mediation table', :js do
         end
 
         within('tbody td table') do
-          expect(page).to have_css('td', text: 'Art Locked Stacks Large')
+          expect(page).to have_css('td', text: 'Location name')
         end
       end
     end
@@ -107,7 +107,7 @@ RSpec.describe 'Mediation table', :js do
         expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
         within("tbody td[colspan='#{top_level_columns}'] table") do
           expect(page).to have_css('td .btn', text: 'Approve', count: 2)
-          expect(page).to have_css('td', text: 'Art Locked Stacks Large', count: 2)
+          expect(page).to have_css('td', text: 'Location name', count: 2)
           expect(page).to have_css('td', text: 'ABC 123')
           expect(page).to have_css('td', text: 'ABC 456')
         end
@@ -343,7 +343,7 @@ RSpec.describe 'Mediation table', :js do
       expect(page).to have_css("tbody td[colspan='#{top_level_columns}'] table")
       within("tbody td[colspan='#{top_level_columns}'] table") do
         expect(page).to have_css('td .btn', text: 'Approve', count: 2)
-        expect(page).to have_css('td', text: 'SAL3 PAGE-MP', count: 2)
+        expect(page).to have_css('td', text: 'Location name', count: 2)
         expect(page).to have_css('td', text: 'ABC 123')
         expect(page).to have_css('td', text: 'ABC 321')
       end
