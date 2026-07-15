@@ -317,6 +317,24 @@ class PatronRequest < ApplicationRecord
     items
   end
 
+  # @return [Boolean] whether we think we can automatically select the best item for the patron (so they don't have to pick
+  #                   from a list of items), or if things are too complicated (e.g. multiple volumes, bound-withs, etc) for us to decide.
+  def best_item_knowable?
+    return false if selectable_items.any?(&:bound_with_child_holdings_record)
+
+    selectable_items.uniq { |item| [item.full_call_number, item.material_type&.name] }.one?
+  end
+
+  def best_item(destination_library_code: nil, equivalent: :first)
+    return unless best_item_knowable?
+
+    # item needs to be page/hold-able
+    # pick the item that can be delivered to the destination the quickest
+    # maybe prefer the same-library (if it isn't coming from SAL3)
+    # pick randomly (for wear-leveling), or pick the first one (for predictability)
+    selectable_items.first
+  end
+
   # @return [Array<Folio::Item>] the items that are holdable and recallable by the patron
   def holdable_recallable_items
     @holdable_recallable_items ||= selectable_items.filter { |item| item.recallable?(patron) && item.holdable?(patron) }
