@@ -6,11 +6,11 @@ class SubmitIlliadPatronRequestJob < ApplicationJob
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
-  def perform(patron_request, item_id)
-    item = patron_request.selected_items.find { |x| x.id == item_id }
-    return unless item
+  def perform(patron_request_item)
+    item = patron_request_item.folio_item
+    patron_request = patron_request_item.patron_request
 
-    record_illiad_response(patron_request, item_id) do
+    record_illiad_response(patron_request, item.item_id) do
       IlliadClient.new.create(patron_request.illiad_request_params(item))
     end
   end
