@@ -1,9 +1,9 @@
-On <%= l @request.created_at, format: :short %>, <%= "#{@request.patron_name} <#{@request.patron_email}>" %> requested the following:
+On <%= l @request.created_at, format: :short %>, <%= @request.patron_name %> <<%= @request.patron_email %>> requested the following:
 
 <%= @request.item_title %>
 
 Item(s) requested:
-  <%= @request.selected_items.map(&:callnumber).join("\n  ") %>
+  <%= @request.patron_request_items.map(&:item_callnumber).join("\n  ") %>
 
 <% if @request.needed_date.present? %>
   I plan to visit on: <%= l @request.needed_date, format: :quick %>
