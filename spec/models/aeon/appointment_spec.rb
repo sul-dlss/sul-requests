@@ -132,6 +132,33 @@ RSpec.describe Aeon::Appointment do
       it { expect(appointment).not_to be_valid }
     end
 
+    context 'when a reading room has multiple open-hour blocks on the same day' do
+      # ARS-style Thursday: 9:00-11:00 am and 12:00-3:00 pm
+      let(:reading_room) do
+        build(:aeon_reading_room, open_hours: [
+                build(:aeon_reading_room_open_hours, day_of_week: 4, day_name: 'Thursday',
+                                                     open_time: Time.zone.parse('09:00'), close_time: Time.zone.parse('11:00')),
+                build(:aeon_reading_room_open_hours, day_of_week: 4, day_name: 'Thursday',
+                                                     open_time: Time.zone.parse('12:00'), close_time: Time.zone.parse('15:00'))
+              ])
+      end
+
+      context 'when the appointment falls in the afternoon block' do
+        # Thursday 1:30 - 3:00 pm PT
+        let(:start_time) { Time.zone.parse('2026-07-23T13:30:00-07:00') }
+        let(:stop_time)  { Time.zone.parse('2026-07-23T15:00:00-07:00') }
+
+        it { expect(appointment).to be_valid }
+      end
+
+      context 'when the appointment straddles the gap between the two blocks' do
+        let(:start_time) { Time.zone.parse('2026-07-23T10:30:00-07:00') }
+        let(:stop_time)  { Time.zone.parse('2026-07-23T12:30:00-07:00') }
+
+        it { expect(appointment).not_to be_valid }
+      end
+    end
+
     context 'when stop_time is not after start_time' do
       let(:start_time) { Time.zone.parse('2026-03-16T10:00:00-07:00') }
       let(:stop_time)  { Time.zone.parse('2026-03-16T10:00:00-07:00') }

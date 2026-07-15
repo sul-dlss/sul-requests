@@ -66,22 +66,22 @@ module Aeon
     end
 
     def open_hours_on(date)
-      open_hours.find { |h| h.day_of_week == date.wday }
+      open_hours.select { |h| h.day_of_week == date.wday }
     end
 
     # For day-only reading rooms, the appointment range covering the room's open hours on the given date.
     def day_only_appointment_range(date)
       return unless day_only_appointments? && date
 
-      open_hours_on(date)&.range_on(date)
+      open_hours_on(date).first&.range_on(date)
     end
 
-    # Dates where a closure covers the entire span of open hours for that day.
+    # Dates where a closure covers the entire span of open hours for that day, across every open-hours block.
     def fully_closed_dates
       @fully_closed_dates ||= closures.flat_map do |closure|
         closure.start_date.to_date.upto(closure.end_date.to_date).select do |date|
           hours_on_day = open_hours_on(date)
-          hours_on_day && closure.cover?(hours_on_day.range_on(date))
+          hours_on_day.any? && hours_on_day.all? { |h| closure.cover?(h.range_on(date)) }
         end
       end
     end

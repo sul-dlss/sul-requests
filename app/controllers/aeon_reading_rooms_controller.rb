@@ -30,7 +30,7 @@ class AeonReadingRoomsController < ApplicationController
 
   def bookable_dates_in(month)
     closed = @reading_room.fully_closed_dates.to_set
-    month.all_month.select { |date| @reading_room.open_hours_on(date) && closed.exclude?(date) }
+    month.all_month.select { |date| @reading_room.open_hours_on(date).any? && closed.exclude?(date) }
   end
 
   def appointment_id_param
