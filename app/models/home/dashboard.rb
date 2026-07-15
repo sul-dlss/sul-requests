@@ -51,13 +51,13 @@ module Home
     def illiad_physical_requests
       return [] unless folio?
 
-      @illiad_physical_requests ||= patron.illiad_requests.reject(&:scan_type?)
+      @illiad_physical_requests ||= patron.illiad_requests.reject(&:scan?)
     end
 
     def illiad_digital_requests
       return [] unless folio? && include_illiad
 
-      @illiad_digital_requests ||= patron.illiad_requests.select(&:scan_type?)
+      @illiad_digital_requests ||= patron.illiad_requests.select(&:scan?)
     end
 
     def recently_delivered_digital_requests
