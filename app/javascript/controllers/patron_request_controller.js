@@ -32,9 +32,15 @@ export default class extends Controller {
   }
 
   showHideItemGroups(event) {
+    const formData = new FormData(this.element);
+    const requestType = formData.get('patron_request[request_type]');
     const itemGroups = this.element.querySelectorAll('.selected-items-container');
 
     Array.from(itemGroups).forEach(itemGroup => {
+      const itemGroupType = itemGroup.closest('.accordion-item').dataset.patronrequestForrequesttype
+      // We don't want to enable required pickup fields when the user has selected scan and visa versa
+      if (itemGroupType != requestType) { return }
+
       if (!itemGroup.querySelector('[data-content-id]')) {
         itemGroup.classList.add('d-none');
         this.disableRequiredInputs(itemGroup);

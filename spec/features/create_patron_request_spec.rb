@@ -517,7 +517,34 @@ RSpec.describe 'Creating a request', :js do
 
     before do
       allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
+      stub_request(:post, 'https://illiad-test/ILLiadWebPlatform/Transaction/')
       login_as(current_user)
+    end
+
+    it 'submits scan request and does not enable required pickup fields' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+      choose 'Email digital scan'
+      click_on 'Continue'
+
+      choose 'ABC 123'
+      click_on 'Continue'
+
+      fill_in 'Page range', with: '1-15'
+      fill_in 'Title of article or chapter', with: 'Some title'
+      fill_in 'Author(s)', with: 'Some author'
+
+      expect do
+        perform_enqueued_jobs do
+          click_on 'Submit request'
+        end
+        expect(page).to have_text 'We received your scan request'
+      end.to change(PatronRequest, :count).by(1)
+
+      expect(PatronRequest.last).to have_attributes(
+        scan_title: 'Some title',
+        scan_authors: 'Some author'
+      )
     end
 
     it 'enables the submit button when selecting only the available item after choosing pickup' do
