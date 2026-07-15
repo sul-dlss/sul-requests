@@ -11,13 +11,18 @@
         <th data-table-target="header" aria-sort="ascending" class="text-start" data-table-field-param="Callnumber" data-action="click->table#sort">
           <button type="button" class="btn btn-link pe-0 text-decoration-none text-black" data-action="analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Sort/Call number">Call number</button>
         </th>
+        <% if multiple_locations? %>
+        <th data-table-target="header" class="text-start" data-table-field-param="Location" data-action="click->table#sort">
+          <button type="button" class="btn btn-link pe-0 text-decoration-none text-black" data-action="analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Sort/Location">Location</button>
+        </th>
+        <% end %>
         <th data-table-target="header" class="text-end" data-table-field-param="Status" data-action="click->table#sort">
           <button type="button" class="btn btn-link pe-0 text-decoration-none text-black" data-action="analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Sort/Status">Status</button>
         </th>
       </tr>
     </thead>
     <tbody>
-      <%= render Folio::ItemSelectorItemComponent.with_collection(sort_holdings(f.object.selectable_items), f: f) %>
+      <%= render Folio::ItemSelectorItemComponent.with_collection(sort_holdings(f.object.selectable_items), f: f, render_location: multiple_locations?) %>
     </tbody>
   </table>
 </div>

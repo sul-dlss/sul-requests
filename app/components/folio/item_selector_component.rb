@@ -11,5 +11,11 @@ module Folio
       @f = f
       super()
     end
+
+    def multiple_locations?
+      return @multiple_locations if defined?(@multiple_locations)
+
+      @multiple_locations = f.object.selectable_items.uniq { |item| item.location&.discovery_display_name }.many?
+    end
   end
 end

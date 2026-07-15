@@ -197,6 +197,12 @@ module Folio
       permanent_location.pages_prefer_to_send_via_illiad?
     end
 
+    def location
+      return effective_location if effective_location&.details&.dig('searchworksTreatTemporaryLocationAsPermanentLocation').present?
+
+      permanent_location
+    end
+
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def self.from_hash(dyn)
       new(id: dyn['id'],

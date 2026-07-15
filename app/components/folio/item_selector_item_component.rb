@@ -7,10 +7,11 @@ module Folio
 
     attr_reader :item, :f
 
-    def initialize(item:, item_counter:, f:) # rubocop:disable Naming/MethodParameterName
+    def initialize(item:, item_counter:, f:, render_location: false) # rubocop:disable Naming/MethodParameterName
       @item = item
       @item_counter = item_counter
       @f = f
+      @render_location = render_location
       super()
     end
 
@@ -20,6 +21,10 @@ module Folio
 
     def not_requestable?
       helpers.cannot?(:request, item)
+    end
+
+    def render_location?
+      @render_location
     end
 
     def item_label # rubocop:disable Metrics/AbcSize
