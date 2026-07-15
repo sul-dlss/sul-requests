@@ -25,7 +25,7 @@ class SubmitPatronRequestJob < ApplicationJob
     folio_items.each do |item|
       next if patron_request.folio_api_responses.any? { |r| r.item_id == item.item_id && r.response_data&.dig('status') }
 
-      SubmitFolioPatronRequestJob.perform_now(patron_request, item.item_id)
+      SubmitFolioPatronRequestJob.perform_now(item)
     end
 
     PatronRequestMailer.confirmation_email(patron_request)&.deliver_later
@@ -53,7 +53,7 @@ class SubmitPatronRequestJob < ApplicationJob
     folio_items.each do |item|
       next if patron_request.folio_api_responses.any? { |r| r.item_id == item.item_id && r.response_data&.dig('status') }
 
-      SubmitFolioScanRequestJob.perform_now(patron_request, item.item_id)
+      SubmitFolioScanRequestJob.perform_now(item)
     end
 
     PatronRequestMailer.confirmation_email(patron_request)&.deliver_later

@@ -61,7 +61,8 @@ RSpec.describe SubmitPatronRequestJob do
   context 'when the request is a page' do
     it 'requests items via FOLIO' do
       described_class.perform_now(request)
-      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now)
+        .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
     end
   end
 
@@ -72,7 +73,8 @@ RSpec.describe SubmitPatronRequestJob do
 
     it 'requests items via FOLIO' do
       described_class.perform_now(request)
-      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now)
+        .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
     end
   end
 
@@ -87,7 +89,8 @@ RSpec.describe SubmitPatronRequestJob do
 
     it 'requests items via FOLIO' do
       described_class.perform_now(request)
-      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now)
+        .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
     end
 
     context 'when the item is not in an easily recallable status' do

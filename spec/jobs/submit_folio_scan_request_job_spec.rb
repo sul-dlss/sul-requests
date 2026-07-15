@@ -29,7 +29,7 @@ RSpec.describe SubmitFolioScanRequestJob do
     let(:folio_instance) { build(:green_holdings) }
 
     it 'pages items in FOLIO' do
-      described_class.perform_now(request, folio_instance.items[0].id)
+      described_class.perform_now(request.patron_request_items.first)
 
       expect(stub_client).to have_received(:create_circulation_request).with(
         have_attributes(request_type: 'Page',

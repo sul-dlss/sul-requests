@@ -603,7 +603,7 @@ class PatronRequest < ApplicationRecord
 
     update(request_type: 'mediated/approved') if patron_request_items.all?(&:approved?)
 
-    SubmitFolioPatronRequestJob.perform_now(self, item_id)
+    SubmitFolioPatronRequestJob.perform_now(item)
   end
 
   def notify_mediator!
