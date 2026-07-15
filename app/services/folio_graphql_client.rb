@@ -337,16 +337,7 @@ class FolioGraphqlClient
                                           code
                                         }
                                         effectiveLocation {
-                                          id
-                                          code
-                                          details {
-                                            pageServicePoints {
-                                              code
-                                              id
-                                              discoveryDisplayName
-                                              pickupLocation
-                                            }
-                                          }
+                                          #{location_fields}
                                         }
                                         holdingsRecord {
                                           effectiveLocation {
@@ -538,6 +529,29 @@ class FolioGraphqlClient
         }
       }
       effectiveLocation {
+        #{location_fields}
+      }
+      permanentLocation {
+        #{location_fields}
+      }
+      temporaryLocation {
+        id
+        code
+        discoveryDisplayName
+      }
+      permanentLoanTypeId
+      temporaryLoanTypeId
+      holdingsRecord {
+        id
+        effectiveLocation {
+          #{location_fields}
+        }
+      }
+    GQL
+  end
+
+  def location_fields
+    <<-GQL
         id
         campusId
         libraryId
@@ -559,61 +573,21 @@ class FolioGraphqlClient
           code
         }
         details {
-          pageAeonSite
-          pageMediationGroupKey
-          pagePreferSendIlliad
-          pageServicePoints {
-            id
-            code
-            name
-          }
-          scanServicePointCode
           availabilityClass
-          searchworksTreatTemporaryLocationAsPermanentLocation
-        }
-      }
-      permanentLocation {
-        id
-        code
-        details {
           pageAeonSite
           pageMediationGroupKey
           pagePreferSendIlliad
           pageServicePoints {
             id
+            discoveryDisplayName
+            pickupLocation
             code
             name
           }
           pagingSchedule
           scanServicePointCode
+          searchworksTreatTemporaryLocationAsPermanentLocation
         }
-      }
-      temporaryLocation {
-        id
-        code
-        discoveryDisplayName
-      }
-      permanentLoanTypeId
-      temporaryLoanTypeId
-      holdingsRecord {
-        id
-        effectiveLocation {
-          id
-          code
-          details {
-            pageAeonSite
-            pageMediationGroupKey
-            pagePreferSendIlliad
-            pageServicePoints {
-              id
-              code
-              name
-            }
-            pagingSchedule
-            scanServicePointCode
-          }
-        }
-      }
     GQL
   end
 
