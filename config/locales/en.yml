@@ -290,6 +290,8 @@ en:
         other: '<span class="fw-semibold fs-5">%{count}</span> due soon'
     fines_and_fees:
       label_placeholder_html: '<div class="placeholder-glow"><span class="placeholder col-8"></span></div>'
+      no_fees: 'No fees or fines'
+      label_html: '<span class="fw-semibold fs-5">%{balance}</span> balance'
     pickup_requests:
       label_placeholder_html: '<div class="placeholder-glow"><span class="placeholder col-8"></span></div>'
       label_html:

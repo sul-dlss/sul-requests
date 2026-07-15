@@ -15,7 +15,8 @@ module Home
       count: lambda { |label:|
         tag.span(label, class: 'text-digital-red-dark') if label.present?
       },
-      text: ->(text:) { text }
+      text: ->(text:) { text },
+      component: ->(component) { component }
     }
 
     attr_reader :id, :classes, :title, :label, :link_label, :path, :secondary_label
