@@ -243,7 +243,7 @@ RSpec.describe Aeon::Appointment do
       end
     end
 
-    context 'when validating slot availability' do
+    context 'when a slot_available error is attached' do
       let(:user) { instance_double(Aeon::User, appointments: user_appointments) }
       let(:user_appointments) { instance_double(Aeon::AppointmentFinders) }
       let(:appointment) do
@@ -254,42 +254,12 @@ RSpec.describe Aeon::Appointment do
 
       before do
         allow(user_appointments).to receive(:for_reading_room).with(reading_room).and_return([])
+        allow(reading_room).to receive(:available_appointments).with(start_time.to_date, include_next_available: false).and_return([])
       end
 
-      context 'when Aeon returns no availability for the date' do
-        before do
-          allow(reading_room).to receive(:available_appointments).with(start_time.to_date, include_next_available: false).and_return([])
-        end
-
-        it 'is invalid on :date for day-only rooms' do
-          expect(appointment).not_to be_valid
-          expect(appointment.errors[:date]).to include('is not available')
-        end
-      end
-
-      context 'when Aeon returns a slot but not long enough for the requested duration' do
-        before do
-          allow(reading_room).to receive(:available_appointments).with(start_time.to_date, include_next_available: false).and_return(
-            [Aeon::AvailableAppointment.new(start_time: start_time, maximum_appointment_length: 1.hour)]
-          )
-        end
-
-        it { expect(appointment).not_to be_valid }
-      end
-
-      context 'when the user already has an appointment covering the requested span' do
-        let(:existing) do
-          build(:aeon_appointment, id: 99, start_time: start_time, stop_time: stop_time)
-        end
-
-        before do
-          allow(user_appointments).to receive(:for_reading_room).with(reading_room).and_return([existing])
-          allow(reading_room).to receive(:available_appointments).with(start_time.to_date, include_next_available: false).and_return(
-            [Aeon::AvailableAppointment.new(start_time: start_time, maximum_appointment_length: 8.hours)]
-          )
-        end
-
-        it { expect(appointment).not_to be_valid }
+      it 'attaches the error to :date for day-only reading rooms' do
+        expect(appointment).not_to be_valid
+        expect(appointment.errors[:date]).to include('is not available')
       end
     end
 

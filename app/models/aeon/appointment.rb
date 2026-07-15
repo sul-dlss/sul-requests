@@ -133,7 +133,7 @@ module Aeon
     end
 
     def slot_available
-      return if reading_room.available_at?(range:, user:, excluding_id: id)
+      return if AppointmentSlotAvailability.new(reading_room:, user:).available_at?(range:, excluding_id: id)
 
       errors.add(time_error_field, 'is not available')
     end
