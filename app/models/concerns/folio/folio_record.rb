@@ -30,7 +30,7 @@ module Folio
     end
 
     def full_call_number
-      [call_number, volume, enumeration].compact.join(' ')
+      [call_number, volume, enumeration, chronology].compact.join(' ')
     end
 
     def volume
@@ -39,6 +39,10 @@ module Folio
 
     def enumeration
       item['enumeration']
+    end
+
+    def chronology
+      item['chronology']
     end
 
     def shelf_key
