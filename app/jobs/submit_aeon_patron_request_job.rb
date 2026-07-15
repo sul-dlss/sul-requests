@@ -16,15 +16,6 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     end
   end
 
-  # Per-item fields that are meaningful to Aeon for each request_type. Hidden accordion sections
-  # in the form still submit their inputs, so we drop anything that doesn't belong before building
-  # the Aeon payload.
-  AEON_ITEM_FIELDS_BY_REQUEST_TYPE = {
-    'scan' => %w[id title hierarchy for_publication requested_pages additional_information],
-    'pickup' => %w[id title hierarchy appointment_id],
-    'activity' => %w[id title hierarchy]
-  }.freeze
-
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
@@ -54,9 +45,9 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
   def perform_folio_request(patron_request, activity_id: nil)
     failures = []
-    patron_request.selected_items.each do |folio_item|
-      request = as_aeon_create_request_data(patron_request, folio_item, aeon_item_for(patron_request, folio_item.id), activity_id)
-      record_aeon_response(patron_request, folio_item.id, request) { submit_aeon_request(request) }
+    patron_request.patron_request_items.each do |requested_item|
+      request = as_aeon_create_request_data(patron_request, requested_item, activity_id)
+      record_aeon_response(patron_request, requested_item.item_id, request) { submit_aeon_request(request) }
     rescue AeonClient::ApiError => e
       failures << e
     end
@@ -65,8 +56,8 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
   def perform_ead_request(patron_request, activity_id: nil)
     failures = []
-    patron_request.aeon_item.each_value do |volume_params|
-      request = as_aeon_create_ead_request_data(patron_request, relevant_aeon_fields(patron_request, volume_params), activity_id)
+    patron_request.patron_request_items.each do |requested_item|
+      request = as_aeon_create_ead_request_data(patron_request, requested_item, activity_id)
       item_id = "#{request.call_number} #{request.item_volume}"
       record_aeon_response(patron_request, item_id, request) { submit_aeon_request(request) }
     rescue AeonClient::ApiError => e
@@ -75,35 +66,33 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     report_failures(patron_request, failures)
   end
 
-  def common_aeon_data_from_patron_request(patron_request, volume_params, activity_id) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  def common_aeon_data_from_patron_request(patron_request, item, activity_id) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     AeonClient::RequestData.with_defaults.with(
-      appointment_id: volume_params['appointment_id'].presence&.to_i,
+      appointment_id: (item.appointment_id.presence&.to_i unless item.request_type == 'scan'),
       document_type: patron_request.document_type,
-      for_publication: ActiveRecord::Type::Boolean.new.cast(volume_params['for_publication']),
+      for_publication: (ActiveRecord::Type::Boolean.new.cast(item.for_publication) if item.request_type == 'scan'),
       item_author: patron_request.author,
       item_date: patron_request.date,
       item_info1: patron_request.view_url,
-      item_info5: volume_params['requested_pages'],
+      item_info5: (item.requested_pages if item.request_type == 'scan'),
       item_title: patron_request.item_title,
       reference_number: patron_request.to_global_id.to_s,
       shipping_option: patron_request.request_type == 'scan' ? 'Electronic Delivery' : nil,
       site: patron_request.aeon_site,
-      special_request: if patron_request.request_type == 'scan'
-                         volume_params['additional_information']
-                       elsif volume_params['appointment_id'].present?
-                         patron_request.aeon_reading_special
-                       end,
+      special_request: (if item.request_type == 'scan' || item.appointment_id.present?
+                          item.additional_information
+                        end) || (patron_request.aeon_reading_special if item.appointment_id.present?),
       username: patron_request.user.aeon.username,
       activity_id:
     )
   end
 
-  def as_aeon_create_ead_request_data(patron_request, volume_params, activity_id)
-    common_aeon_data_from_patron_request(patron_request, volume_params, activity_id).with(
-      call_number: "#{patron_request.ead_doc.identifier} #{volume_params['hierarchy']&.first}",
+  def as_aeon_create_ead_request_data(patron_request, item, activity_id)
+    common_aeon_data_from_patron_request(patron_request, item, activity_id).with(
+      call_number: "#{patron_request.ead_doc.identifier} #{item.hierarchy&.first}",
       ead_number: patron_request.ead_doc.identifier,
       item_info4: patron_request.ead_doc.conditions_governing_access,
-      item_volume: volume_params['title'],
+      item_volume: item.title,
       web_request_form: 'multiple'
     )
   end
@@ -111,11 +100,11 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   # Once reading room logic for appointments is implemented, this mapping
   # should also contain scheduledDate, appointment id, appointment,
   # and reading room id.
-  def as_aeon_create_request_data(patron_request, folio_item, volume_params, activity_id)
-    common_aeon_data_from_patron_request(patron_request, volume_params, activity_id).with(
-      call_number: folio_item.callnumber,
-      item_number: folio_item.barcode,
-      location: patron_request.origin_location_code,
+  def as_aeon_create_request_data(patron_request, item, activity_id)
+    common_aeon_data_from_patron_request(patron_request, item, activity_id).with(
+      call_number: item.item_callnumber,
+      item_number: item.barcode,
+      location: item.origin_location_code || patron_request.origin_location_code,
       web_request_form: patron_request.selectable_items.many? ? 'multiple' : 'single'
     )
   end
@@ -132,15 +121,6 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   delegate :aeon_client, to: :Current
 
   private
-
-  def aeon_item_for(patron_request, item_id)
-    relevant_aeon_fields(patron_request, patron_request.aeon_item&.dig(item_id))
-  end
-
-  def relevant_aeon_fields(patron_request, volume_params)
-    fields = AEON_ITEM_FIELDS_BY_REQUEST_TYPE[patron_request.request_type] || []
-    (volume_params || {}).slice(*fields)
-  end
 
   def record_aeon_response(patron_request, item_id, request)
     response_data = yield.as_json

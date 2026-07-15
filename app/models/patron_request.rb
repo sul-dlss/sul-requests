@@ -7,6 +7,8 @@ class PatronRequest < ApplicationRecord
   has_many :folio_api_responses, dependent: :delete_all
   has_many :illiad_api_responses, dependent: :delete_all
   has_many :aeon_api_responses, dependent: :delete_all
+  has_many :patron_request_items, dependent: :delete_all
+  accepts_nested_attributes_for :patron_request_items
 
   belongs_to :user, optional: true
 
@@ -53,6 +55,43 @@ class PatronRequest < ApplicationRecord
     self.display_type = calculate_display_type
     self.item_title = folio_instance&.title || ead_doc&.title
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
+
+    create_patron_request_items
+  end
+
+  def create_patron_request_items # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+    if ead_url.present?
+      aeon_item.each_value do |item|
+        patron_request_items.build(
+          item_id: item['id'],
+          request_type: request_type,
+          additional_information: aeon_reading_special,
+          ead_url: ead_url,
+          **item.except('id')
+        )
+      end
+    elsif folio_instance.present?
+      barcodes.compact_blank.each do |barcode_or_item_id|
+        folio_item = folio_instance.items.find { |item| item.barcode == barcode_or_item_id || item.id == barcode_or_item_id }
+
+        patron_request_items.build(
+          item_id: folio_item&.id || barcode_or_item_id,
+          item_callnumber: folio_item&.callnumber,
+          barcode: folio_item&.barcode,
+          origin_location_code: folio_item&.effective_location&.code,
+          service_point_code: pickup_service_point&.code,
+          instance_id: instance_id,
+          scan_authors: scan_authors.presence,
+          scan_title: scan_title.presence,
+          scan_page_range: scan_page_range.presence,
+          request_type: request_type,
+          estimated_delivery: estimated_delivery,
+          additional_information: aeon_reading_special,
+          mediation_data: (item_mediation_data&.dig(folio_item.id) if folio_item),
+          **((aeon_item || {})[folio_item.id] if folio_item)
+        )
+      end
+    end
   end
 
   class << self
