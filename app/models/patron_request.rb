@@ -141,6 +141,13 @@ class PatronRequest < ApplicationRecord
 
   # @!group Origin + destination accessors
 
+  # @return [LibraryLocation]
+  def library_location
+    return unless folio_instance
+
+    @library_location ||= LibraryLocation.new(origin_library_code, origin_location_code)
+  end
+
   # Get the FOLIO location object for the origin location code. We prefer to use the location data stored with this application,
   # but if it's not available, we fall back to what we get from the FOLIO API.
   # @return [Folio::Location]
@@ -674,13 +681,6 @@ class PatronRequest < ApplicationRecord
   # @return [FolioClient]
   def folio_client
     FolioClient.new
-  end
-
-  # @return [LibraryLocation]
-  def library_location
-    return unless folio_instance
-
-    @library_location ||= LibraryLocation.new(origin_library_code, origin_location_code)
   end
 
   # For the purposes of showing the items in the "location", we also combine locations with the same
