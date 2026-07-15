@@ -39,7 +39,7 @@ module Illiad
       INACTIVE_REQUEST_STATUSES.include? @illiad_result['TransactionStatus']
     end
 
-    def scan_type?
+    def scan?
       @illiad_result['PhotoJournalTitle'].present?
     end
 
@@ -65,7 +65,7 @@ module Illiad
     end
 
     def title
-      scan_type? ? @illiad_result['PhotoJournalTitle'] : @illiad_result['LoanTitle']
+      scan? ? @illiad_result['PhotoJournalTitle'] : @illiad_result['LoanTitle']
     end
 
     def call_number
@@ -73,7 +73,7 @@ module Illiad
     end
 
     def author
-      scan_type? ? @illiad_result['PhotoArticleAuthor'] : @illiad_result['LoanAuthor']
+      scan? ? @illiad_result['PhotoArticleAuthor'] : @illiad_result['LoanAuthor']
     end
 
     def placed_date
@@ -89,7 +89,7 @@ module Illiad
       # In some cases, even if the request is a hold/recall and not a scan,
       # the 'NotWantedAfter' field may be blank. In that case, we will just
       # use the date that is 2 months after the transaction creation date
-      scan_type? ? based_on_placed : (user_supplied_expiration_date || based_on_placed)
+      scan? ? based_on_placed : (user_supplied_expiration_date || based_on_placed)
     end
 
     def user_supplied_expiration_date

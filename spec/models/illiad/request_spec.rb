@@ -62,7 +62,7 @@ RSpec.describe Illiad::Request do
     let(:expiration_empty_hold) { described_class.new(JSON.parse(expiration_empty_result)) }
 
     it 'correctly identified hold recall result as not being type scan' do
-      expect(hold.scan_type?).to be(false)
+      expect(hold.scan?).to be(false)
     end
 
     it 'correctly retrieves title for non-scan transaction' do
@@ -90,7 +90,7 @@ RSpec.describe Illiad::Request do
     subject(:scan) { described_class.new(JSON.parse(scan_result)) }
 
     it 'correctly identified scan result as type scan' do
-      expect(scan.scan_type?).to be(true)
+      expect(scan.scan?).to be(true)
     end
 
     it 'correctly retrieves title for scan transaction' do

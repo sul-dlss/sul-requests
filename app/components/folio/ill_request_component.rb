@@ -14,7 +14,7 @@ module Folio
     end
 
     def type_label
-      request.scan_type? ? 'Digitization' : 'Pickup'
+      request.scan? ? 'Digitization' : 'Pickup'
     end
   end
 end
