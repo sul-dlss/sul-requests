@@ -11,15 +11,15 @@
   <% end %>
 
   <%= turbo_stream.replace 'folio-fines-and-fees' do %>
-    <%= render Home::FinesCardComponent.new(
+    <%= render Home::SummaryCardComponent.new(
           id: 'folio-fines-and-fees',
           title: 'Fees and fines',
-          icon: 'bi-cash-coin',
-          fines: @dashboard.fines,
-          balance: @dashboard.balance,
-          patron_key: current_user.patron.key,
-          path: fines_path,
-          past_path: fines_path(past: 1)) %>
+          icon_class: 'bi-cash-coin',
+          label: @dashboard.balance.positive? ? t('dashboard.fines_and_fees.label_html', balance: number_to_currency(@dashboard.balance)) : t('dashboard.fines_and_fees.no_fees'),
+          path: @dashboard.balance.positive? ? fines_path : fines_path(past: 1)
+          ) do |c| %>
+      <%= c.with_status_component(Home::PayNowFormComponent.new(fines: @dashboard.fines, balance: @dashboard.balance, patron_key: current_user.patron.key)) if @dashboard.balance.positive? %>
+    <% end %>
   <% end %>
 
   <%= turbo_stream.replace 'folio-pickup-requests' do %>
