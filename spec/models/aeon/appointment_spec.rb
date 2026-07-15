@@ -132,6 +132,33 @@ RSpec.describe Aeon::Appointment do
       it { expect(appointment).not_to be_valid }
     end
 
+    context 'when a reading room has multiple open-hour blocks on the same day' do
+      # ARS-style Thursday: 9:00-11:00 am and 12:00-3:00 pm
+      let(:reading_room) do
+        build(:aeon_reading_room, open_hours: [
+                build(:aeon_reading_room_open_hours, day_of_week: 4, day_name: 'Thursday',
+                                                     open_time: Time.zone.parse('09:00'), close_time: Time.zone.parse('11:00')),
+                build(:aeon_reading_room_open_hours, day_of_week: 4, day_name: 'Thursday',
+                                                     open_time: Time.zone.parse('12:00'), close_time: Time.zone.parse('15:00'))
+              ])
+      end
+
+      context 'when the appointment falls in the afternoon block' do
+        # Thursday 1:30 - 3:00 pm PT
+        let(:start_time) { Time.zone.parse('2026-07-23T13:30:00-07:00') }
+        let(:stop_time)  { Time.zone.parse('2026-07-23T15:00:00-07:00') }
+
+        it { expect(appointment).to be_valid }
+      end
+
+      context 'when the appointment straddles the gap between the two blocks' do
+        let(:start_time) { Time.zone.parse('2026-07-23T10:30:00-07:00') }
+        let(:stop_time)  { Time.zone.parse('2026-07-23T12:30:00-07:00') }
+
+        it { expect(appointment).not_to be_valid }
+      end
+    end
+
     context 'when stop_time is not after start_time' do
       let(:start_time) { Time.zone.parse('2026-03-16T10:00:00-07:00') }
       let(:stop_time)  { Time.zone.parse('2026-03-16T10:00:00-07:00') }
@@ -243,7 +270,7 @@ RSpec.describe Aeon::Appointment do
       end
     end
 
-    context 'when validating slot availability' do
+    context 'when a slot_available error is attached' do
       let(:user) { instance_double(Aeon::User, appointments: user_appointments) }
       let(:user_appointments) { instance_double(Aeon::AppointmentFinders) }
       let(:appointment) do
@@ -254,42 +281,12 @@ RSpec.describe Aeon::Appointment do
 
       before do
         allow(user_appointments).to receive(:for_reading_room).with(reading_room).and_return([])
+        allow(reading_room).to receive(:available_appointments).with(start_time.to_date, include_next_available: false).and_return([])
       end
 
-      context 'when Aeon returns no availability for the date' do
-        before do
-          allow(reading_room).to receive(:available_appointments).with(start_time.to_date, include_next_available: false).and_return([])
-        end
-
-        it 'is invalid on :date for day-only rooms' do
-          expect(appointment).not_to be_valid
-          expect(appointment.errors[:date]).to include('is not available')
-        end
-      end
-
-      context 'when Aeon returns a slot but not long enough for the requested duration' do
-        before do
-          allow(reading_room).to receive(:available_appointments).with(start_time.to_date, include_next_available: false).and_return(
-            [Aeon::AvailableAppointment.new(start_time: start_time, maximum_appointment_length: 1.hour)]
-          )
-        end
-
-        it { expect(appointment).not_to be_valid }
-      end
-
-      context 'when the user already has an appointment covering the requested span' do
-        let(:existing) do
-          build(:aeon_appointment, id: 99, start_time: start_time, stop_time: stop_time)
-        end
-
-        before do
-          allow(user_appointments).to receive(:for_reading_room).with(reading_room).and_return([existing])
-          allow(reading_room).to receive(:available_appointments).with(start_time.to_date, include_next_available: false).and_return(
-            [Aeon::AvailableAppointment.new(start_time: start_time, maximum_appointment_length: 8.hours)]
-          )
-        end
-
-        it { expect(appointment).not_to be_valid }
+      it 'attaches the error to :date for day-only reading rooms' do
+        expect(appointment).not_to be_valid
+        expect(appointment.errors[:date]).to include('is not available')
       end
     end
 
