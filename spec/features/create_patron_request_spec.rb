@@ -182,7 +182,7 @@ RSpec.describe 'Creating a request', :js do
         click_on 'Select a date'
         next_monday = today.next_week(:monday)
         click_on 'Next month' if today.month != next_monday.month
-        click_on next_monday.day
+        click_on next_monday.day.to_s
 
         expect do
           perform_enqueued_jobs do
