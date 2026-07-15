@@ -3,11 +3,12 @@
 module Home
   # Fees & fines card for the card-view home page.
   class FinesCardComponent < ViewComponent::Base
-    attr_reader :id, :title, :icon, :fines, :balance, :patron_key, :path, :past_path
+    attr_reader :id, :title, :classes, :icon, :fines, :balance, :patron_key, :path, :past_path
 
-    def initialize(id:, title:, icon:, fines:, balance:, patron_key:, path:, past_path:) # rubocop:disable Metrics/ParameterLists
+    def initialize(id:, title:, icon:, fines:, balance:, patron_key:, path:, past_path:, classes: []) # rubocop:disable Metrics/ParameterLists
       @id = id
       @title = title
+      @classes = classes
       @icon = icon
       @fines = fines
       @balance = balance

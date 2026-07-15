@@ -1,4 +1,4 @@
-<%= render Home::FlatCardComponent.new(id: id) do |c| %>
+<%= render Home::FlatCardComponent.new(id: id, classes: classes) do |c| %>
   <% c.with_title do %>
     <i class="bi <%= icon %> text-60-black fs-4"></i>
   <% end %>
