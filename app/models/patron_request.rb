@@ -628,19 +628,19 @@ class PatronRequest < ApplicationRecord
 
   # @return Hash
   def item_status(item_id)
-    item_mediation_data[item_id] || {}
-  end
-
-  def update_item_status(item_id, **status)
-    update(item_mediation_data: item_mediation_data.merge({ item_id => item_status(item_id).merge(status) }))
-
-    update(request_type: 'mediated/approved') if selected_items.all? { |x| item_status(x.id)['approved'] }
+    patron_request_items.find_by(item_id: item_id)&.mediation_data || {}
   end
 
   # Mark the specified item as approved and submit the request to FOLIO
   def approve_item(item_id, approver:)
-    update_item_status(item_id, approved: true, approver: approver.sunetid,
-                                approved_at: Time.zone.now)
+    item = patron_request_items.find_by(item_id: item_id)
+    return unless item
+
+    item.update(mediation_data: (item.mediation_data || {}).merge({ approved: true,
+                                                                    approver: approver.sunetid,
+                                                                    approved_at: Time.zone.now }))
+
+    update(request_type: 'mediated/approved') if patron_request_items.all?(&:approved?)
 
     SubmitFolioPatronRequestJob.perform_now(self, item_id)
   end

@@ -133,12 +133,12 @@ RSpec.describe AdminController do
       let(:user) { create(:superadmin_user) }
 
       it 'can approve individual items' do
-        expect(PatronRequest.find(mediated_page.id).item_mediation_data).to be_blank
-        get :approve_item, params: { id: mediated_page.id, item: '3610512345' }
+        expect(PatronRequest.find(mediated_page.id).item_status('a')).to be_blank
+        get :approve_item, params: { id: mediated_page.id, item: 'a' }
         expect(response).to be_successful
 
         expect(
-          PatronRequest.find(mediated_page.id).item_mediation_data['3610512345']['approved']
+          PatronRequest.find(mediated_page.id).item_status('a')['approved']
         ).to be true
       end
     end

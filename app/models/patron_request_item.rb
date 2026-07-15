@@ -37,4 +37,8 @@ class PatronRequestItem < ApplicationRecord
 
     @folio_item ||= patron_request.folio_instance.items.find { |i| i.id == item_id || i.barcode == barcode || i.id == barcode }
   end
+
+  def approved?
+    mediation_data&.dig('approved') == true
+  end
 end
