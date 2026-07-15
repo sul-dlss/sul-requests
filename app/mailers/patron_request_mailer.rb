@@ -19,9 +19,9 @@ class PatronRequestMailer < ApplicationMailer
     )
   end
 
-  def staff_scan_email(patron_request, item_id)
-    @patron_request = patron_request
-    @item = patron_request.selected_items.find { |i| i.id == item_id }
+  def staff_scan_email(patron_request_item)
+    @patron_request = patron_request_item.patron_request
+    @item = patron_request_item.folio_item
 
     mail(
       to: patron_request.scan_service_point&.staff_email || Settings.libraries.default.contact_info.email,

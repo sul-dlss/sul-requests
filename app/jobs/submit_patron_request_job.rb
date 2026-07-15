@@ -47,7 +47,7 @@ class SubmitPatronRequestJob < ApplicationJob
     end
 
     _email_response_data = scan_email_items.each do |item|
-      PatronRequestMailer.staff_scan_email(patron_request, item.item_id)&.deliver_later
+      PatronRequestMailer.staff_scan_email(item)&.deliver_later
     end
 
     folio_items.each do |item|
