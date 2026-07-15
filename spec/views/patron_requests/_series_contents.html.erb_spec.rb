@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'patron_requests/_ead_series_contents.html.erb' do
-  let(:form_builder) { instance_double(ActionView::Helpers::FormBuilder, check_box: '', object: instance_double(PatronRequest, selected_items: [])) }
+  let(:form_builder) { instance_double(ActionView::Helpers::FormBuilder, check_box: '', object: instance_double(PatronRequest, patron_request_items: [])) }
   let(:parent_title) { 'Test Series' }
 
   before do
