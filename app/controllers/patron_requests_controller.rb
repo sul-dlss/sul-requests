@@ -144,6 +144,8 @@ class PatronRequestsController < ApplicationController
   end
 
   def new_params # rubocop:disable Metrics/AbcSize
+    return patron_request_params if params[:patron_request].present?
+
     if params[:ead_url] || params[:value] || params[:Value]
       ead_url = params[:ead_url] || params[:value] || params[:Value]
     else
