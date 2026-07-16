@@ -785,7 +785,7 @@
       "numberAllowed": 4,
       "alternateFixedDueDateSchedule": null,
       "period": null,
-      "renewFromId": "SYSTEM_DATE",
+      "renewFromId": "CURRENT_DUE_DATE",
       "unlimited": null
     },
     "loanable": true,
@@ -1176,7 +1176,7 @@
       "numberAllowed": 2,
       "alternateFixedDueDateSchedule": null,
       "period": null,
-      "renewFromId": "SYSTEM_DATE",
+      "renewFromId": "CURRENT_DUE_DATE",
       "unlimited": null
     },
     "loanable": true,
