@@ -106,11 +106,6 @@ class AeonRequestsController < ApplicationController
     render 'update'
   end
 
-  def set_variant
-    request.variant = :sidebar if params[:variant] == 'sidebar'
-    request.variant = :modal if params[:modal]
-  end
-
   def load_aeon_request
     @aeon_request = @aeon_requests.find(params[:id])
   end

@@ -44,6 +44,11 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def set_variant
+    request.variant = :sidebar if params[:variant] == 'sidebar'
+    request.variant = :modal if params[:modal]
+  end
+
   def sso_user?
     current_user.sso_user?
   end
