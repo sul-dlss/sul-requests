@@ -316,10 +316,8 @@ class PatronRequest < ApplicationRecord
   end
 
   # @return [Array<Folio::Item>] the items the patron has selected
-  def selected_items # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
-    return [] unless barcodes&.any? && ead_url.blank?
-
-    items = items_in_location.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
+  def selected_items
+    items = patron_request_items.map(&:folio_item)
 
     return items.first(1) if request_type == 'scan' && !aeon_page?
 
