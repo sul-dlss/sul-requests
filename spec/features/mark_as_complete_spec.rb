@@ -15,7 +15,8 @@ RSpec.describe 'Mark As Complete', :js do
       create(
         :mediated_patron_request_with_holdings,
         barcodes: %w(34567890),
-        created_at: 1.day.from_now
+        created_at: 1.day.from_now,
+        folio_instance: build(:searchable_holdings)
       )
     end
 

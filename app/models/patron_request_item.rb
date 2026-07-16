@@ -41,4 +41,8 @@ class PatronRequestItem < ApplicationRecord
   def approved?
     mediation_data&.dig('approved') == true
   end
+
+  def error?
+    mediation_data&.dig('error').present?
+  end
 end
