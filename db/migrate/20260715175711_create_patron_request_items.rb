@@ -40,6 +40,7 @@ class CreatePatronRequestItems < ActiveRecord::Migration[8.1]
     if request.ead_url.present?
       request.data.dig('aeon_item')&.each_value do |item|
         request.patron_request_items.build(
+          created_at: request.created_at,
           item_id: item['id'],
           request_type: request.request_type,
           additional_information: request.data.dig('aeon_reading_special'),
@@ -48,28 +49,21 @@ class CreatePatronRequestItems < ActiveRecord::Migration[8.1]
           **item.slice(*aeon_item_params)
         )
       end
-    elsif request.folio_instance.present? && request.barcodes&.compact_blank.present?
-      sleep 1 # rate limit FOLIO API requests
+    elsif request.data.dig('barcodes')&.compact_blank.present?
       request.data.dig('barcodes').compact_blank.each do |barcode_or_item_id|
-        folio_item = request.folio_instance.items.find { |item| item.barcode == barcode_or_item_id || item.id == barcode_or_item_id }
-
         request.patron_request_items.build(
-          item_id: folio_item&.id || barcode_or_item_id,
-          item_callnumber: folio_item&.callnumber,
-          barcode: folio_item&.barcode,
-          origin_location_code: folio_item&.effective_location&.code,
-          service_point_code: request.pickup_service_point&.code,
-          instance_id: request.instance_id,
+          created_at: request.created_at,
+          migrated_item_id_or_barcode: barcode_or_item_id,
+          origin_location_code: request.origin_location_code,
+          service_point_code: request.service_point_code,
+          instance_id: request.instance_hrid,
           scan_authors: request.data.dig('scan_authors').presence,
           scan_title: request.data.dig('scan_title').presence,
           scan_page_range: request.data.dig('scan_page_range').presence,
           request_type: request.request_type,
           estimated_delivery: request.data.dig('estimated_delivery'),
           activity_ids: request.data.dig('activity_ids'),
-          additional_information: request.data.dig('aeon_reading_special'),
-          mediation_data: (request.data.dig('item_mediation_data', folio_item.id) if folio_item),
-          **((request.data.dig('aeon_item') || {})[folio_item.id]&.slice(*aeon_item_params) if folio_item)
-        )
+          additional_information: request.data.dig('aeon_reading_special'))
       end
 
       request.save
