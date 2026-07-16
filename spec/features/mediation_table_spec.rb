@@ -320,13 +320,10 @@ RSpec.describe 'Mediation table', :js do
         barcodes: %w(12345678 87654321)
       )
     end
-    let(:request_status) do
-      instance_double(ItemStatus, approved?: false, errored?: false)
-    end
 
     before do
       stub_current_user(create(:page_mp_origin_admin_user))
-      stub_folio_instance_json(build(:page_mp_holdings))
+      stub_folio_instance_json(request.folio_instance)
       request.save(validate: false)
 
       visit admin_path('SAL3-PAGE-MP')
