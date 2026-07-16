@@ -119,12 +119,13 @@ RSpec.describe PatronRequest do
     let(:folio_instance) { build(:scannable_holdings) }
 
     it 'returns the items with matching barcodes' do
-      request.assign_attributes(barcodes: ['12345678'])
+      request.patron_request_items.build(barcode: '12345678')
       expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 123'))
     end
 
     it 'returns all the items with matching barcodes' do
-      request.assign_attributes(barcodes: ['87654321', '12345678'])
+      request.patron_request_items.build(barcode: '87654321')
+      request.patron_request_items.build(barcode: '12345678')
 
       expect(request.selected_items).to contain_exactly(
         have_attributes(callnumber: 'ABC 321'),
@@ -133,13 +134,16 @@ RSpec.describe PatronRequest do
     end
 
     it 'returns items with matching item ids' do
-      request.assign_attributes(barcodes: ['2'])
+      request.patron_request_items.build(barcode_or_item_id: '2')
       expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 321'))
     end
 
     context 'for a scan' do
+      let(:attr) { { request_type: 'scan' } }
+
       it 'returns the first item' do
-        request.assign_attributes(request_type: 'scan', barcodes: ['12345678', '87654321'])
+        request.patron_request_items.build(barcode: '12345678')
+        request.patron_request_items.build(barcode: '87654321')
 
         expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 123'))
       end
