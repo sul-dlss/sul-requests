@@ -133,17 +133,7 @@
     <%= render AccordionStepComponent.new(id: 'pickup-request', classes: ['d-none'], step_index: scan_or_pickup_step ||= step_enum.next, form_id: 'illiad-request-form', data: { ill_request_target: 'section', ill_request_for_request_type: "pickup" }, submit: true) do |c| %>
       <% c.with_title.with_content('Pickup request') %>
       <% c.with_body do %>
-        <div class="mb-3">
-          <%= f.label :item_info4, 'Deliver to', class: 'form-label d-block fw-semibold redesign-required-label' %>
-          <%= f.select(
-          :item_info4, options_for_select(default_service_points(current_user.patron).map { |sp| [sp.name, sp.code] }), { include_blank: false, required: false },
-          class: 'form-select'
-          ) %>
-        </div>
-        <div class="mb-4">
-          <%= f.label :not_wanted_after, 'Not wanted after date', class: 'form-label fw-semibold' %>
-          <%= f.date_field :not_wanted_after, class: 'form-control' %>
-        </div>
+        <%= render 'pickup_form', f: %>
 
         <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
           <%= f.label :note, 'Additional information', class: 'form-label fw-semibold' %>
@@ -176,20 +166,7 @@
             violation of copyright law.
           </div>
           <div class="col pe-0">
-            <div class="mb-3" data-ill-request-target="section">
-              <%= f.label :photo_article_title, 'Title of article or chapter', class: 'form-label fw-semibold redesign-required-label' %>
-              <%= f.text_field :photo_article_title, required: true, class: 'form-control', maxlength: 255 %>
-            </div>
-
-            <div class="mb-3" data-ill-request-target="section">
-              <%= f.label :photo_article_author, 'Chapter/article author(s)', class: 'form-label fw-semibold' %>
-              <%= f.text_field :photo_article_author, class: 'form-control', maxlength: 255 %>
-            </div>
-
-            <div class="mb-3" data-ill-request-target="section">
-              <%= f.label :photo_journal_inclusive_pages, 'Page range', class: 'form-label fw-semibold redesign-required-label' %>
-              <%= f.text_field :photo_journal_inclusive_pages, required: true, class: 'form-control' %>
-            </div>
+            <%= render 'scan_form', f: %>
 
             <div class="mb-4">
               <%= f.label :not_wanted_after, 'Not wanted after date', class: 'form-label fw-semibold' %>
