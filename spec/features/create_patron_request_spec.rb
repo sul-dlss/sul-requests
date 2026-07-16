@@ -456,7 +456,7 @@ RSpec.describe 'Creating a request', :js do
         expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
-      expect(PatronRequest.last).to have_attributes(barcodes: ['12345678'])
+      expect(PatronRequest.last).to have_attributes(patron_request_items: contain_exactly(have_attributes(barcode: '12345678')))
     end
 
     it 'allows the user to hold/recall the checked out item' do
@@ -473,7 +473,8 @@ RSpec.describe 'Creating a request', :js do
         expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
-      expect(PatronRequest.last).to have_attributes(barcodes: ['87654321'], fulfillment_type: 'hold')
+      expect(PatronRequest.last).to have_attributes(fulfillment_type: 'hold',
+                                                    patron_request_items: contain_exactly(have_attributes(barcode: '87654321')))
     end
 
     it 'allows the user to select both items' do
@@ -491,7 +492,9 @@ RSpec.describe 'Creating a request', :js do
         expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
-      expect(PatronRequest.last).to have_attributes(barcodes: ['12345678', '87654321'], fulfillment_type: 'hold')
+      expect(PatronRequest.last).to have_attributes(fulfillment_type: 'hold',
+                                                    patron_request_items: contain_exactly(have_attributes(barcode: '12345678'),
+                                                                                          have_attributes(barcode: '87654321')))
     end
 
     it 'filters down to a single form when barcode in parameters' do

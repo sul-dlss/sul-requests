@@ -40,7 +40,7 @@ RSpec.describe MediationMailer do
 
     describe 'body' do
       let(:request) do
-        create(:mediated_patron_request_with_holdings, barcodes: ['12345678'])
+        create(:mediated_patron_request_with_holdings)
       end
 
       let(:body) { mail.body.to_s }

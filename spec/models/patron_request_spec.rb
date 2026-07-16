@@ -10,7 +10,7 @@ RSpec.describe PatronRequest do
   let(:folio_instance) { instance_double(Folio::Instance, title: 'Title') }
 
   before do
-    allow(Folio::Instance).to receive(:fetch).with(request.instance_hrid).and_return(folio_instance)
+    allow(Folio::Instance).to receive(:fetch).with(attr[:instance_hrid] || 'a12345').and_return(folio_instance)
   end
 
   describe 'mediateable_origins' do
@@ -334,14 +334,18 @@ RSpec.describe PatronRequest do
 
     context 'with a recall' do
       let(:folio_instance) { build(:checkedout_holdings) }
-      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcodes: ['87654321'] } }
+      let(:attr) do
+        { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', patron_request_items_attributes: [{ barcode: '87654321' }] }
+      end
 
       it { is_expected.to be_requires_needed_date }
     end
 
     context 'with an ordinary item' do
       let(:folio_instance) { build(:checkedout_holdings) }
-      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcodes: ['12345678'] } }
+      let(:attr) do
+        { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', patron_request_items_attributes: [{ barcode: '12345678' }] }
+      end
 
       it { is_expected.not_to be_requires_needed_date }
     end

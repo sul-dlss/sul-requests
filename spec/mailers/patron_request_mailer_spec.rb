@@ -6,13 +6,17 @@ RSpec.describe PatronRequestMailer do
   let(:mail) { described_class.confirmation_email(request) }
   let(:patron) { build(:patron) }
   let(:request) do
-    PatronRequest.new(instance_hrid: 'a12345', patron_email: patron.email, patron:, barcodes: ['12345678'],
-                      origin_location_code: 'SAL3-STACKS', request_type:)
+    PatronRequest.new(instance_hrid: 'a12345', patron_email: patron.email, patron:, patron_request_items_attributes: [{ item_id: 'x' }],
+                      origin_location_code: 'SAL3-STACKS', request_type:, folio_instance: folio_instance)
+  end
+  let(:folio_instance) do
+    build(:single_holding,
+          items: [build(:item, id: 'x',
+                               effective_location: build(:law_location))])
   end
 
   before do
-    allow(request).to receive_messages(patron:, folio_instance: build(:single_holding,
-                                                                      items: [build(:item, effective_location: build(:law_location))]))
+    allow(request).to receive_messages(patron:)
   end
 
   context 'pickup request_type' do

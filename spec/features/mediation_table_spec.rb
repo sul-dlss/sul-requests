@@ -14,20 +14,28 @@ RSpec.describe 'Mediation table', :js do
       # create some pending requests
       create(
         :mediated_patron_request_with_holdings,
-        barcodes: %w(12345678 23456789),
+        patron_request_items_attributes: [
+          { barcode: '12345678' },
+          { barcode: '23456789' }
+        ],
         created_at: 1.day.ago,
         needed_date: 3.days.from_now
       )
       create(
         :mediated_patron_request_with_holdings,
         patron: build(:library_id_patron, first_name: 'Joe', last_name: 'Doe', email: 'joedoe@example.com'),
-        barcodes: %w(34567890 45678901),
+        patron_request_items_attributes: [
+          { barcode: '34567890' },
+          { barcode: '45678901' }
+        ],
         needed_date: 2.days.from_now
       )
       create(
         :mediated_patron_request_with_holdings,
         patron: build(:library_id_patron, first_name: 'Jim', last_name: 'Doe', email: 'jimdoe@example.com'),
-        barcodes: %w(34567890),
+        patron_request_items_attributes: [
+          { barcode: '34567890' }
+        ],
         created_at: 1.day.from_now,
         needed_date: Time.zone.now
       )
@@ -41,7 +49,10 @@ RSpec.describe 'Mediation table', :js do
         :mediated_patron_request_with_holdings,
         request_type: 'mediated/approved',
         patron: build(:library_id_patron, first_name: 'Bob', last_name: 'Doe', email: 'bobdoe@example.com'),
-        barcodes: %w(12345678 23456789),
+        patron_request_items_attributes: [
+          { barcode: '12345678', mediation_data: { approved: true } },
+          { barcode: '23456789', mediation_data: { approved: true } }
+        ],
         created_at: 7.days.ago,
         needed_date: 2.days.ago
       ).save(validate: false)
@@ -49,7 +60,10 @@ RSpec.describe 'Mediation table', :js do
         :mediated_patron_request_with_holdings,
         request_type: 'mediated/approved',
         patron: build(:library_id_patron, first_name: 'Alice', last_name: 'Doe', email: 'alicedoe@example.com'),
-        barcodes: %w(12345678 23456789),
+        patron_request_items_attributes: [
+          { barcode: '12345678', mediation_data: { approved: true } },
+          { barcode: '23456789', mediation_data: { approved: true } }
+        ],
         created_at: 5.days.ago,
         needed_date: 3.days.ago
       ).save(validate: false)
@@ -57,7 +71,10 @@ RSpec.describe 'Mediation table', :js do
         :mediated_patron_request_with_holdings,
         request_type: 'mediated/done',
         patron: build(:library_id_patron, first_name: 'Mal', last_name: 'Doe', email: 'maldoe@example.com'),
-        barcodes: %w(34567890 45678901),
+        patron_request_items_attributes: [
+          { barcode: '34567890', mediation_data: { approved: true } },
+          { barcode: '45678901', mediation_data: { approved: true } }
+        ],
         created_at: 3.days.ago,
         needed_date: nil
       ).save(validate: false)
@@ -65,7 +82,9 @@ RSpec.describe 'Mediation table', :js do
         :mediated_patron_request_with_holdings,
         request_type: 'mediated/approved',
         patron: build(:library_id_patron, first_name: 'Eve', last_name: 'Doe', email: 'evedoe@example.com'),
-        barcodes: %w(34567890),
+        patron_request_items_attributes: [
+          { barcode: '34567890', mediation_data: { approved: true } }
+        ],
         created_at: 2.days.ago,
         needed_date: nil
       ).save(validate: false)
@@ -268,8 +287,8 @@ RSpec.describe 'Mediation table', :js do
       it 'includes both pending and done requests' do
         stub_folio_instance_json(build(:page_mp_holdings))
         cdate = Time.zone.today - 8.days
-        create(:page_mp_mediated_patron_request, created_at: cdate, barcodes: ['12345678'])
-        create(:page_mp_mediated_patron_request, request_type: 'mediated/approved', created_at: cdate, barcodes: ['12345678'])
+        create(:page_mp_mediated_patron_request, created_at: cdate)
+        create(:page_mp_mediated_patron_request, request_type: 'mediated/approved', created_at: cdate)
         visit admin_path('SAL3-PAGE-MP')
         fill_in 'created_at', with: cdate
         click_on('Go')
@@ -317,7 +336,10 @@ RSpec.describe 'Mediation table', :js do
       build(
         :page_mp_mediated_patron_request,
         patron: build(:library_id_patron, first_name: 'Joe', last_name: 'Doe', email: 'joedoe@example.com'),
-        barcodes: %w(12345678 87654321)
+        patron_request_items_attributes: [
+          { barcode: '12345678' },
+          { barcode: '87654321' }
+        ]
       )
     end
 

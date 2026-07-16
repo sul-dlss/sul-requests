@@ -46,7 +46,7 @@ RSpec.describe AdminController do
 
   describe 'show' do
     before do
-      create(:mediated_patron_request_with_holdings, barcodes: %w(123456))
+      create(:mediated_patron_request_with_holdings)
     end
 
     describe 'for super admin' do
@@ -105,7 +105,7 @@ RSpec.describe AdminController do
     describe 'for super admins' do
       let(:user) { create(:superadmin_user) }
       let(:mediated_page) do
-        create(:mediated_patron_request_with_holdings, barcodes: %w(12345678 23456789))
+        create(:mediated_patron_request_with_holdings)
       end
 
       before do
@@ -122,7 +122,7 @@ RSpec.describe AdminController do
 
   describe 'approve item' do
     let(:mediated_page) do
-      create(:mediated_patron_request_with_holdings, barcodes: %w(12345678 23456789))
+      create(:mediated_patron_request_with_holdings)
     end
 
     before do
