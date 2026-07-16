@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'ILL Request Page' do
+RSpec.describe 'ILL Request Page', :js do
   let(:mock_client) { instance_double(FolioClient, ping: true) }
   let(:patron) do
     build(:sponsor_patron)
@@ -12,7 +12,10 @@ RSpec.describe 'ILL Request Page' do
     [
       Illiad::Request.new({
                             'CreationDate' => '2024-01-01T00:00:00Z',
-                            'TransactionNumber' => '1'
+                            'TransactionNumber' => '1',
+                            'LoanTitle' => 'Pickup title',
+                            'CitedIn' => 'Link',
+                            'ItemInfo4' => 'GREEN'
                           })
     ]
   end
@@ -24,11 +27,30 @@ RSpec.describe 'ILL Request Page' do
     allow(patron).to receive_messages(illiad_requests: illiad_requests)
   end
 
-  it 'has request data' do
-    visit ill_requests_path
+  context 'with pickup request' do
+    it 'has request data' do
+      visit ill_requests_path
 
-    expect(page).to have_css('.requests li', count: 1)
-    expect(page).to have_css('li .status-pill', text: 'Pickup')
+      expect(page).to have_css('.requests li', count: 1)
+      expect(page).to have_css('li .status-pill', text: 'Pickup')
+    end
+
+    it 'can edit the request' do
+      visit ill_requests_path
+      click_link 'Edit Pickup title'
+      expect(page).to have_text 'Edit request'
+      select 'Music Library', from: 'Deliver to'
+      click_button 'Save'
+      expect(page).to have_no_text('Edit request')
+      expect(ActionMailer::Base.deliveries.count).to eq(1)
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.to).to include('illiad-test@stanford.edu')
+      expect(mail.cc).to include('superuser1@stanford.edu')
+      expect(mail.subject).to eq('ILLiad request update, please remediate')
+      expect(mail.body).to have_text('Previously requested item info4: GREEN-LOAN')
+      expect(mail.body).to have_text('New request item info4: MUSIC')
+      expect(mail.body).to have_no_text('New request not wanted after')
+    end
   end
 
   context 'with a scan request' do
@@ -37,7 +59,9 @@ RSpec.describe 'ILL Request Page' do
         Illiad::Request.new({
                               'CreationDate' => '2024-01-01T00:00:00Z',
                               'PhotoJournalTitle' => 'Some Journal',
-                              'TransactionNumber' => '2'
+                              'TransactionNumber' => '2',
+                              'PhotoArticleTitle' => 'photo article title',
+                              'CitedIn' => 'https://searchworks.stanford.edu/view/instance_hrid'
                             })
       ]
     end
@@ -60,6 +84,25 @@ RSpec.describe 'ILL Request Page' do
       expect(page).to have_text 'Delete request?'
       click_button 'Yes - Delete'
       expect(page).to have_css('.requests li', count: 0)
+    end
+
+    it 'can edit the request' do
+      visit ill_requests_path
+      click_link 'Edit Some Journal'
+      expect(page).to have_text 'Edit request'
+      fill_in 'Page range', with: '1-2'
+      fill_in 'Title', with: 'New Journal update'
+      click_button 'Save'
+      expect(page).to have_no_text('Edit request')
+      expect(ActionMailer::Base.deliveries.count).to eq(1)
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.to).to include('illiad-test@stanford.edu')
+      expect(mail.cc).to include('superuser1@stanford.edu')
+      expect(mail.subject).to eq('ILLiad request update, please remediate')
+      expect(mail.body).to have_text('Previously requested photo journal inclusive pages:')
+      expect(mail.body).to have_text('New request photo journal inclusive pages: 1-2')
+      expect(mail.body).to have_text('Previously requested photo article title: photo article title')
+      expect(mail.body).to have_text('New request photo article title: New Journal update')
     end
   end
 

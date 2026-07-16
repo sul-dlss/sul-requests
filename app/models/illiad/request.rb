@@ -41,14 +41,34 @@ module Illiad
       INACTIVE_REQUEST_STATUSES.include? @illiad_result['TransactionStatus']
     end
 
+    def request_type
+      scan? ? 'scan' : 'pickup'
+    end
+
     def scan?
       @illiad_result['PhotoJournalTitle'].present?
+    end
+
+    def photo_article_title
+      @illiad_result['PhotoArticleTitle']
+    end
+
+    def photo_journal_inclusive_pages
+      @illiad_result['PhotoJournalInclusivePages']
+    end
+
+    def photo_article_author
+      @illiad_result['PhotoArticleAuthor']
     end
 
     def key
       @illiad_result['TransactionNumber'].to_s
     end
     alias id key
+
+    def item_link
+      @illiad_result['CitedIn']
+    end
 
     def sort_key(key)
       sort_key = case key
@@ -75,7 +95,7 @@ module Illiad
     end
 
     def author
-      scan? ? @illiad_result['PhotoArticleAuthor'] : @illiad_result['LoanAuthor']
+      @illiad_result['LoanAuthor'] unless scan?
     end
 
     def placed_date
@@ -91,27 +111,26 @@ module Illiad
       # In some cases, even if the request is a hold/recall and not a scan,
       # the 'NotWantedAfter' field may be blank. In that case, we will just
       # use the date that is 2 months after the transaction creation date
-      scan? ? based_on_placed : (user_supplied_expiration_date || based_on_placed)
+      scan? ? based_on_placed : (fill_by_date || based_on_placed)
     end
 
-    def user_supplied_expiration_date
+    def fill_by_date
       return nil if @illiad_result['NotWantedAfter'].blank?
 
       parse_expiration_date(@illiad_result['NotWantedAfter'])
     end
+    alias not_wanted_after fill_by_date
 
     def parse_expiration_date(illiad_date)
       # Some dates will be in mm/dd/yyyy or m/d/yyyy format, and Time.zone.parse will throw an error
       date_regex = %r{\d{1,2}/\d{1,2}/\d{4}}
       date_to_parse = illiad_date.match?(date_regex) ? Date.strptime(illiad_date, '%m/%d/%Y').to_s : illiad_date
       # We still want to return a date that provides a time portion/is consistent with the other results
-      Time.zone.parse(date_to_parse)
+      Time.zone.parse(date_to_parse).to_date
     rescue ArgumentError => e
       Honeybadger.notify(e, error_message: "Parsing #{illiad_date} for ILLIAD request expiration date returns #{e}")
       nil
     end
-
-    def fill_by_date; end
 
     def ready_for_pickup?
       ready_for_pickup_status = ['Media Microtext Checkout to Customer',
@@ -126,9 +145,18 @@ module Illiad
       true
     end
 
-    def service_point_name
-      Folio::Types.libraries.find_by(code: library_code)&.name
+    def service_point
+      @service_point ||= Folio::Types.libraries.find_by(code: library_code)&.primary_service_points&.find(&:is_default_pickup)
     end
+
+    def service_point_name
+      service_point&.name
+    end
+
+    def service_point_code
+      service_point&.code
+    end
+    alias item_info4 service_point_code
 
     def waitlist_position; end
 
