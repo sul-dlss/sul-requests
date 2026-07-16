@@ -55,9 +55,12 @@
   <% scan_or_pickup_step = nil %>
   <%= f.hidden_field :instance_hrid %>
   <%= f.hidden_field :origin_location_code %>
-  <% if f.object.selectable_items.one? || f.object.barcodes&.one? %>
+  <% f.object.requested_barcodes&.each do |barcode| %>
+    <%= f.hidden_field :requested_barcodes, multiple: true, value: barcode %>
+  <% end if f.object.selectable_items.any? %>
+  <% if f.object.selectable_items.one? %>
     <% single_item = f.object.selectable_items.first %>
-    <% single_barcode = f.object.barcodes&.first || (single_item&.barcode || single_item&.id) %>
+    <% single_barcode = single_item&.barcode || single_item&.id %>
     <%= f.hidden_field :barcodes, multiple: true, value: single_barcode %>
   <% end %>
   <%# only allow submitting on enter if the final submit button is focused %>

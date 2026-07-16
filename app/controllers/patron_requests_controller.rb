@@ -165,7 +165,7 @@ class PatronRequestsController < ApplicationController
                                    :fulfillment_type, :request_type,
                                    :scan_page_range, :scan_authors, :scan_title,
                                    :aeon_reading_special, :aeon_terms, :ead_url,
-                                   { barcodes: [] }, { activity_ids: [] }, { aeon_item: aeon_term_params }])
+                                   { barcodes: [], requested_barcodes: [], activity_ids: [], aeon_item: aeon_term_params }])
   end
 
   def handle_ead_client_error
