@@ -81,12 +81,6 @@ class PatronRequest < ApplicationRecord
     folio_api_responses.find { |x| x.item_id == item_id }
   end
 
-  # @!group Attribute methods
-  # Remove any empty strings from the barcodes array
-  def barcodes=(arr)
-    super(arr.compact_blank)
-  end
-
   # Evaluate if this is a title only request
   def title_only?
     folio_instance.items.empty?

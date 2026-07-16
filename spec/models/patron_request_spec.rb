@@ -183,14 +183,6 @@ RSpec.describe PatronRequest do
     end
   end
 
-  describe '#barcodes=' do
-    it 'removes blank barcodes (possibly present in form submissions)' do
-      request.barcodes = ['1234567890', '', '123']
-
-      expect(request.barcodes).to eq(['1234567890', '123'])
-    end
-  end
-
   describe '#pickup_service_point' do
     let(:folio_instance) { build(:sal3_holdings) }
 
