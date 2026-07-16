@@ -190,7 +190,7 @@ class PatronRequestsController < ApplicationController
         }
       end
 
-      patron_request_params.except(:aeon_item, :aeon_reading_special).merge(patron_request_items_attributes: item_params)
+      patron_request_params.except(:barcodes, :aeon_item, :aeon_reading_special).merge(patron_request_items_attributes: item_params)
     else
       item_params = patron_request_params[:barcodes].compact_blank.map do |barcode|
         {
@@ -208,7 +208,8 @@ class PatronRequestsController < ApplicationController
         }
       end
 
-      patron_request_params.except(:barcodes).merge(patron_request_items_attributes: item_params)
+      patron_request_params.except(:barcodes, :scan_page_range, :scan_authors,
+                                   :scan_title, :aeon_item).merge(patron_request_items_attributes: item_params)
     end
   end
 

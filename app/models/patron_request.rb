@@ -13,9 +13,9 @@ class PatronRequest < ApplicationRecord
   belongs_to :user, optional: true
 
   store :data, accessors: [
-    :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :activity_ids,
-    :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
-    :aeon_reading_special, :aeon_item, :aeon_terms, :ead_url
+    :folio_responses, :illiad_response_data, :activity_ids,
+    :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes,
+    :aeon_reading_special, :aeon_terms, :ead_url
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :folio_instance
@@ -128,10 +128,6 @@ class PatronRequest < ApplicationRecord
 
   def aeon_digitization?
     aeon_page? && scan?
-  end
-
-  def item_mediation_data
-    super || {}
   end
   # @!endgroup
 
@@ -316,6 +312,23 @@ class PatronRequest < ApplicationRecord
     return items.first(1) if request_type == 'scan' && !aeon_page?
 
     items
+  end
+
+  # @return [Array<String>] the barcodes of the selected items (or item IDs if no barcode is available) for form builders
+  def barcodes
+    selected_items.map { |item| item.barcode || item.item_id }
+  end
+
+  def scan_page_range
+    patron_request_items.first&.scan_page_range
+  end
+
+  def scan_authors
+    patron_request_items.first&.scan_authors
+  end
+
+  def scan_title
+    patron_request_items.first&.scan_title
   end
 
   # @return [Array<Folio::Item>] the items that are holdable and recallable by the patron

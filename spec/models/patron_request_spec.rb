@@ -498,7 +498,10 @@ RSpec.describe PatronRequest do
     end
 
     context 'when request type is scan' do
-      let(:attr) { { request_type:, scan_authors:, scan_title:, scan_page_range:, origin_location_code: 'SAL3-STACKS' } }
+      let(:attr) do
+        { request_type:, patron_request_items_attributes: [{ item_id: item.id, scan_authors:, scan_title:, scan_page_range: }],
+          origin_location_code: 'SAL3-STACKS' }
+      end
       let(:request_type) { 'scan' }
       let(:scan_authors) { 'Scan Authors' }
       let(:scan_title) { 'Scan Title' }
