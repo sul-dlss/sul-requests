@@ -33,6 +33,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     patron_request.update(submitted_to_aeon_at: Time.current)
   end
 
+  # TODO: use the activity_ids from the patron_request_item.
   def perform_activity_request(patron_request)
     Array(patron_request.data['activity_ids']).each do |activity_id|
       if patron_request.ead_url.present?

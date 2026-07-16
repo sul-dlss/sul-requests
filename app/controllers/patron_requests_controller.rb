@@ -162,12 +162,54 @@ class PatronRequestsController < ApplicationController
       [:id, :title, :appointment_id, :for_publication, :requested_pages, :additional_information, { hierarchy: [] }]
     end
 
-    params.expect(patron_request: [:patron_email, :instance_hrid, :origin_location_code, :needed_date, :service_point_code, :proxy,
-                                   :for_sponsor_id, :for_sponsor,
-                                   :fulfillment_type, :request_type,
-                                   :scan_page_range, :scan_authors, :scan_title,
-                                   :aeon_reading_special, :aeon_terms, :ead_url,
-                                   { barcodes: [], requested_barcodes: [], activity_ids: [], aeon_item: aeon_term_params }])
+    orig_params = params.expect(patron_request: [:patron_email, :instance_hrid,
+                                                 :origin_location_code, :needed_date, :service_point_code, :proxy,
+                                                 :for_sponsor_id, :for_sponsor,
+                                                 :fulfillment_type, :request_type,
+                                                 :scan_page_range, :scan_authors, :scan_title,
+                                                 :aeon_reading_special, :aeon_terms, :ead_url,
+                                                 { barcodes: [], requested_barcodes: [], activity_ids: [], aeon_item: aeon_term_params }])
+
+    transform_to_patron_request_item_params(orig_params)
+  end
+
+  def transform_to_patron_request_item_params(patron_request_params) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+    if patron_request_params[:ead_url].present?
+      item_params = patron_request_params[:aeon_item].values.map do |item|
+        {
+          item_id: item[:id],
+          ead_url: patron_request_params[:ead_url],
+          request_type: patron_request_params[:request_type],
+          title: item[:title],
+          appointment_id: item[:appointment_id],
+          activity_ids: patron_request_params[:activity_ids],
+          for_publication: item[:for_publication],
+          requested_pages: item[:requested_pages],
+          additional_information: item[:additional_information] || patron_request_params[:aeon_reading_special],
+          hierarchy: item[:hierarchy]
+        }
+      end
+
+      patron_request_params.except(:aeon_item, :aeon_reading_special).merge(patron_request_items_attributes: item_params)
+    else
+      item_params = patron_request_params[:barcodes].compact_blank.map do |barcode|
+        {
+          barcode_or_item_id: barcode,
+          instance_id: patron_request_params[:instance_hrid],
+          request_type: patron_request_params[:request_type],
+          scan_page_range: patron_request_params[:scan_page_range],
+          scan_authors: patron_request_params[:scan_authors],
+          scan_title: patron_request_params[:scan_title],
+          additional_information: patron_request_params[:aeon_reading_special],
+          origin_location_code: patron_request_params[:origin_location_code],
+          service_point_code: patron_request_params[:service_point_code],
+          activity_ids: patron_request_params[:activity_ids],
+          **(patron_request_params[:aeon_item] || {})[barcode]&.except(:id)
+        }
+      end
+
+      patron_request_params.except(:barcodes).merge(patron_request_items_attributes: item_params)
+    end
   end
 
   def handle_ead_client_error
