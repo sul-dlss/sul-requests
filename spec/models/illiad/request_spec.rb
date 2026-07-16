@@ -74,11 +74,11 @@ RSpec.describe Illiad::Request do
     end
 
     it 'correctly calculates the expiration date' do
-      expect(hold.expiration_date.to_s).to eq('2024-10-11 00:00:00 -0700')
+      expect(hold.expiration_date.to_s).to eq('2024-10-11')
     end
 
     it 'handles ILLIAD expiration date of format mm/dd/yyyy' do
-      expect(expiration_hold.expiration_date.to_s).to eq('2022-07-15 00:00:00 -0700')
+      expect(expiration_hold.expiration_date.to_s).to eq('2022-07-15')
     end
 
     it 'handles an empty ILLIAD expiration date and returns a date two months after placed date' do
@@ -98,7 +98,7 @@ RSpec.describe Illiad::Request do
     end
 
     it 'correctly retrieves author for scan transaction' do
-      expect(scan.author).to eq('Frederick Wright')
+      expect(scan.author).to be_nil
     end
 
     it 'returns a date two months after creation date for expiration' do

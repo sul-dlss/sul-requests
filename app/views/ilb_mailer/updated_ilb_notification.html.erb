@@ -1,0 +1,11 @@
+<h2 class="my-4">ILLiad <%= @illiad_request.request_type %> request update</h2>
+
+<div>Username: <%= @patron&.username %><%= @patron&.blocked? ? ' (Blocked)' : nil %></div>
+<div>Title: <%= link_to(@illiad_request.title, @illiad_request.item_link) %></div>
+<div>ILLiad request: <%= link_to @illiad_request.id, @illiad_request.manage_request_link %></div>
+
+
+<% @form_fields.each do |key, value| %>
+  <b>Previously requested <%= key.humanize.downcase %></b>: <%= @illiad_request.send(key) %>
+  <b>New request <%= key.humanize.downcase %></b>: <%= value %>
+<% end %>

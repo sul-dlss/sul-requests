@@ -61,7 +61,8 @@ Rails.application.routes.draw do
   get 'requests/unified', to: 'requests#index', as: :unified_requests
   get 'requests/mediated', to: 'mediated_requests#index', as: :mediated_requests
   resources :folio_requests, except: [:new, :create], path: 'requests'
-  resources :ill_requests, only: [:index, :new, :create, :destroy]
+  resources :ill_requests, only: [:index, :new, :create, :destroy, :edit, :update]
+
 
   resources :aeon_requests, only: [:edit, :destroy, :update] do
     collection do

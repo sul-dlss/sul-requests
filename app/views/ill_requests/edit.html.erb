@@ -1,0 +1,14 @@
+<h1>Edit request</h1>
+
+<div class="mb-2">
+  <%= render 'edit_warning' %>
+</div>
+
+<%= form_for(@request, url: ill_request_path(@request.id), method: :patch) do |f| %>
+  <% if @request.scan? %>
+    <%= render 'scan_form', f: %>
+  <% else %>
+    <%= render 'pickup_form', f: %>
+  <% end %>
+  <%= f.submit 'Save', class: 'ms-2 btn btn-primary float-end mt-3' %>
+<% end %>
