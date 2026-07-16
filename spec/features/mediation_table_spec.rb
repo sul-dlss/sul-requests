@@ -326,7 +326,7 @@ RSpec.describe 'Mediation table', :js do
 
     before do
       stub_current_user(create(:page_mp_origin_admin_user))
-      stub_folio_instance_json(build(:page_mp_holdings))
+      stub_folio_instance_json(request.folio_instance)
       request.save(validate: false)
 
       visit admin_path('SAL3-PAGE-MP')

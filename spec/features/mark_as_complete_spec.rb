@@ -4,24 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Mark As Complete', :js do
   let(:user) { create(:superadmin_user) }
-  let(:selected_items) do
-    [
-      double(:item, barcode: '34567890',
-                    temporary_location: nil,
-                    callnumber: 'ABC 123',
-                    hold?: true,
-                    pageable?: true,
-                    mediateable?: true,
-                    effective_location: build(:mediated_location),
-                    permanent_location: build(:mediated_location),
-                    material_type: build(:book_material_type),
-                    loan_type: double(id: nil))
-    ]
-  end
 
   before do
-    allow(Folio::Instance).to receive(:fetch).and_return(double(:folio_instance, title: 'Test title',
-                                                                                 items: selected_items))
+    allow(Folio::Instance).to receive(:fetch).and_return(mediated_page.folio_instance)
     stub_current_user(user)
   end
 
@@ -72,13 +57,16 @@ RSpec.describe 'Mark As Complete', :js do
   end
 
   describe 'a request that has already been marked as complete' do
-    before do
+    let!(:mediated_page) do # rubocop:disable RSpec/LetSetup
       create(
         :mediated_patron_request_with_holdings,
         request_type: 'mediated/done',
         barcodes: %w(34567890),
         created_at: 1.day.from_now
       )
+    end
+
+    before do
       visit admin_path('ART', done: 'true')
     end
 
