@@ -361,7 +361,7 @@ RSpec.describe 'Mediation table', :js do
           click_on I18n.l(Time.zone.today, format: :quick)
           click_on I18n.l(Time.zone.today, format: :short)
           click_on 'Next month'
-          click_on new_date.day.to_s
+          click_on new_date.strftime('%B %-d, %Y')
           click_on 'ok'
         end
       end
