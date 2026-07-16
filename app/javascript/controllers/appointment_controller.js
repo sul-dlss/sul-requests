@@ -80,6 +80,7 @@ export default class extends Controller {
     const hasDate = !!formData.get('aeon_appointment[date]');
     const hasDuration = !!formData.get('aeon_appointment[duration]');
     this.availabilityTarget.classList.toggle('form-incomplete', !hasDate || !hasDuration);
+    this.updateBanner()
   }
 
   applyDurationFilter() {
