@@ -60,6 +60,81 @@ class IlliadClient
     handle_response(response, as_class: Illiad::Request)
   end
 
+  UNSET = Data.define do
+    def method_missing(*, **, &)
+      self # always return the unset object itself so it chains without error
+    end
+
+    def respond_to_missing?(*)
+      false
+    end
+  end.new
+
+  RequestData = Data.define(:accept_alternate_edition, :author, :barcode, :call_number,
+                            :destination_library_code, :edition, :isbn, :issue, :issue_month,
+                            :issue_year, :item_url, :needed_date, :oclcn,
+                            :origin_library_code, :origin_location_code, :patron, :published_date,
+                            :published_location, :publisher, :request_type, :scan_authors,
+                            :scan_page_range, :scan_title, :title, :volume) do
+    def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      {
+        AcceptAlternateEdition: accept_alternate_edition,
+        CallNumber: call_number,
+        CitedIn: item_url,
+        ESPNumber: oclcn,
+        ILLNumber: barcode,
+        ISSN: isbn,
+        ItemInfo2: scan? ? UNSET : volume,
+        ItemInfo4: destination_library_code,
+        ItemNumber: barcode,
+        LoanAuthor: scan? ? UNSET : author,
+        LoanDate: published_date,
+        LoanEdition: edition,
+        LoanPlace: published_location,
+        LoanPublisher: publisher,
+        LoanTitle: scan? ? UNSET : title,
+        Location: origin_library_code,
+        NotWantedAfter: formatted_needed_date,
+        PhotoArticleAuthor: scan_authors,
+        PhotoArticleTitle: scan_title,
+        PhotoJournalInclusivePages: scan_page_range,
+        PhotoJournalIssue: issue,
+        PhotoJournalMonth: issue_month,
+        PhotoJournalTitle: scan? ? title : UNSET,
+        PhotoJournalVolume: scan? ? volume : UNSET,
+        PhotoJournalYear: issue_year,
+        ProcessType: 'Borrowing',
+        ReferenceNumber: origin_location_code,
+        RequestType: scan? ? 'Article' : 'Loan',
+        SpecIns: scan? ? 'Scan and Deliver Request' : 'SearchWorks Request',
+        Username: patron&.username,
+        UserInfo1: patron_status,
+        UserInfo5: patron&.barcode,
+        WebRequestForm: scan? ? UNSET : 'LoanRequest'
+      }.reject { |_k, v| v == UNSET }
+    end
+
+    def formatted_needed_date
+      return UNSET if needed_date == UNSET
+
+      (needed_date || 1.year.from_now).strftime('%Y-%m-%d')
+    end
+
+    def patron_status
+      return UNSET if patron == UNSET
+
+      patron.blocked? ? 'Blocked' : UNSET
+    end
+
+    def scan?
+      request_type == 'scan'
+    end
+
+    def self.with_defaults
+      new(**members.index_with(UNSET))
+    end
+  end
+
   private
 
   def connection

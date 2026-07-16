@@ -508,6 +508,14 @@ RSpec.describe PatronRequest do
       let(:scan_page_range) { '1-10' }
 
       it 'returns the correct ILLiad request params for scan request' do
+        expect(request.illiad_request_params(item).keys).to contain_exactly(
+          :ProcessType, :RequestType, :SpecIns, :PhotoJournalTitle, :PhotoArticleAuthor,
+          :Location, :ReferenceNumber, :PhotoArticleTitle, :PhotoJournalInclusivePages,
+          :AcceptAlternateEdition, :Username, :UserInfo5, :ISSN, :LoanPublisher,
+          :LoanPlace, :LoanDate, :LoanEdition, :ESPNumber, :CitedIn, :CallNumber, :ILLNumber,
+          :ItemNumber, :PhotoJournalVolume
+        )
+
         expect(request.illiad_request_params(item)).to include(
           RequestType: 'Article',
           UserInfo5: 'patron-barcode',

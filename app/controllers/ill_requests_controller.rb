@@ -20,24 +20,11 @@ class IllRequestsController < ApplicationController
     authorize! :create, Illiad::Request
   end
 
-  def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+  def create # rubocop:disable Metrics/AbcSize
     authorize! :create, Illiad::Request
 
-    illiad_create_params = create_params.except(:title, :author, :NotWantedAfter, :AcceptAlternateEdition, :Note).to_h.merge(
-      ProcessType: 'Borrowing',
-      WebRequestForm: 'LoanRequest',
-      RequestType: 'Loan',
-      LoanTitle: create_params[:title],
-      LoanAuthor: create_params[:author],
-      Username: current_patron.username,
-      UserInfo1: current_patron.blocked? ? 'Blocked' : nil,
-      UserInfo5: current_patron.barcode,
-      AcceptAlternateEdition: ActiveModel::Type::Boolean.new.cast(create_params[:AcceptAlternateEdition]) ? 'E Version Acceptable' : '',
-      NotWantedAfter: not_wanted_after_param.strftime('%Y-%m-%d')
-    ).compact_blank
-
-    request = illiad_client.create(illiad_create_params)
-    illiad_client.create_transaction_note(transaction_number: request.key, note: create_params[:Note]) if create_params[:Note].present?
+    request = illiad_client.create(IlliadClient::RequestData.with_defaults.with(**request_data_params).as_json)
+    illiad_client.create_transaction_note(transaction_number: request.key, note: create_params[:note]) if create_params[:note].present?
 
     redirect_to root_path, notice: 'Your request has been submitted to Interlibrary Loan.'
   end
@@ -53,6 +40,14 @@ class IllRequestsController < ApplicationController
   end
 
   private
+
+  def request_data_params
+    static_params = { patron: current_patron }
+    if create_params[:accept_alternate_edition].present?
+      static_params['accept_alternate_edition'] = ActiveModel::Type::Boolean.new.cast(create_params[:accept_alternate_edition])
+    end
+    create_params.except(:note).to_h.compact_blank.merge(static_params)
+  end
 
   def illiad_client
     @illiad_client ||= IlliadClient.new
@@ -80,13 +75,10 @@ class IllRequestsController < ApplicationController
   end
 
   def create_params
-    illiad_params = %w[
-      CitedIn ISSN ESPNumber ItemInfo2
-      LoanPublisher LoanPlace LoanDate LoanEdition AcceptAlternateEdition
-      PhotoJournalIssue PhotoJournalMonth PhotoJournalYear
-      ItemInfo4 NotWantedAfter Note
-      PhotoArticleTitle PhotoArticleAuthor PhotoJournalInclusivePages
-    ]
-    params.require(:illiad_request).permit(:title, :author, *illiad_params)
+    params.require(:illiad_request).permit(:title, :author, :item_url, :isbn, :oclcn, :note,
+                                           :volume, :publisher, :published_location, :published_date,
+                                           :edition, :accept_alternate_edition, :needed_date, :request_type,
+                                           :issue, :issue_month, :issue_year, :destination_library_code,
+                                           :scan_title, :scan_authors, :scan_page_range)
   end
 end

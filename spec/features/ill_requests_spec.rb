@@ -90,11 +90,11 @@ RSpec.describe 'ILL Request Page' do
 
       expect(page).to have_text('Your request has been submitted to Interlibrary Loan.')
       expect(mock_ill_client).to have_received(:create).with(hash_including(
-                                                               'LoanTitle' => 'Test Title',
-                                                               'LoanAuthor' => 'Test Author',
-                                                               'CitedIn' => 'AI told me this exists',
-                                                               'LoanDate' => '2032',
-                                                               'ISSN' => '1234567890'
+                                                               LoanTitle: 'Test Title',
+                                                               LoanAuthor: 'Test Author',
+                                                               CitedIn: 'AI told me this exists',
+                                                               LoanDate: '2032',
+                                                               ISSN: '1234567890'
                                                              ))
     end
   end
