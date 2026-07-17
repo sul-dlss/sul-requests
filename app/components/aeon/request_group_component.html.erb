@@ -22,9 +22,18 @@
     </div>
   <% end %>
 
-  <% c.with_body do %>
-    <ul class="list-group list-group-flush gap-2" data-sortable-target="subgroup">
+  <% c.with_body(data: { controller: 'show-more'}) do %>
+    <ul id="<%= request_group.dom_id %>_list" class="list-group list-group-flush gap-2" data-sortable-target="subgroup" data-show-more-target="list">
       <%= render Aeon::RequestGroupItemComponent.with_collection(requests) %>
     </ul>
+
+    <% if show_more? %>
+      <% inverse_content = capture do %>
+        <i class="bi bi-arrow-up-circle-fill me-1" aria-hidden></i>Show less
+      <% end %>
+      <%= button_tag class: 'btn btn-link su-underline mt-1', data: { show_more_target: 'button', action: 'show-more#toggle', content: inverse_content }, aria: { expanded: 'false', controls: "#{request_group.dom_id}_list" } do %>
+        <i class="bi bi-arrow-down-circle-fill me-1" aria-hidden></i>Show all <%= pluralize(requests.length, 'request') %>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>

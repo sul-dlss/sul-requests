@@ -67,6 +67,9 @@ application.register("save-for-later", SaveForLaterController)
 import SelectedItemFormController from "./selected_item_form_controller"
 application.register("selected-item-form", SelectedItemFormController)
 
+import ShowMoreController from "./show_more_controller"
+application.register("show-more", ShowMoreController)
+
 import SortableController from "./sortable_controller"
 application.register("sortable", SortableController)
 

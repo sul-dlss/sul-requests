@@ -244,4 +244,33 @@ RSpec.describe 'Requests', :js do
       end
     end
   end
+
+  context 'with cancelled requests' do
+    before do
+      10.times do
+        StubAeonClient::Request.create(
+          callNumber: 'assigned call number 1',
+          itemTitle: 'Cancelled poetry in America : a poetry quarterly',
+          username: aeon_user.username,
+          webRequestForm: 'multiple',
+          transactionStatus: 28
+        )
+      end
+    end
+
+    it 'displays a truncated list of requests' do
+      visit aeon_requests_path(kind: 'cancelled')
+
+      expect(page).to have_text('Cancelled poetry in America : a poetry quarterly')
+      expect(page).to have_text('Show all 10 requests')
+
+      expect(page).to have_css '.card li', count: 3
+
+      click_on 'Show all 10 requests'
+      expect(page).to have_css '.card li', count: 10
+
+      click_on 'Show less'
+      expect(page).to have_css '.card li', count: 3
+    end
+  end
 end
