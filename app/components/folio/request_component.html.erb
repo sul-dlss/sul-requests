@@ -44,7 +44,7 @@
                 <% end %>
             </span>
           <% else %>
-            <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i>Staff processing</span>
+            <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i><span class="fw-semibold">Processing request</span> for pickup at <span class="text-nowrap"><%= request.service_point_name %></span></span>
           <% end %>
 
         <% if request.proxy_request? %>
