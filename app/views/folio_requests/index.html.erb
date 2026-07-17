@@ -2,17 +2,11 @@
   <div class="d-flex align-items-center justify-content-between mb-4">
     <h1 class="mb-0">Requests</h1>
     <% if @requests.any? %>
-    <div class="dropdown" data-sortable-target="sortMenu">
-      <button class="btn btn-outline-primary btn-sm dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Sort by default
-      </button>
-
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="default" data-sortable-label-param="Sort by default">default</button></li>
-        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="date" data-sortable-label-param="Sort by date modified">date modified</button></li>
-        <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort by title">title</button></li>
-      </ul>
-    </div>
+      <%= render SortableDropdownComponent.new(button_label: 'default') do |component| %>
+        <% component.with_list_item(label: 'default', field: 'default') %>
+        <% component.with_list_item(label: 'date modified', field: 'date modified') %>
+        <% component.with_list_item(label: 'title', field: 'title') %>
+      <% end %>
     <% end %>
   </div>
   <% if @requests.any? %>
