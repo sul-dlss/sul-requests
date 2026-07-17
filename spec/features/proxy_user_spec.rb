@@ -79,6 +79,38 @@ RSpec.describe 'Proxy User' do
     end
   end
 
+  context 'when acting as a proxy' do
+    let(:aeon_user) { instance_double(Aeon::User, present?: true, activities: [double(present?: true)]) }
+
+    before do
+      allow(Aeon::User).to receive(:find_by).and_return(aeon_user)
+    end
+
+    it 'hides Aeon-specific nav items' do
+      visit checkouts_path
+
+      expect(page).to have_link('Appointments')
+
+      click_on 'Switch to proxy'
+      click_on 'Proxy for: Shea Sponsor'
+
+      expect(page).to have_no_link('Appointments')
+      expect(page).to have_no_link('Activities')
+    end
+
+    it 'collapses the Requests dropdown to a flat Submitted requests link' do
+      visit checkouts_path
+
+      expect(page).to have_button('Requests')
+
+      click_on 'Switch to proxy'
+      click_on 'Proxy for: Shea Sponsor'
+
+      expect(page).to have_no_button('Requests')
+      expect(page).to have_link('Submitted requests')
+    end
+  end
+
   context 'when on the home page', :js do
     it 'displays the sponsor information' do
       visit root_path

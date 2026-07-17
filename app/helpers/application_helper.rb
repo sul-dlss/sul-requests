@@ -6,6 +6,10 @@ module ApplicationHelper
     respond_to?(:patron_or_group) && controller_name != 'patron_requests'
   end
 
+  def acting_as_proxy?
+    respond_to?(:patron_or_group) && patron_or_group.is_a?(Folio::ProxyGroup)
+  end
+
   def dialog_column_class
     'col-lg-6 offset-lg-3'
   end
