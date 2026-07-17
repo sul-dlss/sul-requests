@@ -15,5 +15,9 @@ module Aeon
     def render?
       requests.present?
     end
+
+    def show_more?
+      requests.first.cancelled? || requests.first.completed?
+    end
   end
 end

@@ -5,8 +5,8 @@ class CardComponent < ViewComponent::Base
   renders_one :pre
   renders_one :title
   renders_one :actions
-  renders_one :body, lambda { |classes: [], &block|
-    tag.div(class: ['card-body'] + Array(classes), &block)
+  renders_one :body, lambda { |classes: [], data: {}, &block|
+    tag.div(class: ['card-body'] + Array(classes), data: data, &block)
   }
   renders_one :footer, lambda { |classes: %w[bg-body-tertiary d-flex justify-content-between align-items-center], &block|
     tag.div(class: %w[card-footer] + Array(classes), &block)
