@@ -13,15 +13,15 @@ module AeonSortable
       label: 'Sort by date modified',
       sort: ->(requests) { requests.sort_by { |r| r.sort_key(:date) } }
     },
-    'default' => {
-      label: 'Sort by default',
+    'request_timing' => {
+      label: 'Sort by request timing',
       sort: lambda { |requests|
         requests.sort_by { |r| r.sort_key(:default) }
       }
     }
   }.freeze
 
-  DEFAULT_SORT = 'default'
+  DEFAULT_SORT = 'request_timing'
 
   included do
     helper_method :current_aeon_sort, :available_aeon_sort_options
