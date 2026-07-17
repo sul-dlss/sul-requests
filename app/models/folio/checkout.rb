@@ -129,24 +129,26 @@ module Folio
 
     # rubocop:disable Metrics/MethodLength
     def sort_key(key)
-      sort_key = case key
-                 when :status
-                   [status_sort_key, title, author, shelf_key]
-                 when :due_date
-                   [due_date_sort_value, title, author, shelf_key]
-                 when :title
-                   [title, author, shelf_key]
-                 when :author
-                   [author, title, shelf_key]
-                 when :call_number
-                   [shelf_key]
-                 end
+      case key
+      when :status
+        [status_sort_key, title, author, shelf_key]
+      when :due_date
+        [due_date_sort_value, title, author, shelf_key]
+      when :title
+        [title, author, shelf_key]
+      when :author
+        [author, title, shelf_key]
+      when :call_number
+        [shelf_key]
+      end
+    end
 
-      sort_key.join('---')
+    def js_sort_key(key)
+      sort_key(key).join('---')
     end
 
     def due_date_sort_value
-      due_date&.strftime('%FT%T') || ''
+      (due_date || 100.years.from_now.end_of_day).to_i
     end
 
     def status_sort_key

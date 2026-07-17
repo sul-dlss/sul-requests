@@ -16,9 +16,9 @@ module Aeon
 
     def request_sort_data
       {
-        'default-sort-value': request.sort_key(:default),
-        'title-sort-value': request.sort_key(:title),
-        'date-sort-value': request.sort_key(:date)
+        'default-sort-value': request.js_sort_key(:default),
+        'title-sort-value': request.js_sort_key(:title),
+        'date-sort-value': request.js_sort_key(:date)
       }
     end
   end

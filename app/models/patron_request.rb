@@ -623,14 +623,18 @@ class PatronRequest < ApplicationRecord
   def sort_key(key)
     case key
     when :default
-      [(needed_date || 100.years.from_now.end_of_day).strftime('%FT%T'), item_title].join('---')
+      [(needed_date&.to_time || 100.years.from_now.end_of_day).to_i, item_title]
     when :title
-      [item_title].join('---')
+      [item_title]
     when :date
-      [updated_at.strftime('%FT%T'), item_title].join('---')
+      [updated_at.to_i, item_title]
     else
       raise ArgumentError, "Invalid sort key: #{key}"
     end
+  end
+
+  def js_sort_key(key)
+    sort_key(key).join('---')
   end
 
   private

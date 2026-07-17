@@ -9,7 +9,7 @@ module Aeon
 
     delegate :each, to: :requests
 
-    delegate :submitted?, :base_callnumber, :call_number, :date, :digital?, :activity?,
+    delegate :submitted?, :base_callnumber, :call_number, :date, :digital?, :activity?, :js_sort_key,
              :document_type, :ead_number, :multi_item_selector?, :title, :group_key, :sort_key, :status, to: :first
 
     def self.from_requests(requests)

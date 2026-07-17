@@ -49,19 +49,22 @@ module Illiad
     alias id key
 
     def sort_key(key)
-      sort_key = case key
-                 when :date
-                   [placed_date.strftime('%FT%T'), title, author, call_number]
-                 when :title
-                   [title, author, call_number]
-                 when :default
-                   [date_sort_key, title, author, call_number]
-                 end
-      sort_key.join('---')
+      case key
+      when :date
+        [placed_date.to_i, title, author, call_number]
+      when :title
+        [title, author, call_number]
+      when :default
+        [date_sort_key, title, author, call_number]
+      end
+    end
+
+    def js_sort_key(key)
+      sort_key(key).join('---')
     end
 
     def date_sort_key
-      (expiration_date || Folio::Request::END_OF_DAYS).strftime('%FT%T')
+      (expiration_date || Folio::Request::END_OF_DAYS).to_i
     end
 
     def title

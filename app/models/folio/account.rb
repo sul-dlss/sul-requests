@@ -120,18 +120,20 @@ module Folio
     end
 
     def sort_key(key)
-      sort_key = case key
-                 when :payment_date
-                   [payment_sort_key, title, status_label]
-                 when :title
-                   [title, payment_sort_key, status_label]
-                 when :fee
-                   [fee, payment_sort_key, title, status_label]
-                 when :status_label
-                   [status_label, payment_sort_key, title]
-                 end
+      case key
+      when :payment_date
+        [payment_sort_key, title, status_label]
+      when :title
+        [title, payment_sort_key, status_label]
+      when :fee
+        [fee, payment_sort_key, title, status_label]
+      when :status_label
+        [status_label, payment_sort_key, title]
+      end
+    end
 
-      sort_key.join('---')
+    def js_sort_key(key)
+      sort_key(key).join('---')
     end
 
     def payment_sort_key

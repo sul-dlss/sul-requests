@@ -191,18 +191,20 @@ module Aeon
     end
 
     def sort_key(key = nil) # rubocop:disable Metrics/AbcSize
-      sort_key = case key
-                 when :title
-                   [title, default_sort_key]
-                 when :date
-                   [(transaction_date || 100.years.from_now.end_of_day).strftime('%FT%T'), title, default_sort_key]
-                 when :default
-                   [(appointment&.start_time || 100.years.from_now.end_of_day).strftime('%FT%T'), title, default_sort_key]
-                 else
-                   [default_sort_key]
-                 end
+      case key
+      when :title
+        [title, default_sort_key]
+      when :date
+        [(transaction_date || 100.years.from_now.end_of_day).to_time.to_i, title, default_sort_key]
+      when :default
+        [(appointment&.start_time || 100.years.from_now.end_of_day).to_i, title, default_sort_key]
+      else
+        [default_sort_key]
+      end
+    end
 
-      sort_key.join('---')
+    def js_sort_key(key)
+      sort_key(key).join('---')
     end
 
     def pad_digits_for_sorting(str)

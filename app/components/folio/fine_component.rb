@@ -23,8 +23,8 @@ module Folio
     def data
       return {} unless sortable
 
-      { status_sort_value: fine.sort_key(:status_label), fee_sort_value: fine.sort_key(:fee),
-        data_sort_value: fine.sort_key(:payment_date), title_sort_value: fine.sort_key(:title) }
+      { status_sort_value: fine.js_sort_key(:status_label), fee_sort_value: fine.js_sort_key(:fee),
+        data_sort_value: fine.js_sort_key(:payment_date), title_sort_value: fine.js_sort_key(:title) }
     end
 
     def checked_out?

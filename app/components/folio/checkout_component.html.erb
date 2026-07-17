@@ -1,4 +1,4 @@
-<%= render CardComponent.new(element: 'li', id: dom_id(checkout), data: { 'status-sort-value': checkout.sort_key(:status), 'due-date-sort-value': checkout.sort_key(:due_date), 'title-sort-value': checkout.sort_key(:title), 'author-sort-value': checkout.sort_key(:author), 'call-number-sort-value': checkout.sort_key(:call_number)  }) do |c| %>
+<%= render CardComponent.new(element: 'li', id: dom_id(checkout), data: { 'status-sort-value': checkout.js_sort_key(:status), 'due-date-sort-value': checkout.js_sort_key(:due_date), 'title-sort-value': checkout.js_sort_key(:title), 'author-sort-value': checkout.js_sort_key(:author), 'call-number-sort-value': checkout.js_sort_key(:call_number)  }) do |c| %>
   <% c.with_title do %>
     <div class="d-flex flex-row gap-4 align-items-center">
       <div class="text-nowrap <% if renewal_view %>text-green<% end %>">
