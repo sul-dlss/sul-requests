@@ -58,4 +58,4 @@ end
 OkComputer::Registry.register('okapi', OkapiCheck.new) if Settings.folio.okapi_url
 OkComputer::Registry.register('graphql', GraphqlCheck.new) if Settings.folio.graphql_url
 OkComputer::Registry.register('aeon', AeonCheck.new) if Settings.aeon.api_url
-OkComputer.make_optional %w[okapi graphql hours_api sul_illiad]
+OkComputer.make_optional %w[aeon okapi graphql hours_api sul_illiad]
