@@ -14,7 +14,7 @@ class FeatureFlagsController < ApplicationController
   end
 
   def rescue_can_can(*)
-    redirect_to login_by_sunetid_path(referrer: request.original_url) and return unless current_user?
+    redirect_to login_by_sunetid_path(referrer: request.original_url) and return unless sso_user?
 
     super
   end
