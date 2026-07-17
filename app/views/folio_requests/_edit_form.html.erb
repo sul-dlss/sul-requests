@@ -5,13 +5,13 @@
     <%= hidden_field_tag :title, @request.title %>
     <%= hidden_field_tag :group, params[:group] if params[:group] %>
     <%= hidden_field_tag :current_fill_by_date, @request&.fill_by_date&.strftime('%Y-%m-%d') %>
-    <div class="form-group">
-      <%= label_tag :service_point, 'Pickup point' %>
+    <div class="form-group mb-3">
+      <%= label_tag :service_point, 'Pickup point', class: 'form-label fw-semibold' %>
       <%= select_tag :service_point, request_location_options(@request, patron_or_group), class: 'form-control' %>
     </div>
     <% if @request.fill_by_date %>
-      <div class="form-group">
-        <%= label_tag :not_needed_after, 'Not needed after', class: 'form-label' %>
+      <div class="form-group mb-3">
+        <%= label_tag :not_needed_after, 'Not needed after', class: 'form-label fw-semibold' %>
         <%= date_field_tag :not_needed_after, @request.fill_by_date.strftime('%Y-%m-%d'), class: 'form-control' %>
       </div>
     <% end %>

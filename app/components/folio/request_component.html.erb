@@ -58,7 +58,7 @@
       <div class="rgi-actions d-flex text-nowrap align-items-baseline justify-content-xl-end">
         <% if patron.can_modify_requests? %>
           <% unless request.ready_for_pickup? %>
-            <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open', modal_header: 'Change or cancel request' } do %>
+            <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open', modal_header: 'Edit request' } do %>
               <i class="bi bi-pencil-fill me-1 align-middle" aria-hidden></i><span class="visually-hidden">Edit request</span>
             <% end %>
           <% end %>
