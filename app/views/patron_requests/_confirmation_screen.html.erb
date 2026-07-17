@@ -1,3 +1,4 @@
+<%# locals: (mailer: false) %>
 <h1 class="fw-semibold fs-1">We received your <%= @patron_request.request_type == 'scan' ? 'scan' : (@patron_request.mediateable? || @patron_request.aeon_page?) ? '' : 'pickup' %> request!</h1>
 
 <div class="row mt-4">
@@ -10,7 +11,7 @@
                     Once approved, you can view the status of your request in
                 <% else %>
                     You can also check the status of your request any time at
-                <% end %><%= link_to ' My Account', 'https://mylibrary.stanford.edu' %>.
+                <% end %><%= link_to ' My Account', use_requests_redesign? ? unified_requests_path : 'https://mylibrary.stanford.edu' %>.
             <% end %>
             <% if @patron_request.request_type == 'scan' %>
                 We'll notify you by email once your scan request is ready. Remember to download the PDF within 30 days of notification.
@@ -125,15 +126,17 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="h3 fw-semibold">Library resources</h2>
-                <div class="bg-light p-2">
-                    <h3 class="h4">
-                        <a href="https://mylibrary.stanford.edu"><i class="bi bi-box-arrow-up-right"></i> Log in to My Account</a>
-                    </h3>
-                    <p class="mb-0">
-                      Access information regarding items currently checked out, monitor requests,
-                      and/or outstanding fines.
-                    </p>
-                </div>
+                <% if mailer || !use_requests_redesign? %>
+                    <div class="bg-light p-2">
+                        <h3 class="h4">
+                            <a href="https://mylibrary.stanford.edu"><i class="bi bi-box-arrow-up-right"></i> Log in to My Account</a>
+                        </h3>
+                        <p class="mb-0">
+                        Access information regarding items currently checked out, monitor requests,
+                        and/or outstanding fines.
+                        </p>
+                    </div>
+                <% end %>
                 <h3 class="h4 fw-semibold mt-3">Get help</h3>
                     <ul class="list-unstyled">
                         <li><i class="bi bi-envelope-fill"></i> <%= mail_to(@patron_request.contact_info[:email], @patron_request.contact_info[:email]) %></li>
