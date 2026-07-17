@@ -199,6 +199,10 @@ input[type="radio"] {
   color: var(--stanford-80-black);
 }
 
+.text-stanford-black {
+  color: var(--stanford-black);
+}
+
 .progress {
   --bs-progress-bg: var(--stanford-20-black);
 }

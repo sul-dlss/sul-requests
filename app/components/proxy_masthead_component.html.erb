@@ -35,16 +35,18 @@
         <% end %>
       </button>
       <%= form_with url: proxy_path do |f| %>
-        <ul class="dropdown-menu">
-          <% unless personal? %>
-            <li>
-              <%= button_tag "Personal account: #{patron.display_name}", name: 'id', value: nil, class: 'dropdown-item' %>
-            </li>
-          <% end %>
+        <ul class="dropdown-menu px-1">
+          <li>
+            <%= button_tag name: 'id', value: nil, class: 'dropdown-item text-stanford-black ps-0', disabled: personal? do %>
+              <%= lead_tag(patron) %>Personal account: <%= patron.display_name %>
+            <% end %>
+          </li>
 
-          <% @patron.sponsors.without(selected).each do |sponsor| %>
+          <% @patron.sponsors.each do |sponsor| %>
             <li>
-              <%= button_tag "Proxy for: #{sponsor.display_name}", name: 'id', value: sponsor.id, class: 'dropdown-item' %>
+              <%= button_tag name: 'id', value: sponsor.id, class: 'dropdown-item text-stanford-black ps-0', disabled: selected.id == sponsor.id do %>
+                <%= lead_tag(sponsor) %>Proxy for: <%= sponsor.display_name %>
+              <% end %>
             </li>
           <% end %>
         </ul>
