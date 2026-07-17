@@ -20,7 +20,7 @@ BotChallengePage.configure do |config|
   config.skip_when = lambda do |_config|
       Settings.turnstile.safelist.map { |cidr| IPAddr.new(cidr) }.any? { |range| request.remote_ip.in?(range) } ||
       Settings.turnstile.allowed_user_agents.include?(request.user_agent) ||
-      current_user?
+      sso_user?
   end
 
   # Hook after a bot challenge is presented, for logging or other

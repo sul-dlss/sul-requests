@@ -24,8 +24,8 @@ class ApplicationController < ActionController::Base
     @current_user ||= request.env['warden']&.user&.user_object || User.new
   end
 
-  def current_user?
-    current_user.sunetid.present?
+  def sso_user?
+    current_user.sso_user?
   end
 
   def request_feature_flags
@@ -37,20 +37,16 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_user!
-    redirect_to root_url unless current_user?
+    redirect_to root_url unless sso_user?
   end
 
-  helper_method :current_user, :current_user?, :sso_user?, :request_feature_flags, :use_requests_redesign?
+  helper_method :current_user, :sso_user?, :request_feature_flags, :use_requests_redesign?
 
   private
 
   def set_variant
     request.variant = :sidebar if params[:variant] == 'sidebar'
     request.variant = :modal if params[:modal]
-  end
-
-  def sso_user?
-    current_user.sso_user?
   end
 
   def rescue_can_can(exception)

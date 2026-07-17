@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'FeedbackForm', type: :feature do
-  let(:current_user?) { false }
   let(:user) { create(:sso_user) }
 
   context 'when not logged in' do

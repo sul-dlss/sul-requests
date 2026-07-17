@@ -22,7 +22,7 @@
       <%= text_area_tag :message, "", rows:"2", class:"form-control", required: true, placeholder: 'Enter your message' %>
     </div>
 
-    <% unless current_user? %>
+    <% unless sso_user? %>
       <div class="mb-3 requests-captcha">
         Stanford affiliates: <%= link_to 'Log in', login_by_sunetid_path(referrer: request.original_url), class: 'su-underline text-digital-red-light' %> to skip Captcha.
         <%= recaptcha_tags %>
