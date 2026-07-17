@@ -273,6 +273,10 @@ class AeonClient
     end
   end
 
+  def ping?
+    get('SystemInformation/Version').success?
+  end
+
   private
 
   def get(path, params: nil)

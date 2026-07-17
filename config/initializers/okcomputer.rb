@@ -43,6 +43,19 @@ class GraphqlCheck < OkComputer::Check
   end
 end
 
+# Check Aeon by calling ping on the client
+class AeonCheck < OkComputer::Check
+  def check
+    if AeonClient.new.ping?
+      mark_message 'Connected to Aeon'
+    else
+      mark_failure
+      mark_message 'Unable to connect to Aeon'
+    end
+  end
+end
+
 OkComputer::Registry.register('okapi', OkapiCheck.new) if Settings.folio.okapi_url
 OkComputer::Registry.register('graphql', GraphqlCheck.new) if Settings.folio.graphql_url
+OkComputer::Registry.register('aeon', AeonCheck.new) if Settings.aeon.api_url
 OkComputer.make_optional %w[okapi graphql hours_api sul_illiad]
