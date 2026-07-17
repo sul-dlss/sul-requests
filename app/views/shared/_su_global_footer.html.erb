@@ -18,10 +18,12 @@
               <a href="https://library.stanford.edu/">Library website
                 <i class="bi bi-arrow-right-short"></i></a>
             </li>
-            <li>
-              <a href="https://mylibrary.stanford.edu">My Account
-                <i class="bi bi-arrow-right-short"></i></a>
-            </li>
+            <% unless use_requests_redesign? %>
+              <li>
+                <a href="https://mylibrary.stanford.edu">My Account
+                  <i class="bi bi-arrow-right-short"></i></a>
+              </li>
+            <% end %>
           </ul>
         </section>
         <section class="col-md-4 col-xl-3 secondary-menu" aria-labelledby="get-help-header">
