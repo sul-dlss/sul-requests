@@ -16,7 +16,7 @@ module Folio
     end
 
     def primary_service_points
-      @primary_service_points ||= locations.map(&:primary_service_point_id).uniq.map { |id| Folio::Types.service_points.find_by(id:) }
+      @primary_service_points ||= locations.map(&:primary_service_point_id).uniq.filter_map { |id| Folio::Types.service_points.find_by(id:) }
     end
 
     def name(fallback_value: code)
