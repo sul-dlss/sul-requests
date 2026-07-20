@@ -11,6 +11,7 @@ RSpec.describe AeonSortable do
 
   let(:controller) { controller_class.new }
   let(:now) { Time.zone.now }
+  let(:kind_param) { 'submitted' }
 
   let(:request_a_with_appointment) do
     build(:aeon_request,
@@ -40,7 +41,7 @@ RSpec.describe AeonSortable do
   end
 
   before do
-    allow(controller).to receive(:params).and_return(ActionController::Parameters.new(sort: sort_param))
+    allow(controller).to receive(:params).and_return(ActionController::Parameters.new(sort: sort_param, kind: kind_param))
   end
 
   describe '#sort_aeon_requests' do
@@ -79,6 +80,26 @@ RSpec.describe AeonSortable do
         expect(result.map(&:title)).to eq %w[Apples Carrots Bananas]
       end
     end
+
+    context 'with cancelled request type' do
+      let(:kind_param) { 'cancelled' }
+      let(:sort_param) { 'invalid' }
+
+      it 'falls back to default sort date' do
+        result = controller.send(:sort_aeon_requests, requests)
+        expect(result.map(&:title)).to eq %w[Carrots Apples Bananas]
+      end
+    end
+
+    context 'with saved_for_later request type' do
+      let(:kind_param) { 'saved_for_later' }
+      let(:sort_param) { 'invalid' }
+
+      it 'falls back to default sort title' do
+        result = controller.send(:sort_aeon_requests, requests)
+        expect(result.map(&:title)).to eq %w[Apples Bananas Carrots]
+      end
+    end
   end
 
   describe '#current_aeon_sort' do
@@ -105,6 +126,24 @@ RSpec.describe AeonSortable do
         expect(controller.send(:current_aeon_sort)).to eq 'request_timing'
       end
     end
+
+    context 'with cancelled request type' do
+      let(:kind_param) { 'cancelled' }
+      let(:sort_param) { nil }
+
+      it 'falls back to default sort date' do
+        expect(controller.send(:current_aeon_sort)).to eq 'date'
+      end
+    end
+
+    context 'with saved_for_later request type' do
+      let(:kind_param) { 'saved_for_later' }
+      let(:sort_param) { nil }
+
+      it 'falls back to default sort title' do
+        expect(controller.send(:current_aeon_sort)).to eq 'title'
+      end
+    end
   end
 
   describe '#available_aeon_sort_options' do
@@ -117,15 +156,14 @@ RSpec.describe AeonSortable do
 
     let(:filterable_controller) { filterable_controller_class.new }
     let(:sort_param) { nil }
+    let(:filter_param) { nil }
 
     before do
       allow(filterable_controller).to receive(:params)
-        .and_return(ActionController::Parameters.new(sort: sort_param, filter: filter_param))
+        .and_return(ActionController::Parameters.new(sort: sort_param, filter: filter_param, kind: kind_param))
     end
 
     context 'without a filter' do
-      let(:filter_param) { nil }
-
       it 'includes all sort options' do
         expect(filterable_controller.send(:available_aeon_sort_options).keys)
           .to eq %w[title date request_timing]
@@ -156,6 +194,24 @@ RSpec.describe AeonSortable do
 
       it 'falls back to default sort' do
         expect(filterable_controller.send(:current_aeon_sort)).to eq 'request_timing'
+      end
+    end
+
+    context 'with cancelled request type' do
+      let(:kind_param) { 'cancelled' }
+
+      it 'does not include request_timing' do
+        expect(filterable_controller.send(:available_aeon_sort_options).keys)
+          .to eq %w[title date]
+      end
+    end
+
+    context 'with saved_for_later request type' do
+      let(:kind_param) { 'saved_for_later' }
+
+      it 'does not include request_timing' do
+        expect(filterable_controller.send(:available_aeon_sort_options).keys)
+          .to eq %w[title date]
       end
     end
   end
