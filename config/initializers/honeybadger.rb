@@ -5,6 +5,11 @@
 # surface their request/response details.
 Honeybadger.configure do |config|
   config.before_notify do |notice|
-    notice.context.merge!(notice.exception.to_honeybadger_context) if notice.exception.respond_to?(:to_honeybadger_context)
+    if Rails.env.development?
+      Rails.logger.error("[Honeybadger] #{notice.error_class}: #{notice.error_message}\n#{notice.backtrace&.join("\n")}")
+      notice.halt!
+    else
+      notice.context.merge!(notice.exception.to_honeybadger_context) if notice.exception.respond_to?(:to_honeybadger_context)
+    end
   end
 end
