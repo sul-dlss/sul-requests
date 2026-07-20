@@ -13,7 +13,7 @@ class PatronRequestItem < ApplicationRecord
     :title, :hierarchy, :for_publication, :requested_pages, :additional_information, :appointment_id, :activity_ids
   ], coder: JSON
 
-  after_initialize :update_item_metadata, if: -> { item_id.blank? && !persisted? }
+  after_initialize :update_item_metadata, if: -> { migrated_item_id_or_barcode.blank? && item_id.blank? && !persisted? }
 
   attr_writer :barcode_or_item_id
 
