@@ -3,7 +3,7 @@ import scrollIntoView from 'scroll-into-view-if-needed';
 
 export default class extends Controller {
   static targets = ["list", "button"]
-  static values = { expanded: { type: Boolean, default: false }, previewCount: { type: Number, default: 3 } }
+  static values = { expanded: { type: Boolean, default: false }, scrollIntoView: { type: Boolean, default: false }, previewCount: { type: Number, default: 3 } }
 
   connect() {
     this.updateList();
@@ -11,9 +11,16 @@ export default class extends Controller {
 
   expandedValueChanged() {
     this.updateList();
+
+    // if we collapsed a long list, scroll the top of the card back into view.
+    if (!this.expandedValue && this.scrollIntoViewValue) {
+      this.scrollIntoViewValue = false;
+      scrollIntoView(this.element.closest('.card') || this.element, { behavior: 'smooth', block: 'start', scrollMode: 'if-needed' });
+    }
   }
 
   toggle() {
+    this.scrollIntoViewValue = true;
     this.expandedValue = !this.expandedValue;
   }
 
@@ -40,7 +47,6 @@ export default class extends Controller {
       const currentContent = this.buttonTarget.innerHTML;
       this.buttonTarget.innerHTML = this.buttonTarget.dataset.content;
       this.buttonTarget.dataset.content = currentContent;
-      scrollIntoView(this.element.closest('.card') || this.element, { behavior: 'smooth', block: 'start', scrollMode: 'if-needed' });
     }
   }
 }
