@@ -462,6 +462,77 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_no_checked_field('Activity')
     end
 
+    it 'preserves saved-for-later manually added items' do # rubocop:disable RSpec/ExampleLength
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      choose 'Digitization'
+      check 'I agree to these terms'
+      click_button 'Continue'
+
+      first('[data-manual-items-row] input[type=text]').set('Box 1')
+      click_button 'Add container'
+      all('[data-manual-items-row] input[type=text]')[1].set('Box 2')
+      click_button 'Continue'
+
+      # Row title edits round-trip through the accordion summary
+      within('#items-accordion') { click_button 'Edit' }
+      first('[data-manual-items-row] input[type=text]').set('Renamed')
+      click_button 'Continue'
+      expect(page).to have_text 'Renamed'
+      expect(page).to have_no_text 'Box 1'
+
+      within('#items-accordion') { click_button 'Edit' }
+      first('[data-manual-items-row] input[type=text]').set('Box 1')
+      click_button 'Continue'
+
+      first('[data-content-id]', text: 'Box 1').click_button('Save for later')
+      first('[data-content-id]', text: 'Box 2').click_button('Save for later')
+      expect(page).to have_css('.saved-item', text: 'Box 1')
+      expect(page).to have_css('.saved-item', text: 'Box 2')
+
+      within('#items-accordion') { click_button 'Edit' }
+
+      # Saved for later manual items are hidden but still in the DOM so they submit
+      expect(page).to have_css('[data-manual-items-row].d-none', count: 2, visible: :hidden)
+      expect(page).to have_no_field(with: 'Box 1')
+      expect(page).to have_no_field(with: 'Box 2')
+
+      # Add a new, not saved for later manual item
+      click_button 'Add container'
+      first('[data-manual-items-row]:not(.d-none) input[type=text]').set('Box 3')
+      click_button 'Continue'
+
+      expect(page).to have_css('.saved-item', text: 'Box 1')
+      expect(page).to have_css('.saved-item', text: 'Box 2')
+      expect(page).to have_css('[data-content-id] .selected-item-title', text: 'Box 3')
+
+      fill_in 'Requested pages', with: 'Pages 1-10'
+      click_button 'Submit request'
+      expect(page).to have_css('.confirmation')
+      expect(PatronRequest.last.aeon_item.values.pluck('title')).to contain_exactly('Box 1', 'Box 2', 'Box 3')
+    end
+
+    it 'disables the "Continue" button while a manual-input row is empty' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      choose 'Digitization'
+      check 'I agree to these terms'
+      click_button 'Continue'
+
+      within('#items-accordion') do
+        expect(page).to have_button('Continue', disabled: true)
+
+        first('[data-manual-items-row] input[type=text]').set('Box 1')
+        expect(page).to have_button('Continue', disabled: false)
+
+        click_button 'Add container'
+        expect(page).to have_button('Continue', disabled: true)
+
+        all('[data-manual-items-row] input[type=text]')[1].set('Box 2')
+        expect(page).to have_button('Continue', disabled: false)
+      end
+    end
+
     it 'allows users to input boxes manually' do # rubocop:disable RSpec/ExampleLength
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
@@ -472,12 +543,12 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       check 'I agree to these terms'
       click_button 'Continue'
 
-      find('input[data-prepend="manual-input-1"]').set('Box 1')
+      first('[data-manual-items-row] input[type=text]').set('Box 1')
       click_button 'Add container'
-      find('input[data-prepend="manual-input-2"]').set('Box 24 ')
+      all('[data-manual-items-row] input[type=text]')[1].set('Box 24 ')
       click_button 'Add container'
-      find('input[data-prepend="manual-input-3"]').set('Box 25 ')
-      find('button[data-index="2"]').click
+      all('[data-manual-items-row] input[type=text]')[2].set('Box 25 ')
+      within(all('[data-manual-items-row]')[1]) { click_button 'Delete' }
 
       click_button 'Continue'
 
@@ -498,7 +569,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect do
         perform_enqueued_jobs
       end.to change(StubAeonClient::Request, :count).by(2)
-      expect(PatronRequest.last.aeon_item.keys).to eq ['manual-input-1-box1', 'manual-input-3-box25']
+      expect(PatronRequest.last.aeon_item.length).to eq 2
 
       expect(StubAeonClient::Request.last(2)).to contain_exactly(
         have_attributes(
@@ -525,9 +596,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       choose 'Reading room appointment'
       click_button 'Continue'
 
-      find('input[data-prepend="manual-input-1"]').set('Box 1')
+      first('[data-manual-items-row] input[type=text]').set('Box 1')
       click_button 'Add container'
-      find('input[data-prepend="manual-input-2"]').set('Box 24 ')
+      all('[data-manual-items-row] input[type=text]')[1].set('Box 24 ')
       click_button 'Continue'
 
       # Expect no viewing modal links
@@ -540,9 +611,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       check 'I agree to these terms'
       click_button 'Continue'
 
-      find('input[data-prepend="manual-input-1"]').set('Box 1')
+      first('[data-manual-items-row] input[type=text]').set('Box 1')
       click_button 'Add container'
-      find('input[data-prepend="manual-input-2"]').set('Box 24 ')
+      all('[data-manual-items-row] input[type=text]')[1].set('Box 24 ')
       click_button 'Continue'
 
       # Expect no viewing modal links

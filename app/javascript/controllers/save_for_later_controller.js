@@ -68,7 +68,7 @@ export default class extends Controller {
 
   formItemsFor(id) {
     return Array.from(this.element.querySelectorAll(`[data-content-id="${id}"]:not([data-toggle-disabled])`))
-      .filter(el => !this.listTargets.some(list => list.contains(el)))
+      .filter(el => el.closest('[data-save-for-later-target="section"]') && !this.listTargets.some(list => list.contains(el)))
   }
 
   makeSavedItem(formItem) {

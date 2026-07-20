@@ -19,7 +19,7 @@
     <%= form_for(@patron_request,
                  data: {
                    controller: 'patron-request accordion-form item-selector save-for-later view-container-contents',
-                   action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged',
+                   action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged manual-items:changed->item-selector#syncFromManualItems manual-items:changed->accordion-form#reenableNextButtons',
                    'patron-request-type-value': 'aeon',
                  },
                  html: { class: 'accordion' },
@@ -107,30 +107,25 @@
         </div>
       <% else %>
         <p>Enter the containers you want to request.</p>
-        <div id="manual-input-container" data-item-selector-target="manualInputContainer" class="d-flex flex-column">
-          <div>
-            <%= fields_for "patron_request[aeon_item][manual-input-1]" do |form_fields| %>
-              <%= form_fields.text_field :title, placeholder: 'e.g., Box 1, Reel 5', required: true, data: { prepend: 'manual-input-1', id: 'manual-input-1', action: 'item-selector#input', index: 1 } %>
-              <%= form_fields.hidden_field :id, data: { id: 'manual-input-1' }, value: SecureRandom.uuid %>
-            <% end %>
-          </div>
+        <div id="manual-items-container" data-controller="manual-items" data-action="save-for-later:changed@document->manual-items#syncSavedForLater" class="d-flex flex-column">
+          <div data-manual-items-target="rows"></div>
+
+          <button class="btn btn-link px-0 text-black mt-1 align-self-start" data-action="manual-items#addRow accordion-form#enableNextButton">
+            <i class="bi bi-plus-square-fill text-green me-1"></i>Add container
+          </button>
+
+          <template data-manual-items-target="template">
+            <div data-manual-items-row class="mt-2">
+              <%= fields_for "patron_request[aeon_item][__NEW_ROW__]" do |form_fields| %>
+                <%= form_fields.text_field :title, placeholder: 'e.g., Box 1, Reel 5', required: true, data: { action: 'manual-items#emitChange' } %>
+                <%= form_fields.hidden_field :id %>
+              <% end %>
+              <button class="btn btn-link px-0 text-black" data-action="manual-items#removeRow">
+                <i class="bi bi-dash-square-fill text-danger me-1"></i>Delete
+              </button>
+            </div>
+          </template>
         </div>
-
-        <button class="btn btn-link px-0 text-black mt-1" data-action="item-selector#addInputField accordion-form#enableNextButton" data-template="#inputForm">
-          <i class="bi bi-plus-square-fill text-green me-1"></i>Add container
-        </button>
-
-        <template id="inputForm">
-          <div data-root-node="true" class="mt-2">
-            <%= fields_for "patron_request[aeon_item][manual-input-__INDEX__]" do |form_fields| %>
-              <%= form_fields.text_field :title, placeholder: 'e.g., Box 1, Reel 5', required: true, data: { prepend: 'manual-input-__INDEX__',  id: 'manual-input-__INDEX__', action: 'item-selector#input', index: "__INDEX__" } %>
-              <%= form_fields.hidden_field :id, value: SecureRandom.uuid, data: { id: 'manual-input-__INDEX__' } %>
-            <% end %>
-            <button class="btn btn-link px-0 text-black" data-index="__INDEX__" data-action="item-selector#removeInputField">
-              <i class="bi bi-dash-square-fill text-danger me-1"></i>Delete
-            </button>
-          </div>
-        </template>
       <% end %>
     <% end %>
   <% end %>
