@@ -195,7 +195,7 @@ module Aeon
                  when :title
                    [title, default_sort_key]
                  when :date
-                   [(transaction_date || 100.years.from_now.end_of_day).strftime('%FT%T'), title, default_sort_key]
+                   [swap_digits(transaction_date || 100.years.from_now.end_of_day), title, default_sort_key]
                  when :default
                    [(appointment&.start_time || 100.years.from_now.end_of_day).strftime('%FT%T'), title, default_sort_key]
                  else
@@ -203,6 +203,16 @@ module Aeon
                  end
 
       sort_key.join('---')
+    end
+
+    def swap_digits(digit)
+      # Swaps each digit d with (9 - d)
+      # 0<->9, 1<->8, 2<->7, 3<->6, 4<->5
+      str = digit.to_i.to_s
+
+      swapped = str.chars.map { |ch| (9 - ch.to_i).to_s }.join
+
+      swapped.to_i
     end
 
     def pad_digits_for_sorting(str)
