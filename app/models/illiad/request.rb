@@ -6,6 +6,8 @@
 module Illiad
   # ILLiad Request class (that duck-types our Folio::Request class)
   class Request
+    include RequestSorting
+
     def self.where(user_id:)
       IlliadClient.new.user_transactions(user_id).reject(&:inactive?)
     end
@@ -51,7 +53,7 @@ module Illiad
     def sort_key(key)
       sort_key = case key
                  when :date
-                   [placed_date.strftime('%FT%T'), title, author, call_number]
+                   [reverse_sort(placed_date.strftime('%FT%T')), title, author, call_number]
                  when :title
                    [title, author, call_number]
                  when :default

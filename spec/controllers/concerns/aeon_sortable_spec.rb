@@ -67,7 +67,7 @@ RSpec.describe AeonSortable do
 
       it 'sorts by request created/modified time' do
         result = controller.send(:sort_aeon_requests, requests)
-        expect(result.map(&:title)).to eq %w[Bananas Apples Carrots]
+        expect(result.map(&:title)).to eq %w[Carrots Apples Bananas]
       end
     end
 
