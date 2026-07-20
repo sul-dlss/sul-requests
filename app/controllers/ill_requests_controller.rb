@@ -23,7 +23,7 @@ class IllRequestsController < ApplicationController
   def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     authorize! :create, Illiad::Request
 
-    illiad_create_params = create_params.except(:title, :author, :NotWantedAfter, :AcceptAlternateEdition).to_h.merge(
+    illiad_create_params = create_params.except(:title, :author, :NotWantedAfter, :AcceptAlternateEdition, :Note).to_h.merge(
       ProcessType: 'Borrowing',
       WebRequestForm: 'LoanRequest',
       RequestType: 'Loan',
@@ -36,7 +36,8 @@ class IllRequestsController < ApplicationController
       NotWantedAfter: not_wanted_after_param.strftime('%Y-%m-%d')
     ).compact_blank
 
-    IlliadClient.new.create(illiad_create_params)
+    request = illiad_client.create(illiad_create_params)
+    illiad_client.create_transaction_note(transaction_number: request.key, note: create_params[:Note]) if create_params[:Note].present?
 
     redirect_to root_path, notice: 'Your request has been submitted to Interlibrary Loan.'
   end
@@ -44,7 +45,7 @@ class IllRequestsController < ApplicationController
   def destroy
     load_request
     authorize! :destroy, @request
-    @response = IlliadClient.new.update_request_route(transaction_number: @request.id, status: Settings.illiad.cancelled_by_user)
+    @response = illiad_client.update_request_route(transaction_number: @request.id, status: Settings.illiad.cancelled_by_user)
     respond_to do |format|
       format.html { redirect_to unified_requests_path, notice: 'Request cancelled successfully' }
       format.turbo_stream
@@ -52,6 +53,10 @@ class IllRequestsController < ApplicationController
   end
 
   private
+
+  def illiad_client
+    @illiad_client ||= IlliadClient.new
+  end
 
   def current_patron
     current_user.patron
@@ -78,7 +83,7 @@ class IllRequestsController < ApplicationController
     illiad_params = %w[
       CitedIn ISSN ESPNumber ItemInfo2
       LoanPublisher LoanPlace LoanDate LoanEdition AcceptAlternateEdition
-      Notes NotWantedAfter
+      NotWantedAfter Note
     ]
     params.require(:illiad_request).permit(:title, :author, *illiad_params)
   end
