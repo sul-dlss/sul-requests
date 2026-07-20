@@ -5,6 +5,7 @@ module Folio
   class Request
     include Folio::FolioRecord
     include ActiveModel::Model
+    include RequestSorting
 
     attr_reader :record
 
@@ -99,7 +100,7 @@ module Folio
     def sort_key(key)
       sort_key = case key
                  when :date
-                   [placed_date&.strftime('%FT%T'), title, author, shelf_key]
+                   [reverse_sort(placed_date&.strftime('%FT%T')), title, author, shelf_key]
                  when :title
                    [title, author, shelf_key]
                  when :default
