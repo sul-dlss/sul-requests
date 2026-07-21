@@ -54,6 +54,7 @@ class CreatePatronRequestItems < ActiveRecord::Migration[8.1]
         request.patron_request_items.build(
           created_at: request.created_at,
           migrated_item_id_or_barcode: barcode_or_item_id,
+          needed_date: request.needed_date,
           origin_location_code: request.origin_location_code,
           service_point_code: request.service_point_code,
           instance_id: request.instance_hrid,
