@@ -9,7 +9,7 @@ module AeonController
   end
 
   def current_ability
-    @current_ability ||= SiteAbility.new(current_user).merge(AeonAbility.new(current_user.aeon))
+    @current_ability ||= SiteAbility.new(current_user).merge(AeonAbility.new((current_user.aeon if current_user.authenticated?)))
   end
 
   def aeon_client

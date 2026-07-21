@@ -107,7 +107,7 @@ class User < ApplicationRecord
   def aeon
     return @aeon if defined?(@aeon)
 
-    return Aeon::NullUser.new unless authenticated?
+    return @aeon = Aeon::NullUser.new(username: email_address, auth_type: 'Default') if email_address.blank?
 
     @aeon = Aeon::User.find_by(email_address:)
   rescue AeonClient::NotFoundError

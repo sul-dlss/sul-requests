@@ -50,7 +50,7 @@
           <% component.with_nav_item do %>
             <%= link_to 'Submitted requests', unified_requests_url, class: 'nav-link fw-semibold' %>
           <% end %>
-        <% elsif current_user.aeon.present? || current_user.patron.present? %>
+        <% elsif current_user.authenticated? && (current_user.aeon.present? || current_user.patron.present?) %>
           <% component.with_nav_item(classes: ['dropdown']) do %>
             <button class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" aria-expanded="false">
               Requests
@@ -73,7 +73,7 @@
           <% end %>
         <% end %>
 
-        <% if current_user.aeon.present? && !acting_as_proxy? %>
+        <% if current_user.authenticated? && current_user.aeon.present? && !acting_as_proxy? %>
           <% component.with_nav_item do %>
             <%= link_to 'Activities', aeon_activities_url, class: 'nav-link fw-semibold' %>
           <% end if current_user.aeon.activities.present? %>

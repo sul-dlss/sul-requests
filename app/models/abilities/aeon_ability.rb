@@ -14,7 +14,7 @@ class AeonAbility
     alias_action :index, :show, to: :read
     alias_action :edit, to: :update
 
-    return unless aeon_user.persisted?
+    return unless aeon_user&.persisted?
 
     can [:new, :create], Aeon::Request
 
