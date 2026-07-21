@@ -23,7 +23,7 @@ class FolioRequestServicePointOptionsService
         service_points += additional_pickup_service_points
       end
 
-      service_points.uniq(&:id).sort_by(&:name)
+      service_points.uniq(&:id).sort_by(&:sort_key)
     end
   end
 

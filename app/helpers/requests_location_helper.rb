@@ -22,4 +22,12 @@ module RequestsLocationHelper
                                                selected_service_point_id: request.service_point_id,
                                                patron:).possible_service_points
   end
+
+  # Generates a list of default service point options for a patron.
+  #
+  # @param patron [Folio::Patron] The patron object
+  # @return [Array<Folio::ServicePoint>]
+  def default_service_points(patron)
+    FolioRequestServicePointOptionsService.new([], patron:).default_pickup_service_points.sort_by(&:sort_key)
+  end
 end
