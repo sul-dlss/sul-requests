@@ -14,7 +14,7 @@ module Aeon
     end
 
     def at_limit?
-      appointment.requests.count >= (appointment.reading_room.appointment_item_limit || 100)
+      appointment.requests.count >= (appointment.item_limit || 100)
     end
   end
 end

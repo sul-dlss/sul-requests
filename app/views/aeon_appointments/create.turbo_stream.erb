@@ -19,8 +19,8 @@
           <span class="fw-normal">New appointment: </span><%= render AppointmentTimeRangeComponent.new(appointment: @appointment, location: @appointment.reading_room.name) %>
         </li>
         <li>Items can be scheduled for this appointment.</li>
-        <% if @appointment.reading_room.appointment_item_limit %>
-          <li>Up to <%= @appointment.reading_room.appointment_item_limit %> items are allowed for this appointment.</li>
+        <% if @appointment.item_limit %>
+          <li>Up to <%= @appointment.item_limit %> items are allowed for this appointment.</li>
         <% end %>
       </ul>
     </div>
