@@ -46,6 +46,13 @@ class IlliadClient
     handle_response(response, as_class: Illiad::Request, not_found: [])
   end
 
+  def create_transaction_note(transaction_number:, note:)
+    connection.post("ILLiadWebPlatform/Transaction/#{transaction_number}/Note", { Note: note, NoteType: 'Staff' },
+                    content_type: 'application/json')
+
+    handle_response(response)
+  end
+
   def update_request_route(transaction_number:, status:)
     response = connection.put("ILLiadWebPlatform/transaction/#{transaction_number}/route", { Status: status },
                               content_type: 'application/json')

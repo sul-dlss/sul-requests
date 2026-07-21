@@ -78,6 +78,15 @@
       <%= f.date_field :NotWantedAfter, class: 'form-control' %>
     </div>
 
+    <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
+      <%= f.label :Note, 'Additional information', class: 'form-label fw-semibold' %>
+      <%= f.text_area :Note, class: 'form-control', rows: 3, maxlength: 255, data: { action: "input->char-counter#updateCharCounter" } %>
+      <p class="form-text text-secondary d-flex justify-content-between">
+        <span>Limit 255 characters.</span>
+        <span class="fs-14" data-char-counter-target="counter"></span>
+      </p>
+    </div>
+
     <div class="mb-3">
       <%= f.submit 'Submit request', class: 'btn btn-primary' %>
     </div>
