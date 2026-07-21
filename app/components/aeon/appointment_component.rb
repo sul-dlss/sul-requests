@@ -16,7 +16,7 @@ module Aeon
     def add_item_allowed?
       return false unless helpers.can?(:update, appointment)
 
-      appointment.reading_room.appointment_item_limit.nil? || appointment.requests.count < appointment.reading_room.appointment_item_limit
+      appointment.item_limit.nil? || appointment.requests.count < appointment.item_limit
     end
 
     def eligible_saved_for_later_requests

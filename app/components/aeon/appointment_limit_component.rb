@@ -6,7 +6,7 @@ module Aeon
     attr_reader :count, :limit, :label, :data
 
     def self.from_appointment(appointment, **)
-      new(count: appointment.requests.count, limit: appointment.reading_room.appointment_item_limit, **)
+      new(count: appointment.requests.count, limit: appointment.item_limit, **)
     end
 
     def initialize(count:, limit:, data: {})

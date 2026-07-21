@@ -86,6 +86,12 @@ module Aeon
       start_time.after?(edit_policy.days.from_now)
     end
 
+    def item_limit
+      return nil if user&.request_limit && user.request_limit >= 200
+
+      user&.request_limit || reading_room&.appointment_item_limit
+    end
+
     def persisted? = id.present?
 
     def save # rubocop:disable Metrics/AbcSize, Metrics/MethodLength

@@ -12,14 +12,15 @@ module Aeon
     end
 
     def self.from_dynamic(data)
-      new(username: data['username'], auth_type: data['authType'])
+      new(username: data['username'], auth_type: data['authType'], request_limit: data['requestLimit'])
     end
 
-    attr_reader :username, :auth_type
+    attr_reader :username, :auth_type, :request_limit
 
-    def initialize(username:, auth_type: nil)
+    def initialize(username:, auth_type: nil, request_limit: nil)
       @username = username
       @auth_type = auth_type
+      @request_limit = request_limit
     end
 
     def ==(other)
