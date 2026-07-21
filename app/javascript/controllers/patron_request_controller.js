@@ -38,7 +38,7 @@ export default class extends Controller {
 
     Array.from(itemGroups).forEach(itemGroup => {
       const itemGroupType = itemGroup.closest('.accordion-item').dataset.patronrequestForrequesttype
-      // We don't want to enable required pickup fields when the user has selected scan and visa versa
+      // We don't want to enable required pickup fields when the user has selected scan and vice versa
       if (itemGroupType != requestType) { return }
 
       if (!itemGroup.querySelector('[data-content-id]')) {
