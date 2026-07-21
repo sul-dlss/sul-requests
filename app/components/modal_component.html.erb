@@ -1,4 +1,4 @@
-<%= content_tag(:div, class: @classes, id:, tabindex: "-1", aria: {labelledby: title_id, hidden: false}, data:) do %>
+<%= content_tag(:div, class: @classes, id:, tabindex: "-1", aria: {labelledby: title_id, hidden: false}, data:, role: 'dialog') do %>
   <div class="<%= dialog_classes.join(' ') %>">
     <div class="modal-content">
       <% if custom_header %>
