@@ -87,7 +87,7 @@ module Aeon
     end
 
     def item_limit
-      reading_room&.appointment_item_limit
+      user&.request_limit || reading_room&.appointment_item_limit
     end
 
     def persisted? = id.present?
