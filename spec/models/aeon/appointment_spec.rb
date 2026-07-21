@@ -334,12 +334,22 @@ RSpec.describe Aeon::Appointment do
     end
 
     context 'with a user who has a custom request limit' do
+      let(:user) { instance_double(Aeon::User, request_limit: 22) }
+      let(:reading_room) { build(:aeon_reading_room) }
+      let(:appointment) { build(:aeon_appointment, reading_room: reading_room, user: user) }
+
+      it 'returns the user request limit' do
+        expect(appointment.item_limit).to eq(22)
+      end
+    end
+
+    context 'with a user who has a huge request limit' do
       let(:user) { instance_double(Aeon::User, request_limit: 1500) }
       let(:reading_room) { build(:aeon_reading_room) }
       let(:appointment) { build(:aeon_appointment, reading_room: reading_room, user: user) }
 
       it 'returns the user request limit' do
-        expect(appointment.item_limit).to eq(1500)
+        expect(appointment.item_limit).to be_nil
       end
     end
   end

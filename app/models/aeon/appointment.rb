@@ -87,6 +87,8 @@ module Aeon
     end
 
     def item_limit
+      return nil if user&.request_limit && user.request_limit >= 200
+
       user&.request_limit || reading_room&.appointment_item_limit
     end
 
