@@ -9,7 +9,9 @@ RSpec.describe SubmitAeonPatronRequestJob do
 
   let(:request) do
     PatronRequest.create!(request_type:, instance_hrid: 'a1234', patron:, barcodes: ['12345678'],
-                          origin_location_code: 'SPEC-STACKS', data:, user: build(:sso_user))
+                          origin_location_code: 'SPEC-STACKS',
+                          data: data.merge(aeon_username: 'aeon_user'),
+                          user: build(:sso_user))
   end
   let(:folio_instance) { build(:special_collections_single_holding) }
   let(:stub_aeon_client) { instance_double(AeonClient, find_user: stub_aeon_user, create_request: Aeon::Request.new, update_request_route: nil) }

@@ -52,6 +52,8 @@ class PatronRequestsController < ApplicationController
   end
 
   def create
+    @patron_request.aeon_username = current_user.aeon.username if @patron_request.aeon_page?
+
     if @patron_request.save && @patron_request.submit_later
       redirect_to @patron_request
     else

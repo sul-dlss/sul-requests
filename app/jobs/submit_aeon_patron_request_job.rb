@@ -93,7 +93,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
                        elsif volume_params['appointment_id'].present?
                          patron_request.aeon_reading_special
                        end,
-      username: patron_request.user.aeon.username,
+      username: patron_request.aeon_username,
       activity_id:
     )
   end
