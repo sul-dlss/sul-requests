@@ -16,7 +16,7 @@ class FolioRequestServicePointOptionsService
       # always include the currently selected service point
       service_points += [current_service_point] if current_service_point.present?
 
-      service_points += location_restricted_service_points
+      service_points += location_restricted_service_points.select { |sp| patron_is_eligible_for_service_point?(sp) }
 
       if location_restricted_service_points.empty?
         service_points += default_pickup_service_points
