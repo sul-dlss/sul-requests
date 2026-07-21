@@ -204,8 +204,14 @@ RSpec.describe User do
 
   describe '#aeon' do
     context 'for non-SSO users' do
-      it 'returns a NullUser (until we have a better idea how to authenticate them...)' do
-        expect(user.aeon).to have_attributes(persisted?: false)
+      before do
+        user.email = 'guest@example.com'
+      end
+
+      it 'returns the aeon user' do
+        allow(Aeon::User).to receive(:find_by).and_return(Aeon::User.new(username: 'guest@example.com', auth_type: 'Default'))
+
+        expect(user.aeon).to have_attributes(persisted?: true)
       end
     end
 
