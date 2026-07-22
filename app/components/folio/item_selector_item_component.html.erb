@@ -1,7 +1,7 @@
 <tr data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
   <td>
     <label>
-      <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: not_requestable?, data: { 'item-selector-target': 'item', 'item-selector-id-param': item.id, 'item-selector-status-param': item.available? ? 'available' : 'unavailable', 'item-selector-duequeueinfo-param': helpers.queue_length_display(item), 'item-selector-label-param': helpers.callnumber_label(item), action: 'item-selector#change' } }, item.barcode || item.id, "" %>
+      <%= f.check_box 'barcodes', { multiple: true, class: 'form-check-input', disabled: not_requestable?, data: { 'item-selector-target': 'item', 'item-selector-id-param': item.id, 'item-selector-status-param': item.available? ? 'available' : 'unavailable', 'item-selector-duequeueinfo-param': helpers.queue_length_display(item), 'item-selector-label-param': helpers.callnumber_label(item), action: 'item-selector#change' } }, item.id, "" %>
       <% if f.object.aeon_page? %>
         <%= tag.div class: 'd-none', data: { 'content-id': item.id, 'toggle-disabled': true } do %>
           <%= f.hidden_field "aeon_callnumber_#{item.callnumber}", disabled: true, name: "CallNumber_#{index}", value: item.callnumber, data: { toggle: true } %>

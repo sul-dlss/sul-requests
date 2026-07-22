@@ -69,7 +69,7 @@
   <%= f.hidden_field :item_url, name: 'ItemInfo1', value: f.object.view_url %>
   <% if f.object.selectable_items.one? %>
     <% single_item = f.object.selectable_items.first %>
-    <% single_barcode = single_item&.barcode || single_item&.id %>
+    <% single_barcode = single_item&.id %>
     <%= f.hidden_field :barcodes, multiple: true, value: single_barcode %>
     <%= f.hidden_field :aeon_request_index, name: 'Request', value: 1 %>
     <%= f.hidden_field :aeon_callnumber, name: 'CallNumber_1', value: single_item.callnumber %>

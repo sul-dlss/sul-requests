@@ -48,9 +48,8 @@ RSpec.describe 'Creating an Aeon patron request', :js do
       it 'identifies the reading room where the items will be prepared' do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
         expect(page).to have_button('Continue', disabled: true)
-
-        check 'patron_request_barcodes_12345678'
-        check 'patron_request_barcodes_87654321'
+        check 'ABC 123'
+        check 'ABC 321'
         click_on 'Continue'
         expect(page).to have_text 'Use in: Special Collections & University Archives Reading Room'
       end
@@ -142,8 +141,8 @@ RSpec.describe 'Creating an Aeon patron request', :js do
 
         describe 'with items selected' do
           before do
-            check 'patron_request_barcodes_12345678'
-            check 'patron_request_barcodes_87654321'
+            check 'ABC 123'
+            check 'ABC 321'
           end
 
           it 'includes the index of each item' do
