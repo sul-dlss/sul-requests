@@ -44,9 +44,17 @@ class PatronRequestItem < ApplicationRecord
     patron_request.folio_api_responses.create(item_id: item_id, **)
   end
 
+  def folio_api_responses
+    patron_request.folio_api_responses.where(item_id: item_id)
+  end
+
   def create_illiad_api_response(**)
     patron_request.illiad_api_responses.where(item_id: item_id).delete_all
     patron_request.illiad_api_responses.create(item_id: item_id, **)
+  end
+
+  def illiad_api_responses
+    patron_request.illiad_api_responses.where(item_id: item_id)
   end
 
   def illiad_request_params

@@ -17,13 +17,13 @@ class SubmitPatronRequestJob < ApplicationJob
     end
 
     ilb_items.each do |item|
-      next if patron_request.illiad_api_responses.any? { |r| r.item_id == item.item_id && r.response_data }
+      next if item.illiad_api_responses.any?(&:response_data)
 
       SubmitIlliadPatronRequestJob.perform_now(item)
     end
 
     folio_items.each do |item|
-      next if patron_request.folio_api_responses.any? { |r| r.item_id == item.item_id && r.response_data&.dig('status') }
+      next if item.folio_api_responses.any? { |r| r.response_data&.dig('status') }
 
       SubmitFolioPatronRequestJob.perform_now(item)
     end
@@ -41,7 +41,7 @@ class SubmitPatronRequestJob < ApplicationJob
     end
 
     ilb_items.each do |item|
-      next if patron_request.illiad_api_responses.any? { |r| r.item_id == item.item_id && r.response_data }
+      next if item.illiad_api_responses.any?(&:response_data)
 
       SubmitIlliadPatronRequestJob.perform_now(item)
     end
@@ -51,7 +51,7 @@ class SubmitPatronRequestJob < ApplicationJob
     end
 
     folio_items.each do |item|
-      next if patron_request.folio_api_responses.any? { |r| r.item_id == item.item_id && r.response_data&.dig('status') }
+      next if item.folio_api_responses.any? { |r| r.response_data&.dig('status') }
 
       SubmitFolioScanRequestJob.perform_now(item)
     end
