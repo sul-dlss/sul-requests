@@ -19,52 +19,49 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   queue_as :default
   retry_on Faraday::ConnectionFailed
 
-  def perform(patron_request)
+  def perform(patron_request) # rubocop:disable Metrics/MethodLength
     return unless patron_request.aeon_page?
 
-    if patron_request.request_type == 'activity'
-      perform_activity_request(patron_request)
-    elsif patron_request.ead_url.present?
-      perform_ead_request(patron_request)
-    else
-      perform_folio_request(patron_request)
+    failures = []
+    patron_request.patron_request_items.each do |item|
+      if patron_request.request_type == 'activity'
+        perform_activity_request(patron_request, item)
+      elsif patron_request.ead_url.present?
+        perform_ead_request(item)
+      else
+        perform_folio_request(item)
+      end
+    rescue AeonClient::ApiError => e
+      failures << e
     end
 
     patron_request.update(submitted_to_aeon_at: Time.current)
+  ensure
+    report_failures(patron_request, failures)
   end
 
   # TODO: use the activity_ids from the patron_request_item.
-  def perform_activity_request(patron_request)
+  def perform_activity_request(patron_request, patron_request_item)
     Array(patron_request.data['activity_ids']).each do |activity_id|
       if patron_request.ead_url.present?
-        perform_ead_request(patron_request, activity_id:)
+        perform_ead_request(patron_request_item, activity_id:)
       else
-        perform_folio_request(patron_request, activity_id:)
+        perform_folio_request(patron_request_item, activity_id:)
       end
     end
   end
 
-  def perform_folio_request(patron_request, activity_id: nil)
-    failures = []
-    patron_request.patron_request_items.each do |requested_item|
-      request = as_aeon_create_request_data(patron_request, requested_item, activity_id)
-      record_aeon_response(patron_request, requested_item.item_id, request) { submit_aeon_request(request) }
-    rescue AeonClient::ApiError => e
-      failures << e
-    end
-    report_failures(patron_request, failures)
+  def perform_folio_request(requested_item, activity_id: nil)
+    patron_request = requested_item.patron_request
+    request = as_aeon_create_request_data(patron_request, requested_item, activity_id)
+    record_aeon_response(patron_request, requested_item.item_id, request) { submit_aeon_request(request) }
   end
 
-  def perform_ead_request(patron_request, activity_id: nil)
-    failures = []
-    patron_request.patron_request_items.each do |requested_item|
-      request = as_aeon_create_ead_request_data(patron_request, requested_item, activity_id)
-      item_id = "#{request.call_number} #{request.item_volume}"
-      record_aeon_response(patron_request, item_id, request) { submit_aeon_request(request) }
-    rescue AeonClient::ApiError => e
-      failures << e
-    end
-    report_failures(patron_request, failures)
+  def perform_ead_request(requested_item, activity_id: nil)
+    patron_request = requested_item.patron_request
+    request = as_aeon_create_ead_request_data(patron_request, requested_item, activity_id)
+    item_id = "#{request.call_number} #{request.item_volume}"
+    record_aeon_response(patron_request, item_id, request) { submit_aeon_request(request) }
   end
 
   def common_aeon_data_from_patron_request(patron_request, item, activity_id) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
