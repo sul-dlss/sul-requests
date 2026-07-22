@@ -6,18 +6,15 @@ class SubmitFolioPatronRequestJob < ApplicationJob
   queue_as :default
 
   def perform(patron_request_item)
-    request = patron_request_item.patron_request
-    item = patron_request_item.folio_item
-    return unless item
+    return if patron_request_item.folio_item.blank?
 
-    request_data = folio_request_data_for_item(request, item)
+    request_data = folio_request_data_for_item(patron_request_item)
 
     response = submit_folio_requests!(request_data)
 
-    handle_folio_errors(response, request, item) if response&.dig('errors')
+    handle_folio_errors(response, patron_request_item) if response&.dig('errors')
 
-    request.folio_api_responses.where(item_id: item.id).delete_all
-    request.folio_api_responses.create(item_id: item.id, request_data:, response_data: response)
+    patron_request_item.create_folio_api_response(request_data:, response_data: response)
   end
 
   private
@@ -43,7 +40,10 @@ class SubmitFolioPatronRequestJob < ApplicationJob
     {}
   end
 
-  def folio_request_data_for_item(request, item)
+  def folio_request_data_for_item(patron_request_item) # rubocop:disable Metrics/AbcSize
+    request = patron_request_item.patron_request
+    item = patron_request_item.folio_item
+
     FolioClient::CirculationRequestData.new(
       request_level: 'Item', request_type: best_request_type(request, item),
       instance_id: item.instance&.id || request.instance_id, item_id: item.id, holdings_record_id: item.holdings_record_id,
@@ -70,12 +70,12 @@ class SubmitFolioPatronRequestJob < ApplicationJob
     @folio_client ||= FolioClient.new
   end
 
-  def handle_folio_errors(response, request, item)
+  def handle_folio_errors(response, patron_request_item)
     case # rubocop:disable Style/EmptyCaseCondition
     # Multiple pseudo-patron requests for the same item need staff to manually process the item
-    when request.patron&.id.nil? && response.dig('errors', 0,
-                                                 'message') == 'This requester already has an open request for this item'
-      MultipleHoldsMailer.multiple_holds_notification(request, item).deliver_now
+    when patron_request_item.patron&.id.nil? && response.dig('errors', 0,
+                                                             'message') == 'This requester already has an open request for this item'
+      MultipleHoldsMailer.multiple_holds_notification(patron_request_item).deliver_now
     end
   end
 end

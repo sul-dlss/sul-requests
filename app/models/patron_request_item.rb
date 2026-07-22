@@ -4,6 +4,7 @@
 class PatronRequestItem < ApplicationRecord
   belongs_to :patron_request
   has_many :admin_comments, as: :request, dependent: :delete_all
+  delegate :patron, to: :patron_request
 
   store :data, accessors: [
     :barcode, :migrated_item_id_or_barcode,
@@ -36,6 +37,11 @@ class PatronRequestItem < ApplicationRecord
     self.item_id = @folio_item.id
     self.barcode = @folio_item.barcode
     self.item_callnumber = @folio_item.callnumber
+  end
+
+  def create_folio_api_response(**)
+    patron_request.folio_api_responses.where(item_id: item_id).delete_all
+    patron_request.folio_api_responses.create(item_id: item_id, **)
   end
 
   def folio_item

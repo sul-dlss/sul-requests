@@ -7,7 +7,10 @@ class SubmitFolioScanRequestJob < SubmitFolioPatronRequestJob
 
   private
 
-  def folio_request_data_for_item(request, item)
+  def folio_request_data_for_item(patron_request_item)
+    request = patron_request_item.patron_request
+    item = patron_request_item.folio_item
+
     FolioClient::CirculationRequestData.new(
       request_level: 'Item', request_type: 'Page',
       instance_id: item.instance&.id || request.instance_id, item_id: item.id, holdings_record_id: item.holdings_record_id,
