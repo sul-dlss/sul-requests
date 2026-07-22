@@ -1,0 +1,4 @@
+<details>
+  <summary><%= item.barcode || item.item_id %></summary>
+  <pre class="card p-2"><%= JSON.pretty_generate(item.latest_api_response.as_json) %></pre>
+</details>

@@ -13,13 +13,11 @@
 
 <% if can? :debug, @patron_request %>
   <hr>
-  <% if @patron_request.folio_api_responses.present? %>
-    <h4>ILS Response</h4>
-    <pre class="card p-2"><%= JSON.pretty_generate(@patron_request.folio_api_responses.map(&:as_json)) %></pre>
-  <% end %>
 
-  <% if current_request.illiad_api_responses.present? %>
-    <h4>Illiad Response</h4>
-    <pre class="card p-2"><%= JSON.pretty_generate(@patron_request.illiad_api_responses.map(&:as_json)) %></pre>
+  <%= render ItemDebugStatusComponent.with_collection(@patron_request.patron_request_items) %>
+
+  <% if @patron_request.api_responses.where(item_id: nil).present? %>
+    <h4>Title level API response</h4>
+    <pre class="card p-2"><%= JSON.pretty_generate(@patron_request.api_responses.where(item_id: nil).first.map(&:as_json)) %></pre>
   <% end %>
 <% end %>

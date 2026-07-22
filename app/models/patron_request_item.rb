@@ -22,6 +22,10 @@ class PatronRequestItem < ApplicationRecord
 
   attr_writer :barcode_or_item_id
 
+  def latest_api_response
+    @latest_api_response ||= api_responses.order(created_at: :desc).first
+  end
+
   def update_item_metadata # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity,Metrics/MethodLength
     return if item_id.blank? && barcode.blank? && @barcode_or_item_id.blank?
 
