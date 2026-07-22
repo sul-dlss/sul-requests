@@ -4,8 +4,8 @@
 #  Mailer class to send an email to InterLibrary Borrowing (ILB) staff when a request fails to write a transaction to ILLiad
 ###
 class IlbMailer < ApplicationMailer
-  def failed_ilb_notification(patron_request, illiad_response = nil)
-    @patron_request = patron_request
+  def failed_ilb_notification(patron_request_item, illiad_response = nil)
+    @patron_request = patron_request_item.patron_request
     @illiad_response = illiad_response
 
     mail(

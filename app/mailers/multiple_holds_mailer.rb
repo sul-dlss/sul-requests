@@ -3,9 +3,9 @@
 ##
 # Mailer class to send emails when multiple holds are placed
 class MultipleHoldsMailer < ApplicationMailer
-  def multiple_holds_notification(patron_request, item)
-    @patron_request = patron_request
-    @item = item
+  def multiple_holds_notification(patron_request_item)
+    @patron_request = patron_request_item.patron_request
+    @item = patron_request_item.folio_item
 
     mail(
       to: 'sulcirchelp@stanford.edu',
