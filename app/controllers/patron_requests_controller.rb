@@ -168,12 +168,12 @@ class PatronRequestsController < ApplicationController
                                                  :fulfillment_type, :request_type,
                                                  :scan_page_range, :scan_authors, :scan_title,
                                                  :aeon_reading_special, :aeon_terms, :ead_url,
-                                                 { barcodes: [], requested_barcodes: [], activity_ids: [], aeon_item: aeon_term_params }])
+                                                 { item_ids: [], requested_barcodes: [], activity_ids: [], aeon_item: aeon_term_params }])
 
     transform_to_patron_request_item_params(orig_params)
   end
 
-  def transform_to_patron_request_item_params(patron_request_params) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+  def transform_to_patron_request_item_params(patron_request_params) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     if patron_request_params[:ead_url].present?
       item_params = patron_request_params[:aeon_item].values.map do |item|
         {
@@ -190,12 +190,13 @@ class PatronRequestsController < ApplicationController
         }
       end
 
-      patron_request_params.except(:barcodes, :aeon_item, :aeon_reading_special).merge(patron_request_items_attributes: item_params)
-    elsif patron_request_params[:aeon_item].present?
-      # Aeon items are keyed based on the item id, and we can/should ignore barcodes.
-      item_params = patron_request_params[:aeon_item].to_h.map do |item_id, aeon_item|
+      patron_request_params.except(:barcodes, :item_ids, :aeon_item,
+                                   :aeon_reading_special).merge(patron_request_items_attributes: item_params)
+    else
+      item_params = (patron_request_params[:item_ids] || patron_request_params[:barcodes]).compact_blank.map do |item_id|
         {
           barcode_or_item_id: item_id,
+          instance_id: patron_request_params[:instance_hrid],
           request_type: patron_request_params[:request_type],
           scan_page_range: patron_request_params[:scan_page_range],
           scan_authors: patron_request_params[:scan_authors],
@@ -204,28 +205,11 @@ class PatronRequestsController < ApplicationController
           origin_location_code: patron_request_params[:origin_location_code],
           service_point_code: patron_request_params[:service_point_code],
           activity_ids: patron_request_params[:activity_ids],
-          **aeon_item.except(:id)
+          **(patron_request_params[:aeon_item] || {})[item_id]&.except(:id)
         }
       end
 
-      patron_request_params.except(:barcodes, :scan_page_range, :scan_authors,
-                                   :scan_title, :aeon_item).merge(patron_request_items_attributes: item_params)
-    else
-      item_params = patron_request_params[:barcodes].compact_blank.map do |barcode|
-        {
-          barcode_or_item_id: barcode,
-          instance_id: patron_request_params[:instance_hrid],
-          request_type: patron_request_params[:request_type],
-          scan_page_range: patron_request_params[:scan_page_range],
-          scan_authors: patron_request_params[:scan_authors],
-          scan_title: patron_request_params[:scan_title],
-          additional_information: patron_request_params[:aeon_reading_special],
-          origin_location_code: patron_request_params[:origin_location_code],
-          service_point_code: patron_request_params[:service_point_code]
-        }
-      end
-
-      patron_request_params.except(:barcodes, :scan_page_range, :scan_authors,
+      patron_request_params.except(:barcodes, :item_ids, :scan_page_range, :scan_authors,
                                    :scan_title, :aeon_item).merge(patron_request_items_attributes: item_params)
     end
   end
