@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_15_175711) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_22_175759) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "comment"
     t.string "commenter"
@@ -25,12 +25,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_175711) do
     t.datetime "created_at", null: false
     t.string "item_id"
     t.bigint "patron_request_id", null: false
+    t.integer "patron_request_item_id"
     t.binary "request_data"
     t.binary "response_data"
     t.string "type"
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_api_responses_on_item_id"
     t.index ["patron_request_id"], name: "index_api_responses_on_patron_request_id"
+    t.index ["patron_request_item_id"], name: "index_api_responses_on_patron_request_item_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -137,6 +139,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_175711) do
     t.index ["sunetid"], name: "unique_users_by_sunetid", unique: true
   end
 
+  add_foreign_key "api_responses", "patron_request_items"
   add_foreign_key "api_responses", "patron_requests"
   add_foreign_key "patron_request_items", "patron_requests"
   add_foreign_key "patron_requests", "users"

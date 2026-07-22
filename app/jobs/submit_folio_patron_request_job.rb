@@ -14,7 +14,7 @@ class SubmitFolioPatronRequestJob < ApplicationJob
 
     handle_folio_errors(response, patron_request_item) if response&.dig('errors')
 
-    patron_request_item.create_folio_api_response(request_data:, response_data: response)
+    patron_request_item.folio_api_responses.create(request_data:, response_data: response)
   end
 
   private

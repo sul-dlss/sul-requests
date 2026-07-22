@@ -3,6 +3,10 @@
 # A single requested item
 class PatronRequestItem < ApplicationRecord
   belongs_to :patron_request
+  has_many :api_responses, dependent: :delete_all
+  has_many :folio_api_responses, dependent: :delete_all
+  has_many :illiad_api_responses, dependent: :delete_all
+  has_many :aeon_api_responses, dependent: :delete_all
   has_many :admin_comments, as: :request, dependent: :delete_all
   delegate :patron, to: :patron_request
 
@@ -37,24 +41,6 @@ class PatronRequestItem < ApplicationRecord
     self.item_id = @folio_item.id
     self.barcode = @folio_item.barcode
     self.item_callnumber = @folio_item.callnumber
-  end
-
-  def create_folio_api_response(**)
-    patron_request.folio_api_responses.where(item_id: item_id).delete_all
-    patron_request.folio_api_responses.create(item_id: item_id, **)
-  end
-
-  def folio_api_responses
-    patron_request.folio_api_responses.where(item_id: item_id)
-  end
-
-  def create_illiad_api_response(**)
-    patron_request.illiad_api_responses.where(item_id: item_id).delete_all
-    patron_request.illiad_api_responses.create(item_id: item_id, **)
-  end
-
-  def illiad_api_responses
-    patron_request.illiad_api_responses.where(item_id: item_id)
   end
 
   def illiad_request_params
@@ -122,6 +108,11 @@ class PatronRequestItem < ApplicationRecord
 
     assign_attributes(**aeon_item.slice(:title, :hierarchy, :for_publication, :requested_pages, :additional_information, # rubocop:disable Style/MultilineIfModifier
                                         :appointment_id)) if aeon_item.present?
+
+    patron_request.folio_api_responses.where(item_id: item_id).update_all(patron_request_item_id: id) # rubocop:disable Rails/SkipsModelValidations
+    patron_request.illiad_api_responses.where(item_id: item_id).update_all(patron_request_item_id: id) # rubocop:disable Rails/SkipsModelValidations
+    patron_request.aeon_api_responses.where(item_id: item_id).update_all(patron_request_item_id: id) # rubocop:disable Rails/SkipsModelValidations
+
     save
   end
 end
