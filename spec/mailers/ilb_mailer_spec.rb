@@ -8,6 +8,14 @@ RSpec.describe IlbMailer do
                                    scan_title: 'Section Title for Scan 12345', scan_page_range: 'p. 1', scan_authors: nil,
                                    created_at: Time.zone.now, patron:, model_name: PatronRequest.model_name)
   end
+  let(:item) do
+    folio_instance.items.first
+  end
+
+  let(:patron_request_item) do
+    instance_double(PatronRequestItem, patron_request:, folio_item: item)
+  end
+
   let(:patron) do
     build(:patron, personal: { firstName: 'Test', lastName: 'User', email: 'some-eligible-user@stanford.edu' }.deep_stringify_keys)
   end
@@ -19,7 +27,7 @@ RSpec.describe IlbMailer do
   end
 
   describe 'failed_ilb_notification' do
-    let(:mail) { described_class.failed_ilb_notification(patron_request) }
+    let(:mail) { described_class.failed_ilb_notification(patron_request_item) }
 
     describe 'to' do
       it 'is the origin contact email address' do

@@ -44,6 +44,17 @@ class PatronRequestItem < ApplicationRecord
     patron_request.folio_api_responses.create(item_id: item_id, **)
   end
 
+  def create_illiad_api_response(**)
+    patron_request.illiad_api_responses.where(item_id: item_id).delete_all
+    patron_request.illiad_api_responses.create(item_id: item_id, **)
+  end
+
+  def illiad_request_params
+    return nil if folio_item.blank?
+
+    patron_request.illiad_request_params(folio_item)
+  end
+
   def folio_item
     return if ead_url
 

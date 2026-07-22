@@ -7,12 +7,16 @@ RSpec.describe MultipleHoldsMailer do
     build(:page_patron_request, service_point_code: 'GREEN-LOAN', patron: nil)
   end
 
+  let(:patron_request_item) do
+    instance_double(PatronRequestItem, patron_request:, folio_item: item)
+  end
+
   let(:item) do
     instance_double(Folio::Item, barcode: '36105xxx', effective_location: instance_double(Folio::Location, name: 'GREEN-STACKS'))
   end
 
   describe '#multiple_holds_notification' do
-    let(:mail) { described_class.multiple_holds_notification(patron_request, item) }
+    let(:mail) { described_class.multiple_holds_notification(patron_request_item) }
 
     it 'has correct fields' do
       expect(mail.subject).to eq 'Multiple pages for HOLD@GR'
