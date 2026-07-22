@@ -8,9 +8,10 @@ RSpec.describe SubmitAeonPatronRequestJob do
   end
 
   let(:request) do
-    PatronRequest.create!(request_type:, instance_hrid: 'a1234', patron:, barcodes: ['12345678'],
-                          origin_location_code: 'SPEC-STACKS', data:, user: build(:sso_user))
+    PatronRequest.create!(request_type:, instance_hrid: 'a1234', patron:,
+                          origin_location_code: 'SPEC-STACKS', data:, patron_request_items_attributes:, user: build(:sso_user))
   end
+  let(:data) { {} }
   let(:folio_instance) { build(:special_collections_single_holding) }
   let(:stub_aeon_client) { instance_double(AeonClient, find_user: stub_aeon_user, create_request: Aeon::Request.new, update_request_route: nil) }
   let(:stub_aeon_user) { instance_double(Aeon::User, username: 'aeon_user') }
@@ -22,12 +23,10 @@ RSpec.describe SubmitAeonPatronRequestJob do
 
   context 'when the request is a digitization request' do
     let(:request_type) { 'scan' }
-    let(:data) do
-      {
-        barcodes: ['12345678'], aeon_item: {
-          folio_instance.items.first.id => { requested_pages: '23', for_publication: 'false', additional_information: 'info' }
-        }
-      }
+    let(:patron_request_items_attributes) do
+      [
+        { barcode: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info' }
+      ]
     end
 
     describe '#perform_now' do
@@ -66,12 +65,10 @@ RSpec.describe SubmitAeonPatronRequestJob do
     context 'with single item digitization request' do
       let(:folio_instance) { build(:special_collections_single_holding) }
       let(:request_type) { 'scan' }
-      let(:data) do
-        {
-          barcodes: ['12345678'], aeon_item: {
-            folio_instance.items.first.id => { requested_pages: '23', for_publication: 'false', additional_information: 'info' }
-          }
-        }
+      let(:patron_request_items_attributes) do
+        [
+          { barcode: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info' }
+        ]
       end
 
       it 'creates an aeon request with digitization fields' do
@@ -89,12 +86,10 @@ RSpec.describe SubmitAeonPatronRequestJob do
     context 'with single item reading room request' do
       let(:folio_instance) { build(:special_collections_single_holding) }
       let(:request_type) { 'pickup' }
-      let(:data) do
-        {
-          barcodes: ['12345678'], aeon_reading_special: 'Some info', aeon_item: {
-            folio_instance.items.first.id => { appointment_id: '99' }
-          }
-        }
+      let(:patron_request_items_attributes) do
+        [
+          { barcode: '12345678', request_type: 'pickup', appointment_id: '99', additional_information: 'Some info' }
+        ]
       end
 
       it 'creates an aeon request with reading room fields' do
@@ -110,14 +105,11 @@ RSpec.describe SubmitAeonPatronRequestJob do
     context 'with a pickup request whose aeon_item still carries digitization fields' do
       let(:folio_instance) { build(:special_collections_single_holding) }
       let(:request_type) { 'pickup' }
-      let(:data) do
-        {
-          barcodes: ['12345678'], aeon_item: {
-            folio_instance.items.first.id => {
-              appointment_id: '99', requested_pages: '23', for_publication: 'false', additional_information: 'info'
-            }
-          }
-        }
+      let(:patron_request_items_attributes) do
+        [
+          { barcode: '12345678', request_type: 'pickup', appointment_id: '99', requested_pages: '23', for_publication: 'false',
+            additional_information: 'info' }
+        ]
       end
 
       it 'does not pass digitization fields to Aeon' do
@@ -134,15 +126,11 @@ RSpec.describe SubmitAeonPatronRequestJob do
     context 'with a scan request whose aeon_item still carries an appointment_id' do
       let(:folio_instance) { build(:special_collections_single_holding) }
       let(:request_type) { 'scan' }
-      let(:data) do
-        {
-          barcodes: ['12345678'], aeon_item: {
-            folio_instance.items.first.id => {
-              requested_pages: '23', for_publication: 'false', additional_information: 'info',
-              appointment_id: '99'
-            }
-          }
-        }
+      let(:patron_request_items_attributes) do
+        [
+          { barcode: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info',
+            appointment_id: '99' }
+        ]
       end
 
       it 'does not pass the appointment_id to Aeon' do
@@ -158,13 +146,13 @@ RSpec.describe SubmitAeonPatronRequestJob do
     context 'with an activity request' do
       let(:folio_instance) { build(:special_collections_single_holding) }
       let(:request_type) { 'activity' }
-      let(:data) do
-        {
-          barcodes: ['12345678'], activity_ids: %w[3 4], aeon_item: {
-            folio_instance.items.first.id => { id: 'item-1', title: 'Item 1' }
-          }
-        }
+      let(:patron_request_items_attributes) do
+        [
+          { barcode: '12345678', additional_information: 'info' }
+        ]
       end
+
+      let(:data) { { request_type: 'activity', activity_ids: %w[3 4] } }
 
       it 'creates one Aeon request per activity_id' do
         described_class.perform_now(request)
@@ -183,14 +171,12 @@ RSpec.describe SubmitAeonPatronRequestJob do
         end
         build(:special_collections_holdings, items: items)
       end
-      let(:data) do
-        {
-          barcodes: %w[111 222 333], aeon_item: {
-            folio_instance.items[0].id => { requested_pages: '1', for_publication: 'false', additional_information: 'first' },
-            folio_instance.items[1].id => { requested_pages: '2', for_publication: 'false', additional_information: 'second' },
-            folio_instance.items[2].id => { requested_pages: '3', for_publication: 'false', additional_information: 'third' }
-          }
-        }
+      let(:patron_request_items_attributes) do
+        [
+          { barcode: '111', request_type: 'scan', requested_pages: '1', for_publication: 'false', additional_information: 'first' },
+          { barcode: '222', request_type: 'scan', requested_pages: '2', for_publication: 'false', additional_information: 'second' },
+          { barcode: '333', request_type: 'scan', requested_pages: '3', for_publication: 'false', additional_information: 'third' }
+        ]
       end
       let(:response) do
         Faraday.new do |b|
@@ -231,13 +217,11 @@ RSpec.describe SubmitAeonPatronRequestJob do
     context 'with multi item digitization request' do
       let(:folio_instance) { build(:special_collections_holdings) }
       let(:request_type) { 'scan' }
-      let(:data) do
-        {
-          barcodes: %w[12345678 87654321], aeon_item: {
-            folio_instance.items.first.id => { requested_pages: '23', for_publication: 'false', additional_information: 'info' },
-            folio_instance.items.last.id => { requested_pages: '32', for_publication: 'true', additional_information: 'more info' }
-          }
-        }
+      let(:patron_request_items_attributes) do
+        [
+          { barcode: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info' },
+          { barcode: '87654321', request_type: 'scan', requested_pages: '32', for_publication: 'true', additional_information: 'more info' }
+        ]
       end
 
       it 'creates multiple aeon requests with digitization fields' do

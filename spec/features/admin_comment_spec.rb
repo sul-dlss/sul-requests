@@ -9,8 +9,8 @@ RSpec.describe 'Admin Comments', :js do
     stub_current_user(user)
     request = create(
       :mediated_patron_request_with_holdings,
-      barcodes: %w(34567890),
-      created_at: 1.day.from_now
+      created_at: 1.day.from_now,
+      folio_instance: build(:searchable_holdings)
     )
     allow(Folio::Instance).to receive(:fetch).and_return(request.folio_instance)
     visit admin_path('ART')

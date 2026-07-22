@@ -46,7 +46,7 @@ RSpec.describe AdminController do
 
   describe 'show' do
     before do
-      create(:mediated_patron_request_with_holdings, barcodes: %w(123456))
+      create(:mediated_patron_request_with_holdings)
     end
 
     describe 'for super admin' do
@@ -105,7 +105,7 @@ RSpec.describe AdminController do
     describe 'for super admins' do
       let(:user) { create(:superadmin_user) }
       let(:mediated_page) do
-        create(:mediated_patron_request_with_holdings, barcodes: %w(12345678 23456789))
+        create(:mediated_patron_request_with_holdings)
       end
 
       before do
@@ -122,7 +122,7 @@ RSpec.describe AdminController do
 
   describe 'approve item' do
     let(:mediated_page) do
-      create(:mediated_patron_request_with_holdings, barcodes: %w(12345678 23456789))
+      create(:mediated_patron_request_with_holdings)
     end
 
     before do
@@ -133,12 +133,12 @@ RSpec.describe AdminController do
       let(:user) { create(:superadmin_user) }
 
       it 'can approve individual items' do
-        expect(PatronRequest.find(mediated_page.id).item_mediation_data).to be_blank
-        get :approve_item, params: { id: mediated_page.id, item: '3610512345' }
+        expect(PatronRequest.find(mediated_page.id).item_status('a')).to be_blank
+        get :approve_item, params: { id: mediated_page.id, item: 'a' }
         expect(response).to be_successful
 
         expect(
-          PatronRequest.find(mediated_page.id).item_mediation_data['3610512345']['approved']
+          PatronRequest.find(mediated_page.id).item_status('a')['approved']
         ).to be true
       end
     end

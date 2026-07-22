@@ -7,7 +7,7 @@ FactoryBot.define do
     origin_location_code { 'SAL3-STACKS' }
     service_point_code { 'GREEN-LOAN' }
     folio_instance { build(:sal3_holding) }
-    barcodes { ['87654321'] }
+    patron_request_items_attributes { [{ barcode: '87654321' }] }
     patron { build(:patron) }
   end
 
@@ -18,7 +18,7 @@ FactoryBot.define do
     service_point_code { 'ART' }
     needed_date { Time.zone.today }
     folio_instance { build(:single_mediated_holding) }
-    barcodes { ['12345678'] }
+    patron_request_items_attributes { [{ barcode: '12345678' }] }
     patron { build(:patron) }
   end
 

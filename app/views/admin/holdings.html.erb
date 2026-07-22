@@ -36,25 +36,30 @@
       </tr>
     </thead>
     <tbody>
-      <% @request.selected_items.each do |item| %>
-        <tr class="<%= cycle('odd', 'even') %> <%= 'approved' if @request.item_status(item.id)['approved'] %> <%= 'errored' if @request.item_status(item.id)['error'] %>">
+      <% @request.patron_request_items.each do |request_item| %>
+        <tr class="<%= cycle('odd', 'even') %> <%= 'approved' if request_item.approved? %> <%= 'errored' if request_item.error? %>">
           <td>
-            <% if @request.item_status(item.id)['approved'] %>
+            <% if request_item.approved? %>
               <span class="btn btn-sm approval-btn btn-success">Approved</span>
             <% else %>
-              <a class="approval-btn btn btn-sm btn-success" data-behavior="item-approval" href="<%= approve_item_admin_path(@request, item: item.id) %>">
+              <a class="approval-btn btn btn-sm btn-success" data-behavior="item-approval" href="<%= approve_item_admin_path(@request, item: request_item.item_id) %>">
                 Approve
               </a>
             <% end %>
           </td>
-          <td><%= item.permanent_location&.name || @request.library_location&.location_name || @request.origin_location_code %></td>
-          <td><%= current_location_for_mediated_item(item) %></td>
-          <td><%= item.callnumber %></td>
-          <td><%= i18n_status_text(item) if @request.folio_api_response_for(item.id).present? %></td>
+          <% item = request_item.folio_item %>
+          <% if item %>
+            <td><%= item.permanent_location&.name || @request.library_location&.location_name || @request.origin_location_code %></td>
+            <td><%= current_location_for_mediated_item(item) %></td>
+            <td><%= item.callnumber %></td>
+            <td><%= i18n_status_text(item) if @request.folio_api_response_for(item.id).present? %></td>
+          <% else %>
+            <td colspan="4">Item not found in FOLIO</td>
+          <% end %>
           <td data-behavior="approver-information">
-            <% if @request.item_status(item.id)['approved'] %>
-              <%= @request.item_status(item.id)['approver'] %> -
-              <%= @request.item_status(item.id)['approved_at'] %>
+            <% if request_item.approved? %>
+              <%= request_item.mediation_data&.dig('approver') %> -
+              <%= request_item.mediation_data&.dig('approved_at') %>
             <% end %>
           </td>
         </tr>

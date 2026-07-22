@@ -509,7 +509,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       fill_in 'Requested pages', with: 'Pages 1-10'
       click_button 'Submit request'
       expect(page).to have_css('.confirmation')
-      expect(PatronRequest.last.aeon_item.values.pluck('title')).to contain_exactly('Box 1', 'Box 2', 'Box 3')
+      expect(PatronRequest.last.patron_request_items.map(&:title)).to contain_exactly('Box 1', 'Box 2', 'Box 3')
     end
 
     it 'disables the "Continue" button while a manual-input row is empty' do
@@ -569,7 +569,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect do
         perform_enqueued_jobs
       end.to change(StubAeonClient::Request, :count).by(2)
-      expect(PatronRequest.last.aeon_item.length).to eq 2
+      expect(PatronRequest.last.patron_request_items.length).to eq 2
 
       expect(StubAeonClient::Request.last(2)).to contain_exactly(
         have_attributes(

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_10_141652) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_15_175711) do
   create_table "admin_comments", force: :cascade do |t|
     t.string "comment"
     t.string "commenter"
@@ -41,6 +41,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_141652) do
     t.datetime "start_at", precision: nil
     t.text "text"
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "patron_request_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "data", limit: 1073741823
+    t.string "instance_id"
+    t.string "item_callnumber"
+    t.string "item_id"
+    t.date "needed_date"
+    t.string "origin_location_code"
+    t.integer "patron_request_id", null: false
+    t.string "request_type"
+    t.string "service_point_code"
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.index ["patron_request_id"], name: "index_patron_request_items_on_patron_request_id"
   end
 
   create_table "patron_requests", force: :cascade do |t|
@@ -122,5 +138,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_141652) do
   end
 
   add_foreign_key "api_responses", "patron_requests"
+  add_foreign_key "patron_request_items", "patron_requests"
   add_foreign_key "patron_requests", "users"
 end

@@ -10,7 +10,7 @@ RSpec.describe PatronRequest do
   let(:folio_instance) { instance_double(Folio::Instance, title: 'Title') }
 
   before do
-    allow(Folio::Instance).to receive(:fetch).with(request.instance_hrid).and_return(folio_instance)
+    allow(Folio::Instance).to receive(:fetch).with(attr[:instance_hrid] || 'a12345').and_return(folio_instance)
   end
 
   describe 'mediateable_origins' do
@@ -119,12 +119,13 @@ RSpec.describe PatronRequest do
     let(:folio_instance) { build(:scannable_holdings) }
 
     it 'returns the items with matching barcodes' do
-      request.assign_attributes(barcodes: ['12345678'])
+      request.patron_request_items.build(barcode: '12345678')
       expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 123'))
     end
 
     it 'returns all the items with matching barcodes' do
-      request.assign_attributes(barcodes: ['87654321', '12345678'])
+      request.patron_request_items.build(barcode: '87654321')
+      request.patron_request_items.build(barcode: '12345678')
 
       expect(request.selected_items).to contain_exactly(
         have_attributes(callnumber: 'ABC 321'),
@@ -133,13 +134,16 @@ RSpec.describe PatronRequest do
     end
 
     it 'returns items with matching item ids' do
-      request.assign_attributes(barcodes: ['2'])
+      request.patron_request_items.build(barcode_or_item_id: '2')
       expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 321'))
     end
 
     context 'for a scan' do
+      let(:attr) { { request_type: 'scan' } }
+
       it 'returns the first item' do
-        request.assign_attributes(request_type: 'scan', barcodes: ['12345678', '87654321'])
+        request.patron_request_items.build(barcode: '12345678')
+        request.patron_request_items.build(barcode: '87654321')
 
         expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 123'))
       end
@@ -176,14 +180,6 @@ RSpec.describe PatronRequest do
           have_attributes(callnumber: 'SAL3-STACKS-item')
         )
       end
-    end
-  end
-
-  describe '#barcodes=' do
-    it 'removes blank barcodes (possibly present in form submissions)' do
-      request.barcodes = ['1234567890', '', '123']
-
-      expect(request.barcodes).to eq(['1234567890', '123'])
     end
   end
 
@@ -334,14 +330,18 @@ RSpec.describe PatronRequest do
 
     context 'with a recall' do
       let(:folio_instance) { build(:checkedout_holdings) }
-      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcodes: ['87654321'] } }
+      let(:attr) do
+        { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', patron_request_items_attributes: [{ barcode: '87654321' }] }
+      end
 
       it { is_expected.to be_requires_needed_date }
     end
 
     context 'with an ordinary item' do
       let(:folio_instance) { build(:checkedout_holdings) }
-      let(:attr) { { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcodes: ['12345678'] } }
+      let(:attr) do
+        { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', patron_request_items_attributes: [{ barcode: '12345678' }] }
+      end
 
       it { is_expected.not_to be_requires_needed_date }
     end
@@ -498,7 +498,10 @@ RSpec.describe PatronRequest do
     end
 
     context 'when request type is scan' do
-      let(:attr) { { request_type:, scan_authors:, scan_title:, scan_page_range:, origin_location_code: 'SAL3-STACKS' } }
+      let(:attr) do
+        { request_type:, patron_request_items_attributes: [{ item_id: item.id, scan_authors:, scan_title:, scan_page_range: }],
+          origin_location_code: 'SAL3-STACKS' }
+      end
       let(:request_type) { 'scan' }
       let(:scan_authors) { 'Scan Authors' }
       let(:scan_title) { 'Scan Title' }

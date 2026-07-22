@@ -7,13 +7,15 @@ class PatronRequest < ApplicationRecord
   has_many :folio_api_responses, dependent: :delete_all
   has_many :illiad_api_responses, dependent: :delete_all
   has_many :aeon_api_responses, dependent: :delete_all
+  has_many :patron_request_items, dependent: :delete_all
+  accepts_nested_attributes_for :patron_request_items
 
   belongs_to :user, optional: true
 
   store :data, accessors: [
-    :barcodes, :folio_responses, :illiad_response_data, :scan_page_range, :scan_authors, :scan_title, :activity_ids,
-    :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes, :item_mediation_data,
-    :aeon_reading_special, :aeon_item, :aeon_terms, :ead_url
+    :folio_responses, :illiad_response_data, :activity_ids,
+    :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes,
+    :aeon_reading_special, :aeon_terms, :ead_url
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :folio_instance
@@ -79,12 +81,6 @@ class PatronRequest < ApplicationRecord
     folio_api_responses.find { |x| x.item_id == item_id }
   end
 
-  # @!group Attribute methods
-  # Remove any empty strings from the barcodes array
-  def barcodes=(arr)
-    super(arr.compact_blank)
-  end
-
   # Evaluate if this is a title only request
   def title_only?
     folio_instance.items.empty?
@@ -132,10 +128,6 @@ class PatronRequest < ApplicationRecord
 
   def aeon_digitization?
     aeon_page? && scan?
-  end
-
-  def item_mediation_data
-    super || {}
   end
   # @!endgroup
 
@@ -300,14 +292,29 @@ class PatronRequest < ApplicationRecord
   end
 
   # @return [Array<Folio::Item>] the items the patron has selected
-  def selected_items # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
-    return [] unless barcodes&.any? && ead_url.blank?
-
-    items = items_in_location.select { |x| x.barcode.in?(barcodes) || x.id.in?(barcodes) }
+  def selected_items
+    items = patron_request_items.map(&:folio_item)
 
     return items.first(1) if request_type == 'scan' && !aeon_page?
 
     items
+  end
+
+  # @return [Array<String>] the barcodes of the selected items (or item IDs if no barcode is available) for form builders
+  def barcodes
+    selected_items.map { |item| item.barcode || item.item_id }
+  end
+
+  def scan_page_range
+    patron_request_items.first&.scan_page_range
+  end
+
+  def scan_authors
+    patron_request_items.first&.scan_authors
+  end
+
+  def scan_title
+    patron_request_items.first&.scan_title
   end
 
   # @return [Array<Folio::Item>] the items that are holdable and recallable by the patron
@@ -575,21 +582,21 @@ class PatronRequest < ApplicationRecord
 
   # @return Hash
   def item_status(item_id)
-    item_mediation_data[item_id] || {}
-  end
-
-  def update_item_status(item_id, **status)
-    update(item_mediation_data: item_mediation_data.merge({ item_id => item_status(item_id).merge(status) }))
-
-    update(request_type: 'mediated/approved') if selected_items.all? { |x| item_status(x.id)['approved'] }
+    patron_request_items.find_by(item_id: item_id)&.mediation_data || {}
   end
 
   # Mark the specified item as approved and submit the request to FOLIO
   def approve_item(item_id, approver:)
-    update_item_status(item_id, approved: true, approver: approver.sunetid,
-                                approved_at: Time.zone.now)
+    item = patron_request_items.find_by(item_id: item_id)
+    return unless item
 
-    SubmitFolioPatronRequestJob.perform_now(self, item_id)
+    item.update(mediation_data: (item.mediation_data || {}).merge({ approved: true,
+                                                                    approver: approver.sunetid,
+                                                                    approved_at: Time.zone.now }))
+
+    update(request_type: 'mediated/approved') if patron_request_items.all?(&:approved?)
+
+    SubmitFolioPatronRequestJob.perform_now(item)
   end
 
   def notify_mediator!

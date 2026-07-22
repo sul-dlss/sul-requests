@@ -9,51 +9,51 @@ class SubmitPatronRequestJob < ApplicationJob
   def perform(patron_request)
     return SubmitAeonPatronRequestJob.perform_now(patron_request) if patron_request.aeon_page?
     return convert_to_mediated_page(patron_request) if patron_request.mediateable?
-    return place_title_hold(patron_request) if patron_request.selected_items.blank?
+    return place_title_hold(patron_request) if patron_request.patron_request_items.blank?
     return perform_scan_request(patron_request) if patron_request.scan?
 
-    ilb_items, folio_items = patron_request.selected_items.partition do |item|
-      send_to_illiad?(patron_request, item)
+    ilb_items, folio_items = patron_request.patron_request_items.partition do |item|
+      send_to_illiad?(patron_request, item.folio_item)
     end
 
     ilb_items.each do |item|
-      next if patron_request.illiad_api_responses.any? { |r| r.item_id == item.id && r.response_data }
+      next if patron_request.illiad_api_responses.any? { |r| r.item_id == item.item_id && r.response_data }
 
-      SubmitIlliadPatronRequestJob.perform_now(patron_request, item.id)
+      SubmitIlliadPatronRequestJob.perform_now(item)
     end
 
     folio_items.each do |item|
-      next if patron_request.folio_api_responses.any? { |r| r.item_id == item.id && r.response_data&.dig('status') }
+      next if patron_request.folio_api_responses.any? { |r| r.item_id == item.item_id && r.response_data&.dig('status') }
 
-      SubmitFolioPatronRequestJob.perform_now(patron_request, item.id)
+      SubmitFolioPatronRequestJob.perform_now(item)
     end
 
     PatronRequestMailer.confirmation_email(patron_request)&.deliver_later
   end
 
   def perform_scan_request(patron_request)
-    ilb_items, scan_email_items = patron_request.selected_items.partition do |_item|
+    ilb_items, scan_email_items = patron_request.patron_request_items.partition do |_item|
       patron_request.scan_service_point&.ilb
     end
 
-    folio_items = patron_request.selected_items.select do |_item|
+    folio_items = patron_request.patron_request_items.select do |_item|
       patron_request.scan_service_point&.pseudopatron_barcode.present?
     end
 
     ilb_items.each do |item|
-      next if patron_request.illiad_api_responses.any? { |r| r.item_id == item.id && r.response_data }
+      next if patron_request.illiad_api_responses.any? { |r| r.item_id == item.item_id && r.response_data }
 
-      SubmitIlliadPatronRequestJob.perform_now(patron_request, item.id)
+      SubmitIlliadPatronRequestJob.perform_now(item)
     end
 
     _email_response_data = scan_email_items.each do |item|
-      PatronRequestMailer.staff_scan_email(patron_request, item.id)&.deliver_later
+      PatronRequestMailer.staff_scan_email(item)&.deliver_later
     end
 
     folio_items.each do |item|
-      next if patron_request.folio_api_responses.any? { |r| r.item_id == item.id && r.response_data&.dig('status') }
+      next if patron_request.folio_api_responses.any? { |r| r.item_id == item.item_id && r.response_data&.dig('status') }
 
-      SubmitFolioScanRequestJob.perform_now(patron_request, item.id)
+      SubmitFolioScanRequestJob.perform_now(item)
     end
 
     PatronRequestMailer.confirmation_email(patron_request)&.deliver_later

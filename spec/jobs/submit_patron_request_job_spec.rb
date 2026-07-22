@@ -7,7 +7,8 @@ RSpec.describe SubmitPatronRequestJob do
     build(:patron)
   end
   let(:request) do
-    PatronRequest.create(request_type: 'pickup', instance_hrid: 'a12345', patron:, barcodes: ['12345678'],
+    PatronRequest.create(request_type: 'pickup', instance_hrid: 'a12345', patron:,
+                         patron_request_items_attributes: [{ barcode: '12345678' }],
                          origin_location_code: 'SAL3-STACKS')
   end
   let(:folio_instance) { build(:single_holding) }
@@ -28,7 +29,8 @@ RSpec.describe SubmitPatronRequestJob do
 
     it 'requests items via ILLiad only' do
       described_class.perform_now(request)
-      expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+      expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now)
+        .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
       expect(SubmitFolioScanRequestJob).not_to have_received(:perform_now)
     end
   end
@@ -39,15 +41,17 @@ RSpec.describe SubmitPatronRequestJob do
     end
 
     let(:request) do
-      PatronRequest.create(request_type: 'scan', instance_hrid: 'a1234', patron:, barcodes: ['12345678'],
-                           origin_location_code: 'GRE-STACKS', scan_title: 'Test Scan')
+      PatronRequest.create(request_type: 'scan', instance_hrid: 'a1234', patron:,
+                           patron_request_items_attributes: [{ barcode: '12345678', scan_title: 'Test Scan' }],
+                           origin_location_code: 'GRE-STACKS')
     end
 
     let(:folio_instance) { build(:green_holdings) }
 
     it 'requests items via ILLiad' do
       described_class.perform_now(request)
-      expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+      expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now)
+        .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
     end
 
     it 'requests items via FOLIO' do
@@ -59,7 +63,8 @@ RSpec.describe SubmitPatronRequestJob do
   context 'when the request is a page' do
     it 'requests items via FOLIO' do
       described_class.perform_now(request)
-      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now)
+        .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
     end
   end
 
@@ -70,7 +75,8 @@ RSpec.describe SubmitPatronRequestJob do
 
     it 'requests items via FOLIO' do
       described_class.perform_now(request)
-      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now)
+        .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
     end
   end
 
@@ -85,7 +91,8 @@ RSpec.describe SubmitPatronRequestJob do
 
     it 'requests items via FOLIO' do
       described_class.perform_now(request)
-      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+      expect(SubmitFolioPatronRequestJob).to have_received(:perform_now)
+        .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
     end
 
     context 'when the item is not in an easily recallable status' do
@@ -95,7 +102,8 @@ RSpec.describe SubmitPatronRequestJob do
 
       it 'requests items via ILLiad' do
         described_class.perform_now(request)
-        expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+        expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now)
+          .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
       end
     end
 
@@ -106,7 +114,8 @@ RSpec.describe SubmitPatronRequestJob do
 
       it 'requests items via ILLiad' do
         described_class.perform_now(request)
-        expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+        expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now)
+          .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
       end
     end
 
@@ -120,7 +129,8 @@ RSpec.describe SubmitPatronRequestJob do
 
       it 'requests items via ILLiad' do
         described_class.perform_now(request)
-        expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+        expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now)
+          .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
       end
     end
 
@@ -131,7 +141,8 @@ RSpec.describe SubmitPatronRequestJob do
 
       it 'requests items via ILLiad' do
         described_class.perform_now(request)
-        expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now).with(request, folio_instance.items[0].id)
+        expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now)
+          .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
       end
     end
   end

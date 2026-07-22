@@ -5,8 +5,9 @@
 class SubmitFolioPatronRequestJob < ApplicationJob
   queue_as :default
 
-  def perform(request, item_id)
-    item = request.selected_items.find { |x| x.id == item_id }
+  def perform(patron_request_item)
+    request = patron_request_item.patron_request
+    item = patron_request_item.folio_item
     return unless item
 
     request_data = folio_request_data_for_item(request, item)
@@ -15,8 +16,8 @@ class SubmitFolioPatronRequestJob < ApplicationJob
 
     handle_folio_errors(response, request, item) if response&.dig('errors')
 
-    request.folio_api_responses.where(item_id: item_id).delete_all
-    request.folio_api_responses.create(item_id: item_id, request_data:, response_data: response)
+    request.folio_api_responses.where(item_id: item.id).delete_all
+    request.folio_api_responses.create(item_id: item.id, request_data:, response_data: response)
   end
 
   private

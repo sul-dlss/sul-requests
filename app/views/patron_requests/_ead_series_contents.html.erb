@@ -26,7 +26,7 @@
         </span>
       <% end %>
       <%# Checkbox to select entire container %>
-      <%- checked = f.object.selected_items.any? { |item| item[:hierarchy]&.first == display_group.hierarchy.first && item[:title] == display_group.title } %>
+      <% checked = f.object.patron_request_items.any? { |x| x.item_id == checkbox_id } %>
       <%= f.check_box :barcodes,
             { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, checked: checked,
               data: { action: 'item-selector#change', 'item-selector-target': 'item', 'item-selector-title-parts-param': (display_group.hierarchy + [display_group.title]).to_json, 'item-selector-id-param': checkbox_id } },
