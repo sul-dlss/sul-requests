@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitizationItems', 'terms']
+  static targets = ['earliestAvailable', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitizationItems', 'terms', 'typePanel']
 
   static values = { type: String }
 
@@ -59,6 +59,13 @@ export default class extends Controller {
 
     this.element.dataset.accordionFormTypeValue = requestType;
     this.element.dataset.itemSelectorItemLimitValue = this.typeValue != 'aeon' && requestType == 'scan' ? 1 : -1;
+
+    // Only submit inputs from the panel matching the selected request type.
+    // Prevents stale values from an abandoned panel (e.g. a digitization note
+    // filled in before switching to reading room) from being posted.
+    this.typePanelTargets.forEach(panel => {
+      panel.disabled = panel.dataset.requestType !== requestType;
+    });
 
     // if this request type needs to display terms
     if(this.hasTermsTarget) {
