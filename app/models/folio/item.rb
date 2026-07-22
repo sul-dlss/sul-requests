@@ -214,7 +214,7 @@ module Folio
           base_callnumber: dyn.dig('effectiveCallNumberComponents', 'callNumber'),
           full_enumeration: [dyn['volume'], dyn['enumeration'],
                              dyn['chronology']].filter_map(&:presence).join(' '),
-          public_note: dyn.fetch('notes').find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),
+          public_note: dyn.fetch('notes', []).find { |note| note.dig('itemNoteType', 'name') == 'Public' }&.fetch('note'),
           effective_location: (Location.from_dynamic(dyn.fetch('effectiveLocation')) if dyn['effectiveLocation']),
           # fall back to the holding record's effective Location; we're no longer guaranteed an item-level permanent location.
           permanent_location: (Location.from_dynamic(dyn.fetch('permanentLocation')) if dyn['permanentLocation']) ||
@@ -222,7 +222,10 @@ module Folio
                                                                                                                  'effectiveLocation')),
           temporary_location: (Location.from_dynamic(dyn.fetch('temporaryLocation')) if dyn['temporaryLocation']),
           material_type: MaterialType.new(id: dyn.dig('materialType', 'id'), name: dyn.dig('materialType', 'name')),
-          loan_type: LoanType.new(id: dyn.fetch('temporaryLoanTypeId', dyn.fetch('permanentLoanTypeId'))),
+          loan_type: (if dyn['temporaryLoanTypeId'] || dyn['permanentLoanTypeId']
+                        LoanType.new(id: dyn.fetch('temporaryLoanTypeId',
+                                                   dyn.fetch('permanentLoanTypeId')))
+                      end),
           holdings_record_id: dyn.dig('holdingsRecord', 'id'),
           queue_length: dyn.fetch('queueTotalLength', 0))
     end

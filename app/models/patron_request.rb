@@ -222,23 +222,9 @@ class PatronRequest < ApplicationRecord
   # Visitors and some patron groups are restricted to a subset of service points.
   #
   # @return [Array<String>] the list of service point codes that are valid for this request
-  # rubocop:disable Metrics/AbcSize
   def pickup_destinations
-    return location_restricted_service_points.map(&:code) if location_restricted_service_points.any?
-
-    item_pickup_destinations = (default_pickup_service_points + additional_pickup_service_points).uniq(&:code)
-
-    eligible_destinations = item_pickup_destinations.reject do |destination|
-      if patron.blank?
-        Settings.allowed_visitor_pickups.exclude?(destination.code)
-      else
-        destination.unpermitted_pickup_groups.include?(patron.patron_group_name)
-      end
-    end
-
-    eligible_destinations.map(&:code)
+    @pickup_destinations ||= FolioRequestServicePointOptionsService.new(selectable_items, patron:).possible_service_points.map(&:code)
   end
-  # rubocop:enable Metrics/AbcSize
 
   # Find service point which is default for this particular campus
   # @return [Folio::ServicePoint]
@@ -645,36 +631,6 @@ class PatronRequest < ApplicationRecord
     @default_pickup_service_point ||= begin
       service_point = pickup_destinations.one? ? pickup_destinations.first : default_service_point_code
       Folio::Types.service_points.find_by(code: service_point)
-    end
-  end
-
-  # Returns default service points for all requests
-  # @return [Array<String>]
-  def default_pickup_service_points
-    Folio::Types.service_points.where(is_default_pickup: true)
-  end
-
-  # Some origin locations (e.g. MEDIA-CENTER) are not a default pickup location, but patrons
-  # should be able to pick up the items are the origin.
-  # @return [Array<String>]
-  def additional_pickup_service_points
-    # Find library id for the library with this code
-    library = Folio::Types.libraries.find_by(code: origin_library_code)
-    return [] unless library
-
-    service_point = library.primary_service_points.find { |sp| sp.pickup_location? && !sp.is_default_pickup }
-    Array(service_point)
-  end
-
-  # Some items are are restricted to specific service points (e.g. PAGE-LP goes to MUSIC or MEDIA-CENTER only).
-  # @return [Array<String>]
-  def location_restricted_service_points
-    codes = selectable_items.flat_map do |item|
-      Array(item.permanent_location.details['pageServicePoints']).pluck('code')
-    end.compact.uniq
-
-    codes.map do |code|
-      Folio::Types.service_points.find_by(code: code)
     end
   end
 

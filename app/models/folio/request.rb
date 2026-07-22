@@ -89,12 +89,8 @@ module Folio
       record['pickupLocationId']
     end
 
-    def restricted_pickup_service_points
-      service_points = item&.dig('effectiveLocation', 'details', 'pageServicePoints') || []
-
-      @restricted_pickup_service_points ||= service_points.map do |service_point|
-        Folio::ServicePoint.from_dynamic(service_point)
-      end
+    def folio_item
+      @folio_item ||= Folio::Item.from_hash(item) if item.present?
     end
 
     def sort_key(key)
