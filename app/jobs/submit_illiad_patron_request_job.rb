@@ -10,7 +10,7 @@ class SubmitIlliadPatronRequestJob < ApplicationJob
     item = patron_request_item.folio_item
     patron_request = patron_request_item.patron_request
 
-    record_illiad_response(patron_request, item.item_id) do
+    record_illiad_response(patron_request, item.id) do
       IlliadClient.new.create(patron_request.illiad_request_params(item))
     end
   end

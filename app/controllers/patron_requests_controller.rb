@@ -193,7 +193,7 @@ class PatronRequestsController < ApplicationController
       patron_request_params.except(:barcodes, :item_ids, :aeon_item,
                                    :aeon_reading_special).merge(patron_request_items_attributes: item_params)
     else
-      item_params = (patron_request_params[:item_ids] || patron_request_params[:barcodes]).compact_blank.map do |item_id|
+      item_params = (patron_request_params[:item_ids] || patron_request_params[:barcodes] || []).compact_blank.map do |item_id|
         {
           barcode_or_item_id: item_id,
           instance_id: patron_request_params[:instance_hrid],
