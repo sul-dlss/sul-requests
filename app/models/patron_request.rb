@@ -300,9 +300,9 @@ class PatronRequest < ApplicationRecord
     items
   end
 
-  # @return [Array<String>] the barcodes of the selected items (or item IDs if no barcode is available) for form builders
-  def barcodes
-    selected_items.map { |item| item.barcode || item.item_id }
+  # @return [Array<String>] the item ids of the selected items (presumably for form builders)
+  def item_ids
+    selected_items.map(&:item_id)
   end
 
   def scan_page_range
