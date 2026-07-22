@@ -11,7 +11,7 @@
                     Once approved, you can view the status of your request in
                 <% else %>
                     You can also check the status of your request any time at
-                <% end %><%= link_to ' My Account', use_requests_redesign? ? unified_requests_path : 'https://mylibrary.stanford.edu' %>.
+                <% end %><%= link_to ' My Account', use_requests_redesign? ? unified_requests_url : 'https://mylibrary.stanford.edu' %>.
             <% end %>
             <% if @patron_request.request_type == 'scan' %>
                 We'll notify you by email once your scan request is ready. Remember to download the PDF within 30 days of notification.
