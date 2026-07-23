@@ -79,30 +79,6 @@ class PatronRequestItem < ApplicationRecord
     mediation_data&.dig('error').present?
   end
 
-  def item_id
-    update_record_from_folio if migrated_item_id_or_barcode.present?
-
-    super
-  end
-
-  def barcode
-    update_record_from_folio if migrated_item_id_or_barcode.present?
-
-    super
-  end
-
-  def item_callnumber
-    update_record_from_folio if migrated_item_id_or_barcode.present?
-
-    super
-  end
-
-  def mediation_data
-    update_record_from_folio if migrated_item_id_or_barcode.present?
-
-    super
-  end
-
   def update_record_from_folio # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
     return if ead_url || migrated_item_id_or_barcode.blank?
 
