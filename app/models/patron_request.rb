@@ -301,7 +301,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [Array<String>] the item ids of the selected items (presumably for form builders)
   def item_ids
-    selected_items.map(&:item_id)
+    patron_request_items.map(&:item_id)
   end
 
   def scan_page_range
