@@ -83,7 +83,9 @@ class IllRequestsController < ApplicationController
     illiad_params = %w[
       CitedIn ISSN ESPNumber ItemInfo2
       LoanPublisher LoanPlace LoanDate LoanEdition AcceptAlternateEdition
-      NotWantedAfter Note
+      PhotoJournalIssue PhotoJournalMonth PhotoJournalYear
+      ItemInfo4 NotWantedAfter Note
+      PhotoArticleTitle PhotoArticleAuthor PhotoJournalInclusivePages
     ]
     params.require(:illiad_request).permit(:title, :author, *illiad_params)
   end

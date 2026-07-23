@@ -53,6 +53,13 @@ module Folio
       pickup_location == true
     end
 
+    def sort_key
+      [
+        code.include?('GREEN') ? 0 : 1, # GREEN-LOAN should always be first
+        name.downcase
+      ]
+    end
+
     private
 
     def library_id

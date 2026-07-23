@@ -63,7 +63,7 @@ RSpec.describe 'ILL Request Page' do
     end
   end
 
-  describe 'creating a new request' do
+  describe 'creating a new request', :js do
     before do
       allow(IlliadClient).to receive(:new).and_return(mock_ill_client)
     end
@@ -75,11 +75,16 @@ RSpec.describe 'ILL Request Page' do
     it 'submits the request to ILLiad' do
       visit new_ill_request_path
 
+      choose 'Pickup physical item'
+      click_on 'Continue'
+
       fill_in 'Title', with: 'Test Title'
       fill_in 'Author', with: 'Test Author'
       fill_in 'Link', with: 'AI told me this exists'
       fill_in 'Date of publication', with: '2032'
       fill_in 'ISBN', with: '1234567890'
+
+      click_on 'Continue'
 
       click_button 'Submit request'
 

@@ -1,0 +1,21 @@
+<fieldset class="mb-4">
+  <legend class="fs-6"></legend>
+  <div>
+    <%= f.radio_button :request_type, 'scan', :class => 'form-check-input', :required => true, data: { action: 'ill-request#updateType' } %>
+    <%= f.label :request_type_scan, :class => 'form-check-label ms-1' do %>
+      Email digital scan
+    <% end %>
+    <div class="mt-2 ms-4">
+      Sections of a book or periodical such as a chapter or article can be scanned and
+      delivered to you by email. <strong>The scan cannot exceed 50 pages or 10% of the work,
+      whichever is less.</strong>
+    </div>
+  </div>
+  <div class="mt-4">
+    <%= f.radio_button :request_type, 'pickup', :class => 'form-check-input', data: { action: 'ill-request#updateType' } %>
+    <%= f.label :request_type_pickup, :class => 'form-check-label ms-1' do %>
+      Pickup physical item
+    <% end %>
+    <div class="mt-2 ms-4">Item will be routed to a library that you select for pickup.</div>
+  </div>
+</fieldset>
