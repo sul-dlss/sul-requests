@@ -10,6 +10,8 @@ class IllRequestsController < ApplicationController
   before_action :load_request, only: [:destroy, :edit, :update]
   before_action :set_variant, only: [:edit]
 
+  layout 'application_redesign'
+
   # Renders user requests from ILL sources
   #
   # GET /ill_requests

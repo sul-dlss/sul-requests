@@ -27,7 +27,7 @@
         <span class="text-body-secondary small">Date added/modified: <span class="text-nowrap"><%= l(request.placed_date, format: :full) %></span></span>
       </div>
 
-      <div class="d-flex flex-grow-1 column-gap-4 row-gap-2 justify-content-between align-items-center flex-wrap flex-md-nowrap">
+      <div class="d-flex flex-grow-1 column-gap-4 row-gap-2 justify-content-between align-items-center flex-wrap flex-md-nowrap" data-turbo-prefetch="false">
         <div>
           <% if request.ready_for_pickup? %>
             <span class="text-green">

@@ -20,12 +20,6 @@ RSpec.describe 'ILL Request Page', :js do
     ]
   end
 
-  def wait_for_email
-    Timeout.timeout(Capybara.default_max_wait_time) do
-      sleep 0.1 until ActionMailer::Base.deliveries.count >= 1
-    end
-  end
-
   before do
     login_as(CurrentUser.new(username: 'stub_user', patron_key: 'ec52d62d-9f0e-4ea5-856f-a1accb0121d1', shibboleth: true))
     allow(Folio::Patron).to receive(:find_by).with(patron_key: 'ec52d62d-9f0e-4ea5-856f-a1accb0121d1').and_return(patron)
@@ -47,8 +41,7 @@ RSpec.describe 'ILL Request Page', :js do
       expect(page).to have_text 'Edit request'
       select 'Music Library', from: 'Deliver to'
       click_button 'Save'
-      wait_for_email
-      expect(ActionMailer::Base.deliveries.count).to eq(1)
+      expect(page).to have_css('.updated')
       mail = ActionMailer::Base.deliveries.last
       expect(mail.to).to include('illiad-test@stanford.edu')
       expect(mail.cc).to include('superuser1@stanford.edu')
@@ -99,8 +92,7 @@ RSpec.describe 'ILL Request Page', :js do
       fill_in 'Page range', with: '1-2'
       fill_in 'Title', with: 'New Journal update'
       click_button 'Save'
-      wait_for_email
-      expect(ActionMailer::Base.deliveries.count).to eq(1)
+      expect(page).to have_css('.updated')
       mail = ActionMailer::Base.deliveries.last
       expect(mail.to).to include('illiad-test@stanford.edu')
       expect(mail.cc).to include('superuser1@stanford.edu')

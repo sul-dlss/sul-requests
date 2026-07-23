@@ -1,3 +1,7 @@
 <%= turbo_stream.append(params[:modal]) do %>
   <div class="d-none" data-modal-target="closeSignal"></div>
 <% end if params[:modal] %>
+
+<%= turbo_stream.append(dom_id(@request)) do %>
+  <div class="updated">Updated</div>
+<% end %>
