@@ -508,13 +508,13 @@ RSpec.describe PatronRequest do
       let(:scan_page_range) { '1-10' }
 
       it 'returns the correct ILLiad request params for scan request' do
-        expect(request.illiad_request_params(item)).to include(
-          RequestType: 'Article',
-          UserInfo5: 'patron-barcode',
-          ItemNumber: item.barcode,
-          PhotoArticleTitle: scan_title,
-          PhotoJournalInclusivePages: scan_page_range,
-          PhotoArticleAuthor: scan_authors
+        expect(request.illiad_request_params(item)).to have_attributes(
+          request_type: 'Article',
+          user_info5: 'patron-barcode',
+          item_number: item.barcode,
+          photo_article_title: scan_title,
+          photo_journal_inclusive_pages: scan_page_range,
+          photo_article_author: scan_authors
         )
       end
     end
