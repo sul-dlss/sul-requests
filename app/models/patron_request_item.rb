@@ -18,9 +18,15 @@ class PatronRequestItem < ApplicationRecord
     :title, :hierarchy, :for_publication, :requested_pages, :additional_information, :appointment_id, :activity_ids
   ], coder: JSON
 
-  after_initialize :update_item_metadata, if: -> { migrated_item_id_or_barcode.blank? && item_id.blank? && !persisted? }
+  def barcode_or_item_id=(value)
+    @barcode_or_item_id = value
+    update_item_metadata
+  end
 
-  attr_writer :barcode_or_item_id
+  def item_id=(value)
+    super
+    update_item_metadata
+  end
 
   def latest_api_response
     @latest_api_response ||= api_responses.order(created_at: :desc).first
