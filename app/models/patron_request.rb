@@ -585,12 +585,6 @@ class PatronRequest < ApplicationRecord
     SubmitFolioPatronRequestJob.perform_now(item)
   end
 
-  def notify_mediator!
-    return unless mediator_notification_email_address.present? && Settings.features.mediator_email
-
-    MediationMailer.mediator_notification(self).deliver_later
-  end
-
   def mediator_notification_email_address
     Rails.application.config.mediator_contact_info.fetch(
       origin_library_code,
