@@ -4,6 +4,7 @@
 #  Main Request class for Requests WC.
 ###
 class PatronRequest < ApplicationRecord
+  has_many :api_responses, dependent: :delete_all
   has_many :folio_api_responses, dependent: :delete_all
   has_many :illiad_api_responses, dependent: :delete_all
   has_many :aeon_api_responses, dependent: :delete_all
@@ -77,10 +78,6 @@ class PatronRequest < ApplicationRecord
         end
       end
     end
-  end
-
-  def folio_api_response_for(item_id)
-    folio_api_responses.find { |x| x.item_id == item_id }
   end
 
   # Evaluate if this is a title only request
