@@ -516,46 +516,41 @@ class PatronRequest < ApplicationRecord
   # directed to ILLiad for fulfillment.
   # @return [Hash] the parameters to send to ILLiad for the request
   def illiad_request_params(item)
-    default_values = {
-      ProcessType: 'Borrowing',
-      AcceptAlternateEdition: false,
-      Username: patron.username,
-      UserInfo1: patron.blocked? ? 'Blocked' : nil,
-      UserInfo5: patron.barcode,
-      ISSN: folio_instance.isbn,
-      LoanPublisher: folio_instance.publisher,
-      LoanPlace: folio_instance.pub_place,
-      LoanDate: folio_instance.pub_date,
-      LoanEdition: folio_instance.edition,
-      ESPNumber: folio_instance.oclcn,
-      CitedIn: view_url,
-      CallNumber: item&.callnumber,
-      ILLNumber: item&.barcode,
-      ItemNumber: item&.barcode,
-      PhotoJournalVolume: item&.enumeration
-    }
+    values = IlliadClient::RequestData.with_defaults.with_patron(patron).with(
+      issn: folio_instance.isbn,
+      loan_publisher: folio_instance.publisher,
+      loan_place: folio_instance.pub_place,
+      loan_date: folio_instance.pub_date,
+      loan_edition: folio_instance.edition,
+      esp_number: folio_instance.oclcn,
+      cited_in: view_url,
+      call_number: item&.callnumber,
+      ill_number: item&.barcode,
+      item_number: item&.barcode,
+      photo_journal_volume: item&.enumeration
+    )
 
     if request_type == 'scan'
-      return default_values.merge({
-                                    RequestType: 'Article',
-                                    SpecIns: 'Scan and Deliver Request',
-                                    PhotoJournalTitle: folio_instance.title,
-                                    PhotoArticleAuthor: scan_authors,
-                                    Location: origin_library_code,
-                                    ReferenceNumber: origin_location_code,
-                                    PhotoArticleTitle: scan_title,
-                                    PhotoJournalInclusivePages: scan_page_range
-                                  })
+      return values.with(
+        request_type: 'Article',
+        spec_ins: 'Scan and Deliver Request',
+        photo_journal_title: folio_instance.title,
+        photo_article_author: scan_authors,
+        location: origin_library_code,
+        reference_number: origin_location_code,
+        photo_article_title: scan_title,
+        photo_journal_inclusive_pages: scan_page_range
+      )
     end
 
-    default_values.merge({
-                           RequestType: 'Loan',
-                           SpecIns: 'SearchWorks Request',
-                           LoanTitle: folio_instance.title,
-                           LoanAuthor: folio_instance.author,
-                           NotWantedAfter: (needed_date || 1.year.from_now).strftime('%Y-%m-%d'),
-                           ItemInfo4: destination_library_code
-                         })
+    values.with(
+      request_type: 'Loan',
+      spec_ins: 'SearchWorks Request',
+      loan_title: folio_instance.title,
+      loan_author: folio_instance.author,
+      not_wanted_after: needed_date || IlliadClient::UNSET,
+      item_info4: destination_library_code
+    )
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 

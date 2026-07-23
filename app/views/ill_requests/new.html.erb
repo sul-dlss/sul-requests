@@ -39,13 +39,13 @@
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :author, 'Author(s) or editor(s)', class: 'form-label fw-semibold redesign-required-label' %>
-          <%= f.text_field :author, required: true, class: 'form-control', maxlength: 255 %>
+          <%= f.label :loan_author, 'Author(s) or editor(s)', class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.text_field :loan_author, required: true, class: 'form-control', maxlength: 255 %>
         </div>
 
         <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
-          <%= f.label :CitedIn, 'Link or citation for this item', class: 'form-label fw-semibold redesign-required-label' %>
-          <%= f.text_area :CitedIn, maxlength: 255, required: true, class: 'form-control', data: { action: "input->char-counter#updateCharCounter" } %>
+          <%= f.label :cited_in, 'Link or citation for this item', class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.text_area :cited_in, maxlength: 255, required: true, class: 'form-control', data: { action: "input->char-counter#updateCharCounter" } %>
           <div class="d-flex gap-4 align-items-baseline">
             <div class="form-text">Examples are a WorldCat link, publisher link, website link, or citation from a specific journal article or book.</div>
             <span class="fs-14 ms-auto text-nowrap" data-char-counter-target="counter"></span>
@@ -53,11 +53,11 @@
         </div>
 
         <div class="mb-3">
-          <%= f.label :ISSN, class: 'form-label fw-semibold' do %>
+          <%= f.label :issn, class: 'form-label fw-semibold' do %>
             <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">ISBN (International Standard Book Number)</span>
             <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">ISSN</span>
           <% end %>
-          <%= f.text_field :ISSN, class: 'form-control w-auto', size: 20 %>
+          <%= f.text_field :issn, class: 'form-control w-auto', size: 20 %>
           <div class="form-text">
             <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">Numerals and hyphens only. Provide only one version of the ISBN. 13-digit version preferred.</span>
             <span data-ill-request-target="section" data-ill-request-for-request-subtype="article"></span>
@@ -65,47 +65,47 @@
         </div>
 
         <div class="mb-3">
-          <%= f.label :ESPNumber, 'OCLC number (WorldCat accession number)', class: 'form-label fw-semibold' %>
-          <%= f.text_field :ESPNumber, class: 'form-control w-auto', size: 20 %>
+          <%= f.label :esp_number, 'OCLC number (WorldCat accession number)', class: 'form-label fw-semibold' %>
+          <%= f.text_field :esp_number, class: 'form-control w-auto', size: 20 %>
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :LoanPublisher, 'Name of publisher', class: 'form-label fw-semibold' %>
-          <%= f.text_field :LoanPublisher, class: 'form-control' %>
+          <%= f.label :loan_publisher, 'Name of publisher', class: 'form-label fw-semibold' %>
+          <%= f.text_field :loan_publisher, class: 'form-control' %>
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :LoanDate, 'Date of publication', class: 'form-label fw-semibold' %>
-          <%= f.text_field :LoanDate, class: 'form-control' %>
+          <%= f.label :loan_date, 'Date of publication', class: 'form-label fw-semibold' %>
+          <%= f.text_field :loan_date, class: 'form-control' %>
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :LoanPlace, 'Place of publication', class: 'form-label fw-semibold' %>
-          <%= f.text_field :LoanPlace, class: 'form-control' %>
+          <%= f.label :loan_place, 'Place of publication', class: 'form-label fw-semibold' %>
+          <%= f.text_field :loan_place, class: 'form-control' %>
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :ItemInfo2, 'Volume', class: 'form-label fw-semibold' %>
-          <%= f.text_field :ItemInfo2, class: 'form-control' %>
+          <%= f.label :item_info2, 'Volume', class: 'form-label fw-semibold' %>
+          <%= f.text_field :item_info2, class: 'form-control' %>
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :LoanEdition, 'Edition', class: 'form-label fw-semibold' %>
-          <%= f.text_field :LoanEdition, class: 'form-control' %>
+          <%= f.label :loan_edition, 'Edition', class: 'form-label fw-semibold' %>
+          <%= f.text_field :loan_edition, class: 'form-control' %>
         </div>
 
         <div data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="article">
           <div class="mb-3">
-            <%= f.label :PhotoJournalIssue, 'Issue', class: 'form-label fw-semibold' %>
-            <%= f.text_field :PhotoJournalIssue, class: 'form-control', maxlength: 40 %>
+            <%= f.label :photo_journal_issue, 'Issue', class: 'form-label fw-semibold' %>
+            <%= f.text_field :photo_journal_issue, class: 'form-control', maxlength: 40 %>
           </div>
           <div class="mb-3">
-            <%= f.label :PhotoJournalMonth, 'Month/day of issue', class: 'form-label fw-semibold' %>
-            <%= f.text_field :PhotoJournalMonth, class: 'form-control', maxlength: 40 %>
+            <%= f.label :photo_journal_month, 'Month/day of issue', class: 'form-label fw-semibold' %>
+            <%= f.text_field :photo_journal_month, class: 'form-control', maxlength: 40 %>
           </div>
           <div class="mb-3">
-            <%= f.label :PhotoJournalYear, 'Year of issue', class: 'form-label fw-semibold' %>
-            <%= f.text_field :PhotoJournalYear, class: 'form-control', maxlength: 20 %>
+            <%= f.label :photo_journal_year, 'Year of issue', class: 'form-label fw-semibold' %>
+            <%= f.text_field :photo_journal_year, class: 'form-control', maxlength: 20 %>
           </div>
         </div>
 
@@ -114,13 +114,13 @@
 
 
           <div class="form-check form-check-inline">
-            <%= f.radio_button :AcceptAlternateEdition, true, class: 'form-check-input' %>
-            <%= f.label :AcceptAlternateEdition, 'Yes', value: true, class: 'form-check-label' %>
+            <%= f.radio_button :accept_alternate_edition, true, class: 'form-check-input' %>
+            <%= f.label :accept_alternate_edition, 'Yes', value: true, class: 'form-check-label' %>
           </div>
 
           <div class="form-check form-check-inline">
-            <%= f.radio_button :AcceptAlternateEdition, false, class: 'form-check-input' %>
-            <%= f.label :AcceptAlternateEdition, 'No', value: false, class: 'form-check-label' %>
+            <%= f.radio_button :accept_alternate_edition, false, class: 'form-check-input' %>
+            <%= f.label :accept_alternate_edition, 'No', value: false, class: 'form-check-label' %>
           </div>
         </fieldset>
       <% end %>
@@ -134,20 +134,20 @@
       <% c.with_title.with_content('Pickup request') %>
       <% c.with_body do %>
         <div class="mb-3">
-          <%= f.label :ItemInfo4, 'Deliver to', class: 'form-label d-block fw-semibold redesign-required-label' %>
+          <%= f.label :item_info4, 'Deliver to', class: 'form-label d-block fw-semibold redesign-required-label' %>
           <%= f.select(
-          :ItemInfo4, options_for_select(default_service_points(current_user.patron).map { |sp| [sp.name, sp.code] }), { include_blank: false, required: false },
+          :item_info4, options_for_select(default_service_points(current_user.patron).map { |sp| [sp.name, sp.code] }), { include_blank: false, required: false },
           class: 'form-select'
           ) %>
         </div>
         <div class="mb-4">
-          <%= f.label :NotWantedAfter, 'Not wanted after date', class: 'form-label fw-semibold' %>
-          <%= f.date_field :NotWantedAfter, class: 'form-control' %>
+          <%= f.label :not_wanted_after, 'Not wanted after date', class: 'form-label fw-semibold' %>
+          <%= f.date_field :not_wanted_after, class: 'form-control' %>
         </div>
 
         <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
-          <%= f.label :Note, 'Additional information', class: 'form-label fw-semibold' %>
-          <%= f.text_area :Note, class: 'form-control', rows: 3, maxlength: 255, data: { action: "input->char-counter#updateCharCounter" } %>
+          <%= f.label :note, 'Additional information', class: 'form-label fw-semibold' %>
+          <%= f.text_area :note, class: 'form-control', rows: 3, maxlength: 255, data: { action: "input->char-counter#updateCharCounter" } %>
           <p class="form-text text-secondary d-flex justify-content-between">
             <span>Limit 255 characters.</span>
             <span class="fs-14" data-char-counter-target="counter"></span>
@@ -177,28 +177,28 @@
           </div>
           <div class="col pe-0">
             <div class="mb-3" data-ill-request-target="section">
-              <%= f.label :PhotoArticleTitle, 'Title of article or chapter', class: 'form-label fw-semibold redesign-required-label' %>
-              <%= f.text_field :PhotoArticleTitle, required: true, class: 'form-control', maxlength: 255 %>
+              <%= f.label :photo_article_title, 'Title of article or chapter', class: 'form-label fw-semibold redesign-required-label' %>
+              <%= f.text_field :photo_article_title, required: true, class: 'form-control', maxlength: 255 %>
             </div>
 
             <div class="mb-3" data-ill-request-target="section">
-              <%= f.label :PhotoArticleAuthor, 'Chapter/article author(s)', class: 'form-label fw-semibold' %>
-              <%= f.text_field :PhotoArticleAuthor, class: 'form-control', maxlength: 255 %>
+              <%= f.label :photo_article_author, 'Chapter/article author(s)', class: 'form-label fw-semibold' %>
+              <%= f.text_field :photo_article_author, class: 'form-control', maxlength: 255 %>
             </div>
 
             <div class="mb-3" data-ill-request-target="section">
-              <%= f.label :PhotoJournalInclusivePages, 'Page range', class: 'form-label fw-semibold redesign-required-label' %>
-              <%= f.text_field :PhotoJournalInclusivePages, required: true, class: 'form-control' %>
+              <%= f.label :photo_journal_inclusive_pages, 'Page range', class: 'form-label fw-semibold redesign-required-label' %>
+              <%= f.text_field :photo_journal_inclusive_pages, required: true, class: 'form-control' %>
             </div>
 
             <div class="mb-4">
-              <%= f.label :NotWantedAfter, 'Not wanted after date', class: 'form-label fw-semibold' %>
-              <%= f.date_field :NotWantedAfter, class: 'form-control' %>
+              <%= f.label :not_wanted_after, 'Not wanted after date', class: 'form-label fw-semibold' %>
+              <%= f.date_field :not_wanted_after, class: 'form-control' %>
             </div>
 
             <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
-              <%= f.label :Note, 'Additional information', class: 'form-label fw-semibold' %>
-              <%= f.text_area :Note, class: 'form-control', rows: 3, maxlength: 255, data: { action: "input->char-counter#updateCharCounter" } %>
+              <%= f.label :note, 'Additional information', class: 'form-label fw-semibold' %>
+              <%= f.text_area :note, class: 'form-control', rows: 3, maxlength: 255, data: { action: "input->char-counter#updateCharCounter" } %>
               <p class="form-text text-secondary d-flex justify-content-between">
                 <span>Limit 255 characters.</span>
                 <span class="fs-14" data-char-counter-target="counter"></span>

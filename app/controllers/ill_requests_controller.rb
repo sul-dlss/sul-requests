@@ -23,21 +23,25 @@ class IllRequestsController < ApplicationController
   def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     authorize! :create, Illiad::Request
 
-    illiad_create_params = create_params.except(:title, :author, :NotWantedAfter, :AcceptAlternateEdition, :Note).to_h.merge(
-      ProcessType: 'Borrowing',
-      WebRequestForm: 'LoanRequest',
-      RequestType: 'Loan',
-      LoanTitle: create_params[:title],
-      LoanAuthor: create_params[:author],
-      Username: current_patron.username,
-      UserInfo1: current_patron.blocked? ? 'Blocked' : nil,
-      UserInfo5: current_patron.barcode,
-      AcceptAlternateEdition: ActiveModel::Type::Boolean.new.cast(create_params[:AcceptAlternateEdition]) ? 'E Version Acceptable' : '',
-      NotWantedAfter: not_wanted_after_param.strftime('%Y-%m-%d')
-    ).compact_blank
+    scan = create_params[:photo_article_title].present?
+    title_param = if scan
+                    { photo_journal_title: create_params[:title] }
+                  else
+                    { loan_title: create_params[:title] }
+                  end
+
+    illiad_create_params = IlliadClient::RequestData.with_defaults.with_patron(current_patron).with(
+      process_type: scan ? 'DocDel' : 'Borrowing',
+      web_request_form: 'LoanRequest',
+      request_type: scan ? IlliadClient::UNSET : 'Loan',
+      accept_alternate_edition: create_params[:accept_alternate_edition] || IlliadClient::UNSET,
+      not_wanted_after: not_wanted_after_param || IlliadClient::UNSET,
+      **title_param,
+      **create_params.except(:title, :not_wanted_after, :accept_alternate_edition, :note).to_h.compact_blank
+    )
 
     request = illiad_client.create(illiad_create_params)
-    illiad_client.create_transaction_note(transaction_number: request.key, note: create_params[:Note]) if create_params[:Note].present?
+    illiad_client.create_transaction_note(transaction_number: request.key, note: create_params[:note]) if create_params[:note].present?
 
     redirect_to root_path, notice: 'Your request has been submitted to Interlibrary Loan.'
   end
@@ -72,21 +76,22 @@ class IllRequestsController < ApplicationController
   end
 
   def not_wanted_after_param
-    return 1.year.from_now if create_params[:NotWantedAfter].blank?
+    return if create_params[:not_wanted_after].blank?
 
-    Date.parse(create_params[:NotWantedAfter])
+    Date.parse(create_params[:not_wanted_after])
   rescue StandardError
-    1.year.from_now
+    nil
   end
 
   def create_params
     illiad_params = %w[
-      CitedIn ISSN ESPNumber ItemInfo2
-      LoanPublisher LoanPlace LoanDate LoanEdition AcceptAlternateEdition
-      PhotoJournalIssue PhotoJournalMonth PhotoJournalYear
-      ItemInfo4 NotWantedAfter Note
-      PhotoArticleTitle PhotoArticleAuthor PhotoJournalInclusivePages
+      loan_author
+      cited_in issn esp_number item_info2
+      loan_publisher loan_place loan_date loan_edition accept_alternate_edition
+      photo_journal_issue photo_journal_month photo_journal_year
+      item_info4 not_wanted_after note
+      photo_article_title photo_article_author photo_journal_inclusive_pages
     ]
-    params.require(:illiad_request).permit(:title, :author, *illiad_params)
+    params.require(:illiad_request).permit(:title, *illiad_params)
   end
 end
