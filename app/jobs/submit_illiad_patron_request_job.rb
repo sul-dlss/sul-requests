@@ -16,10 +16,10 @@ class SubmitIlliadPatronRequestJob < ApplicationJob
 
   def record_illiad_response(patron_request_item)
     record = yield
-    patron_request_item.create_illiad_api_response(response_data: record.as_json)
+    patron_request_item.illiad_api_responses.create(response_data: record.as_json)
     record
   rescue IlliadClient::ApiError => e
-    patron_request_item.create_illiad_api_response(response_data: e.to_honeybadger_context)
+    patron_request_item.illiad_api_responses.create(response_data: e.to_honeybadger_context)
     IlbMailer.failed_ilb_notification(patron_request_item, e.response.body).deliver_later
     nil
   end

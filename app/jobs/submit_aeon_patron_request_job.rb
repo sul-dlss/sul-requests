@@ -54,14 +54,13 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   def perform_folio_request(requested_item, activity_id: nil)
     patron_request = requested_item.patron_request
     request = as_aeon_create_request_data(patron_request, requested_item, activity_id)
-    record_aeon_response(patron_request, requested_item.item_id, request) { submit_aeon_request(request) }
+    record_aeon_response(requested_item, request) { submit_aeon_request(request) }
   end
 
   def perform_ead_request(requested_item, activity_id: nil)
     patron_request = requested_item.patron_request
     request = as_aeon_create_ead_request_data(patron_request, requested_item, activity_id)
-    item_id = "#{request.call_number} #{request.item_volume}"
-    record_aeon_response(patron_request, item_id, request) { submit_aeon_request(request) }
+    record_aeon_response(requested_item, request) { submit_aeon_request(request) }
   end
 
   def common_aeon_data_from_patron_request(patron_request, item, activity_id) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
@@ -120,17 +119,16 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
   private
 
-  def record_aeon_response(patron_request, item_id, request)
+  def record_aeon_response(patron_request_item, request)
     response_data = yield.as_json
-    write_aeon_response(patron_request, item_id, request, response_data)
+    write_aeon_response(patron_request_item, request, response_data)
   rescue AeonClient::ApiError => e
-    write_aeon_response(patron_request, item_id, request, e.to_honeybadger_context)
+    write_aeon_response(patron_request_item, request, e.to_honeybadger_context)
     raise
   end
 
-  def write_aeon_response(patron_request, item_id, request, response_data)
-    patron_request.aeon_api_responses.where(item_id: item_id).delete_all
-    patron_request.aeon_api_responses.create(item_id: item_id, request_data: request.as_json, response_data: response_data)
+  def write_aeon_response(patron_request_item, request, response_data)
+    patron_request_item.aeon_api_responses.create(request_data: request.as_json, response_data: response_data)
   end
 
   def report_failures(patron_request, failures)
