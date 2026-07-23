@@ -66,7 +66,7 @@ module ApplicationHelper
     enum_y_v = enumeration_year_volume(enumeration_numbers, defaultvalues, enumeration)
 
     # sorts by callnumber without year, volume, sorts year desc, volume asc, volume letter asc (28A, 28B), and month descending
-    [item.base_callnumber, -enum_y_v[:year], enum_y_v[:volume], enum_y_v[:volume_letter], -month]
+    [item.base_callnumber || '', -enum_y_v[:year], enum_y_v[:volume], enum_y_v[:volume_letter], -month]
   end
 
   private

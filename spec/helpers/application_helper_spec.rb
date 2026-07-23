@@ -76,5 +76,18 @@ RSpec.describe ApplicationHelper do
         expect(sorted_holdings.first.barcode).to equal('123123124')
       end
     end
+
+    context 'when an enumerated item has no base_callnumber' do
+      let(:all_items) do
+        [
+          build(:item, base_callnumber: nil, full_enumeration: 'V12 2020', enumeration: 'V12 2020', barcode: 'no-callnumber'),
+          build(:item, base_callnumber: 'ABC 123', full_enumeration: 'V12 2021', enumeration: 'V12 2021', barcode: 'with-callnumber')
+        ]
+      end
+
+      it 'does not raise when sorting a mix of nil and string base_callnumbers' do
+        expect { sorted_holdings }.not_to raise_error
+      end
+    end
   end
 end
