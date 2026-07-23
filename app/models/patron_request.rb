@@ -627,11 +627,6 @@ class PatronRequest < ApplicationRecord
     end
   end
 
-  # @return [FolioClient]
-  def folio_client
-    FolioClient.new
-  end
-
   # For the purposes of showing the items in the "location", we also combine locations with the same
   # discovery display names (e.g. SPEC-MANUSCRIPT, SPEC-SAL3-MSS, etc).
   # @return [Array<Folio::Location>]
