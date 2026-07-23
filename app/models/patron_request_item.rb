@@ -18,12 +18,12 @@ class PatronRequestItem < ApplicationRecord
     :title, :hierarchy, :for_publication, :requested_pages, :additional_information, :appointment_id, :activity_ids
   ], coder: JSON
 
-  def barcode_or_item_id=(value)
-    @barcode_or_item_id = value
+  def item_id=(value)
+    super
     update_item_metadata
   end
 
-  def item_id=(value)
+  def patron_request=(value)
     super
     update_item_metadata
   end
@@ -32,25 +32,14 @@ class PatronRequestItem < ApplicationRecord
     @latest_api_response ||= api_responses.order(created_at: :desc).first
   end
 
-  def update_item_metadata # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity,Metrics/MethodLength
-    return if item_id.blank? && barcode.blank? && @barcode_or_item_id.blank?
-
-    barcode_or_item_id = @barcode_or_item_id || barcode || item_id
-
-    @folio_item = patron_request.folio_instance&.items&.find do |i|
-      (i.barcode.present? && i.barcode == barcode_or_item_id) || i.id == barcode_or_item_id
-    end
+  def update_item_metadata
+    @folio_item = nil
 
     # if we can't find the item in folio, stash the information we do have and hope for the best.
-    if @folio_item.blank?
-      self.item_id ||= @barcode_or_item_id
-      self.barcode ||= @barcode_or_item_id
-      return
-    end
+    return if folio_item.blank?
 
-    self.item_id = @folio_item.id
-    self.barcode = @folio_item.barcode
-    self.item_callnumber = @folio_item.callnumber
+    self.barcode = folio_item.barcode
+    self.item_callnumber = folio_item.callnumber
   end
 
   def illiad_request_params
@@ -60,10 +49,10 @@ class PatronRequestItem < ApplicationRecord
   end
 
   def folio_item
-    return if ead_url
+    return if ead_url || patron_request.blank?
 
     @folio_item ||= patron_request.folio_instance.items.find do |i|
-      i.id == item_id || (i.barcode.present? && i.barcode == barcode) || i.id == barcode
+      i.id == item_id
     end
   end
 

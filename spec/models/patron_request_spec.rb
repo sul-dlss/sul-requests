@@ -119,13 +119,13 @@ RSpec.describe PatronRequest do
     let(:folio_instance) { build(:scannable_holdings) }
 
     it 'returns the items with matching barcodes' do
-      request.patron_request_items.build(barcode: '12345678')
+      request.patron_request_items.build(item_id: '1')
       expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 123'))
     end
 
     it 'returns all the items with matching barcodes' do
-      request.patron_request_items.build(barcode: '87654321')
-      request.patron_request_items.build(barcode: '12345678')
+      request.patron_request_items.build(item_id: '1')
+      request.patron_request_items.build(item_id: '2')
 
       expect(request.selected_items).to contain_exactly(
         have_attributes(callnumber: 'ABC 321'),
@@ -134,7 +134,7 @@ RSpec.describe PatronRequest do
     end
 
     it 'returns items with matching item ids' do
-      request.patron_request_items.build(barcode_or_item_id: '2')
+      request.patron_request_items.build(item_id: '2')
       expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 321'))
     end
 
