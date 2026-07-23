@@ -1,15 +1,6 @@
 <% content_for :page_title do %>Request: <%= @patron_request.item_title %><% end %>
-
-<h1 class="fw-semibold my-3 fs-1">
-  <%= @patron_request.item_title %>
-</h1>
+<h1 class="visually-hidden">Request: <%= @patron_request.item_title %></h1>
 
 <%= render 'messages', messages: @patron_request.active_messages %>
-
-<p class="mb-4 lead fw-normal">
-    Stanford Libraries provides various request services for added convenience, but their availability
-    depends on factors such as your affiliation, material type, status, and location. Access through
-    SUNet ID grants broader privileges than library cardholder or visitor access.
-</p>
 
 <%= render 'shared/login_form', referrer: new_patron_request_path(new_params.merge(step: 'select')), name_email_access_allowed: PatronAbility.anonymous.can?(:new, @patron_request) %>
