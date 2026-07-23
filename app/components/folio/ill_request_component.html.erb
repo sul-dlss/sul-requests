@@ -79,7 +79,8 @@
     <% component.with_footer do %>
       <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
       <%= form_with url: ill_request_path(request.id), method: 'delete' do %>
-        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+        <%= hidden_field_tag 'model', "delete-#{request.id}" %>
+        <button type="submit" class="btn btn-primary">Yes - Delete</button>
       <% end %>
     <% end %>
   <% end %>

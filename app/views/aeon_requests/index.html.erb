@@ -29,7 +29,8 @@
       <% component.with_footer do %>
         <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
         <%= form_with url: destroy_multiple_aeon_requests_path, method: 'delete', data: { 'request-bulk-delete-target': 'deleteForm' } do %>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+          <%= hidden_field_tag 'model', 'delete-bulk' %>
+          <button type="submit" class="btn btn-primary">Yes - Delete</button>
         <% end %>
       <% end %>
     <% end %>
