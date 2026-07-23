@@ -236,10 +236,6 @@ class PatronRequest < ApplicationRecord
   # @!endgroup
 
   # @!group FOLIO instance + items
-  def submit_later
-    SubmitPatronRequestJob.perform_later(self)
-  end
-
   # @return [Folio::Instance]
   def folio_instance
     return if instance_hrid.blank?

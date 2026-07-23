@@ -52,7 +52,7 @@ class PatronRequestsController < ApplicationController
   end
 
   def create
-    if @patron_request.save && @patron_request.submit_later
+    if @patron_request.save && SubmitPatronRequestJob.perform_later(@patron_request)
       redirect_to @patron_request
     else
       render 'new'
