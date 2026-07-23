@@ -16,5 +16,6 @@ RSpec.describe 'Request Page', :js do
 
     expect(page).to have_text('Submitted requests')
     expect(page).to have_no_css('.placeholder-glow')
+    expect(page).to have_text('No submitted requests yet')
   end
 end

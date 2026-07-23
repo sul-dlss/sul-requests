@@ -81,4 +81,11 @@
 
   <%= turbo_frame_tag :ill_requests, src: ill_requests_path(async: true) %>
   <%= turbo_frame_tag :mediated_requests, src: mediated_requests_path(async: true) %>
+
+  <div class="no-requests">
+    <h2>No submitted requests yet.</h2>
+    <p>You can request library materials for pickup, ask to have an article or part of a book scanned and emailed to you, or request rare and distinctive materials for use in a reading room.
+    Search for materials in <%= link_to 'SearchWorks', 'https://searchworks.stanford.edu/' %> or <%= link_to 'Archival Collections at Stanford', 'https://archives.stanford.edu/' %> to see the request options available.
+    </p>
+  </div>
 <% end %>

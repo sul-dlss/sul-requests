@@ -64,6 +64,9 @@
       <ol id="requests" class="list-unstyled">
         <%= render Aeon::RequestGroupComponent.with_collection(@aeon_request_groups, element: 'li') %>
       </ol>
+      <div class="no-requests">
+        <h2>No <%= params[:kind] %> requests yet.</h2>
+      </div>
     </div>
 
     <%= content_for(:sidebar) %>
