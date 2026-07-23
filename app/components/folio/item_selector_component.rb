@@ -11,5 +11,13 @@ module Folio
       @f = f
       super()
     end
+
+    def items
+      @items ||= sort_holdings(f.object.selectable_items)
+    end
+
+    def render_search?
+      items.length >= 10
+    end
   end
 end

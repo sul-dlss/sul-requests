@@ -1,4 +1,4 @@
-<% if f.object.selectable_items.length >= 10 %>
+<% if render_search? %>
   <div>
     <label for="item-selector-search" class="my-2">Search item list</label>
     <input id="item-selector-search" type="search" incremental autocomplete="off" data-action="input->item-selector#filter analytics#send" data-analytics-category-param="Item Selector" data-analytics-action-param="Filter" class="form-control w-75">
@@ -17,7 +17,7 @@
       </tr>
     </thead>
     <tbody>
-      <%= render Folio::ItemSelectorItemComponent.with_collection(sort_holdings(f.object.selectable_items), f: f) %>
+      <%= render Folio::ItemSelectorItemComponent.with_collection(items, f: f) %>
     </tbody>
   </table>
 </div>
