@@ -1,3 +1,7 @@
+<%= turbo_stream.append(params[:modal]) do %>
+  <div class="d-none" data-modal-target="closeSignal"></div>
+<% end if params[:modal] %>
+
 <% @update_response.requests_to_update.each do |updated_request, original_request| %>
   <% if updated_request.status == original_request.status %>
     <%= turbo_stream.replace(original_request, Aeon::RequestGroupItemComponent.new(request: updated_request, classes: ['list-group-item', 'request-grid', 'flash-on-add'])) %>
