@@ -1,6 +1,7 @@
 <%= turbo_frame_tag params[:modal] do %>
   <%= form_with(url: update_multiple_aeon_requests_path) do |f| %>
     <%= hidden_field_tag :appointment_id, @appointment.id %>
+    <%= hidden_field_tag :modal, params[:modal] if params[:modal] %>
 
     <div class="modal-header">
       <div class="d-flex flex-column flex-grow-1">
@@ -67,7 +68,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
-      <%= f.submit "Save changes", class: 'btn btn-primary', data: { bs_dismiss: 'modal' } %>
+      <%= f.submit "Save changes", class: 'btn btn-primary' %>
     </div>
   <% end %>
 <% end %>
