@@ -29,13 +29,10 @@ class IllRequestsController < ApplicationController
                     { loan_title: create_params[:title] }
                   end
 
-    illiad_create_params = IlliadClient::RequestData.with_defaults.with(
+    illiad_create_params = IlliadClient::RequestData.with_defaults.with_patron(current_patron).with(
       process_type: 'Borrowing',
       web_request_form: 'LoanRequest',
       request_type: 'Loan',
-      username: current_patron.username,
-      user_info1: current_patron.blocked? ? 'Blocked' : nil,
-      user_info5: current_patron.barcode,
       accept_alternate_edition: create_params[:accept_alternate_edition] || IlliadClient::UNSET,
       not_wanted_after: not_wanted_after_param || IlliadClient::UNSET,
       **title_param,

@@ -519,10 +519,7 @@ class PatronRequest < ApplicationRecord
   # directed to ILLiad for fulfillment.
   # @return [Hash] the parameters to send to ILLiad for the request
   def illiad_request_params(item)
-    values = IlliadClient::RequestData.with_defaults.with(
-      username: patron.username,
-      user_info1: patron.blocked? ? 'Blocked' : nil,
-      user_info5: patron.barcode,
+    values = IlliadClient::RequestData.with_defaults.with_patron(patron).with(
       issn: folio_instance.isbn,
       loan_publisher: folio_instance.publisher,
       loan_place: folio_instance.pub_place,

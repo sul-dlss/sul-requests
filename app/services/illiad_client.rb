@@ -106,6 +106,14 @@ class IlliadClient
     def self.with_defaults
       new(**members.index_with(UNSET), accept_alternate_edition: false, process_type: 'Borrowing', not_wanted_after: 1.year.from_now)
     end
+
+    def with_patron(patron)
+      with(
+        username: patron.username,
+        user_info1: patron.blocked? ? 'Blocked' : nil,
+        user_info5: patron.barcode
+      )
+    end
   end
 
   def user_transactions(user_id)
