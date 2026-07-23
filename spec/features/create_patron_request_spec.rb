@@ -503,6 +503,22 @@ RSpec.describe 'Creating a request', :js do
       expect(page).to have_button 'Submit'
       expect(page).to have_no_css 'h2', text: 'Select item(s)'
     end
+
+    it 'loads circulation status for a single item selected by barcode' do
+      checked_out_item = folio_instance.items.second
+      circulation_status = [
+        {
+          'id' => checked_out_item.id,
+          'queueTotalLength' => 2,
+          'dueDate' => '2026-08-12T12:00:00.000+00:00'
+        }
+      ]
+      allow_any_instance_of(FolioGraphqlClient).to receive(:item_circulation_status).and_return(circulation_status)
+
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', barcode: '87654321')
+
+      expect(page).to have_text 'Item status: Checked out - Due Aug 12, 2026 | There is a waitlist'
+    end
   end
 
   context 'with multiple scannable items where one is checked out' do

@@ -47,6 +47,9 @@ class PatronRequestsController < ApplicationController
   end
 
   def new
+    items = @patron_request.selectable_items
+    FolioGraphqlClient.new.hydrate_circulation_status(items:) if items.one?
+
     request.variant = :aeon if @patron_request.aeon_page?
     request.variant = :aeonredesign if (@patron_request.ead_url || @patron_request.aeon_page?) && use_requests_redesign?
   end

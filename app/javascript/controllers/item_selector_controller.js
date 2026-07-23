@@ -21,15 +21,15 @@ export default class extends Controller {
   connect() { }
 
   itemLimitValueChanged() {
-    const switchtype = this.itemLimitValue == 1 ? 'radio' : 'checkbox';
-
     this.itemTargets.forEach(elem => {
-      elem.type = switchtype;
-      if (switchtype == 'radio') { elem.checked = false };
+      this.setItemInputType(elem);
+      if (elem.type == 'radio') { elem.checked = false };
     })
   }
 
   itemTargetConnected(element) {
+    this.setItemInputType(element);
+
     if (!element.checked) return;
 
     const params = this.getStimulusParams(element);
@@ -39,6 +39,10 @@ export default class extends Controller {
     } else if (!this.selectedItemsValue.find((item) => item.id == params.id)) {
       this.selectedItemsValue = this.selectedItemsValue.concat([params]);
     }
+  }
+
+  setItemInputType(element) {
+    element.type = this.itemLimitValue == 1 ? 'radio' : 'checkbox';
   }
 
   filter(event) {

@@ -1,6 +1,35 @@
 <%= render AccordionStepComponent.new(id: 'items', step_index: step_enum.next, form_id: f.id, data: { 'switch-selector': true }) do |c| %>
   <% c.with_title.with_content('Select item(s)') %>
   <% c.with_body do %>
-    <%= render Folio::ItemSelectorComponent.new(f: f) %>
+    <%= turbo_frame_tag :item_selector_circulation, src: item_selector_path(instance_hrid: f.object.instance_hrid, origin_location_code: f.object.origin_location_code, requested_barcodes: f.object.requested_barcodes), data: { action: 'turbo:frame-load->accordion-form#reenableNextButtons' } do %>
+      <%= f.hidden_field :item_ids, multiple: true, value: '' %>
+      <div class="visually-hidden" role="status" aria-live="polite">Loading item availability</div>
+      <div class="item-selector-loading placeholder-glow" aria-hidden="true">
+        <% if f.object.selectable_items.length >= 10 %>
+          <div>
+            <span class="placeholder col-2 my-2"></span>
+            <span class="placeholder d-block w-75 rounded" style="height: 2.375rem"></span>
+          </div>
+        <% end %>
+        <div class="item-table my-4">
+          <table class="table mb-0 border">
+            <thead>
+              <tr>
+                <th class="text-start"><span class="placeholder col-4"></span></th>
+                <th class="text-end"><span class="placeholder col-4"></span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% 4.times do %>
+                <tr>
+                  <td><span class="placeholder col-5"></span></td>
+                  <td class="text-end"><span class="placeholder col-4"></span></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 <% end %>

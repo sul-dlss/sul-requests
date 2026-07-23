@@ -94,6 +94,12 @@ module Folio
       self
     end
 
+    def with_circulation_status(queue_length:, due_date:)
+      @queue_length = queue_length || 0
+      @due_date = due_date
+      self
+    end
+
     def suppressed_from_discovery?
       @suppressed_from_discovery
     end
