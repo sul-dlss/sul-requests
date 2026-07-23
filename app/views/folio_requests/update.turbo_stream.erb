@@ -1,3 +1,7 @@
+<%= turbo_stream.append(params[:modal]) do %>
+  <div class="d-none" data-modal-target="closeSignal"></div>
+<% end if params[:modal] %>
+
 <%= turbo_stream.replace(dom_id(@request)) do %>
   <%= render Folio::RequestComponent.new(request: @request, patron: patron_or_group) %>
 <% end %>

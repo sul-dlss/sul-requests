@@ -87,7 +87,8 @@
             <% component.with_footer do %>
               <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
               <%= form_with url: folio_request_path(request.key), method: 'delete' do %>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+                <%= hidden_field_tag :modal, dom_id(request, :delete) %>
+                <button type="submit" class="btn btn-primary">Yes - Delete</button>
               <% end %>
             <% end %>
           <% end %>

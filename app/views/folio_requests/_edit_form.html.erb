@@ -1,4 +1,5 @@
 <%= form_tag folio_request_path(@request.key), method: :patch do %>
+  <%= hidden_field_tag :modal, params[:modal] if params[:modal] %>
   <div class="modal-body request-edit">
     <h3 class="record-title"><%= @request.title %></h3>
     <%= hidden_field_tag :id, @request.key %>
@@ -18,6 +19,6 @@
   </div>
   <div class="modal-footer">
     <%= link_to 'Cancel', :back, class: 'btn btn-outline-primary', data: { 'bs-dismiss': 'modal' } if request.variant.include?(:modal) %>
-    <%= button_tag 'Submit request', class: 'btn btn-primary', type: 'submit', data: { 'bs-dismiss': 'modal' } %>
+    <%= button_tag 'Submit request', class: 'btn btn-primary', type: 'submit' %>
   </div>
 <% end %>
