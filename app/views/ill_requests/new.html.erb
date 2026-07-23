@@ -136,7 +136,7 @@
         <div class="mb-3">
           <%= f.label :item_info4, 'Deliver to', class: 'form-label d-block fw-semibold redesign-required-label' %>
           <%= f.select(
-          :ItemInfo4, options_for_select(default_service_points(current_user.patron).map { |sp| [sp.name, sp.code] }), { include_blank: false, required: false },
+          :item_info4, options_for_select(default_service_points(current_user.patron).map { |sp| [sp.name, sp.code] }), { include_blank: false, required: false },
           class: 'form-select'
           ) %>
         </div>
