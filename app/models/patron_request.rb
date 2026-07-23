@@ -10,6 +10,8 @@ class PatronRequest < ApplicationRecord
   has_many :patron_request_items, dependent: :delete_all
   accepts_nested_attributes_for :patron_request_items
 
+  default_scope { includes(:patron_request_items) }
+
   belongs_to :user, optional: true
 
   store :data, accessors: [
@@ -28,7 +30,7 @@ class PatronRequest < ApplicationRecord
   validate :data_source_id_is_valid
 
   scope :obsolete, lambda { |date|
-    where('(created_at < ?) AND (needed_date IS NULL OR needed_date < ?)', date, date)
+    where(created_at: ...date).and(where(needed_date: ...date).or(where(needed_date: nil)))
   }
   scope :mediated, -> { where(request_type: ['mediated', 'mediated/approved', 'mediated/done']) }
   scope :unapproved, -> { where(request_type: ['mediated']) }
@@ -565,7 +567,7 @@ class PatronRequest < ApplicationRecord
 
   # return [Array<Date>] the next N dates that have requests for the origin location
   def self.needed_dates_for_origin_after_date(origin:, date:, count: 3)
-    mediated.for_origin(origin).where('needed_date > ?', date).distinct.pluck(:needed_date).sort.take(count)
+    mediated.for_origin(origin).where(needed_date: date..).distinct.pluck(:needed_date).sort.take(count)
   end
 
   def unapproved?
@@ -587,7 +589,7 @@ class PatronRequest < ApplicationRecord
 
   # Mark the specified item as approved and submit the request to FOLIO
   def approve_item(item_id, approver:)
-    item = patron_request_items.find_by(item_id: item_id)
+    item = patron_request_items.find { |x| x.item_id == item_id }
     return unless item
 
     item.update(mediation_data: (item.mediation_data || {}).merge({ approved: true,
