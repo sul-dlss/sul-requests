@@ -23,16 +23,17 @@ class IllRequestsController < ApplicationController
   def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     authorize! :create, Illiad::Request
 
-    title_param = if create_params[:photo_article_title].present?
+    scan = create_params[:photo_article_title].present?
+    title_param = if scan
                     { photo_journal_title: create_params[:title] }
                   else
                     { loan_title: create_params[:title] }
                   end
 
     illiad_create_params = IlliadClient::RequestData.with_defaults.with_patron(current_patron).with(
-      process_type: 'Borrowing',
+      process_type: scan ? 'DocDel' : 'Borrowing',
       web_request_form: 'LoanRequest',
-      request_type: 'Loan',
+      request_type: scan ? IlliadClient::UNSET : 'Loan',
       accept_alternate_edition: create_params[:accept_alternate_edition] || IlliadClient::UNSET,
       not_wanted_after: not_wanted_after_param || IlliadClient::UNSET,
       **title_param,
