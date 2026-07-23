@@ -2,6 +2,8 @@
   <% component.with_title.with_content('Cancel appointment?') %>
   <% component.with_body(classes: []) do %>
     <%= form_with url: aeon_appointment_path(appointment.id), method: 'delete' do |f| %>
+      <%= hidden_field_tag :modal, id %>
+
       <div class="modal-body">
         <div class="fw-semibold d-inline-flex gap-2">
           <%= render Aeon::AppointmentDateTimeComponent.new(appointment: appointment, show_open_hours: false) %>
@@ -23,7 +25,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-        <%= f.submit('Yes, cancel appointment', class: 'btn btn-primary', data: { bs_dismiss: 'modal' }) %>
+        <%= f.submit('Yes, cancel appointment', class: 'btn btn-primary') %>
       </div>
     <% end %>
   <% end %>
