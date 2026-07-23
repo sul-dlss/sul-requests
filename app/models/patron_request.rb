@@ -191,7 +191,7 @@ class PatronRequest < ApplicationRecord
 
   # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def contact_info
-    return Settings.libraries[scan_code]&.contact_info if request_type == 'scan'
+    return Settings.libraries['SCAN']&.contact_info if request_type == 'scan'
 
     Settings.locations[origin_location_code]&.contact_info ||
       Settings.libraries[origin_library_code]&.contact_info ||
@@ -493,10 +493,6 @@ class PatronRequest < ApplicationRecord
     return unless scan_service_point_code
 
     @scan_service_point ||= Settings.scan_destinations[scan_service_point_code] || Settings.scan_destinations.default
-  end
-
-  def scan_code
-    'SCAN'
   end
 
   def all_items_scannable?
