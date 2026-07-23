@@ -10,6 +10,8 @@ class PatronRequest < ApplicationRecord
   has_many :patron_request_items, dependent: :delete_all
   accepts_nested_attributes_for :patron_request_items
 
+  default_scope { includes(:patron_request_items) }
+
   belongs_to :user, optional: true
 
   store :data, accessors: [
