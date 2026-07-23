@@ -500,10 +500,6 @@ class PatronRequest < ApplicationRecord
     selectable_items.all? { |item| scan_service_point.material_types&.include?(item.material_type.name) }
   end
 
-  def scan_earliest
-    earliest_delivery_estimate(scan: true)
-  end
-
   # ILLiad stuff
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
