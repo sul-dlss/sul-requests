@@ -17,8 +17,10 @@
   <div>
     <%= render 'save_for_later' %>
     <ul class="appointments-container list-unstyled mb-0" data-item-selector-target="selectedItems" data-template="#appointmentTemplate">
-      <% if f.object.selectable_items.one? %>
-        <%= render Aeon::AppointmentFormItemComponent.new(title: f.object.selectable_items.first.callnumber, dom_id: f.object.selectable_items.first.id, base_name: "patron_request[aeon_item][#{f.object.selectable_items.first.id}]", reading_room_id: f.object.aeon_reading_room.id, appointments: appointments) %>
+      <% if f.object.selected_items.any? %>
+        <% f.object.selected_items.each do |item| %>
+          <%= render Aeon::AppointmentFormItemComponent.new(title: item.callnumber, dom_id: item.id, base_name: "patron_request[aeon_item][#{item.id}]", reading_room_id: f.object.aeon_reading_room.id, appointments: appointments) %>
+        <% end %>
       <% end %>
     </ul>
 

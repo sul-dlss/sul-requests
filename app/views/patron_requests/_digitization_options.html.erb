@@ -3,8 +3,10 @@
 
   <%= render 'save_for_later' %>
   <div class="accordion digitization-accordion px-0" data-patron-request-target="digitizationItems" data-item-selector-target="selectedItems" data-template="#digitizationTemplate">
-    <% if f.object.selectable_items.one? %>
-      <%= render Aeon::DigitizationFormItemComponent.new(title: f.object.selectable_items.first.callnumber, dom_id: f.object.selectable_items.first.id, base_name: "patron_request[aeon_item][#{f.object.selectable_items.first.id}]", accordion: false) %>
+    <% if f.object.selected_items.any? %>
+      <% f.object.selected_items.each do |item| %>
+        <%= render Aeon::DigitizationFormItemComponent.new(title: item.callnumber, dom_id: item.id, base_name: "patron_request[aeon_item][#{item.id}]", accordion: false) %>
+      <% end %>
     <% end %>
   </div>
 

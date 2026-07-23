@@ -297,6 +297,9 @@ class PatronRequest < ApplicationRecord
 
     return items.first(1) if request_type == 'scan' && !aeon_page?
 
+    # if the user has no real choice, pre-select the item for them.
+    return selectable_items if selectable_items.one?
+
     items
   end
 
