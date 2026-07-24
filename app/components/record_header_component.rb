@@ -4,7 +4,7 @@
 class RecordHeaderComponent < ViewComponent::Base
   attr_reader :record, :title_classes
 
-  def initialize(record: nil, brief: false, title_classes: ['fs-5'])
+  def initialize(record: nil, brief: false, title_classes: ['h3'])
     @record = record
     @brief = brief
     @title_classes = Array(title_classes)
