@@ -30,12 +30,8 @@ RSpec.describe 'Reset PIN workflow' do
     end
 
     it 'sends a reset email' do
-      skip if ENV['CI'] # skip this test in CI, as it's not reliable
       expect(page).to have_css '.flash_messages', text: 'Success!'
-      sleep 1 # wait for the mail to get delivered..
-      using_wait_time(5) do
-        expect(ResetPinsMailer.deliveries.count).to eq(1)
-      end
+      expect(ResetPinsMailer.deliveries.count).to eq(1)
     end
 
     it 'redirects to the request page you were on' do
