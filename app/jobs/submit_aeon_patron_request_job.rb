@@ -88,6 +88,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     common_aeon_data_from_patron_request(patron_request, item, activity_id).with(
       call_number: "#{patron_request.ead_doc.identifier} #{item.hierarchy&.first}",
       ead_number: patron_request.ead_doc.identifier,
+      item_number: item.barcode,
       item_info4: patron_request.ead_doc.conditions_governing_access,
       item_volume: item.title,
       web_request_form: 'multiple'
