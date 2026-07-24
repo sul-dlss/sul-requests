@@ -15,7 +15,7 @@ module Aeon
     end
 
     def remove_button
-      tag.button class: 'btn btn-link p-0 su-underline me-2',
+      tag.button class: 'btn btn-link p-0 su-underline me-2 text-nowrap',
                  data: { action: 'click->add-items#remove click->submit-message#showMessage',
                          appointment_target: '#savedForLaterRequests',
                          submit_message_target: 'button',
