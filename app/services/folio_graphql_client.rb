@@ -141,6 +141,38 @@ class FolioGraphqlClient
     data&.dig('data', 'instances', 0)
   end
 
+  # Batch size chosen to stay well under the limit where we'd encounter
+  # /item-storage/items 414: URI Too Long errors in graphql.
+  ITEM_CIRCULATION_STATUS_BATCH_SIZE = 50
+  ITEM_CIRCULATION_STATUS_QUERY = <<~GQL
+    query ItemCirculationStatus($item_ids: [String]) {
+      items(id: $item_ids) {
+        id
+        queueTotalLength
+        dueDate
+      }
+    }
+  GQL
+
+  def item_circulation_status(item_ids:)
+    return [] if item_ids.blank?
+
+    item_ids.each_slice(ITEM_CIRCULATION_STATUS_BATCH_SIZE).flat_map do |chunk|
+      item_circulation_status_batch(chunk)
+    end
+  end
+
+  def hydrate_circulation_status(items:)
+    status_by_id = item_circulation_status(item_ids: items.filter_map(&:id)).index_by { |status| status['id'] }
+
+    items.each do |item|
+      status = status_by_id[item.id]
+      next unless status
+
+      item.with_circulation_status(queue_length: status['queueTotalLength'], due_date: status['dueDate'])
+    end
+  end
+
   def service_points
     data = post_json('/', json:
     {
@@ -508,11 +540,9 @@ class FolioGraphqlClient
       barcode
       discoverySuppress
       volume
-      queueTotalLength
       status {
         name
       }
-      dueDate
       materialType {
         id
         name
@@ -626,6 +656,13 @@ class FolioGraphqlClient
   end
 
   private
+
+  def item_circulation_status_batch(item_ids)
+    data = post_json('/', json: { variables: { item_ids: item_ids }, query: ITEM_CIRCULATION_STATUS_QUERY })
+    raise data['errors'].pluck('message').join("\n") if data&.key?('errors')
+
+    data&.dig('data', 'items') || []
+  end
 
   def parse(response)
     return nil if response.body.empty?

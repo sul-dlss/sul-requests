@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     resource :needed_date, only: [:edit, :update, :show]
     resources :admin_comments
   end
+  resource :item_selector, only: :show
 
   resources :paging_schedule, only: :index
   get 'paging_schedule/from/:origin_library(/to/:destination)' => 'paging_schedule#show', as: :paging_schedule

@@ -1,0 +1,5 @@
+<%= turbo_frame_tag :item_selector_circulation do %>
+  <%= fields_for @patron_request, @patron_request do |f| %>
+    <%= render Folio::ItemSelectorComponent.new(f:) %>
+  <% end %>
+<% end %>
