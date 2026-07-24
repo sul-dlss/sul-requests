@@ -15,7 +15,7 @@ module Aeon
     end
 
     def add_request
-      tag.button class: 'btn btn-link p-0 su-underline me-2',
+      tag.button class: 'btn btn-link p-0 su-underline me-2 text-nowrap',
                  data: { action: 'click->add-items#schedule
                                   item-limit-updated@window->add-items#enableDisableButton
                                   click->submit-message#showMessage',
