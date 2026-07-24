@@ -34,13 +34,7 @@ export default class extends Controller {
     const formData = new FormData(accordion.closest('form'));
 
     const requiredEmpty = Array.from(accordion.querySelectorAll('[required],input[name="patron_request[item_ids][]"],input[name="patron_request[activity_ids][]"]')).find(x => formData.getAll(x.name).every(x => !x))
-    if (requiredEmpty) return requiredEmpty;
-
-    // Per-item soft requirements: gated here (not via `required`) so save-
-    // for-later can submit with empty fields to trigger Aeon save-for-later routing.
-    return Array.from(accordion.querySelectorAll('[data-required-for-submit]'))
-      .filter(x => x.closest('[data-content-id]')?.offsetParent)
-      .find(x => formData.getAll(x.name).every(x => !x))
+    return requiredEmpty;
   }
 
   enableAnyNextButtons(event) {

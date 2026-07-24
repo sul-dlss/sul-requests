@@ -32,6 +32,7 @@ export default class extends Controller {
       const savedItem = this.makeSavedItem(item)
       const appt = item.querySelector('input[name$="[appointment_id]"]')
       if (appt) {
+        appt.setAttribute('value', '')
         appt.value = ''
         appt.dispatchEvent(new Event('input', { bubbles: true }))
       }

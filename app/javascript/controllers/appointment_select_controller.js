@@ -21,8 +21,7 @@ export default class extends Controller {
     if (!this.element.closest('#reading-accordion')) return;
     this.element.querySelectorAll('[data-count]').forEach(option => {
       const baseCount = parseInt(option.dataset.count);
-
-      const formCount = this.element.closest('#reading-accordion').querySelectorAll("input[value='" + option.dataset.appointmentId + "']").length;
+      const formCount = this.element.closest('#reading-accordion').querySelectorAll(`input[value='${option.dataset.appointmentId}']`).length;
 
       const newCount = baseCount + formCount;
 
@@ -34,6 +33,7 @@ export default class extends Controller {
     this.element.querySelector('.selected')?.classList?.remove('selected');
     element.classList.add('selected');
 
+    this.inputTarget.setAttribute('value', element.dataset.value)
     this.inputTarget.value = element.dataset.value;
     this.inputTarget.dispatchEvent(new Event('input', { bubbles: true }));
 
