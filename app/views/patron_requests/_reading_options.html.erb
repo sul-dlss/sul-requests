@@ -1,4 +1,5 @@
-<div class="row p-3 pt-0 gap-4 flex-column flex-md-row selected-items-container">
+<fieldset class="row p-3 pt-0 gap-4 flex-column flex-md-row selected-items-container" data-patron-request-target="typePanel" data-request-type="pickup" disabled>
+  <legend class="visually-hidden">Reading room appointment details</legend>
   <% appointments = current_user.aeon.appointments.for_site(f.object.aeon_site) %>
   <div id="new-appt-alert">
     <% if appointments.blank? %>
@@ -35,4 +36,4 @@
       <span class="fs-14" data-char-counter-target="counter"></span>
     </p>
   </div>
-</div>
+</fieldset>
