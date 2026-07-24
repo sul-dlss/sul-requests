@@ -3,8 +3,8 @@
   <div class="card-body">
     <div class="metadata">
       <span class="text-lagunita-dark"><%= request_group.digital? ? 'Digitization' : 'Reading room use' %></span>
-      <h3 class="h4 my-1"><%= title %></h3>
-      <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
+      <h3 class="my-1"><%= title %></h3>
+      <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column mb-3">
         <% if base_callnumber.present? %>
           <div>Call number: <%= base_callnumber %></div>
         <% end %>
