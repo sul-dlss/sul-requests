@@ -155,6 +155,10 @@ summary .disclosure-icon::before {
   }
 }
 
+[data-manual-items-row]:only-child button[data-action*="removeRow"] {
+  display: none;
+}
+
 #patron_request_service_point_code,
 #patron_request_needed_date {
   width: 100%;

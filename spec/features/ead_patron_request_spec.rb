@@ -520,6 +520,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_button 'Continue'
 
       within('#items-accordion') do
+        expect(page).to have_no_button 'Delete'
         expect(page).to have_button('Continue', disabled: true)
 
         first('[data-manual-items-row] input[type=text]').set('Box 1')
@@ -529,6 +530,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
         expect(page).to have_button('Continue', disabled: true)
 
         all('[data-manual-items-row] input[type=text]')[1].set('Box 2')
+        expect(page).to have_button 'Delete', count: 2
         expect(page).to have_button('Continue', disabled: false)
       end
     end
