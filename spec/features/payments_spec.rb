@@ -70,7 +70,7 @@ RSpec.describe 'Payments History' do
     it 'does not load table', :js do
       click_on 'Past'
 
-      expect(page).to have_css('span', text: 'There are no past fees or fines on this account.')
+      expect(page).to have_css('h2', text: 'No past fees or fines.')
     end
   end
 end

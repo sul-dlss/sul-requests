@@ -58,7 +58,7 @@ RSpec.describe 'Fines Page' do
     end
 
     it 'has a message' do
-      expect(page).to have_text('There are no fees or fines on this account.')
+      expect(page).to have_text('No fees or fines.')
     end
   end
 end

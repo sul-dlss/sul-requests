@@ -29,7 +29,7 @@
           <% end %>
         </ul>
       <% else %>
-        <span>There are no fees or fines on this account.</span>
+        <h2><%= t('dashboard.fines_and_fees.no_fees') %></h2>
       <% end %>
       <% if params[:group] && patron.sponsor? %>
         Fines incurred by proxy borrowers appear in the list of fines under their sponsor's Self tab.
