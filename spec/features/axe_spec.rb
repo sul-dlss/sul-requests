@@ -127,13 +127,13 @@ RSpec.describe 'Accessibility testing', :js do
       instance_double(AeonClient,
                       find_user: aeon_user,
                       find_queue: queue,
+                      requests_for: all_requests,
                       activities: [],
                       appointments_for: [appointment])
     end
 
     before do
       allow(AeonClient).to receive(:new).and_return(stub_aeon_client)
-      allow(aeon_user).to receive_messages(requests: Aeon::RequestFinders.new(all_requests))
       login_as(current_user)
     end
 
