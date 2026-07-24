@@ -72,7 +72,7 @@ class FolioGraphqlClient
       })
   end
 
-  def instance(hrid:)
+  def instance_data(hrid:)
     data = post_json('/', json:
     {
       variables: {
@@ -86,6 +86,7 @@ class FolioGraphqlClient
               hrid
               marcRecord
               title
+              queueTotalLength
               identifiers {
                 value
                 identifierTypeObject {
@@ -116,6 +117,7 @@ class FolioGraphqlClient
                 boundWithItem {
                   #{item_fields}
 
+                  queueTotalLength
                   instance {
                     #{instance_fields(with_marc_record: false)}
                   }
@@ -139,6 +141,14 @@ class FolioGraphqlClient
     raise data['errors'].pluck('message').join("\n") if data&.key?('errors')
 
     data&.dig('data', 'instances', 0)
+  end
+
+  def instance(hrid:)
+    instance_data = instance_data(hrid:)
+    id = instance_data&.dig('id')
+    return instance_data unless id
+
+    with_queue_total_length(hrid:, instance_data:)
   end
 
   def service_points
@@ -508,7 +518,6 @@ class FolioGraphqlClient
       barcode
       discoverySuppress
       volume
-      queueTotalLength
       status {
         name
       }
@@ -644,6 +653,70 @@ class FolioGraphqlClient
     DEFAULT_HEADERS.merge({ 'User-Agent': 'FolioGraphqlClient', 'okapi_username' => @username,
                             'okapi_password' => @password })
   end
+
+  def with_queue_total_length(hrid:, instance_data:)
+    default = { 'queueTotalLength' => 0 }
+    if instance_data['queueTotalLength'].zero?
+      # If the instance reports no requests from circ then we can assume the items in that instance also have no requests.
+      merge_additional_items_data(instance_data:, additional_data: {}, items_key: 'items', default:)
+    else
+      merge_additional_items_data(instance_data:, additional_data: items_queue_length(hrid:), items_key: 'items', default:)
+    end
+  end
+
+  # rubocop:disable Metrics/MethodLength
+  def items_queue_length(hrid:)
+    data = post_json('/', json:
+      {
+        variables: {
+          hrid:
+        },
+        query:
+        <<~GQL
+          query InstanceItemQueueLengthByHrid($hrid: [String]) {
+            instances(hrid: $hrid) {
+              holdingsRecords {
+                items {
+                  id
+                  queueTotalLength
+                }
+              }
+            }
+          }
+        GQL
+      })
+
+    raise data['errors'].pluck('message').join("\n") if data&.key?('errors')
+
+    data&.dig('data', 'instances', 0)
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  def items_index_from_instance_data(instance_query_data:, items_key:, records_key:)
+    items = []
+    Array(instance_query_data[records_key]).each do |record|
+      items.concat(Array(record[items_key]))
+    end
+    items.index_by { |item| item['id'] }
+  end
+
+  # rubocop:disable Metrics/CyclomaticComplexity
+  def merge_additional_items_data(instance_data:, additional_data:, items_key:, records_key: 'holdingsRecords', default: nil)
+    return instance_data if instance_data.nil? || additional_data.nil?
+
+    item_data_to_merge = items_index_from_instance_data(instance_query_data: additional_data, items_key:, records_key:)
+    Array(instance_data[records_key]).each do |record|
+      Array(record[items_key]).each do |item|
+        next unless item['id']
+
+        item_data = item_data_to_merge[item['id']] || default
+        item.merge!(item_data.except('id')) if item_data
+      end
+    end
+
+    instance_data
+  end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   def with_retries(retries = 5)
     try = 0
