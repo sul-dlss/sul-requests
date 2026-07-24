@@ -18,7 +18,7 @@ RSpec.describe 'checkouts/index' do
   it 'shows the number of checkouts' do
     render
 
-    expect(rendered).to include('<h2>Checked out: 0</h2>')
+    expect(rendered).to include('<h2>No items currently borrowed.</h2>')
   end
 
   it 'does not show headers for zero checkouts' do
@@ -35,7 +35,7 @@ RSpec.describe 'checkouts/index' do
     it 'shows the number of checkouts remaining' do
       render
 
-      expect(rendered).to include('<h2>Checked out: 0 (25 remaining)</h2>')
+      expect(rendered).to include('<h2>No items currently borrowed.</h2>')
     end
   end
 end

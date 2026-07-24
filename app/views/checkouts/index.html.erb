@@ -28,6 +28,8 @@
 <% else %>
   <div id="checkouts" class="page-section mt-4">
     <h1>Borrowed (checked out) items</h1>
-    <h2>Checked out: <%= @checkouts.length %><%= " (#{patron_or_group.remaining_checkouts} remaining)" if patron_or_group.remaining_checkouts %></h2>
+    <h2>No items currently borrowed.</h2>
+    <p> Stanford University Libraries’ collection includes more than 12 million physical items across our libraries and centers.
+    Browse <%= link_to 'SearchWorks', 'https://searchworks.stanford.edu/', class: 'su-underline' %> to find materials you can borrow or request.</p>
   </div>
 <% end %>

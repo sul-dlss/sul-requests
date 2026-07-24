@@ -286,6 +286,8 @@ RSpec.describe 'Appointments', :js do
       within '#saved_for_later_aeon_requests_sidebar' do
         expect(page).to have_css "#sidebar_aeon_request_#{submitted_request.id}"
       end
+
+      expect(page).to have_text 'No upcoming reading room appointments.'
     end
 
     it 'deletes the requests' do
@@ -303,6 +305,8 @@ RSpec.describe 'Appointments', :js do
       within '#saved_for_later_aeon_requests_sidebar' do
         expect(page).to have_no_css "#sidebar_aeon_request_#{submitted_request.id}"
       end
+
+      expect(page).to have_text 'No upcoming reading room appointments.'
     end
   end
 end
