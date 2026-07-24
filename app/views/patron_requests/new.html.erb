@@ -111,17 +111,10 @@
         <% c.with_title.with_content('Pickup request') %>
         <% c.with_body do %>
           <% if f.object.origin_location_code == 'SAL3-PAGE-SP' && Time.zone.now.before?(Time.zone.parse('2026-08-15')) %>
-              <div class="alert alert-info d-flex" role="alert">
-                <div class="bi bi-info-circle-fill d-flex justify-content-center display-6 col-1 ms-3 align-self-center text-primary"></div>
-                <div class="p-3 flex-grow-1">
-                  <div class="d-flex align-items-center gap-2">
-                    <div>
-                    <span class="fw-semibold d-block">Special Collections Reading Room closed until August 14</span>
-                    The Department of Special Collections Reading Room and Barchas Room will be closed to researchers, faculty, and staff from Monday, June 15th through Friday, August 14th to accommodate a major facilities project.
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <%= render AlertComponent.new(type: :info) do %>
+                <span class="fw-semibold d-block">Special Collections Reading Room closed until August 14</span>
+                The Department of Special Collections Reading Room and Barchas Room will be closed to researchers, faculty, and staff from Monday, June 15th through Friday, August 14th to accommodate a major facilities project.
+              <% end %>
            <% end %>
 
           <%= render 'pickup_destination', f: %>
@@ -230,29 +223,15 @@
         </div>
 
         <% if f.object.origin_location_code == 'SAL3-PAGE-SP' && Time.zone.now.before?(Time.zone.parse('2026-08-15')) %>
-            <div class="alert alert-info d-flex" role="alert">
-              <div class="bi bi-info-circle-fill d-flex justify-content-center display-6 col-1 ms-3 align-self-center text-primary"></div>
-              <div class="p-3 flex-grow-1">
-                <div class="d-flex align-items-center gap-2">
-                  <div>
-                  <span class="fw-semibold d-block">Special Collections Reading Room closed until August 14</span>
-                  The Department of Special Collections Reading Room and Barchas Room will be closed to researchers, faculty, and staff from Monday, June 15th through Friday, August 14th to accommodate a major facilities project.
-                  </div>
-                </div>
-              </div>
-            </div>
+            <%= render AlertComponent.new(type: :info) do %>
+              <span class="fw-semibold d-block">Special Collections Reading Room closed until August 14</span>
+              The Department of Special Collections Reading Room and Barchas Room will be closed to researchers, faculty, and staff from Monday, June 15th through Friday, August 14th to accommodate a major facilities project.
+            <% end %>
         <% elsif f.object.mediateable? && f.object.requires_needed_date? %>
-            <div class="alert alert-info d-flex" role="alert">
-              <div class="bi bi-info-circle-fill d-flex justify-content-center display-6 col-1 ms-3 align-self-center text-primary"></div>
-              <div class="p-3 flex-grow-1">
-                <div class="d-flex align-items-center gap-2">
-                  <div>
-                  <span class="fw-semibold d-block">Restricted-use</span>
-                  A librarian will review and approve your request, or contact you. Approvals typically happen 1-3 business days before your planned visit date.
-                  </div>
-                </div>
-              </div>
-            </div>
+            <%= render AlertComponent.new(type: :info) do %>
+              <span class="fw-semibold d-block">Restricted-use</span>
+              A librarian will review and approve your request, or contact you. Approvals typically happen 1-3 business days before your planned visit date.
+            <% end %>
         <% end %>
         <%= render 'pickup_destination', f: %>
         <%= render 'request_preferences', f: %>
