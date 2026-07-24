@@ -191,7 +191,7 @@ class PatronRequest < ApplicationRecord
 
   # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def contact_info
-    return Settings.libraries[scan_code]&.contact_info if request_type == 'scan'
+    return Settings.libraries['SCAN']&.contact_info if request_type == 'scan'
 
     Settings.locations[origin_location_code]&.contact_info ||
       Settings.libraries[origin_library_code]&.contact_info ||
@@ -236,10 +236,6 @@ class PatronRequest < ApplicationRecord
   # @!endgroup
 
   # @!group FOLIO instance + items
-  def submit_later
-    SubmitPatronRequestJob.perform_later(self)
-  end
-
   # @return [Folio::Instance]
   def folio_instance
     return if instance_hrid.blank?
@@ -301,7 +297,7 @@ class PatronRequest < ApplicationRecord
 
   # @return [Array<String>] the item ids of the selected items (presumably for form builders)
   def item_ids
-    selected_items.map(&:item_id)
+    patron_request_items.map(&:item_id)
   end
 
   def scan_page_range
@@ -485,28 +481,19 @@ class PatronRequest < ApplicationRecord
     scan_service_point.present? && all_items_scannable?
   end
 
-  def scan_service_point_code
-    @scan_service_point_code ||= selectable_items.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
-  end
-
   def scan_service_point
-    return unless scan_service_point_code
+    return @scan_service_point if defined?(@scan_service_point)
 
-    @scan_service_point ||= Settings.scan_destinations[scan_service_point_code] || Settings.scan_destinations.default
-  end
-
-  def scan_code
-    'SCAN'
+    @scan_service_point ||= begin
+      scan_service_point_code = selectable_items.filter_map { |item| item.permanent_location.details['scanServicePointCode'] }.first
+      Settings.scan_destinations[scan_service_point_code] || Settings.scan_destinations.default if scan_service_point_code.present?
+    end
   end
 
   def all_items_scannable?
     return false if selectable_items.none?
 
     selectable_items.all? { |item| scan_service_point.material_types&.include?(item.material_type.name) }
-  end
-
-  def scan_earliest
-    earliest_delivery_estimate(scan: true)
   end
 
   # ILLiad stuff
@@ -593,12 +580,6 @@ class PatronRequest < ApplicationRecord
     SubmitFolioPatronRequestJob.perform_now(item)
   end
 
-  def notify_mediator!
-    return unless mediator_notification_email_address.present? && Settings.features.mediator_email
-
-    MediationMailer.mediator_notification(self).deliver_later
-  end
-
   def mediator_notification_email_address
     Rails.application.config.mediator_contact_info.fetch(
       origin_library_code,
@@ -633,11 +614,6 @@ class PatronRequest < ApplicationRecord
       service_point = pickup_destinations.one? ? pickup_destinations.first : default_service_point_code
       Folio::Types.service_points.find_by(code: service_point)
     end
-  end
-
-  # @return [FolioClient]
-  def folio_client
-    FolioClient.new
   end
 
   # For the purposes of showing the items in the "location", we also combine locations with the same

@@ -95,7 +95,7 @@ class SubmitPatronRequestJob < ApplicationJob
   end
 
   def convert_to_mediated_page(patron_request)
-    patron_request.notify_mediator!
+    MediationMailer.mediator_notification(patron_request)&.deliver_later
     PatronRequestMailer.confirmation_email(patron_request).deliver_later
   end
 

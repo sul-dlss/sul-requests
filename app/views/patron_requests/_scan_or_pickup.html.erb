@@ -21,7 +21,7 @@
       whichever is less.</strong>
     </div>
     <div class="text-cardinal ms-4 mt-1">
-      Earliest expected delivery: <%= f.object.scan_earliest['display_date'] %>
+      Earliest expected delivery: <%= f.object.earliest_delivery_estimate(scan: true)['display_date'] %>
     </div>
   </div>
   <div class="mt-4">

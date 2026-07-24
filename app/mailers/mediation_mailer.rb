@@ -5,6 +5,8 @@
 ###
 class MediationMailer < ApplicationMailer
   def mediator_notification(request)
+    return if !Settings.features.mediator_email || request.mediator_notification_email_address.blank?
+
     @request = request
     @mediation_url = root_url
     mail(
