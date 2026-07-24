@@ -642,7 +642,7 @@ class PatronRequest < ApplicationRecord
 
   # Validate that the chosen service point is a valid pickup location for the items
   def pickup_service_point_is_valid
-    return if pickup_service_point.code.in? pickup_destinations
+    return if pickup_service_point&.code.in? pickup_destinations
 
     errors.add(:service_point_code, 'is not a valid pickup library')
   end
