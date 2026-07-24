@@ -6,7 +6,7 @@
       </div>
 
       <div>
-        <%= tag.h2 request.title || 'Not available', class: @title_classes %>
+        <%= tag.h2 request.title || 'Not available', class: 'h3' %>
         <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
           <%= render FormatIndicatorComponent.new(record: request) %>
           <% if request.full_call_number.present? %>
