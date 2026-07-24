@@ -687,11 +687,15 @@ summary .disclosure-icon::before {
   --bs-border-width: 0;
 }
 
-.no-requests {
+.no-requests, .no-appointments {
   display: none;
 }
 
 main:not(:has(#requests li, turbo-frame[busy])) .no-requests {
+  display: block;
+}
+
+.appointments-index:not(:has(.appointment)) .no-appointments {
   display: block;
 }
 

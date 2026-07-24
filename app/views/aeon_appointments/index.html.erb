@@ -19,6 +19,11 @@
       <turbo-frame id="aeon_appointments">
         <%= render Aeon::AppointmentComponent.with_collection(@appointments, all_requests: @aeon_requests) %>
       </turbo-frame>
+      <div class="no-appointments">
+        <h2>No upcoming reading room appointments.</h2>
+        <p> You can request rare and distinctive materials for use in a reading room.
+        Search for materials in <%= link_to 'Archival Collections at Stanford', 'https://archives.stanford.edu/' %> or <%= link_to 'SearchWorks', 'https://searchworks.stanford.edu/' %> to see the request options available.</p>
+      </div>
     </div>
     <%= render 'saved_for_later_aeon_requests' %>
   </div>
