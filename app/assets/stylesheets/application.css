@@ -449,10 +449,6 @@ summary .disclosure-icon::before {
   flex-direction: column;
 }
 
-.accordion-item:only-child .digitization-title {
-  flex-direction: row;
-  align-items: center;
-}
 
 /* Don't show delete icon for save for later when there is no item selector */
 .accordion:not(:has(#items-accordion)) .saved-for-later-remove {
@@ -464,6 +460,11 @@ summary .disclosure-icon::before {
 #pickup:has(.appointments-item:only-child):not(:has(.saved-item)) {
   .hide-when-1-item {
     display: none;
+  }
+
+  .accordion-item:only-child .digitization-title {
+    flex-direction: row;
+    align-items: center;
   }
 }
 
