@@ -25,13 +25,13 @@
   <% end %>
 
   <% if helpers.can? :destroy, request %>
-    <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#delete-<%= transaction_number %>">
+    <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#<%= dom_id(request, :delete_modal) %>">
       <i class="bi bi-trash align-middle" aria-hidden></i><span class="visually-hidden">Delete <%= title %> request</span>
     </button>
   <% end %>
 
   <!-- Delete modal -->
-  <%= render ModalComponent.new(id: "delete-#{transaction_number}") do |component| %>
+  <%= render ModalComponent.new(id: dom_id(request, :delete_modal)) do |component| %>
     <% component.with_title.with_content('Delete request?') %>
     <% component.with_body do %>
       <div class="d-flex flex-column gap-3">
@@ -51,7 +51,8 @@
     <% component.with_footer do %>
       <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
       <%= form_with url: aeon_request_path(transaction_number), method: 'delete' do %>
-        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Yes - Delete</button>
+        <%= hidden_field_tag :modal, dom_id(request, :delete_modal) %>
+        <button type="submit" class="btn btn-primary">Yes - Delete</button>
       <% end %>
     <% end %>
   <% end %>

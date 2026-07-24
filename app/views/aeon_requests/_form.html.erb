@@ -1,4 +1,5 @@
 <%= form_with(model: @aeon_request, data: { turbo: true }) do |f| %>
+  <%= hidden_field_tag :modal, params[:modal] %>
   <div class="modal-body">
     <% if f.object.digital? %>
       <%= render 'patron_requests/digitization_notice' %>
@@ -18,6 +19,6 @@
 
   <div class="modal-footer">
     <%= link_to 'Cancel', aeon_appointments_path, class: 'btn btn-outline-primary', data: { 'bs-dismiss': 'modal' } %>
-    <%= f.submit 'Submit request', class: 'btn btn-primary', data: { 'bs-dismiss': 'modal' } %>
+    <%= f.submit 'Submit request', class: 'btn btn-primary' %>
   </div>
 <% end %>
