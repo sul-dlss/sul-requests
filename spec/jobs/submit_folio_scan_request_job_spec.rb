@@ -23,7 +23,7 @@ RSpec.describe SubmitFolioScanRequestJob do
   context 'when the request is a scan for material in e.g. Green' do
     let(:request) do
       PatronRequest.create(request_type: 'scan', instance_hrid: 'a1234', patron:,
-                           patron_request_items_attributes: [{ barcode: '12345678', scan_title: 'Test Scan' }],
+                           patron_request_items_attributes: [{ item_id: '12345678', scan_title: 'Test Scan' }],
                            origin_location_code: 'GRE-STACKS')
     end
 

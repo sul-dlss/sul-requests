@@ -15,8 +15,8 @@ RSpec.describe 'Mediation table', :js do
       create(
         :mediated_patron_request_with_holdings,
         patron_request_items_attributes: [
-          { barcode: '12345678' },
-          { barcode: '23456789' }
+          { item_id: '12345678' },
+          { item_id: '23456789' }
         ],
         created_at: 1.day.ago,
         needed_date: 3.days.from_now
@@ -25,8 +25,8 @@ RSpec.describe 'Mediation table', :js do
         :mediated_patron_request_with_holdings,
         patron: build(:library_id_patron, first_name: 'Joe', last_name: 'Doe', email: 'joedoe@example.com'),
         patron_request_items_attributes: [
-          { barcode: '34567890' },
-          { barcode: '45678901' }
+          { item_id: '34567890' },
+          { item_id: '45678901' }
         ],
         needed_date: 2.days.from_now
       )
@@ -34,7 +34,7 @@ RSpec.describe 'Mediation table', :js do
         :mediated_patron_request_with_holdings,
         patron: build(:library_id_patron, first_name: 'Jim', last_name: 'Doe', email: 'jimdoe@example.com'),
         patron_request_items_attributes: [
-          { barcode: '34567890' }
+          { item_id: '34567890' }
         ],
         created_at: 1.day.from_now,
         needed_date: Time.zone.now
@@ -50,8 +50,8 @@ RSpec.describe 'Mediation table', :js do
         request_type: 'mediated/approved',
         patron: build(:library_id_patron, first_name: 'Bob', last_name: 'Doe', email: 'bobdoe@example.com'),
         patron_request_items_attributes: [
-          { barcode: '12345678', mediation_data: { approved: true } },
-          { barcode: '23456789', mediation_data: { approved: true } }
+          { item_id: '12345678', mediation_data: { approved: true } },
+          { item_id: '23456789', mediation_data: { approved: true } }
         ],
         created_at: 7.days.ago,
         needed_date: 2.days.ago
@@ -61,8 +61,8 @@ RSpec.describe 'Mediation table', :js do
         request_type: 'mediated/approved',
         patron: build(:library_id_patron, first_name: 'Alice', last_name: 'Doe', email: 'alicedoe@example.com'),
         patron_request_items_attributes: [
-          { barcode: '12345678', mediation_data: { approved: true } },
-          { barcode: '23456789', mediation_data: { approved: true } }
+          { item_id: '12345678', mediation_data: { approved: true } },
+          { item_id: '23456789', mediation_data: { approved: true } }
         ],
         created_at: 5.days.ago,
         needed_date: 3.days.ago
@@ -72,8 +72,8 @@ RSpec.describe 'Mediation table', :js do
         request_type: 'mediated/done',
         patron: build(:library_id_patron, first_name: 'Mal', last_name: 'Doe', email: 'maldoe@example.com'),
         patron_request_items_attributes: [
-          { barcode: '34567890', mediation_data: { approved: true } },
-          { barcode: '45678901', mediation_data: { approved: true } }
+          { item_id: '34567890', mediation_data: { approved: true } },
+          { item_id: '45678901', mediation_data: { approved: true } }
         ],
         created_at: 3.days.ago,
         needed_date: nil
@@ -83,7 +83,7 @@ RSpec.describe 'Mediation table', :js do
         request_type: 'mediated/approved',
         patron: build(:library_id_patron, first_name: 'Eve', last_name: 'Doe', email: 'evedoe@example.com'),
         patron_request_items_attributes: [
-          { barcode: '34567890', mediation_data: { approved: true } }
+          { item_id: '34567890', mediation_data: { approved: true } }
         ],
         created_at: 2.days.ago,
         needed_date: nil
@@ -337,8 +337,8 @@ RSpec.describe 'Mediation table', :js do
         :page_mp_mediated_patron_request,
         patron: build(:library_id_patron, first_name: 'Joe', last_name: 'Doe', email: 'joedoe@example.com'),
         patron_request_items_attributes: [
-          { barcode: '12345678' },
-          { barcode: '87654321' }
+          { item_id: '12345678' },
+          { item_id: '87654321' }
         ]
       )
     end

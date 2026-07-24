@@ -8,7 +8,7 @@ RSpec.describe SubmitPatronRequestJob do
   end
   let(:request) do
     PatronRequest.create(request_type: 'pickup', instance_hrid: 'a12345', patron:,
-                         patron_request_items_attributes: [{ barcode: '12345678' }],
+                         patron_request_items_attributes: [{ item_id: '12345678' }],
                          origin_location_code: 'SAL3-STACKS')
   end
   let(:folio_instance) { build(:single_holding) }
@@ -42,7 +42,7 @@ RSpec.describe SubmitPatronRequestJob do
 
     let(:request) do
       PatronRequest.create(request_type: 'scan', instance_hrid: 'a1234', patron:,
-                           patron_request_items_attributes: [{ barcode: '12345678', scan_title: 'Test Scan' }],
+                           patron_request_items_attributes: [{ item_id: '12345678', scan_title: 'Test Scan' }],
                            origin_location_code: 'GRE-STACKS')
     end
 
