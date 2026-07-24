@@ -68,31 +68,4 @@ class PatronRequestItem < ApplicationRecord
   def error?
     mediation_data&.dig('error').present?
   end
-
-  def update_record_from_folio # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
-    return if ead_url || migrated_item_id_or_barcode.blank?
-
-    @folio_item ||= patron_request.folio_instance.items.find do |i|
-      i.id == migrated_item_id_or_barcode || (i.barcode.present? && i.barcode == migrated_item_id_or_barcode)
-    end
-
-    return if @folio_item.blank?
-
-    self.migrated_item_id_or_barcode = nil
-    self.item_id = @folio_item.id
-    self.barcode = @folio_item.barcode
-    self.item_callnumber = @folio_item.callnumber
-    self.mediation_data = (patron_request.data.dig('item_mediation_data', @folio_item.id) if @folio_item)
-
-    aeon_item = patron_request.data.dig('aeon_item', @folio_item.id)
-
-    assign_attributes(**aeon_item.slice(:title, :hierarchy, :for_publication, :requested_pages, :additional_information, # rubocop:disable Style/MultilineIfModifier
-                                        :appointment_id)) if aeon_item.present?
-
-    patron_request.folio_api_responses.where(item_id: item_id).update_all(patron_request_item_id: id) # rubocop:disable Rails/SkipsModelValidations
-    patron_request.illiad_api_responses.where(item_id: item_id).update_all(patron_request_item_id: id) # rubocop:disable Rails/SkipsModelValidations
-    patron_request.aeon_api_responses.where(item_id: item_id).update_all(patron_request_item_id: id) # rubocop:disable Rails/SkipsModelValidations
-
-    save
-  end
 end
