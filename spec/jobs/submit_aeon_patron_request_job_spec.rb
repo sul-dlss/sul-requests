@@ -40,7 +40,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
                                                                           item_author: 'John Q. Public',
                                                                           item_info1: 'https://searchworks.stanford.edu/view/1234',
                                                                           item_info5: '23',
-                                                                          item_number: '12345678',
+                                                                          item_number: '3610512345678',
                                                                           item_title: 'Special Collections Item Title',
                                                                           location: 'SPEC-STACKS',
                                                                           site: 'SPECUA',

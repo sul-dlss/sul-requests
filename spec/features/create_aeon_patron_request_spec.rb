@@ -116,7 +116,7 @@ RSpec.describe 'Creating an Aeon patron request', :js do
         end
 
         it 'includes the barcode of the item' do
-          expect(page).to have_field(type: 'hidden', name: 'ItemNumber_1', with: '12345678')
+          expect(page).to have_field(type: 'hidden', name: 'ItemNumber_1', with: '3610512345678')
         end
       end
     end
@@ -134,8 +134,8 @@ RSpec.describe 'Creating an Aeon patron request', :js do
 
           it 'disables item barcodes' do
             expect(page).to have_button('Continue', disabled: true)
-            expect(page).to have_field(type: 'hidden', name: 'ItemNumber_1', with: '12345678', disabled: true)
-            expect(page).to have_field(type: 'hidden', name: 'ItemNumber_2', with: '87654321', disabled: true)
+            expect(page).to have_field(type: 'hidden', name: 'ItemNumber_1', with: '3610512345678', disabled: true)
+            expect(page).to have_field(type: 'hidden', name: 'ItemNumber_2', with: '3610587654321', disabled: true)
           end
         end
 
@@ -151,8 +151,8 @@ RSpec.describe 'Creating an Aeon patron request', :js do
           end
 
           it 'includes the barcode of each item' do
-            expect(page).to have_field(type: 'hidden', name: 'ItemNumber_1', with: '12345678')
-            expect(page).to have_field(type: 'hidden', name: 'ItemNumber_2', with: '87654321')
+            expect(page).to have_field(type: 'hidden', name: 'ItemNumber_1', with: '3610512345678')
+            expect(page).to have_field(type: 'hidden', name: 'ItemNumber_2', with: '3610587654321')
           end
 
           it 'includes the call number of each item' do
