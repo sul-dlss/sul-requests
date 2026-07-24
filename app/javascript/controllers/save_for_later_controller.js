@@ -58,6 +58,9 @@ export default class extends Controller {
       if (!savedItem) return;
       const template = savedItem.querySelector('template')
       const rehydratedItem = document.importNode(template.content, true)
+      rehydratedItem.querySelectorAll('[data-required]').forEach(elem => {
+        elem.required = true
+      })
       const selectedItemList = section.querySelector('[data-item-selector-target="selectedItems"]')
       selectedItemList.appendChild(rehydratedItem)
       savedItem.remove();

@@ -18,13 +18,12 @@ export default class extends Controller {
   }
 
   updateItemCounts() {
-    if (!this.element.closest('#reading-accordion')) return;
+    if (!this.element.closest('#reading')) return;
     this.element.querySelectorAll('[data-count]').forEach(option => {
       const baseCount = parseInt(option.dataset.count);
       const limit = option.dataset.limit ? parseInt(option.dataset.limit) : 0;
-
-      const formCount = this.element.closest('#reading-accordion').querySelectorAll("input[value='" + option.dataset.appointmentId + "']").length;
-
+      const inputs = this.element.closest('#reading').querySelectorAll("input[data-appointment-select-target='input']")
+      const formCount = Array.from(inputs).filter(input => input.value == option.dataset.appointmentId).length;
       const newCount = baseCount + formCount;
 
       option.innerHTML = newCount + " item" + ((newCount) !== 1 ? "s" : "");
