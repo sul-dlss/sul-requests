@@ -119,13 +119,13 @@ RSpec.describe PatronRequest do
     let(:folio_instance) { build(:scannable_holdings) }
 
     it 'returns the items with matching barcodes' do
-      request.patron_request_items.build(item_id: '1')
+      request.patron_request_items.build(item_id: '12345678')
       expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 123'))
     end
 
     it 'returns all the items with matching barcodes' do
-      request.patron_request_items.build(item_id: '1')
-      request.patron_request_items.build(item_id: '2')
+      request.patron_request_items.build(item_id: '12345678')
+      request.patron_request_items.build(item_id: '87654321')
 
       expect(request.selected_items).to contain_exactly(
         have_attributes(callnumber: 'ABC 321'),
@@ -134,7 +134,7 @@ RSpec.describe PatronRequest do
     end
 
     it 'returns items with matching item ids' do
-      request.patron_request_items.build(item_id: '2')
+      request.patron_request_items.build(item_id: '87654321')
       expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 321'))
     end
 
@@ -142,8 +142,8 @@ RSpec.describe PatronRequest do
       let(:attr) { { request_type: 'scan' } }
 
       it 'returns the first item' do
-        request.patron_request_items.build(barcode: '12345678')
-        request.patron_request_items.build(barcode: '87654321')
+        request.patron_request_items.build(item_id: '12345678')
+        request.patron_request_items.build(item_id: '87654321')
 
         expect(request.selected_items).to contain_exactly(have_attributes(callnumber: 'ABC 123'))
       end
@@ -331,7 +331,7 @@ RSpec.describe PatronRequest do
     context 'with a recall' do
       let(:folio_instance) { build(:checkedout_holdings) }
       let(:attr) do
-        { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', patron_request_items_attributes: [{ barcode: '87654321' }] }
+        { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', patron_request_items_attributes: [{ item_id: '87654321' }] }
       end
 
       it { is_expected.to be_requires_needed_date }
@@ -340,7 +340,7 @@ RSpec.describe PatronRequest do
     context 'with an ordinary item' do
       let(:folio_instance) { build(:checkedout_holdings) }
       let(:attr) do
-        { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', patron_request_items_attributes: [{ barcode: '12345678' }] }
+        { instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS', patron_request_items_attributes: [{ item_id: '12345678' }] }
       end
 
       it { is_expected.not_to be_requires_needed_date }

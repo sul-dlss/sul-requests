@@ -25,7 +25,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
     let(:request_type) { 'scan' }
     let(:patron_request_items_attributes) do
       [
-        { barcode: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info' }
+        { item_id: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info' }
       ]
     end
 
@@ -67,7 +67,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
       let(:request_type) { 'scan' }
       let(:patron_request_items_attributes) do
         [
-          { barcode: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info' }
+          { item_id: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info' }
         ]
       end
 
@@ -88,7 +88,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
       let(:request_type) { 'pickup' }
       let(:patron_request_items_attributes) do
         [
-          { barcode: '12345678', request_type: 'pickup', appointment_id: '99', additional_information: 'Some info' }
+          { item_id: '12345678', request_type: 'pickup', appointment_id: '99', additional_information: 'Some info' }
         ]
       end
 
@@ -107,7 +107,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
       let(:request_type) { 'pickup' }
       let(:patron_request_items_attributes) do
         [
-          { barcode: '12345678', request_type: 'pickup', appointment_id: '99', requested_pages: '23', for_publication: 'false',
+          { item_id: '12345678', request_type: 'pickup', appointment_id: '99', requested_pages: '23', for_publication: 'false',
             additional_information: 'info' }
         ]
       end
@@ -128,7 +128,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
       let(:request_type) { 'scan' }
       let(:patron_request_items_attributes) do
         [
-          { barcode: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info',
+          { item_id: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info',
             appointment_id: '99' }
         ]
       end
@@ -148,7 +148,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
       let(:request_type) { 'activity' }
       let(:patron_request_items_attributes) do
         [
-          { barcode: '12345678', additional_information: 'info' }
+          { item_id: '12345678', additional_information: 'info' }
         ]
       end
 
@@ -173,9 +173,9 @@ RSpec.describe SubmitAeonPatronRequestJob do
       end
       let(:patron_request_items_attributes) do
         [
-          { barcode: '111', request_type: 'scan', requested_pages: '1', for_publication: 'false', additional_information: 'first' },
-          { barcode: '222', request_type: 'scan', requested_pages: '2', for_publication: 'false', additional_information: 'second' },
-          { barcode: '333', request_type: 'scan', requested_pages: '3', for_publication: 'false', additional_information: 'third' }
+          { item_id: '111', request_type: 'scan', requested_pages: '1', for_publication: 'false', additional_information: 'first' },
+          { item_id: '222', request_type: 'scan', requested_pages: '2', for_publication: 'false', additional_information: 'second' },
+          { item_id: '333', request_type: 'scan', requested_pages: '3', for_publication: 'false', additional_information: 'third' }
         ]
       end
       let(:response) do
@@ -219,8 +219,8 @@ RSpec.describe SubmitAeonPatronRequestJob do
       let(:request_type) { 'scan' }
       let(:patron_request_items_attributes) do
         [
-          { barcode: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info' },
-          { barcode: '87654321', request_type: 'scan', requested_pages: '32', for_publication: 'true', additional_information: 'more info' }
+          { item_id: '12345678', request_type: 'scan', requested_pages: '23', for_publication: 'false', additional_information: 'info' },
+          { item_id: '87654321', request_type: 'scan', requested_pages: '32', for_publication: 'true', additional_information: 'more info' }
         ]
       end
 

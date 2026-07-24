@@ -18,12 +18,9 @@ class PatronRequestItem < ApplicationRecord
     :title, :hierarchy, :for_publication, :requested_pages, :additional_information, :appointment_id, :activity_ids
   ], coder: JSON
 
-  def item_id=(value)
-    super
-    update_item_metadata
-  end
+  before_save :update_item_metadata, if: -> { item_id_changed? || patron_request_id_changed? }
 
-  def patron_request=(value)
+  def item_id=(value)
     super
     update_item_metadata
   end
