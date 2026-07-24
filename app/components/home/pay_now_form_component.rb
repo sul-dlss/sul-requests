@@ -5,7 +5,7 @@ module Home
   class PayNowFormComponent < ViewComponent::Base
     attr_reader :fines, :balance, :patron_key, :button_class
 
-    def initialize(fines:, balance:, patron_key:, button_class: 'btn btn-sm btn-secondary')
+    def initialize(fines:, balance:, patron_key:, button_class: 'btn btn-sm btn-cardinal')
       @fines = fines
       @balance = balance
       @patron_key = patron_key

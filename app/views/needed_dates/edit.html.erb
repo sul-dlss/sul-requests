@@ -5,6 +5,6 @@
                 schedule: DatePicker::LibrarySchedule.new(library: f.object.pickup_service_point.library,
                                                          min: f.object.earliest_delivery_estimate['date'])) %>
     <%= f.submit 'ok', class: 'btn btn-primary' %>
-    <%= link_to 'cancel', patron_request_needed_date_path(@patron_request), class: 'btn btn-secondary' %>
+    <%= link_to 'cancel', patron_request_needed_date_path(@patron_request), class: 'btn btn-cardinal' %>
   <% end %>
 <% end %>

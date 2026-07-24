@@ -30,7 +30,7 @@
   <div id="additional-information" class="mb-2" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
     <%= f.label :aeon_reading_special, 'Additional information', :class => 'fw-bold py-2' %>
     <%= f.text_area :aeon_reading_special, :class => 'form-control', rows: 3, maxlength: 255, data: { action: "input->char-counter#updateCharCounter"} %>
-    <p class="form-text text-secondary d-flex justify-content-between">
+    <p class="form-text text-cardinal d-flex justify-content-between">
       <span>Limit 255 characters.</span>
       <span class="fs-14" data-char-counter-target="counter"></span>
     </p>
