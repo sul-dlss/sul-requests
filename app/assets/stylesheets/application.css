@@ -461,11 +461,6 @@ summary .disclosure-icon::before {
   .hide-when-1-item {
     display: none;
   }
-
-  .accordion-item:only-child .digitization-title {
-    flex-direction: row;
-    align-items: center;
-  }
 }
 
 #reading:not(:has(.appointments-item)) #additional-information {
@@ -535,6 +530,11 @@ summary .disclosure-icon::before {
 
       .create-appointment-section {
         display: block !important;
+      }
+
+      .digitization-title {
+        flex-direction: row;
+        align-items: center;
       }
     }
   }
