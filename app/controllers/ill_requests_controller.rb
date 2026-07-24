@@ -4,9 +4,13 @@
 class IllRequestsController < ApplicationController
   include FolioController
 
+  layout 'application_redesign'
+
   before_action :authenticate_user!
 
   before_action :load_requests
+  before_action :load_request, only: [:destroy, :edit, :update]
+  before_action :set_variant, only: [:edit]
 
   # Renders user requests from ILL sources
   #
@@ -19,6 +23,8 @@ class IllRequestsController < ApplicationController
   def new
     authorize! :create, Illiad::Request
   end
+
+  def edit; end
 
   def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     authorize! :create, Illiad::Request
@@ -46,8 +52,16 @@ class IllRequestsController < ApplicationController
     redirect_to root_path, notice: 'Your request has been submitted to Interlibrary Loan.'
   end
 
+  def update
+    authorize! :update, @request
+    IlbMailer.updated_ilb_notification(current_patron, @request, updated_fields).deliver_now unless updated_fields.empty?
+    respond_to do |format|
+      format.html { redirect_to unified_requests_path, notice: 'Request updated successfully' }
+      format.turbo_stream
+    end
+  end
+
   def destroy
-    load_request
     authorize! :destroy, @request
     @response = illiad_client.update_request_route(transaction_number: @request.id, status: Settings.illiad.cancelled_by_user)
     respond_to do |format|
@@ -57,6 +71,10 @@ class IllRequestsController < ApplicationController
   end
 
   private
+
+  def updated_fields
+    update_params.to_h.compact_blank.filter { |param, value| @request.public_send(param)&.to_s&.strip != value.strip }
+  end
 
   def illiad_client
     @illiad_client ||= IlliadClient.new
@@ -81,6 +99,11 @@ class IllRequestsController < ApplicationController
     Date.parse(create_params[:not_wanted_after])
   rescue StandardError
     nil
+  end
+
+  def update_params
+    params.require(:illiad_request).permit(:not_wanted_after, :item_info4, :photo_article_title,
+                                           :photo_article_author, :photo_journal_inclusive_pages)
   end
 
   def create_params

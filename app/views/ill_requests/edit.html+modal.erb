@@ -1,0 +1,22 @@
+<%= turbo_frame_tag params[:modal] do %>
+  <div class="modal-header">
+    <h1 class="mb-0">Edit request</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+
+  <%= render 'edit_warning' %>
+  <%= form_for(@request, url: ill_request_path(@request.id), method: :patch) do |f| %>
+    <%= hidden_field_tag :modal, params[:modal] if params[:modal] %>
+    <div class="modal-body">
+      <% if @request.scan? %>
+        <%= render 'scan_form', f: %>
+      <% else %>
+        <%= render 'pickup_form', f: %>
+      <% end %>
+    </div>
+    <div class="modal-footer">
+      <%= link_to 'Cancel', class: 'btn btn-outline-primary', data: { 'bs-dismiss': 'modal' } %>
+      <%= f.submit 'Save', class: 'ms-2 btn btn-primary' %>
+    </div>
+  <% end %>
+<% end %>

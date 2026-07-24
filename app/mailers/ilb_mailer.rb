@@ -14,4 +14,16 @@ class IlbMailer < ApplicationMailer
       subject: 'ILLiad request problem, please remediate'
     )
   end
+
+  def updated_ilb_notification(patron, illiad_request, form_fields)
+    @patron = patron
+    @illiad_request = illiad_request
+    @form_fields = form_fields
+    mail(
+      to: Settings.illiad_email_address,
+      cc: patron.email,
+      from: Settings.libraries.default.contact_info.email,
+      subject: 'ILLiad request update, please remediate'
+    )
+  end
 end

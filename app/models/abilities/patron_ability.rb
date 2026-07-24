@@ -31,6 +31,9 @@ class PatronAbility
     can [:new, :create], PatronRequest, &:aeon_page?
 
     can [:new, :create], Illiad::Request
+    can [:update, :edit], Illiad::Request do
+      folio_patron.can_modify_requests?
+    end
 
     can [:destroy], Illiad::Request do |request|
       Settings.illiad.noncancellable_statuses.exclude?(request.status)
