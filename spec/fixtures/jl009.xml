@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:isbn:1-931666-22-9 https://www.loc.gov/ead/ead.xsd">
+  <eadheader countryencoding="iso3166-1" dateencoding="iso8601" findaidstatus="export-guide" langencoding="iso639-2b" repositoryencoding="iso15511">
+    <eadid countrycode="US" mainagencycode="US-CSt" url="https://archives.stanford.edu/findingaid/ark:/22236/s129b381d0-4278-4020-b885-d7aba5a9b4e1">jl009.xml</eadid>
+    <filedesc>
+      <titlestmt>
+        <titleproper type="filing">Schwabacher Company records</titleproper>
+        <titleproper>Guide to the Schwabacher Company Records <num>JL009</num></titleproper>
+      </titlestmt>
+      <publicationstmt>
+        <publisher>Department of Special Collections and University Archives</publisher>
+        <p>
+          <date>1999 ; revised 2018</date>
+        </p>
+        <address>
+          <addressline>Green Library</addressline>
+          <addressline>557 Escondido Mall</addressline>
+          <addressline>Stanford, California 94305-6064</addressline>
+          <addressline>specialcollections@stanford.edu</addressline>
+          <addressline>URL: <extptr xlink:href="https://library.stanford.edu/libraries/special-collections" xlink:show="new" xlink:title="https://library.stanford.edu/libraries/special-collections" xlink:type="simple"/></addressline>
+        </address>
+      </publicationstmt>
+    </filedesc>
+    <profiledesc>
+      <creation>This finding aid was produced using ArchivesSpace on <date>2026-06-18 00:00:43 -0700</date>.</creation>
+      <langusage>English</langusage>
+      <descrules>Describing Archives: A Content Standard</descrules>
+    </profiledesc>
+  </eadheader>
+  <archdesc level="collection">
+    <did>
+      <repository>
+        <corpname>Department of Special Collections and University Archives</corpname>
+      </repository>
+      <unittitle>Schwabacher Company records</unittitle>
+      <origination label="Creator">
+        <corpname rules="dacs" source="naf">Schwabacher Bros. &amp; Company (Seattle, Wash.)</corpname>
+      </origination>
+      <unitid>JL009</unitid>
+      <unitid type="ark">
+        <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s129b381d0-4278-4020-b885-d7aba5a9b4e1" xlink:show="new">Archival Resource Key</extref>
+      </unitid>
+      <unitid type="aspace_uri">/repositories/2/resources/152</unitid>
+      <physdesc altrender="whole">
+        <extent altrender="materialtype spaceoccupied">1.5 Linear Feet</extent>
+        <extent altrender="carrier">(3 boxes)</extent>
+      </physdesc>
+      <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1894/1944" type="inclusive">1894-1944</unitdate>
+      <abstract id="aspace_be0dd6646cc9ca2a75cd2f1c57efede8" label="Abstract">The Schwabacher Company records in this collection include records of several of the enterprises in Seattle, the Stockton Milling Company in Stockton, California, and of Schwabacher Bros. of San Francisco. There were many Schwabacher brothers and cousins, involved in the many companies bearing their name.</abstract>
+      <physloc id="aspace_f53b9036717978cd9c8c4b51b3f0b6b8" label="Collection Location">Special Collections and University Archives materials are stored offsite and must be paged three business days in advance. For more information on paging collections, see the department's website: https://library.stanford.edu/libraries/special-collections.</physloc>
+      <langmaterial>
+        <language langcode="eng">English</language>
+      </langmaterial>
+    </did>
+    <scopecontent id="aspace_53d9a88f930094677769a1d00164ab1e">
+      <head>Scope and Contents</head>
+      <p>The records and papers in the collection cover the dates 1894-1944, and consist of miscellaneous reports and letters concerning the Seattle enterprises (1910 and 1921-1923); accountant's reports and balance sheets for each of the four Seattle companies represented (1910-1933); minute book and cash book, as well as sundry agreements and correspondence for the Stockton Milling Company (1894-1920); and checkbooks and a trial balance for Schwabacher Bros. in San Francisco (1906-1944).</p>
+      <p>The Schwabacher company records in this collection include records of several of the enterprises in Seattle, the Stockton Milling Company in Stockton, California, and of Schwabacher Bros. of San Francisco. There were many Schwabacher brothers and cousins, involved in the many companies bearing their name. Following is a list of the companies represented in this collection and the member of the Schwabacher family apparently most closely connected with each:</p>
+      <list type="ordered">
+        <head>Missing Title</head>
+        <item>Schwabacher Bros. of San Francisco: investment brokers - Louis A. Schwabacher</item>
+        <item>Schwabacher Hardware Company, Seattle - Leo S. Schwabacher</item>
+        <item>Schwabacher Bros. &amp; Co. Inc., Seattle - Abraham Schwabacher</item>
+        <item>Schwabacher Realty Company, Seattle -</item>
+        <item>Gatzert-Schwabacher Land Company, Seattle - Frank or Sigmund Schwabacher</item>
+        <item>Stockton Milling Company-Stockton, California - Sigmund Schwabacher, president</item>
+      </list>
+    </scopecontent>
+    <arrangement id="aspace_1ccec8e6d91bb8eca82304f4ca8c43a2">
+      <head>System of Arrangement</head>
+      <p>The collection is arranged into three series:
+Series 1: Schwabacher Bros. of San Francisco, 1906-1944
+Series 2: Seattle Enterprises, 1909-1933
+Series 3: Stockton Milling Company, 1894-1920</p>
+    </arrangement>
+    <prefercite id="aspace_dc93246ccc2a36aaef1d75c72ae64842">
+      <head>Preferred Citation</head>
+      <p>[Identification of item] Schwabacher Company records (JL009), Department of Special Collections and University Archives, Stanford University Libraries, Stanford, Calif.</p>
+    </prefercite>
+    <custodhist id="aspace_5cd0f6a0f7d00eb50c383d3bc713cc71">
+      <head>Provenance</head>
+      <p>Gift of Sam I. Schwabacher, 1956.</p>
+    </custodhist>
+    <userestrict id="aspace_e93f08b98aef5af9bb36c04fff31a703">
+      <head>Conditions Governing Use</head>
+      <p>While Special Collections is the owner of the physical and digital items, permission to examine collection materials is not an authorization to publish. These materials are made available for use in research, teaching, and private study. Any transmission or reproduction beyond that allowed by fair use requires permission from the owners of rights, heir(s) or assigns. See: http://library.stanford.edu/spc/using-collections/permission-publish</p>
+    </userestrict>
+    <accessrestrict id="aspace_c3a73bb8e667d0d5e33dd9ada5ab5871">
+      <head>Conditions Governing Access</head>
+      <p>The collection is open for research. Note that material must be requested at least 36 hours in advance of intended use.</p>
+    </accessrestrict>
+    <relatedmaterial id="aspace_f98882dd181a01b6ef92192a4390d6d3">
+      <head>Related Materials</head>
+      <p>James Schwabacher Collection, ARS-0024, the Stanford Archive of Recorded Sound, Stanford University Libraries, Stanford, Calif.</p>
+    </relatedmaterial>
+    <controlaccess>
+      <subject source="lcsh">Business enterprises -- California.</subject>
+      <subject source="lcsh">Business records.</subject>
+    </controlaccess>
+    <dsc>
+      <c01 id="aspace_ref13_3pe" level="series">
+        <did>
+          <unittitle>Series 1: Schwabacher Bros. of San Francisco</unittitle>
+          <unitid type="ark">
+            <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1dfe7b4f8-11ba-4515-abab-4b5f9bee62b3" xlink:show="new">Archival Resource Key</extref>
+          </unitid>
+          <unitid type="aspace_uri">/repositories/2/archival_objects/6317</unitid>
+          <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1906/1944" type="inclusive">1906-1944</unitdate>
+          <langmaterial>
+            <language langcode="eng">English</language>
+          </langmaterial>
+        </did>
+        <c02 id="aspace_ref14_kbw" level="file">
+          <did>
+            <unittitle>Checkbook</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s133c5af0c-612e-49e1-b797-f2f256e0d4ae" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6318</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1941/1942" type="inclusive">1941-1942</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+            <container id="aspace_3ad271a8f3ecdc6fef169f2a3711a5b4" label="Mixed Materials [36105116873501]" type="Box">1</container>
+            <container id="aspace_2b993aabcff04eeb8970d8851b259459" parent="aspace_3ad271a8f3ecdc6fef169f2a3711a5b4" type="folder">1</container>
+          </did>
+        </c02>
+        <c02 id="aspace_ref15_tgv" level="file">
+          <did>
+            <unittitle>Checkbook</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s10a2472da-b445-40ca-be46-4a9acb9045c0" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6319</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce">1944</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+            <container id="aspace_a93b2bdb90a8f8e4eea428068be9ddd2" label="Mixed Materials [36105116873501]" type="Box">1</container>
+            <container id="aspace_1a84656690e6e464b28ffaf85144d32b" parent="aspace_a93b2bdb90a8f8e4eea428068be9ddd2" type="folder">2</container>
+          </did>
+        </c02>
+        <c02 id="aspace_ref16_70s" level="file">
+          <did>
+            <unittitle>Trial balance</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1872b6b6d-8297-4145-bc90-c531c5e84f30" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6320</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1906/1910" type="inclusive">1906-1910</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+            <container id="aspace_8158d7ce2f844a5d63b1d809e4d6f6a0" label="Mixed Materials [36105116873501]" type="Box">1</container>
+            <container id="aspace_336af2cd38a13be23e0db2c711cf63f7" parent="aspace_8158d7ce2f844a5d63b1d809e4d6f6a0" type="folder">3</container>
+          </did>
+        </c02>
+      </c01>
+      <c01 id="aspace_ref17_wyo" level="series">
+        <did>
+          <unittitle>Series 2: Seattle Enterprises</unittitle>
+          <unitid type="ark">
+            <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s15abf32c2-6192-4db0-8e14-3b2774562ffa" xlink:show="new">Archival Resource Key</extref>
+          </unitid>
+          <unitid type="aspace_uri">/repositories/2/archival_objects/6321</unitid>
+          <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1909/1933" type="inclusive">1909-1933</unitdate>
+          <langmaterial>
+            <language langcode="eng">English</language>
+          </langmaterial>
+        </did>
+        <c02 id="aspace_ref18_nui" level="subseries">
+          <did>
+            <unittitle>General Business</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1be911a7f-38df-48e2-9eb7-ae14c218d3c7" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6322</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1909/1923" type="inclusive">1909-1923</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+          </did>
+          <c03 id="aspace_ref19_zzz" level="file">
+            <did>
+              <unittitle>Miscellaneous letters and reports</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s12c7a4d2a-4d20-4e1e-ba12-4fa81c767584" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/6323</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1910/1923" type="inclusive">1910 and 1921-1923</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_fdc6cb213bd4047126fba9f53306a0ca" label="Mixed Materials [36105116873501]" type="Box">1</container>
+              <container id="aspace_06aad8af808434288a67109776bafede" parent="aspace_fdc6cb213bd4047126fba9f53306a0ca" type="folder">4</container>
+            </did>
+          </c03>
+          <c03 id="aspace_ref20_6gv" level="file">
+            <did>
+              <unittitle>Land assessment book</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s130c37154-4ac2-43ab-bb26-2380ad918438" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/6324</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1909/1911" type="inclusive">1909-1911</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_e9a2d0a2b34e91fbead114f03db13a38" label="Mixed Materials [36105116873501]" type="Box">1</container>
+              <container id="aspace_0fe3b0137618f6b6c3101c3371ed34c6" parent="aspace_e9a2d0a2b34e91fbead114f03db13a38" type="folder">5</container>
+            </did>
+          </c03>
+          <c03 id="aspace_ref21_4d9" level="file">
+            <did>
+              <unittitle>Maps and newspaper clippings</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1cbea763e-3cf9-4a44-891a-a97a69c3eb73" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/6325</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1914/1922" type="inclusive">1914-1922</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_a7a3f54816f8371321cd4d4b02cc2265" label="Mixed Materials [36105116873501]" type="Box">1</container>
+              <container id="aspace_b3a881f66d3b223a920b2f44dd58c954" parent="aspace_a7a3f54816f8371321cd4d4b02cc2265" type="folder">6</container>
+            </did>
+          </c03>
+          <c03 id="aspace_ref22_3ox" level="file">
+            <did>
+              <unittitle>Tax evaluations</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s194df8db6-f4fa-4823-93ab-06c45b3f16c6" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/6326</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1910/1921" type="inclusive">1910-1921</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_352c1f8cdd14c4ed4b63a5de5d71cde7" label="Mixed Materials [36105116873501]" type="Box">1</container>
+              <container id="aspace_f117f6aa10c1a84bc14bec877ff17a90" parent="aspace_352c1f8cdd14c4ed4b63a5de5d71cde7" type="folder">7</container>
+            </did>
+          </c03>
+        </c02>
+        <c02 id="aspace_ref23_u9b" level="subseries">
+          <did>
+            <unittitle>Schwabacher Realty Company</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s11e555001-cacc-46c5-a506-dad2c86c4661" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6327</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1913/1927" type="inclusive">1913-1927</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+          </did>
+          <c03 id="aspace_ref24_vvl" level="file">
+            <did>
+              <unittitle>Reports and accounts (balance sheets, report on audit)</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s11bfb1368-ef94-4e2b-938f-1f465659aaed" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/6328</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1913/1927" type="inclusive">1913-1927</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_79095b17fd00d57b3bebc779a939523b" label="Mixed Materials [36105116873501]" type="Box">1</container>
+              <container id="aspace_8587484879774cb9aa71321e50518508" parent="aspace_79095b17fd00d57b3bebc779a939523b" type="folder">8</container>
+            </did>
+          </c03>
+        </c02>
+        <c02 id="aspace_ref25_rma" level="subseries">
+          <did>
+            <unittitle>Schwabacher Bros. &amp; Company</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s170190bc5-41b1-4b97-9428-924004b39354" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6329</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1910/1927" type="inclusive">1910-1927</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+          </did>
+          <c03 id="aspace_ref26_4br" level="file">
+            <did>
+              <unittitle>Accountant's reports</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1ecf778cc-b575-4e0f-b10e-5a226ea109aa" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/6330</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce">1910</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_e2a64460b4924b2ad3e89a00baf4f1ec" label="Mixed Materials [36105116873485]" type="Box">2</container>
+              <container id="aspace_512d21bc1d040fa44ebaffbb5cf10b84" parent="aspace_e2a64460b4924b2ad3e89a00baf4f1ec" type="folder">1</container>
+            </did>
+          </c03>
+          <c03 id="aspace_ref27_uih" level="file">
+            <did>
+              <unittitle>Reports and accounts (balance sheets)</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1be59d958-14bf-4f13-93ba-c987dedd431a" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/6331</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1912/1927" type="inclusive">1912-1927</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_c8865a3bfb21d8b6a15bd1542fc1e47d" label="Mixed Materials [36105116873485]" type="Box">2</container>
+              <container id="aspace_76e784b30ac8e2bb125712484bcf9eea" parent="aspace_c8865a3bfb21d8b6a15bd1542fc1e47d" type="folder">2</container>
+            </did>
+          </c03>
+        </c02>
+        <c02 id="aspace_ref28_i4i" level="subseries">
+          <did>
+            <unittitle>Schwabacher Hardware Company</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1432bdfbe-1bf0-457e-a371-0edb3279b30f" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6332</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1910/1928" type="inclusive">1910-1928</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+          </did>
+          <c03 id="aspace_ref29_2us" level="file">
+            <did>
+              <unittitle>Accountant's reports</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s11fea3bc2-99a0-404b-9aef-65448a718558" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/6333</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce">1910</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_1024e3953ec4546ad5d4c573553cd58c" label="Mixed Materials [36105116873485]" type="Box">2</container>
+              <container id="aspace_2b237a8c3358ccbae29060b495bf79b1" parent="aspace_1024e3953ec4546ad5d4c573553cd58c" type="folder">3</container>
+            </did>
+          </c03>
+          <c03 id="aspace_ref30_z3m" level="file">
+            <did>
+              <unittitle>Reports and accounts (balance sheets)</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s12bccd723-c987-439b-ad30-ce1f48367a64" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/6334</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1912/1920" type="inclusive">1912-1920</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_e723a4a3032a599a7c14d61cf726eacc" label="Mixed Materials [36105116873485]" type="Box">2</container>
+              <container id="aspace_bc7c16468842fdabe654ddae60f2357e" parent="aspace_e723a4a3032a599a7c14d61cf726eacc" type="folder">4</container>
+            </did>
+          </c03>
+          <c03 id="aspace_6bbbee87bb318f10351639110f93eb7b" level="file">
+            <did>
+              <unittitle>Reports and accounts (balance sheets)</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s17e612b05-fb79-4d5f-abb9-1421737fe99f" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/1082055</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1921/1928" type="inclusive">1921-1928</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_f69a4c725d38a0296c04eb00855aaf8a" label="Mixed Materials [36105116873485]" type="Box">2</container>
+              <container id="aspace_41818f3cec8b7b1131402a49529e1a95" parent="aspace_f69a4c725d38a0296c04eb00855aaf8a" type="folder">5</container>
+            </did>
+          </c03>
+        </c02>
+        <c02 id="aspace_ref31_0k3" level="subseries">
+          <did>
+            <unittitle>Gatzert-Schwabacher Land Company</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s17191031b-4fe2-4120-9797-4e5038add16c" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6335</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1910/1933" type="inclusive">1910-1933</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+          </did>
+          <c03 id="aspace_ref32_81a" level="file">
+            <did>
+              <unittitle>Accountant's report</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s152a0702e-0c38-4a62-a432-3b6ea6ba5964" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/6336</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce">1910</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_c42c2d38f8f91753d612971e14df2501" label="Mixed Materials [36105116873485]" type="Box">2</container>
+              <container id="aspace_e74f7c715dd9beed205a0a3da9efefa8" parent="aspace_c42c2d38f8f91753d612971e14df2501" type="folder">6</container>
+            </did>
+          </c03>
+          <c03 id="aspace_ref33_g4r" level="file">
+            <did>
+              <unittitle>Reports and accounts (balance sheets, report on audit)</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1cdef249a-cc23-4326-ad89-eaf57d978dda" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/6337</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1914/1921" type="inclusive">1914-1921</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_37c05a5bf7dfe58545269a327aecbd4e" label="Mixed Materials [36105116873485]" type="Box">2</container>
+              <container id="aspace_401ccdcd40be6d31e3d1f538cf4e418d" parent="aspace_37c05a5bf7dfe58545269a327aecbd4e" type="folder">7</container>
+            </did>
+          </c03>
+          <c03 id="aspace_7dea6bef224eb70c7b25fa7ef5b6a003" level="file">
+            <did>
+              <unittitle>Reports and accounts (balance sheets, report on audit)</unittitle>
+              <unitid type="ark">
+                <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1d4d565f5-12a2-427b-8ae2-29ad2e4bb768" xlink:show="new">Archival Resource Key</extref>
+              </unitid>
+              <unitid type="aspace_uri">/repositories/2/archival_objects/1082056</unitid>
+              <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1914/1933" type="inclusive">1914-1933</unitdate>
+              <langmaterial>
+                <language langcode="eng">English</language>
+              </langmaterial>
+              <container id="aspace_da3b45ace6c12e4de5493213a9f13d0d" label="Mixed Materials [36105116873485]" type="Box">2</container>
+              <container id="aspace_e15e6e297eeb096c8099efedbf555e2f" parent="aspace_da3b45ace6c12e4de5493213a9f13d0d" type="folder">8</container>
+            </did>
+          </c03>
+        </c02>
+      </c01>
+      <c01 id="aspace_ref34_2oq" level="series">
+        <did>
+          <unittitle>Series 3: Stockton Milling Company</unittitle>
+          <unitid type="ark">
+            <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s18f81e327-6a80-4fa3-a836-c841a3bc31b2" xlink:show="new">Archival Resource Key</extref>
+          </unitid>
+          <unitid type="aspace_uri">/repositories/2/archival_objects/6338</unitid>
+          <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1894/1920" type="inclusive">1894-1920</unitdate>
+          <langmaterial>
+            <language langcode="eng">English</language>
+          </langmaterial>
+        </did>
+        <c02 id="aspace_ref35_lie" level="file">
+          <did>
+            <unittitle>Minute book</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1f2e423a7-05a3-419d-858b-02e82e68946e" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6339</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1906/1919" type="inclusive">1906-1919</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+            <container id="aspace_b45e070a07bd98a066ecbe4e62d946c2" label="Mixed Materials [36105116873493]" type="Box">3</container>
+            <container id="aspace_c683b4dcc10c9daf12f56c12796603fe" parent="aspace_b45e070a07bd98a066ecbe4e62d946c2" type="folder">1</container>
+          </did>
+        </c02>
+        <c02 id="aspace_ref36_ad0" level="file">
+          <did>
+            <unittitle>Cash book</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s19ebebf27-8f0b-42cd-8d25-5a73e0ea714e" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6340</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1910/1920" type="inclusive">1910-1920</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+            <container id="aspace_1c7830ca6a1b211ac353fe5dc328500a" label="Mixed Materials [36105116873493]" type="Box">3</container>
+            <container id="aspace_9cfbc762029f537cc2901194e708e1df" parent="aspace_1c7830ca6a1b211ac353fe5dc328500a" type="folder">2</container>
+          </did>
+        </c02>
+        <c02 id="aspace_ref37_pha" level="file">
+          <did>
+            <unittitle>Crown Flour Mills Company</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s14086e6e6-3c23-42e3-bfad-ff6d14a09a2f" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6341</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1910/1916" type="inclusive">1910-1916</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+            <container id="aspace_fb2b19328c23531c6dec4ae3174f0cff" label="Mixed Materials [36105116873493]" type="Box">3</container>
+            <container id="aspace_f1131341bf6d6176ee8b16ae5c2e5157" parent="aspace_fb2b19328c23531c6dec4ae3174f0cff" type="folder">3</container>
+          </did>
+          <scopecontent id="aspace_83a36e8a4b1c9a94d57c5566dd2239ea">
+            <head>Scope and Contents</head>
+            <p>Includes Agreement with Stockton Milling Company Correspondence, 1910.</p>
+          </scopecontent>
+        </c02>
+        <c02 id="aspace_ref39_rac" level="file">
+          <did>
+            <unittitle>Alsop Process Company -vs- Stockton Milling Co.</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s163c7ad12-248e-4331-b499-5c5ab1017b29" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6343</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce">1908</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+            <container id="aspace_8a1787466e8a69b2f5219b3f0756de64" label="Mixed Materials [36105116873493]" type="Box">3</container>
+            <container id="aspace_fd9c8e8157711f8d181127f0c2b4842d" parent="aspace_8a1787466e8a69b2f5219b3f0756de64" type="folder">4</container>
+          </did>
+          <scopecontent id="aspace_ae8ca50d5091a17d18aceb326ec6058e">
+            <head>Scope and Contents</head>
+            <p>Includes correspondence and charts.</p>
+          </scopecontent>
+        </c02>
+        <c02 id="aspace_ref42_tly" level="file">
+          <did>
+            <unittitle>Tax receipts</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1c40d60b9-9e95-42a6-bfa7-ce9522376d58" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6346</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1910/1916" type="inclusive">1910-1916</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+            <container id="aspace_8fd23b971f42564c64ba8537c451d473" label="Mixed Materials [36105116873493]" type="Box">3</container>
+            <container id="aspace_5975fa1d4648eaa2af300b8c7bcf648f" parent="aspace_8fd23b971f42564c64ba8537c451d473" type="folder">5</container>
+          </did>
+        </c02>
+        <c02 id="aspace_ref43_5wt" level="file">
+          <did>
+            <unittitle>Promissory notes and invoices</unittitle>
+            <unitid type="ark">
+              <extref xlink:actuate="onLoad" xlink:href="https://archives.stanford.edu/findingaid/ark:/22236/s1921e9cd9-9960-44fb-9ce5-1a8ae1ef13ce" xlink:show="new">Archival Resource Key</extref>
+            </unitid>
+            <unitid type="aspace_uri">/repositories/2/archival_objects/6347</unitid>
+            <unitdate calendar="gregorian" datechar="creation" era="ce" normal="1894/1915" type="inclusive">1894-1915</unitdate>
+            <langmaterial>
+              <language langcode="eng">English</language>
+            </langmaterial>
+            <container id="aspace_a451cbb8a90b431e406bf5968f9a8b62" label="Mixed Materials [36105116873493]" type="Box">3</container>
+            <container id="aspace_04ac4565af841a5cac2b7f6b8f496ea4" parent="aspace_a451cbb8a90b431e406bf5968f9a8b62" type="folder">6</container>
+          </did>
+        </c02>
+      </c01>
+    </dsc>
+  </archdesc>
+</ead>

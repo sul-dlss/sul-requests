@@ -621,6 +621,40 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     end
   end
 
+  context 'with an EAD with barcode information' do
+    let(:eadxml) do
+      Nokogiri::XML(File.read('spec/fixtures/jl009.xml')).tap(&:remove_namespaces!)
+    end
+
+    it 'includes the barcode in the Aeon request' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+      choose 'Reading room appointment'
+      click_button 'Continue'
+
+      click_link 'Series 1'
+      check 'Box 1'
+      click_button 'Continue'
+
+      click_button 'Save for later'
+      click_button 'Submit request'
+
+      expect(page).to have_css('.confirmation')
+
+      expect do
+        perform_enqueued_jobs
+      end.to change(StubAeonClient::Request, :count).by(1)
+      expect(PatronRequest.last.patron_request_items.length).to eq 1
+
+      expect(StubAeonClient::Request.last).to have_attributes(
+        callNumber: a_string_starting_with('JL009'),
+        itemNumber: '36105116873501',
+        itemVolume: 'Box 1',
+        username: user.email_address,
+        site: 'SPECUA'
+      )
+    end
+  end
+
   context 'with single item ead' do
     let(:eadxml) do
       Nokogiri::XML(File.read('spec/fixtures/a0112.xml')).tap(&:remove_namespaces!)
