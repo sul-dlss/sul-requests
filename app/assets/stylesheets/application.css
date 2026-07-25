@@ -991,6 +991,10 @@ main:not(:has(#requests li, turbo-frame[busy])) .no-requests {
 }
 
 #saved_for_later_aeon_requests_sidebar .request {
+  &:has(.dropdown-toggle.show) {
+    z-index: 5;
+  }
+
   --bs-list-group-item-padding-x: 0;
   margin-inline-start: -1rem;
   margin-inline-end: -1rem;
