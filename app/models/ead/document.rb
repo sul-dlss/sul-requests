@@ -206,6 +206,8 @@ module Ead
         top_container || object_id
       end
 
+      def barcode; end
+
       private
 
       def child_components
@@ -226,7 +228,7 @@ module Ead
         Card-Box Flatbox-Small Flatbox-Large Disc Binder
       ].freeze
 
-      Container = Data.define(:type, :value)
+      Container = Data.define(:type, :value, :label)
 
       def digital_content?
         node.xpath('did/dao').any?
@@ -248,6 +250,12 @@ module Ead
         containers&.find { |c| c.type == 'Folder' }&.value
       end
 
+      def barcode
+        label = containers&.find(&:label)&.label
+
+        label&.scan(/36105\d+/)&.first
+      end
+
       def top_container
         return nil unless containers
 
@@ -266,7 +274,8 @@ module Ead
           container_nodes.map do |container|
             Container.new(
               type: container['type']&.capitalize,
-              value: container.text.strip
+              value: container.text.strip,
+              label: container['label']&.strip
             )
           end
         end

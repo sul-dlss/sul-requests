@@ -159,7 +159,7 @@ class PatronRequestsController < ApplicationController
 
   def patron_request_params
     aeon_term_params = params.dig(:patron_request, :aeon_item)&.keys&.index_with do
-      [:id, :title, :appointment_id, :for_publication, :requested_pages, :additional_information, { hierarchy: [] }]
+      [:id, :barcode, :title, :appointment_id, :for_publication, :requested_pages, :additional_information, { hierarchy: [] }]
     end
 
     orig_params = params.expect(patron_request: [:patron_email, :instance_hrid,
@@ -178,6 +178,7 @@ class PatronRequestsController < ApplicationController
       item_params = patron_request_params[:aeon_item].values.map do |item|
         {
           item_id: item[:id],
+          barcode: item[:barcode],
           ead_url: patron_request_params[:ead_url],
           request_type: patron_request_params[:request_type],
           title: item[:title],

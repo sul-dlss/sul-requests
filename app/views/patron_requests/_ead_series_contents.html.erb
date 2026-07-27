@@ -39,6 +39,7 @@
             <%= f.hidden_field :hierarchy, multiple: true, disabled: !checked, value: title, data: { toggle: true } %>
           <% end %>
           <%= f.hidden_field :title, disabled: !checked, value: display_group.title, data: { toggle: true } %>
+          <%= f.hidden_field :barcode, disabled: !checked, value: display_group.barcode, data: { toggle: true } %>
         <% end %>
       <% end %>
       <div class="flex-grow-1">
