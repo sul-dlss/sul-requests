@@ -196,7 +196,7 @@
   </li>
 </template>
 <!-- View container contents modal -->
-<%= render ModalComponent.new(id: "view-container-contents", data: {view_container_contents_target: "viewModal"}) do |component| %>
+<%= render ModalComponent.new(id: "view-container-contents", data: {view_container_contents_target: "viewModal"}, size: :lg) do |component| %>
   <% component.with_title.with_content('Contents') %>
   <% component.with_banner do %>
     <div data-view-container-contents-target="banner" class="banner"></div>
