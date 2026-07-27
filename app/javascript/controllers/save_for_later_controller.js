@@ -77,6 +77,7 @@ export default class extends Controller {
     const clone = this.savedItemTemplateTarget.content.cloneNode(true)
     const li = clone.querySelector('li')
 
+    li.dataset.savedForLater = true
     li.dataset.contentId = id
     li.querySelector('[data-role="title"]').innerHTML = title.innerHTML
     li.innerHTML = li.innerHTML.replaceAll('__ID__', id)

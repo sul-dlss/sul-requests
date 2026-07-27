@@ -138,6 +138,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
         click_button appointment_start_time.strftime('%b %-d')
       end
       expect(page).to have_css '.badge', text: '1 item'
+      expect(page).to have_css '[data-status-counter-target="counter"]', text: '1 ready to submit'
 
       # Submit disabled: second item has no appointment
       expect(page).to have_button('Submit request', disabled: true)
@@ -191,6 +192,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       check 'Box 13'
       click_button 'Continue'
 
+      expect(page).to have_css '[data-status-counter-target="counter"]', text: '0 ready to submit'
+
       within('[data-content-id]', text: 'Box 12') do
         click_button 'Select appointment'
         click_button appointment_start_time.strftime('%b %-d')
@@ -222,6 +225,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_button 'Continue'
       expect(page).to have_css('.saved-item', text: 'Box 13')
 
+      expect(page).to have_css '[data-status-counter-target="counter"]', text: '1 ready to submit'
       # Submit is enabled because Box 12 has an appointment and Box 13 is saved
       expect(page).to have_button('Submit request', disabled: false)
     end

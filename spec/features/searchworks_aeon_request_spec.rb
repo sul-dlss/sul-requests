@@ -143,6 +143,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       click_button 'Save for later'
       expect(page).to have_css('.saved-item', text: 'ABC 321')
+      expect(page).to have_css '[data-status-counter-target="counter"]', text: '1 saved for later'
 
       click_button 'Undo'
 
