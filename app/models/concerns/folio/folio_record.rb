@@ -30,7 +30,11 @@ module Folio
     end
 
     def full_call_number
-      [call_number, volume, enumeration, chronology].compact.join(' ')
+      [call_number, vol_enum_chron].compact_blank.join(' ')
+    end
+
+    def vol_enum_chron
+      [volume, enumeration, chronology].compact_blank.join(' ')
     end
 
     def volume

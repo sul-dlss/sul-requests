@@ -72,6 +72,7 @@ class FolioRequestsController < ApplicationController
 
   def load_requests
     @requests = patron_or_group.requests.sort_by { |request| request.sort_key(:date) }
+    @grouped_requests = Folio::RequestGrouping.from_requests(@requests)
   end
 
   def load_request

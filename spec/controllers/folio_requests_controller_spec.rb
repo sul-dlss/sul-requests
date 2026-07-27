@@ -26,7 +26,7 @@ RSpec.describe FolioRequestsController do
 
     let(:requests) do
       [
-        instance_double(Folio::Request, key: '1', sort_key: nil)
+        instance_double(Folio::Request, key: '1', sort_key: nil, catkey: 'a12345', full_call_number: '1234')
       ]
     end
 
@@ -50,7 +50,7 @@ RSpec.describe FolioRequestsController do
       let(:api_response) { instance_double(Faraday::Response, status: 204) }
 
       let(:requests) do
-        [instance_double(Folio::Request, key: '123', sort_key: nil, record: {})]
+        [instance_double(Folio::Request, key: '123', sort_key: nil, record: {}, catkey: 'a12345', full_call_number: '1234')]
       end
 
       let(:mock_client) { instance_double(FolioClient, ping: true) }
@@ -107,7 +107,7 @@ RSpec.describe FolioRequestsController do
       let(:mock_client) { instance_double(FolioClient, cancel_request: api_response, ping: true) }
 
       let(:requests) do
-        [instance_double(Folio::Request, key: '123', sort_key: nil)]
+        [instance_double(Folio::Request, key: '123', sort_key: nil, catkey: 'a1234', full_call_number: '1234')]
       end
 
       before do
