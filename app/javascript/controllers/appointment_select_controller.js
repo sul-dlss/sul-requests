@@ -21,12 +21,21 @@ export default class extends Controller {
     if (!this.element.closest('#reading-accordion')) return;
     this.element.querySelectorAll('[data-count]').forEach(option => {
       const baseCount = parseInt(option.dataset.count);
+      const limit = option.dataset.limit ? parseInt(option.dataset.limit) : 0;
 
       const formCount = this.element.closest('#reading-accordion').querySelectorAll("input[value='" + option.dataset.appointmentId + "']").length;
 
       const newCount = baseCount + formCount;
 
       option.innerHTML = newCount + " item" + ((newCount) !== 1 ? "s" : "");
+
+      if (limit && newCount >= limit) {
+        if (option.closest('.dropdown-menu')) option.closest('button').disabled = true;
+        option.classList.add(option.dataset.limitClass);
+      } else {
+        if (option.closest('.dropdown-menu')) option.closest('button').disabled = false;
+        option.classList.remove(option.dataset.limitClass);
+      }
     });
   }
 
