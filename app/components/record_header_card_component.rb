@@ -2,12 +2,12 @@
 
 # Render page metadata in a card wrapper
 class RecordHeaderCardComponent < RecordHeaderComponent
+  attr_reader :classes
+
   def initialize(classes: 'bg-light rounded-0 mb-4', **)
     @classes = classes
     super(**)
   end
-
-  attr_reader :classes
 
   def call
     tag.div(class: "card border-0 #{classes}") do

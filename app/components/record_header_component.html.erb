@@ -1,4 +1,4 @@
-<%= tag.h2 record.title || 'Not available', class: @title_classes %>
+<%= tag.public_send title_tag, record.title || 'Not available', class: @title_classes %>
 <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
   <span>
     <%= render FormatIndicatorComponent.new(record: record) %><% if record.date.present? %> (<%= record.date %>)<% end %>
