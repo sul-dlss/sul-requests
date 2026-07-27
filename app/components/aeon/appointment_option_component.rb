@@ -6,6 +6,8 @@ module Aeon
     with_collection_parameter :appointment
     attr_reader :appointment, :name, :data_action
 
+    delegate :item_limit, to: :appointment
+
     def initialize(appointment:, name: nil, data: {}, data_action: nil)
       @appointment = appointment
       @name = name
@@ -14,7 +16,9 @@ module Aeon
     end
 
     def at_limit?
-      appointment.requests.count >= (appointment.item_limit || 100)
+      return false unless item_limit
+
+      appointment.requests.count >= item_limit
     end
   end
 end
