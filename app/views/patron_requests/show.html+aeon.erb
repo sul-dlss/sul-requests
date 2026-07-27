@@ -9,7 +9,7 @@
       <h1>We received your reading room access request!</h1>
       <div class="bg-light p-2 fs-5 mb-4">Please review Reading room policies before arriving for your appointment.</div>
     <% end %>
-    <%= render RecordHeaderCardComponent.new(record: @patron_request.bib_record, classes: 'mt-4 mb-4', title_classes: ['h3']) %>
+    <%= render RecordHeaderCardComponent.new(record: @patron_request.bib_record, classes: 'bg-light mt-4 mb-4 px-2 py-3 rounded-0', title_classes: ['h3']) %>
     <div data-controller="aeon-confirmation-poll" data-aeon-confirmation-poll-attempts-value="0">
       <turbo-frame id="aeon-confirmation" data-aeon-confirmation-poll-target="frame">
         <% if @patron_request.submitted_to_aeon_at.nil? && !params[:stop_polling] %>
