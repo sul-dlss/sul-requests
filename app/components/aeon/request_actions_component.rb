@@ -5,22 +5,12 @@ module Aeon
   class RequestActionsComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :appointment, :digital?, :title, :transaction_number, to: :request
-
     def initialize(request:)
       @request = request
     end
 
     def render?
       !request.completed?
-    end
-
-    def request_type
-      if digital?
-        'Digitization'
-      else
-        'Reading room use'
-      end
     end
 
     def include_bulk_actions?

@@ -4,7 +4,9 @@
 
       <turbo-frame>
         <% if request.activity? %>
-          <%= render Aeon::RemoveFromActivityButtonComponent.new(request:) %>
+          <div class="px-2 py-1">
+            <%= render Aeon::RequestDeleteButtonComponent.new(request:) %>
+          </div>
         <% else %>
           <%= render Aeon::SaveForLaterButtonComponent.new(request:) %>
         <% end %>
