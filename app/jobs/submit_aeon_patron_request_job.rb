@@ -91,6 +91,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       item_number: item.barcode,
       item_info4: patron_request.ead_doc.conditions_governing_access,
       item_volume: item.title,
+      location: origin_location_code_from_folio(item),
       web_request_form: 'multiple'
     )
   end
@@ -137,5 +138,15 @@ class SubmitAeonPatronRequestJob < ApplicationJob
 
     failures.each { |failure| Honeybadger.notify(failure) }
     raise SubmissionFailure.new(patron_request, failures.size)
+  end
+
+  def origin_location_code_from_folio(item)
+    return unless item.barcode
+
+    folio_item = FolioGraphqlClient.new.circ_check(barcode: item.barcode)
+    folio_item&.dig('data', 'items', 0, 'effectiveLocation', 'code')
+  rescue StandardError => e
+    Honeybadger.notify(e, context: { patron_request_item_id: item.id, barcode: item.barcode })
+    nil
   end
 end
