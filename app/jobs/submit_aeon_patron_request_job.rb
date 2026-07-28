@@ -72,6 +72,7 @@ class SubmitAeonPatronRequestJob < ApplicationJob
       item_date: patron_request.date,
       item_info1: patron_request.view_url,
       item_info5: (item.requested_pages if item.request_type == 'scan'),
+      item_number: item.barcode,
       item_title: patron_request.item_title,
       reference_number: patron_request.to_global_id.to_s,
       shipping_option: patron_request.request_type == 'scan' ? 'Electronic Delivery' : nil,
@@ -88,7 +89,6 @@ class SubmitAeonPatronRequestJob < ApplicationJob
     common_aeon_data_from_patron_request(patron_request, item, activity_id).with(
       call_number: "#{patron_request.ead_doc.identifier} #{item.hierarchy&.first}",
       ead_number: patron_request.ead_doc.identifier,
-      item_number: item.barcode,
       item_info4: patron_request.ead_doc.conditions_governing_access,
       item_volume: item.title,
       location: origin_location_code_from_folio(item),
@@ -102,7 +102,6 @@ class SubmitAeonPatronRequestJob < ApplicationJob
   def as_aeon_create_request_data(patron_request, item, activity_id)
     common_aeon_data_from_patron_request(patron_request, item, activity_id).with(
       call_number: item.item_callnumber,
-      item_number: item.barcode,
       location: item.origin_location_code || patron_request.origin_location_code,
       web_request_form: patron_request.selectable_items.many? ? 'multiple' : 'single'
     )
