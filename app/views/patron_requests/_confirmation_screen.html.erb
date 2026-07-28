@@ -3,19 +3,12 @@
   <div class="confirmation col-12 col-lg-8">
     <h1>We received your <%= @patron_request.request_type == 'scan' ? 'digital scan' : (@patron_request.mediateable? || @patron_request.aeon_page?) ? '' : 'pickup' %> request!</h1>
     <%= render RecordHeaderCardComponent.new(record: @patron_request.bib_record, classes: 'bg-light mt-4 mb-4 p-4 rounded-0', title_classes: ['h3']) %>
-    <div class="lead">
-            <%= yield %>
-
-            <% if @patron_request.request_type == 'scan' %>
-                We'll notify you by email once your scan request is ready. Remember to download the PDF within 30 days of notification.
-            <% else %>
-                <% if @patron_request.mediateable? %>
-                    A librarian will review and approve your request for restricted-use materials, or contact you.
-                    Approvals typically happen 1-3 business days before your planned visit date.
-                <% end %>
-                You will receive an email when the <%= @patron_request.patron_request_items.one? ?  'item is' : 'items are' %> ready.
-            <% end %>
-        </div>
+    <div>
+      <% if @patron_request.mediateable? %>
+        A librarian will review and approve your request for restricted-use materials, or contact you.
+        Approvals typically happen 1-3 business days before your planned visit date.
+      <% end %>
+    </div>
 
         <hr>
 
