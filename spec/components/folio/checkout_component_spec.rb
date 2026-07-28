@@ -31,7 +31,7 @@ RSpec.describe Folio::CheckoutComponent, type: :component do
     end
 
     it 'shows recall message' do
-      expect(page).to have_text('Please return as soon as possible. Item cannot be renewed')
+      expect(page).to have_text('This item was requested by another user. Please return as soon as possible.')
     end
   end
 
