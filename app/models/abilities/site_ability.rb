@@ -54,12 +54,14 @@ class SiteAbility
       end
     end
 
-    if admin_locations.any? # rubocop:disable Style/GuardClause
+    if admin_locations.any?
       can :read, :admin
       can :manage, LibraryLocation, location_code: admin_locations
       can :create, AdminComment, request: { origin_location_code: admin_locations }
       can [:admin, :read, :update], PatronRequest, origin_location_code: admin_locations
     end
+
+    can [:destroy], PatronRequest, request_type: 'mediated', user: user if user.persisted?
   end
   # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
 end

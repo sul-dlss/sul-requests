@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   get 'change_pin', to: 'reset_pins#change_form', as: :change_pin_with_token
   post 'change_pin', to: 'reset_pins#change'
 
-  resources :patron_requests, only: [:new, :show, :create] do
+  resources :patron_requests, only: [:new, :show, :create, :destroy] do
     resource :needed_date, only: [:edit, :update, :show]
     resources :admin_comments
   end

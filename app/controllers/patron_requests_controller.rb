@@ -59,6 +59,17 @@ class PatronRequestsController < ApplicationController
     end
   end
 
+  def destroy
+    authorize! :destroy, @patron_request
+
+    @patron_request.update(request_type: 'cancelled')
+
+    respond_to do |format|
+      format.html { redirect_to patron_requests_path, notice: 'Request was successfully cancelled.' }
+      format.turbo_stream
+    end
+  end
+
   def require_aeon_terms
     return unless use_requests_redesign? && @patron_request.aeon_page?
     return if current_user.aeon.persisted?

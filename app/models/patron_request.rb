@@ -23,7 +23,7 @@ class PatronRequest < ApplicationRecord
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :folio_instance
 
-  validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done activity] }
+  validates :request_type, inclusion: { in: %w[scan pickup mediated mediated/approved mediated/done activity cancelled] }
   validates :scan_title, presence: true, on: :create, if: :folio_scan?
   validate :pickup_service_point_is_valid, on: :create, if: :folio_pickup?
   validate :needed_date_is_valid, on: :create
