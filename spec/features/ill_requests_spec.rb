@@ -97,5 +97,33 @@ RSpec.describe 'ILL Request Page' do
                                                                issn: '1234567890'
                                                              ))
     end
+
+    it 'submits a new journal scan request to ILLiad' do
+      visit new_ill_request_path
+      choose 'Email digital scan'
+      click_on 'Continue'
+
+      find('label[for="subtype_article"]').click
+
+      fill_in 'Journal', with: 'Test Journal'
+      click_on 'Continue'
+
+      fill_in 'Article title', with: 'Test Article'
+      fill_in 'Article author', with: 'Test Author'
+
+      fill_in 'Page range', with: '1-10'
+      fill_in 'Link to article', with: 'https://library.stanford.edu/'
+
+      click_button 'Submit request'
+
+      expect(page).to have_text('Your request has been submitted to Interlibrary Loan.')
+      expect(mock_ill_client).to have_received(:create).with(an_object_having_attributes(
+                                                               photo_journal_title: 'Test Journal',
+                                                               photo_article_title: 'Test Article',
+                                                               photo_article_author: 'Test Author',
+                                                               photo_journal_inclusive_pages: '1-10',
+                                                               cited_in: 'https://library.stanford.edu/'
+                                                             ))
+    end
   end
 end

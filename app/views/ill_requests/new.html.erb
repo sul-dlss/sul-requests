@@ -198,12 +198,18 @@
           </div>
           <div class="col pe-0">
             <div class="mb-3" data-ill-request-target="section">
-              <%= f.label :photo_article_title, 'Title of article or chapter', class: 'form-label fw-semibold redesign-required-label' %>
+              <%= f.label :photo_article_title, class: 'form-label fw-semibold redesign-required-label' do %>
+                <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">Chapter title</span>
+                <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">Article title</span>
+              <% end %>
               <%= f.text_area :photo_article_title, required: true, class: 'form-control', maxlength: 255 %>
             </div>
 
             <div class="mb-3" data-ill-request-target="section">
-              <%= f.label :photo_article_author, 'Chapter/article author(s)', class: 'form-label fw-semibold' %>
+              <%= f.label :photo_article_author, class: 'form-label fw-semibold' do %>
+                <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">Chapter author(s)</span>
+                <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">Article author(s)</span>
+              <% end %>
               <%= f.text_field :photo_article_author, class: 'form-control', maxlength: 255 %>
             </div>
 
