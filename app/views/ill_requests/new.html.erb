@@ -45,19 +45,19 @@
         <div class="mb-3">
           <%= f.label :title, class: 'form-label fw-semibold redesign-required-label' do %>
             <span data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="book">Book title</span>
-            <span data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="article">Journal title</span>
+            <span data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="article">Journal</span>
             <span data-ill-request-target="section" data-ill-request-for-request-type="pickup">Title</span>
           <% end %>
           <%= f.text_field :title, required: true, class: 'form-control', maxlength: 255 %>
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :loan_author, 'Author(s) or editor(s)', class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.label :loan_author, 'Author(s) or Editor(s)', class: 'form-label fw-semibold redesign-required-label' %>
           <%= f.text_field :loan_author, required: true, class: 'form-control', maxlength: 255 %>
         </div>
 
         <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
-          <%= f.label :cited_in, 'Link or citation for this item', class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.label :cited_in, 'Link to item (or citation)', class: 'form-label fw-semibold redesign-required-label' %>
           <%= f.text_area :cited_in, maxlength: 255, required: true, class: 'form-control', data: { action: "input->char-counter#updateCharCounter" } %>
           <div class="d-flex gap-4 align-items-baseline">
             <div class="form-text">Examples are a WorldCat link, publisher link, website link, or citation from a specific journal article or book.</div>
@@ -68,18 +68,21 @@
         <div class="mb-3">
           <%= f.label :issn, class: 'form-label fw-semibold' do %>
             <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">ISBN (International Standard Book Number)</span>
-            <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">ISSN</span>
+            <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">ISSN (International Standard Serial Number)</span>
           <% end %>
           <%= f.text_field :issn, class: 'form-control w-auto', size: 20 %>
           <div class="form-text">
-            <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">Numerals and hyphens only. Provide only one version of the ISBN. 13-digit version preferred.</span>
-            <span data-ill-request-target="section" data-ill-request-for-request-subtype="article"></span>
+            <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">Example: 978-0-306-40615-7</span>
+            <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">Example: 1476-4687</span>
           </div>
         </div>
 
         <div class="mb-3">
           <%= f.label :esp_number, 'OCLC number (WorldCat accession number)', class: 'form-label fw-semibold' %>
           <%= f.text_field :esp_number, class: 'form-control w-auto', size: 20 %>
+          <div class="form-text">
+            Example: 47076528
+          </div>
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
@@ -97,7 +100,7 @@
           <%= f.text_field :loan_place, class: 'form-control' %>
         </div>
 
-        <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
+        <div class="mb-3">
           <%= f.label :item_info2, 'Volume', class: 'form-label fw-semibold' %>
           <%= f.text_field :item_info2, class: 'form-control' %>
         </div>
@@ -196,7 +199,7 @@
           <div class="col pe-0">
             <div class="mb-3" data-ill-request-target="section">
               <%= f.label :photo_article_title, 'Title of article or chapter', class: 'form-label fw-semibold redesign-required-label' %>
-              <%= f.text_field :photo_article_title, required: true, class: 'form-control', maxlength: 255 %>
+              <%= f.text_area :photo_article_title, required: true, class: 'form-control', maxlength: 255 %>
             </div>
 
             <div class="mb-3" data-ill-request-target="section">
