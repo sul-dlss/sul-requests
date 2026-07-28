@@ -1,5 +1,8 @@
 <% inner = capture do %>
   <span class="<%= classes.join(' ') %>">
+    <% unless request.multi_item_selector? %>
+      <span class="fw-normal">Call number: </span>
+    <% end %>
     <%= call_number %>
     <% if separator? %><i class="bi bi-chevron-right"></i><% end %>
     <%= container %>
