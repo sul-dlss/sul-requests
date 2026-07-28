@@ -56,7 +56,7 @@
           <%= f.text_field :loan_author, required: true, class: 'form-control', maxlength: 255 %>
         </div>
 
-        <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
+        <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
           <%= f.label :cited_in, 'Link to item (or citation)', class: 'form-label fw-semibold redesign-required-label' %>
           <%= f.text_area :cited_in, maxlength: 255, required: true, class: 'form-control', data: { action: "input->char-counter#updateCharCounter" } %>
           <div class="d-flex gap-4 align-items-baseline">
@@ -210,6 +210,15 @@
             <div class="mb-3" data-ill-request-target="section">
               <%= f.label :photo_journal_inclusive_pages, 'Page range', class: 'form-label fw-semibold redesign-required-label' %>
               <%= f.text_field :photo_journal_inclusive_pages, required: true, class: 'form-control' %>
+            </div>
+
+            <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal" data-ill-request-for-request-subtype="journal">
+              <%= f.label :cited_in, 'Link to article, DOI, or citation', class: 'form-label fw-semibold redesign-required-label' %>
+              <%= f.text_area :cited_in, maxlength: 255, required: true, class: 'form-control', data: { action: "input->char-counter#updateCharCounter" } %>
+              <div class="d-flex gap-4 align-items-baseline">
+                <div class="form-text">Examples are a WorldCat link, publisher link, website link, or citation from a specific journal article or book.</div>
+                <span class="fs-14 ms-auto text-nowrap" data-char-counter-target="counter"></span>
+              </div>
             </div>
 
             <div class="mb-4">
