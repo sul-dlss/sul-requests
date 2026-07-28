@@ -96,6 +96,12 @@ class AeonClient
     handle_response(response, as_class: Aeon::Request)
   end
 
+  def appointments(range:)
+    response = get('Appointments', params: { startDate: range.begin.iso8601, endDate: range.end.iso8601 })
+
+    handle_response(response, as_class: Aeon::Appointment, not_found: [])
+  end
+
   def appointments_for(username:, context: 'both', pending_only: true)
     response = get("Users/#{CGI.escape(username)}/appointments", params: { context: context, pendingOnly: pending_only })
 

@@ -1,0 +1,30 @@
+Here is a list of upcoming requests that reuse the same item:
+
+<ul>
+  <% @request_groups.sort_by { |request_group| request_group.map { |r| r.appointment.start_time }.min }.each do |request_group| %>
+    <li>
+      <%= request_group.first.title %><br>
+
+      <% if request_group.first.call_number.present? %>
+        Call Number: <%= request_group.first.call_number %><br>
+      <% end %>
+
+      <% if request_group.first.item_volume.present? %>
+        Volume: <%= request_group.first.item_volume %><br>
+      <% end %>
+
+      <% if request_group.first.item_number.present? %>
+        Barcode: <%= request_group.first.item_number %><br><br>
+      <% end %>
+      Appointments:
+      <ul>
+        <% request_group.each do |request| %>
+          <li>
+            Date: <%= I18n.l(request.appointment.start_time, format: :date_only) %><br>
+            Username: <%= request.username %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+</ul>
