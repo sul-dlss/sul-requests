@@ -16,7 +16,7 @@ module Aeon
     end
 
     def title
-      return 'Digitization requests' if @digitization
+      return 'Details' if @digitization
       return activity_title if @activity_id
 
       'Appointments'
