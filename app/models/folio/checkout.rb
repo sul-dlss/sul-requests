@@ -208,6 +208,10 @@ module Folio
       (loan_policy.unseen_renewals_allowed - renewal_count)
     end
 
+    def unseen_renewals_allowed?
+      loan_policy.unseen_renewals_allowed.positive?
+    end
+
     private
 
     def loan_policy
