@@ -46,14 +46,14 @@ module Aeon
     end
 
     def requests=(requests)
-      @requests = requests.reject(&:cancelled?)
+      @requests = requests.reject(&:cancelled?).sort_by(&:default_sort_key)
       @grouped_requests = nil
     end
 
-    def requests
+    def requests # rubocop:disable Metrics/CyclomaticComplexity
       return [] unless persisted?
 
-      @requests ||= (user&.requests&.for_appointment(self) || []).reject(&:cancelled?)
+      @requests ||= (user&.requests&.for_appointment(self) || []).reject(&:cancelled?).sort_by(&:default_sort_key)
     end
 
     def grouped_requests

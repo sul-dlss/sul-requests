@@ -46,13 +46,13 @@ module Aeon
     end
 
     def requests=(requests)
-      @requests = requests.submitted.sort_by { |r| [r.title.to_s, r.sort_key] }
+      @requests = requests.submitted.sort_by(&:default_sort_key)
       @grouped_requests = nil
     end
 
     def requests
       @requests ||= begin
-        requests = users.flat_map { |u| u.own_requests.for_activity(self).submitted }.sort_by { |r| [r.title.to_s, r.sort_key] }
+        requests = users.flat_map { |u| u.own_requests.for_activity(self).submitted }.sort_by(&:default_sort_key)
 
         Aeon::RequestFinders.new(requests)
       end
