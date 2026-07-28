@@ -60,6 +60,9 @@ class FolioGraphqlClient
                 }
                 barcode
                 dueDate
+                effectiveLocation {
+                  code
+                }
                 effectiveCallNumberComponents {
                   callNumber
                 }
