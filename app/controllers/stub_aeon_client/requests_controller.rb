@@ -9,6 +9,7 @@ module StubAeonClient
 
     def create
       aeon_request = StubAeonClient::Request.new(request_params)
+      aeon_request.transactionStatus ||= StubAeonClient::Queue.all.find { |q| q.queueName == 'Awaiting Request Processing' }&.id
       aeon_request.save!
 
       render json: aeon_request, status: :created

@@ -396,6 +396,11 @@ aeon:
     ARS: 'Located in the basement of the Music Library'
     EASTASIA: 'Located on the second floor of Lathrop Library'
     RUMSEY: 'Located on the fourth floor of Green Library'
+  policies_urls:
+    ARS: https://library.stanford.edu/archive-recorded-sound-rules-use
+    EASTASIA: https://library.stanford.edu/special-collections-east-asia
+    RUMSEY: https://library.stanford.edu/research-david-rumsey-map-center
+    SPECUA: https://library.stanford.edu/special-collections-policies
   day_only_appointments:
     - 'SPECUA'
   item_limits:

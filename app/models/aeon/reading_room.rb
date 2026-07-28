@@ -128,6 +128,10 @@ module Aeon
 
     def persisted? = id.present?
 
+    def policies_url
+      Settings.aeon.policies_urls[sites.first]
+    end
+
     private
 
     def format_hours(reading_room_open_hours)

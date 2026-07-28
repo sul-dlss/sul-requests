@@ -16,7 +16,7 @@ module Aeon
     end
 
     def title
-      return 'Digitization requests' if @digitization
+      return 'Details' if @digitization
       return activity_title if @activity_id
 
       'Appointments'
@@ -25,6 +25,10 @@ module Aeon
     def activity_title
       activity = current_user.aeon.activities.find { |appt| appt.id == @activity_id.to_i }
       activity.name
+    end
+
+    def policies_url
+      requests.first.appointment&.reading_room&.policies_url
     end
 
     attr_reader :requests
