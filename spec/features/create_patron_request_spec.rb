@@ -128,7 +128,7 @@ RSpec.describe 'Creating a request', :js do
           perform_enqueued_jobs do
             click_on 'Submit request'
           end
-          expect(page).to have_text 'We received your scan request'
+          expect(page).to have_text 'We received your digital scan request'
         end.to change(PatronRequest, :count).by(1)
 
         expect(PatronRequest.last).to have_attributes(
@@ -230,7 +230,7 @@ RSpec.describe 'Creating a request', :js do
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_text 'We received your scan request'
+        expect(page).to have_text 'We received your digital scan request'
       end
     end
 
@@ -541,7 +541,7 @@ RSpec.describe 'Creating a request', :js do
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_text 'We received your scan request'
+        expect(page).to have_text 'We received your digital scan request'
       end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(
