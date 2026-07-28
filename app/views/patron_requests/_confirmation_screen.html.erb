@@ -50,7 +50,6 @@
               <% end %>
 
               <% if @patron_request.mediateable? || @patron_request.aeon_page? %>
-                <hr>
                 <div class="mb-3">
                   <span class="fw-semibold">Item(s) requested:</span>
                 </div>
@@ -62,7 +61,6 @@
               <% else %>
                 <% available_items, unavailable_items = @patron_request.patron_request_items.map(&:folio_item).partition(&:available?) %>
                 <% if available_items.any? %>
-                  <hr>
                   <div class="mb-3">
                     <span class="fw-semibold">Pickup after:</span> <%= @patron_request.estimated_delivery %>
                   </div>
