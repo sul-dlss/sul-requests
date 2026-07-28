@@ -2,8 +2,8 @@
   <h2 class="h3"><%= title %></h2>
   <% if @digitization %>
     <p class="mb-2 text-cardinal">We'll email you when your files are ready.</p>
-  <% else %>
-    <p class="mb-2">Please review Reading room policies before arriving for your appointment.</p>
+  <% elsif policies_url %>
+    <p class="mb-2">Please review <%= link_to policies_url, class: 'su-underline', target: '_blank' do %>Reading room policies<i class="bi bi-arrow-up-right ms-1"></i><% end %> before arriving for your appointment.</p>
   <% end %>
   <ul class="list-unstyled mb-0 py-1">
     <% requests.each do |request| %>

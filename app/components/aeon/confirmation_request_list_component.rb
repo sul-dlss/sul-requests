@@ -27,6 +27,10 @@ module Aeon
       activity.name
     end
 
+    def policies_url
+      requests.first.appointment&.reading_room&.policies_url
+    end
+
     attr_reader :requests
   end
 end
