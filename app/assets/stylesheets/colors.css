@@ -71,6 +71,11 @@ input[type="radio"] {
   --bs-alert-color: var(--bs-alert-border-color);
 }
 
+/* Restore the upstream bootstrap warning alert color. */
+.alert-warning {
+  --bs-alert-color: var(--bs-alert-border-color);
+}
+
 /* Restore disabled primary button styling from upstream bootstrap. */
 .btn-primary {
   --bs-btn-disabled-color: #fff;
