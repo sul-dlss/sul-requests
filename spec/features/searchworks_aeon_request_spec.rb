@@ -43,7 +43,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   end
 
   context 'with a single holding' do
-    it 'allows the user to submit a digitization request' do
+    it 'allows the user to submit a digitization request' do # rubocop:disable RSpec/ExampleLength
       expect(page).to have_text 'Request type'
       expect(page).to have_no_text 'Select item'
 
@@ -70,6 +70,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
         perform_enqueued_jobs
       end.to change(StubAeonClient::Request, :count).by(1)
 
+      expect(page).to have_text "We'll email you when your files are ready"
       expect(StubAeonClient::Request.last).to have_attributes(
         callNumber: 'ABC 123'
       )
@@ -93,6 +94,9 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       expect do
         perform_enqueued_jobs
       end.to change(StubAeonClient::Request, :count).by(1)
+
+      expect(page).to have_text 'Open hours: Monday - Friday, 9:00 - 4:45 pm'
+      expect(page).to have_text 'Please review Reading room policies'
 
       expect(StubAeonClient::Request.last).to have_attributes(
         callNumber: 'ABC 123'

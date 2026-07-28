@@ -24,7 +24,9 @@
                 <div class="mb-4">
                   <h2 class="h3"><%= @aeon_requests.appointment_reading_room.name %></h2>
                   <div class="mb-1"><i class="bi bi-geo-alt-fill me-1"></i><span><%= @aeon_requests.appointment_reading_room.directions %></span></div>
-                  <div><i class="bi bi-clock me-1"></i>Open hours: <span><%= @aeon_requests.appointment_reading_room.human_readable_hours %></span></div>
+                  <% if @aeon_requests.appointment_reading_room.day_only_appointments? %>
+                    <div><i class="bi bi-clock me-1"></i>Open hours: <span><%= @aeon_requests.appointment_reading_room.human_readable_hours %></span></div>
+                  <% end %>
                 </div>
               <% end %>
               <% @aeon_requests.requests.submitted.group_by(&:activity_id).each do |id, requests| %>
