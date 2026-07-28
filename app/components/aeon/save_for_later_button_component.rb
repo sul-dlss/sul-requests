@@ -15,7 +15,7 @@ module Aeon
 
     def call
       form_with(url: save_for_later_aeon_request_path(request)) do
-        tag.button(type: :submit, class: 'btn btn-link su-underline text-nowrap',
+        tag.button(type: :submit, class: 'btn btn-link su-underline text-nowrap py-0',
                    data: { 'turbo-submits-with': spinner }) do
           tag.i(class: 'bi bi-pin-angle-fill align-middle me-1') + tag.span('Save for later')
         end
