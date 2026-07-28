@@ -28,6 +28,12 @@
 
         <div class="border rounded p-3 mb-2">
           <h2 class="h3">Details</h2>
+          <% if @patron_request.request_type == 'scan' %>
+            <p class="text-cardinal">We'll email you when your files are ready.</p>
+          <% elsif !@patron_request.mediateable? && !@patron_request.aeon_page? %>
+            <p class="text-cardinal">We'll email you when your <%= @patron_request.patron_request_items.one? ? 'item is' : 'items are' %> ready.</p>
+          <% end %>
+
           <dl class="dl-inline">
             <div><dt>Title:</dt><dd><%= @patron_request.item_title %></dd></div>
             <% if @patron_request.request_type == 'scan' %>
