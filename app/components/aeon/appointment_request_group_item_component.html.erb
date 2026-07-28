@@ -1,10 +1,10 @@
 <%= tag.li id: dom_id(request, :appointment), class: classes + ['request px-2', request.status], data: request_sort_data do %>
-    <div class="rgi-id d-flex align-items-center flex-row justify-content-between border-top">
+    <div class="rgi-id d-flex align-items-center flex-row justify-content-between border-top py-1">
       <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
 
       <turbo-frame>
         <% if request.activity? %>
-          <div class="px-2 py-1">
+          <div class="px-2">
             <%= render Aeon::RequestDeleteButtonComponent.new(request:) %>
           </div>
         <% else %>
