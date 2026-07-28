@@ -25,7 +25,8 @@
               <% if @aeon_requests.appointment_reading_room.present? %>
                 <div class="mb-4">
                   <h2 class="h3"><%= @aeon_requests.appointment_reading_room.name %></h2>
-                  <i class="bi bi-geo-alt-fill me-1"></i><span><%= @aeon_requests.appointment_reading_room.directions %></span>
+                  <div class="mb-1"><i class="bi bi-geo-alt-fill me-1"></i><span><%= @aeon_requests.appointment_reading_room.directions %></span></div>
+                  <div><i class="bi bi-clock me-1"></i>Open hours: <span><%= @aeon_requests.appointment_reading_room.human_readable_hours %></span></div>
                 </div>
               <% end %>
               <% if @aeon_requests.first&.multi_item_selector? %>
