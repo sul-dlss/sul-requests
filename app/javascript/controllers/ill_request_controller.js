@@ -15,6 +15,7 @@ export default class extends Controller {
   typeValueChanged() {
     if (this.typeValue == 'pickup') {
       this.subtypeValue = 'book';
+      if (this.element.querySelector('#subtype_book')) this.element.querySelector('#subtype_book').checked = true;
     }
 
     this.showHideSections();
@@ -28,7 +29,7 @@ export default class extends Controller {
   showHideSections() {
     Array.from(this.sectionTargets).forEach(section => {
       if ((section.dataset.illRequestForRequestType == undefined || section.dataset.illRequestForRequestType == this.typeValue) && (section.dataset.illRequestForRequestSubtype == undefined || section.dataset.illRequestForRequestSubtype == this.subtypeValue)) {
-        const template = section.querySelector('template[data-request-type-template]');
+        const template = section.querySelector(':scope > template[data-request-type-template]');
 
         if (template) {
           const content = template.content.cloneNode(true);
@@ -40,7 +41,7 @@ export default class extends Controller {
       } else if (section.dataset.illRequestForRequestType || section.dataset.illRequestForRequestSubtype) {
         section.classList.add('d-none');
 
-        if (!section.querySelector('template[data-request-type-template]')) {
+        if (!section.querySelector(':scope > template[data-request-type-template]')) {
           const template = document.createElement('template');
           template.dataset.requestTypeTemplate = true;
           template.content.append(...section.childNodes);
