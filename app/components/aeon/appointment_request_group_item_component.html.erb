@@ -1,5 +1,5 @@
-<%= tag.li id: dom_id(request, :appointment), class: classes + ['request', request.status], data: request_sort_data do %>
-    <div class="rgi-id d-flex align-items-center">
+<%= tag.li id: dom_id(request, :appointment), class: classes + ['request px-2', request.status], data: request_sort_data do %>
+    <div class="rgi-id d-flex align-items-center flex-row justify-content-between border-top">
       <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
 
       <turbo-frame>
@@ -11,9 +11,5 @@
           <%= render Aeon::SaveForLaterButtonComponent.new(request:) %>
         <% end %>
       </turbo-frame>
-    </div>
-
-    <div class="rgi-detail pb-1">
-      <%= render Aeon::RequestItemDetailComponent.new(request:) %>
     </div>
 <% end %>
