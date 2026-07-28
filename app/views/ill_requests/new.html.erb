@@ -134,7 +134,7 @@
       <% c.with_title.with_content('Pickup request') %>
       <% c.with_body do %>
         <div class="mb-3">
-          <%= f.label :item_info4, 'Deliver to', class: 'form-label d-block fw-semibold redesign-required-label' %>
+          <%= f.label :item_info4, 'Preferred pickup location', class: 'form-label d-block fw-semibold redesign-required-label' %>
           <%= f.select(
           :item_info4, options_for_select(default_service_points(current_user.patron).map { |sp| [sp.name, sp.code] }), { include_blank: false, required: false },
           class: 'form-select'
