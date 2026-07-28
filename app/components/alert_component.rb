@@ -14,20 +14,26 @@ class AlertComponent < ViewComponent::Base
     warning: 'alert-warning'
   }.freeze
 
-  def initialize(type:, classes: [], with_icon: true)
+  def initialize(type:, dismissable: false, classes: [], icon_classes: [], with_icon: true)
     @type = type
+    @dismissable = dismissable
     @classes = Array(classes)
+    @icon_classes = Array(icon_classes)
     @with_icon = with_icon
   end
 
   attr_reader :type, :with_icon
+
+  def dismissable?
+    @dismissable
+  end
 
   def classes
     alert_classes + @classes
   end
 
   def icon_class
-    "bi #{ICONS.fetch(type)}"
+    "bi #{ICONS.fetch(type)} #{@icon_classes&.join(' ')}"
   end
 
   def alert_classes
