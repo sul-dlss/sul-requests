@@ -10,8 +10,6 @@
       <% end %>
     </div>
 
-        <hr>
-
         <% @patron_request.patron_request_items.map(&:folio_item).select(&:bound_with_child_holdings_record).each do |item| %>
           <%= render AlertComponent.new(type: :warning) do %>
             <div class="fw-semibold mb-2">Important!</div>
@@ -28,84 +26,81 @@
           <% end %>
         <% end %>
 
-        <h2 class="my-4">Request confirmation</h2>
-        <dl class="dl-inline">
+        <div class="border rounded p-3 mb-2">
+          <h2 class="h3">Details</h2>
+          <dl class="dl-inline">
             <div><dt>Title:</dt><dd><%= @patron_request.item_title %></dd></div>
-        <% if @patron_request.request_type == 'scan' %>
-            <div><dt>Pages:</dt><dd><%= @patron_request.scan_page_range %></dd></div>
-            <div><dt>Chapter/article:</dt><dd><%= @patron_request.scan_title %></dd></div>
-            <div><dt>Authors:</dt><dd><%= @patron_request.scan_authors %></dd></div>
+            <% if @patron_request.request_type == 'scan' %>
+              <div><dt>Pages:</dt><dd><%= @patron_request.scan_page_range %></dd></div>
+              <div><dt>Chapter/article:</dt><dd><%= @patron_request.scan_title %></dd></div>
+              <div><dt>Authors:</dt><dd><%= @patron_request.scan_authors %></dd></div>
 
-            <% if @patron_request.estimated_delivery %>
+              <% if @patron_request.estimated_delivery %>
                 <div><dt>Earliest expected delivery:</dt><dd><%= @patron_request.estimated_delivery %></dd></div>
-            <% end %>
-        <% else %>
-            <% if @patron_request.pickup_service_point %>
-            <div><dt><%= @patron_request.location_label %>:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
-            <% end %>
-        <% end %>
-        </dl>
+              <% end %>
+            <% else %>
+              <% if @patron_request.pickup_service_point %>
+                <div><dt><%= @patron_request.location_label %>:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
+              <% end %>
 
-        <% unless @patron_request.request_type == 'scan' %>
-            <% if @patron_request.mediateable? || @patron_request.aeon_page? %>
+              <% if @patron_request.mediateable? || @patron_request.aeon_page? %>
                 <hr>
                 <div class="mb-2">
-                    <span class="fw-bold">Item(s) requested:</span>
+                  <span class="fw-bold">Item(s) requested:</span>
                 </div>
                 <ul class="list-unstyled">
-                    <% @patron_request.patron_request_items.map(&:folio_item).each do |avail_item| %>
-                        <li><%= callnumber_label(avail_item) %></li>
-                    <% end %>
+                  <% @patron_request.patron_request_items.map(&:folio_item).each do |avail_item| %>
+                    <li><%= callnumber_label(avail_item) %></li>
+                  <% end %>
                 </ul>
-            <% else %>
+              <% else %>
                 <% available_items, unavailable_items = @patron_request.patron_request_items.map(&:folio_item).partition(&:available?) %>
                 <% if available_items.any? %>
-                    <hr>
-                    <div class="mb-2">
-                        <span class="fw-bold">Pickup after:</span> <%= @patron_request.estimated_delivery %>
-                    </div>
-                    <ul class="list-unstyled">
-                        <% available_items.each do |avail_item| %>
-                            <li><%= callnumber_label(avail_item) %></li>
-                        <% end %>
-                    </ul>
+                  <hr>
+                  <div class="mb-2">
+                    <span class="fw-bold">Pickup after:</span> <%= @patron_request.estimated_delivery %>
+                  </div>
+                  <ul class="list-unstyled">
+                    <% available_items.each do |avail_item| %>
+                      <li><%= callnumber_label(avail_item) %></li>
+                    <% end %>
+                  </ul>
                 <% end %>
                 <% if unavailable_items.any? %>
-                    <hr>
-                    <div class="mb-2">
-                        <span class="fw-bold">Pickup after:</span> Notified by email
-                    </div>
-                    <ul class="list-unstyled">
-                        <% unavailable_items.each do |avail_item| %>
-                            <li><%= callnumber_label(avail_item) %></li>
-                        <% end %>
-                    </ul>
+                  <hr>
+                  <div class="mb-2">
+                    <span class="fw-bold">Pickup after:</span> Notified by email
+                  </div>
+                  <ul class="list-unstyled">
+                    <% unavailable_items.each do |avail_item| %>
+                      <li><%= callnumber_label(avail_item) %></li>
+                    <% end %>
+                  </ul>
                 <% end %>
-            <% end %>
-
-            <dl class="dl-inline">
-            <% if @patron_request.needed_date %>
+              <% end %>
+              <% if @patron_request.needed_date %>
                 <div>
-                    <dt>
-                        <% if @patron_request.mediateable? %>
-                            I plan to visit on:
-                        <% else %>Not needed after:<% end %>
-                    </dt>
-                    <dd>
-                        <%= l @patron_request.needed_date, format: :short %>
-                    </dd>
+                  <dt>
+                    <% if @patron_request.mediateable? %>
+                      I plan to visit on:
+                    <% else %>Not needed after:<% end %>
+                  </dt>
+                  <dd>
+                    <%= l @patron_request.needed_date, format: :short %>
+                  </dd>
                 </div>
-            <% end %>
-            <% if @patron_request.fulfillment_type %>
+              <% end %>
+              <% if @patron_request.fulfillment_type %>
                 <div>
-                    <dt>Processing method:</dt>
-                    <dd>
-                      <%= @patron_request.fulfillment_type == 'hold' ? 'Wait for a Stanford copy to become available' : 'Expedite a copy from a partner library' %>
-                    </dd>
+                  <dt>Processing method:</dt>
+                  <dd>
+                    <%= @patron_request.fulfillment_type == 'hold' ? 'Wait for a Stanford copy to become available' : 'Expedite a copy from a partner library' %>
+                  </dd>
                 </div>
+              <% end %>
             <% end %>
-            </dl>
-        <% end %>
-    </div>
-    <%= render 'contact_aside' %>
+          </dl>
+        </div>
+  </div>
+  <%= render 'contact_aside' %>
 </div>
