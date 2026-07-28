@@ -32,7 +32,7 @@
         <div class="mb-3">
           <%= f.label :title, class: 'form-label fw-semibold redesign-required-label' do %>
             <span data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="book">Book title</span>
-            <span data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="article">Journal title</span>
+            <span data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="article">Journal</span>
             <span data-ill-request-target="section" data-ill-request-for-request-type="pickup">Title</span>
           <% end %>
           <%= f.text_field :title, required: true, class: 'form-control', maxlength: 255 %>
@@ -55,18 +55,21 @@
         <div class="mb-3">
           <%= f.label :issn, class: 'form-label fw-semibold' do %>
             <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">ISBN (International Standard Book Number)</span>
-            <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">ISSN</span>
+            <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">ISSN (International Standard Serial Number)</span>
           <% end %>
           <%= f.text_field :issn, class: 'form-control w-auto', size: 20 %>
           <div class="form-text">
             <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">Example: 978-0-306-40615-7</span>
-            <span data-ill-request-target="section" data-ill-request-for-request-subtype="article"></span>
+            <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">Example: 1476-4687</span>
           </div>
         </div>
 
         <div class="mb-3">
           <%= f.label :esp_number, 'OCLC number (WorldCat accession number)', class: 'form-label fw-semibold' %>
           <%= f.text_field :esp_number, class: 'form-control w-auto', size: 20 %>
+          <div class="form-text">
+            Example: 47076528
+          </div>
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
@@ -84,7 +87,7 @@
           <%= f.text_field :loan_place, class: 'form-control' %>
         </div>
 
-        <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
+        <div class="mb-3">
           <%= f.label :item_info2, 'Volume', class: 'form-label fw-semibold' %>
           <%= f.text_field :item_info2, class: 'form-control' %>
         </div>
@@ -178,7 +181,7 @@
           <div class="col pe-0">
             <div class="mb-3" data-ill-request-target="section">
               <%= f.label :photo_article_title, 'Title of article or chapter', class: 'form-label fw-semibold redesign-required-label' %>
-              <%= f.text_field :photo_article_title, required: true, class: 'form-control', maxlength: 255 %>
+              <%= f.text_area :photo_article_title, required: true, class: 'form-control', maxlength: 255 %>
             </div>
 
             <div class="mb-3" data-ill-request-target="section">
