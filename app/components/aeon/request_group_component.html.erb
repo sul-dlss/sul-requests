@@ -17,7 +17,7 @@
       </div>
 
       <div>
-        <%= render RecordHeaderComponent.new(record: requests.first, brief: true) %>
+        <%= render RecordHeaderComponent.new(record: requests.first, brief: true, display_callnumber: requests.first.multi_item_selector?) %>
       </div>
     </div>
   <% end %>

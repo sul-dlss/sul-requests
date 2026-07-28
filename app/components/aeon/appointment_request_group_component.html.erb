@@ -6,7 +6,9 @@
         <span class="text-warning ms-2"><i class="bi bi-exclamation-triangle me-1"></i>Saved for later</span>
       <% end %>
     </h3>
-    <span class="ms-2 text-nowrap">Call number: <%= request_group.base_callnumber %></span>
+    <% if request_group.base_callnumber && request_group.multi_item_selector? %>
+      <span class="ms-2 text-nowrap">Call number: <%= request_group.base_callnumber %></span>
+    <% end %>
     <ul class="list-unstyled mb-0 mt-2">
       <%= render Aeon::AppointmentRequestGroupItemComponent.with_collection(requests) %>
     </ul>

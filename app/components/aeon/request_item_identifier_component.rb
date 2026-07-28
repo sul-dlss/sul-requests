@@ -27,7 +27,7 @@ module Aeon
     end
 
     def render?
-      request.multi_item_selector? && (call_number.present? || container.present?)
+      request.multi_item_selector? || call_number.present? || container.present?
     end
 
     private
