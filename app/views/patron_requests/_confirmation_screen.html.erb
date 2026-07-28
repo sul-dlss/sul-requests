@@ -52,7 +52,7 @@
               <% if @patron_request.mediateable? || @patron_request.aeon_page? %>
                 <hr>
                 <div class="mb-2">
-                  <span class="fw-bold">Item(s) requested:</span>
+                  <span class="fw-semibold">Item(s) requested:</span>
                 </div>
                 <ul class="list-unstyled">
                   <% @patron_request.patron_request_items.map(&:folio_item).each do |avail_item| %>
@@ -64,7 +64,7 @@
                 <% if available_items.any? %>
                   <hr>
                   <div class="mb-2">
-                    <span class="fw-bold">Pickup after:</span> <%= @patron_request.estimated_delivery %>
+                    <span class="fw-semibold">Pickup after:</span> <%= @patron_request.estimated_delivery %>
                   </div>
                   <ul class="list-unstyled">
                     <% available_items.each do |avail_item| %>
@@ -75,7 +75,7 @@
                 <% if unavailable_items.any? %>
                   <hr>
                   <div class="mb-2">
-                    <span class="fw-bold">Pickup after:</span> Notified by email
+                    <span class="fw-semibold">Pickup after:</span> Notified by email
                   </div>
                   <ul class="list-unstyled">
                     <% unavailable_items.each do |avail_item| %>
