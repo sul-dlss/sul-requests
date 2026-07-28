@@ -26,7 +26,7 @@
           <% end %>
         <% end %>
 
-        <div class="border rounded p-3 mb-2">
+        <div class="border rounded p-3 pb-0 mb-2">
           <h2 class="h3">Details</h2>
           <% if @patron_request.request_type == 'scan' %>
             <p class="text-cardinal">We'll email you when your files are ready.</p>
@@ -51,35 +51,34 @@
 
               <% if @patron_request.mediateable? || @patron_request.aeon_page? %>
                 <hr>
-                <div class="mb-2">
+                <div class="mb-3">
                   <span class="fw-semibold">Item(s) requested:</span>
                 </div>
                 <ul class="list-unstyled">
                   <% @patron_request.patron_request_items.map(&:folio_item).each do |avail_item| %>
-                    <li><%= callnumber_label(avail_item) %></li>
+                    <li class="request border-top fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
                   <% end %>
                 </ul>
               <% else %>
                 <% available_items, unavailable_items = @patron_request.patron_request_items.map(&:folio_item).partition(&:available?) %>
                 <% if available_items.any? %>
                   <hr>
-                  <div class="mb-2">
+                  <div class="mb-3">
                     <span class="fw-semibold">Pickup after:</span> <%= @patron_request.estimated_delivery %>
                   </div>
                   <ul class="list-unstyled">
                     <% available_items.each do |avail_item| %>
-                      <li><%= callnumber_label(avail_item) %></li>
+                      <li class="request border-top fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
                     <% end %>
                   </ul>
                 <% end %>
                 <% if unavailable_items.any? %>
-                  <hr>
-                  <div class="mb-2">
+                  <div class="mb-3">
                     <span class="fw-semibold">Pickup after:</span> Notified by email
                   </div>
                   <ul class="list-unstyled">
                     <% unavailable_items.each do |avail_item| %>
-                      <li><%= callnumber_label(avail_item) %></li>
+                      <li class="request border-top fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
                     <% end %>
                   </ul>
                 <% end %>
