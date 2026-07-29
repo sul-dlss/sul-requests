@@ -1,0 +1,29 @@
+<% label = @request ? @request.item_type : nil %>
+<div class="mb-3" data-ill-request-target="section">
+  <%= f.label :photo_article_title, class: 'form-label fw-semibold redesign-required-label' do %>
+    <% if label %>
+      <%= label %> title
+    <% else %>
+      <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">Chapter title</span>
+      <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">Article title</span>
+    <% end %>
+  <% end %>
+  <%= f.text_area :photo_article_title, required: true, class: 'form-control', maxlength: 255 %>
+</div>
+
+<div class="mb-3" data-ill-request-target="section">
+  <%= f.label :photo_article_author, class: 'form-label fw-semibold' do %>
+    <% if label %>
+      <%= label %> author(s)
+    <% else %>
+      <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">Chapter author(s)</span>
+      <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">Article author(s)</span>
+    <% end %>
+  <% end %>
+  <%= f.text_field :photo_article_author, class: 'form-control', maxlength: 255 %>
+</div>
+
+<div class="mb-3" data-ill-request-target="section">
+  <%= f.label :photo_journal_inclusive_pages, 'Page range', class: 'form-label fw-semibold redesign-required-label' %>
+  <%= f.text_field :photo_journal_inclusive_pages, required: true, class: 'form-control' %>
+</div>
