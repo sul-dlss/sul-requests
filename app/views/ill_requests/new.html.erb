@@ -1,6 +1,4 @@
-<% unless current_user&.patron&.blank? %>
-  <%= render 'patron_requests/user_header' %>
-<% end %>
+<%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
 
 <div class="row">
   <div class="col-7">

@@ -1,26 +1,25 @@
 <div class="container">
   <input type="checkbox" id="user-header-hide" class="d-none">
   <div class="user-header border-0 mt-4 col-lg-8">
-    <% blocked = current_user.patron.blocked? %>
     <div class="d-flex border-radius-4 border shadow-sm">
-      <% border_color = blocked ? 'bg-warning' : 'bg-jungle-green' %>
+      <% border_color = blocked? ? 'bg-warning' : 'bg-jungle-green' %>
       <div class="vr vr-lg <%= border_color %>"></div>
-      <% if blocked %>
+      <% if blocked? %>
         <div class="bi bi-exclamation-triangle-fill d-flex justify-content-center display-6 col-1 ms-3 align-self-center text-warning"></div>
       <% end %>
       <div class="p-3 flex-grow-1">
         <div class="d-flex align-items-center gap-2">
-          <div class="h2 mb-0 fw-normal">Welcome, <%= current_user.patron.display_name %>!</div>
+          <div class="h2 mb-0 fw-normal">Welcome, <%= patron.display_name %>!</div>
           <div class="vr vr-lg bg-su-process-black-50"></div>
           <span class="text-uppercase">
-            <%= current_user.patron.patron_description %>
+            <%= patron.patron_description %>
           </span>
         </div>
-        <% if blocked %>
+        <% if blocked? %>
           <div class="small my-2">
             <strong>Be advised that your library account is currently restricted</strong>
-            due to <%= current_user.patron.block_reasons.join(" and ") %>. <strong>You can still place a request;</strong>
-            however, your borrowing privileges will remain suspended until <%= current_user.patron.fix_block_message %>.
+            due to <%= patron.block_reasons.join(" and ") %>. <strong>You can still place a request;</strong>
+            however, your borrowing privileges will remain suspended until <%= patron.fix_block_message %>.
           </div>
           <% unless use_requests_redesign? %>
             <div>
