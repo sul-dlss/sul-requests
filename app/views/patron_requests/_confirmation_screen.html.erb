@@ -45,7 +45,7 @@
               <% end %>
             <% else %>
               <% if @patron_request.pickup_service_point %>
-                <div><dt><%= @patron_request.location_label %>:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
+                <div class="mb-3"><dt><%= @patron_request.location_label %>:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
               <% end %>
 
               <% if @patron_request.mediateable? || @patron_request.aeon_page? %>
@@ -57,11 +57,17 @@
                     <li class="request border-top fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
                   <% end %>
                 </ul>
+                <% if @patron_request.needed_date %>
+                  <div>
+                    <dt><% if @patron_request.mediateable? %>I plan to visit on:<% else %>Not needed after:<% end %></dt>
+                    <dd><%= l @patron_request.needed_date, format: :short %></dd>
+                  </div>
+                <% end %>
               <% else %>
                 <% available_items, unavailable_items = @patron_request.patron_request_items.map(&:folio_item).partition(&:available?) %>
                 <% if available_items.any? %>
-                  <div class="mb-3">
-                    <span class="fw-semibold">Pickup after:</span> <%= @patron_request.estimated_delivery %>
+                  <div class="bg-light mb-3 p-1">
+                    <div><dt>Pickup after:</dt><dd><%= @patron_request.estimated_delivery %></dd></div>
                   </div>
                   <ul class="list-unstyled">
                     <% available_items.each do |avail_item| %>
@@ -70,8 +76,22 @@
                   </ul>
                 <% end %>
                 <% if unavailable_items.any? %>
-                  <div class="mb-3">
-                    <span class="fw-semibold">Pickup after:</span> Notified by email
+                  <div class="bg-light mb-3 p-1">
+                    <div><dt>Pickup after:</dt><dd>Notified by email</dd></div>
+                    <% if @patron_request.fulfillment_type %>
+                      <div>
+                        <dt>Processing method:</dt>
+                        <dd>
+                          <%= @patron_request.fulfillment_type == 'hold' ? 'Wait for a Stanford copy to become available' : 'Expedite a copy from a partner library' %>
+                        </dd>
+                      </div>
+                    <% end %>
+                    <% if @patron_request.needed_date %>
+                      <div>
+                        <dt>Not needed after:</dt>
+                        <dd><%= l @patron_request.needed_date, format: :short %></dd>
+                      </div>
+                    <% end %>
                   </div>
                   <ul class="list-unstyled">
                     <% unavailable_items.each do |avail_item| %>
@@ -79,26 +99,6 @@
                     <% end %>
                   </ul>
                 <% end %>
-              <% end %>
-              <% if @patron_request.needed_date %>
-                <div>
-                  <dt>
-                    <% if @patron_request.mediateable? %>
-                      I plan to visit on:
-                    <% else %>Not needed after:<% end %>
-                  </dt>
-                  <dd>
-                    <%= l @patron_request.needed_date, format: :short %>
-                  </dd>
-                </div>
-              <% end %>
-              <% if @patron_request.fulfillment_type %>
-                <div>
-                  <dt>Processing method:</dt>
-                  <dd>
-                    <%= @patron_request.fulfillment_type == 'hold' ? 'Wait for a Stanford copy to become available' : 'Expedite a copy from a partner library' %>
-                  </dd>
-                </div>
               <% end %>
             <% end %>
           </dl>
