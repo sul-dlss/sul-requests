@@ -46,7 +46,7 @@ module Aeon
     end
 
     def appointment_item_limit
-      Settings.aeon.item_limits[sites.first]
+      Settings.aeon.sites.dig(sites.first, :appointment_item_limit)
     end
 
     def available_appointments(date, **)
@@ -54,11 +54,11 @@ module Aeon
     end
 
     def day_only_appointments?
-      Settings.aeon.day_only_appointments.include?(sites.first)
+      Settings.aeon.sites.dig(sites.first, :day_only_appointments)
     end
 
     def directions
-      Settings.aeon.directions[sites.first]
+      Settings.aeon.sites.dig(sites.first, :directions)
     end
 
     def closures
@@ -129,7 +129,7 @@ module Aeon
     def persisted? = id.present?
 
     def policies_url
-      Settings.aeon.policies_urls[sites.first]
+      Settings.aeon.sites.dig(sites.first, :policies_url)
     end
 
     private

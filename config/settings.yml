@@ -391,22 +391,23 @@ aeon:
   api_key: ~
   date_picker_availability_enabled: true
   days_to_persist_completed_digital_requests_as_submitted: 3
-  directions:
-    SPECUA: 'Located on the second floor of Green Library'
-    ARS: 'Located in the basement of the Music Library'
-    EASTASIA: 'Located on the second floor of Lathrop Library'
-    RUMSEY: 'Located on the fourth floor of Green Library'
-  policies_urls:
-    ARS: https://library.stanford.edu/archive-recorded-sound-rules-use
-    EASTASIA: https://library.stanford.edu/special-collections-east-asia
-    RUMSEY: https://library.stanford.edu/research-david-rumsey-map-center
-    SPECUA: https://library.stanford.edu/special-collections-policies
-  day_only_appointments:
-    - 'SPECUA'
-  item_limits:
-    ARS: 9
-    RUMSEY: 5
-    SPECUA: 10
+  sites:
+    SPECUA:
+      day_only_appointments: true
+      directions: 'Located on the second floor of Green Library'
+      appointment_item_limit: 10
+      policies_url: https://library.stanford.edu/special-collections-policies
+    ARS:
+      appointment_item_limit: 9
+      directions: 'Located in the basement of the Music Library'
+      policies_url: https://library.stanford.edu/archive-recorded-sound-rules-use
+    EASTASIA:
+      directions: 'Located on the second floor of Lathrop Library'
+      policies_url: https://library.stanford.edu/special-collections-east-asia
+    RUMSEY:
+      appointment_item_limit: 5
+      directions: 'Located on the fourth floor of Green Library'
+      policies_url: https://library.stanford.edu/research-david-rumsey-map-center
   queue_names:
     cancelled:
       by_user:
