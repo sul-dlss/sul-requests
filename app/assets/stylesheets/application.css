@@ -982,14 +982,10 @@ main:not(:has(#requests li, turbo-frame[busy])) .no-requests {
   animation: slideUp 0.5s ease-out forwards;
 }
 
-#saved_for_later_aeon_requests_sidebar .request.flash-on-add::before {
-  inset: 2px 0px;
-}
-
 .request.flash-on-add::before {
   content: '';
   position: absolute;
-  inset: 0.25rem 0.5rem;
+  inset: 0.25em -0.5rem;
   z-index: -1;
   pointer-events: none;
   border-radius: 4px;
