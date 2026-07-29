@@ -259,6 +259,10 @@ class PagingSchedule
 
     attr_reader :paging_schedule, :as_of
 
+    def as_time
+      schedule_for_request
+    end
+
     def as_json(*)
       {
         date: estimated_delivery_day_to_destination,

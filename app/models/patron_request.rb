@@ -328,11 +328,15 @@ class PatronRequest < ApplicationRecord
   end
 
   # @return [Hash] the earliest delivery estimate for the request
-  def earliest_delivery_estimate(scan: false)
-    if any_items_available?
-      paging_info = PagingSchedule.new(from: folio_location, to: scan ? 'SCAN' : default_service_point_code,
-                                       time: created_at).earliest_delivery_estimate
-      { 'date' => Date.parse(paging_info.to_s), 'display_date' => paging_info.to_s }
+  def earliest_delivery_estimate(scan: false) # rubocop:disable Metrics/AbcSize
+    estimates = (selected_items.presence || selectable_items).uniq(&:effective_location_id).filter_map do |item|
+      item.earliest_delivery_estimate(time: created_at, to: default_service_point_code, scan: scan)
+    end
+
+    earliest_estimate = estimates.min_by(&:as_time)
+
+    if earliest_estimate
+      { 'date' => Date.parse(earliest_estimate.to_s), 'display_date' => earliest_estimate.to_s }
     else
       { 'date' => Time.zone.today, 'display_date' => 'No date/time estimate' }
     end
