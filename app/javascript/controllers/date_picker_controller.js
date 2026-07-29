@@ -258,7 +258,7 @@ export default class extends Controller {
   #formatDisplay(isoDate) {
     const [y, m, d] = isoDate.split("-").map(Number)
     return new Date(y, m - 1, d).toLocaleDateString("en-US", {
-      month: "long", day: "numeric", year: "numeric"
+      month: "short", day: "numeric", year: "numeric"
     })
   }
 
