@@ -194,8 +194,8 @@
             </div>
 
             <div class="mb-4">
-              <%= f.label :not_wanted_after, 'Not wanted after date', class: 'form-label fw-semibold' %>
-              <%= f.date_field :not_wanted_after, class: 'form-control' %>
+              <%= f.label :not_wanted_after, 'Not needed after', class: 'form-label fw-semibold' %>
+              <%= f.date_field :not_wanted_after, value: 2.months.from_now.strftime('%Y-%m-%d'), class: 'form-control' %>
             </div>
 
             <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">
