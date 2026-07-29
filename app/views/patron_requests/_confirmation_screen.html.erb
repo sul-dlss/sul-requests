@@ -3,13 +3,6 @@
   <div class="confirmation col-12 col-lg-8">
     <h1>We received your <%= @patron_request.request_type == 'scan' ? 'digital scan' : (@patron_request.mediateable? || @patron_request.aeon_page?) ? '' : 'pickup' %> request!</h1>
     <%= render RecordHeaderCardComponent.new(record: @patron_request.bib_record, classes: 'bg-light mt-4 mb-4 p-4 rounded-0', title_classes: ['h3']) %>
-    <div>
-      <% if @patron_request.mediateable? %>
-        A librarian will review and approve your request for restricted-use materials, or contact you.
-        Approvals typically happen 1-3 business days before your planned visit date.
-      <% end %>
-    </div>
-
         <% @patron_request.patron_request_items.map(&:folio_item).select(&:bound_with_child_holdings_record).each do |item| %>
           <%= render AlertComponent.new(type: :warning) do %>
             <div class="fw-semibold mb-2">Important!</div>
@@ -30,7 +23,12 @@
           <h2 class="h3">Details</h2>
           <% if @patron_request.request_type == 'scan' %>
             <p class="text-cardinal">We'll email you when your files are ready.</p>
-          <% elsif !@patron_request.mediateable? && !@patron_request.aeon_page? %>
+          <% elsif @patron_request.mediateable? %>
+            <p class="text-cardinal">
+              A librarian will review and approve your request for restricted-use materials, or contact you.
+              Approvals typically happen 1-3 business days before your planned visit date.
+            </p>
+          <% elsif !@patron_request.aeon_page? %>
             <p class="text-cardinal">We'll email you when your <%= @patron_request.patron_request_items.one? ? 'item is' : 'items are' %> ready.</p>
           <% end %>
 
@@ -49,7 +47,7 @@
               <% end %>
 
               <% if @patron_request.mediateable? || @patron_request.aeon_page? %>
-                <div class="mb-3">
+                <div class="mb-2">
                   <span class="fw-semibold">Item(s) requested:</span>
                 </div>
                 <ul class="list-unstyled">
