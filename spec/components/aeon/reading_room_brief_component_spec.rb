@@ -22,7 +22,7 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
   context 'when Archive of Recorded Sound' do
     let(:reading_room) { Aeon::ReadingRoom.from_dynamic(reading_rooms[1]) }
     let(:hours) do
-      'Hours: Monday - Wednesday, 9:00 am - 3:00 pm, Thursday, 9:00 am - 11:00 am and 12:00 pm - 3:00 pm, Friday, 9:00 am - 3:00 pm'
+      'Hours: Monday - Wednesday, 9:00 am - 3:00 pm; Thursday, 9:00 am - 11:00 am and 12:00 pm - 3:00 pm; Friday, 9:00 am - 3:00 pm'
     end
 
     it 'renders correctly' do

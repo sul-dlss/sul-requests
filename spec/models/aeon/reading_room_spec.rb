@@ -30,7 +30,7 @@ RSpec.describe Aeon::ReadingRoom do
           'Wednesday, 10:00 am - 4:00 pm',
           'Thursday, 10:00 am - 12:00 pm and 1:00 pm - 5:00 pm',
           'Friday, 9:00 am - 5:00 pm'
-        ].join(', '))
+        ].join('; '))
       end
     end
 
