@@ -8,6 +8,8 @@ module Folio
                 :material_type, :loan_type, :holdings_record_id, :enumeration, :base_callnumber, :full_enumeration, :queue_length,
                 :instance, :bound_with_holdings_per_item, :bound_with_child_holdings_record
 
+    delegate :id, to: :effective_location, prefix: true
+
     # Other statuses that we aren't using include "Unavailable" and "Intellectual item"
     STATUS_CHECKED_OUT = 'Checked out'
     STATUS_ON_ORDER = 'On order'
@@ -233,6 +235,13 @@ module Folio
 
     def circulates?
       loan_policy&.fetch('loanable', false)
+    end
+
+    def earliest_delivery_estimate(time: Time.zone.now, to: nil, scan: false)
+      return nil unless available?
+
+      PagingSchedule.new(from: effective_location, to: scan ? 'SCAN' : to,
+                         time: time).earliest_delivery_estimate
     end
 
     private
