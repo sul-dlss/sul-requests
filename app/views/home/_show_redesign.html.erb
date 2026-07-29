@@ -1,5 +1,8 @@
 <h1 class="visually-hidden">My Library Account Home</h1>
-<div class="row">
+
+<%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+
+<div class="row mt-3">
   <div class="col-lg-9">
     <%= render 'card_view', dashboard: @dashboard %>
   </div>
