@@ -203,8 +203,8 @@ RSpec.describe 'Requests', :js do
         click_on 'Remove An Activity Book from activity'
         click_on 'Yes - Delete'
 
-        expect(page).to have_no_text('An Activity Book')
         expect(page).to have_text('Another Activity Book')
+        expect(page).to have_no_text('An Activity Book')
       end
     end
 
