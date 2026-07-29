@@ -1,14 +1,16 @@
 <%= tag.div id: request_group.dom_id, class: classes.join(' '), data: do %>
   <div class="card-body">
     <div class="metadata">
-      <div class="mb-2 text-dark-emphasis reading-room"><%= requests.first.reading_room&.name %></div>
+      <div class="mb-2 text- text-uppercase reading-room fw-semibold text-lagunita-dark fs-14">
+        <%= requests.first.reading_room&.name %>
+      </div>
       <h2 class="h4"><%= title %></h2>
       <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
-        <% if base_callnumber.present? %>
+        <% if base_callnumber.present? && request_group.multi_item_selector? %>
           <div>Call number: <%= base_callnumber %></div>
         <% end %>
       </div>
-      <ul class="list-group list-group-flush">
+      <ul class="list-group list-group-flush mt-2">
         <%= render Aeon::RequestGroupBriefListItemComponent.with_collection(requests, after_request_item_component: @after_request_item_component) %>
       </ul>
     </div>

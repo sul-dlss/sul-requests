@@ -1,5 +1,5 @@
-<li id="<%= dom_id(request, :sidebar) %>" data-transaction-number="<%= request.transaction_number %>" class="<%= classes.join(' ') %>">
-  <div class="d-flex flex-row align-items-center justify-content-between">
+<%= tag.li id: dom_id(request, :sidebar), data: { transaction_number: request.transaction_number }, class: classes.join(" ") do %>
+  <div class="d-flex align-items-center flex-row justify-content-between">
     <div class="d-flex column-gap-3 text-break flex-wrap">
       <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
     </div>
@@ -7,4 +7,4 @@
       <%= render @after_request_item_component.new(request:) if @after_request_item_component %>
     </turbo-frame>
   </div>
-</li>
+<% end %>
