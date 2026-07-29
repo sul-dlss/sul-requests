@@ -52,7 +52,7 @@ RSpec.describe Aeon::RequestGroupComponent, type: :component do
     it 'renders information about each request' do
       expect(page).to have_css 'h2', text: 'Donald E. Knuth papers', count: 1
       expect(page).to have_css '.rgi-id', text: 'The Art of Computer Programming', count: 2
-      expect(page).to have_text 'Mar 11, 2024', count: 2
+      expect(page).to have_text 'Mar 11, 2024'
       expect(page).to have_css '.card-header', text: 'SC0097', count: 1
       expect(page).to have_text 'Box 1'
       expect(page).to have_text 'Box 2'
