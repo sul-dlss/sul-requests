@@ -12,7 +12,7 @@
       <%= render Folio::CheckedOutActionsComponent.new(checkout: fine) %>
     <% else %>
       <%= render Folio::FineActionsComponent.new(fine:) %>
-      <%= render Folio::FineStatusPillComponent.new(status: fine.status) if fine.closed? %>
+      <%= render Folio::FineStatusPillComponent.new(fine: fine) %>
     <% end %>
   <% end %>
   <% c.with_body(classes: 'bg-white') do %>

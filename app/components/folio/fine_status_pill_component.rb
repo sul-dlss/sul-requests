@@ -3,11 +3,17 @@
 module Folio
   # Render a pill with correct value/color combination based on fee status
   class FineStatusPillComponent < ViewComponent::Base
-    attr_reader :status
+    attr_reader :fine
 
-    def initialize(status:)
-      @status = status
+    delegate :status, to: :fine
+
+    def initialize(fine:)
+      @fine = fine
       super()
+    end
+
+    def render?
+      fine.closed?
     end
 
     def status_classes
