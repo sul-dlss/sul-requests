@@ -239,11 +239,14 @@ RSpec.describe 'Appointments', :js do
     before do
       # Lower the SPECUA limit so assigning one saved-for-later request pushes
       # the appointment (which already has submitted_request in it) to its cap.
-      allow(Settings.aeon.item_limits).to receive(:[]).and_call_original
-      allow(Settings.aeon.item_limits).to receive(:[]).with('SPECUA').and_return(2)
+      Settings.aeon.sites.SPECUA.appointment_item_limit = 2
 
       third_saved_for_later_request
       visit aeon_appointments_path
+    end
+
+    after do
+      Settings.reload!
     end
 
     it "disables the appointment in every other request's picker once it is full" do
