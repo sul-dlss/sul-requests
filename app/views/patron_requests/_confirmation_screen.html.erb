@@ -63,7 +63,10 @@
             <% if @patron_request.pickup_service_point %>
             <div><dt><%= @patron_request.location_label %>:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
             <% end %>
+        <% end %>
+        </dl>
 
+        <% unless @patron_request.request_type == 'scan' %>
             <% if @patron_request.mediateable? || @patron_request.aeon_page? %>
                 <hr>
                 <div class="mb-2">
@@ -99,6 +102,8 @@
                     </ul>
                 <% end %>
             <% end %>
+
+            <dl class="dl-inline">
             <% if @patron_request.needed_date %>
                 <div>
                     <dt>
@@ -119,8 +124,8 @@
                     </dd>
                 </div>
             <% end %>
+            </dl>
         <% end %>
-        </dl>
     </div>
     <div class="offset-1 col-4">
         <div class="card">
