@@ -188,7 +188,7 @@ module Aeon
     end
 
     def default_sort_key
-      [call_number || '', pad_digits_for_sorting(item_volume || ''), id || ''].join('___')
+      [call_number&.strip || '', pad_digits_for_sorting(item_volume&.strip || ''), id || ''].join('___')
     end
 
     def sort_key(key = nil) # rubocop:disable Metrics/AbcSize
