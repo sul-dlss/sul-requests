@@ -56,7 +56,7 @@ RSpec.describe 'Appointments', :js do
 
         expect(page).to have_text 'Create new appointment Field Reading Room', normalize_ws: true
         expect(page).to have_text 'An appointment must be scheduled at least 5 business days in advance to access items'
-        expect(page).to have_text 'Field Reading Room is open Monday - Friday, 9:00 - 4:45 pm'
+        expect(page).to have_text 'Field Reading Room is open Monday - Friday, 9:00 am - 4:45 pm'
         expect(page).to have_text 'Earliest appointment available:'
         expect(page).to have_css 'label', text: 'Date'
         expect(page).to have_no_text('Duration')
@@ -89,8 +89,8 @@ RSpec.describe 'Appointments', :js do
 
         expect(page).to have_text 'Create new appointment Archive of Recorded Sound', normalize_ws: true
         expect(page).to have_text(
-          'Archive of Recorded Sound is open Monday - Wednesday, 9:00 - 3:00 pm, ' \
-          'Thursday, 9:00 - 11:00 am and 12:00 - 3:00 pm, Friday, 9:00 - 3:00 pm'
+          'Archive of Recorded Sound is open Monday - Wednesday, 9:00 am - 3:00 pm, ' \
+          'Thursday, 9:00 am - 11:00 am and 12:00 pm - 3:00 pm, Friday, 9:00 am - 3:00 pm'
         )
         expect(page).to have_css 'label', text: 'Date'
         expect(page).to have_text('Duration')

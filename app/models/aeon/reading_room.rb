@@ -135,7 +135,7 @@ module Aeon
     private
 
     def format_hours(reading_room_open_hours)
-      "#{reading_room_open_hours.open_time.strftime('%-l:%M')} - #{reading_room_open_hours.close_time.strftime('%-l:%M %P')}"
+      "#{reading_room_open_hours.open_time.strftime('%-l:%M %P')} - #{reading_room_open_hours.close_time.strftime('%-l:%M %P')}"
     end
   end
 end

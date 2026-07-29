@@ -95,7 +95,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
         perform_enqueued_jobs
       end.to change(StubAeonClient::Request, :count).by(1)
 
-      expect(page).to have_text 'Open hours: Monday - Friday, 9:00 - 4:45 pm'
+      expect(page).to have_text 'Open hours: Monday - Friday, 9:00 am - 4:45 pm'
       expect(page).to have_text 'Please review Reading room policies'
 
       expect(StubAeonClient::Request.last).to have_attributes(
