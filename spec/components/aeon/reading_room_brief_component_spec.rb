@@ -15,13 +15,15 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
     it 'renders correctly' do
       expect(page).to have_text 'Rumsey Reading Room'
       expect(page).to have_text 'Located on the fourth floor of Green Library'
-      expect(page).to have_text 'Hours: Monday - Friday, 1:00 - 4:30 pm'
+      expect(page).to have_text 'Hours: Monday - Friday, 1:00 pm - 4:30 pm'
     end
   end
 
   context 'when Archive of Recorded Sound' do
     let(:reading_room) { Aeon::ReadingRoom.from_dynamic(reading_rooms[1]) }
-    let(:hours) { 'Hours: Monday - Wednesday, 9:00 - 3:00 pm, Thursday, 9:00 - 11:00 am and 12:00 - 3:00 pm, Friday, 9:00 - 3:00 pm' }
+    let(:hours) do
+      'Hours: Monday - Wednesday, 9:00 am - 3:00 pm, Thursday, 9:00 am - 11:00 am and 12:00 pm - 3:00 pm, Friday, 9:00 am - 3:00 pm'
+    end
 
     it 'renders correctly' do
       expect(page).to have_text 'Archive of Recorded Sound'
@@ -36,7 +38,7 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
     it 'renders correctly' do
       expect(page).to have_text 'East Asia Library Special Collections'
       expect(page).to have_text 'Located on the second floor of Lathrop Library'
-      expect(page).to have_text 'Hours: Monday - Friday, 9:00 - 5:00 pm'
+      expect(page).to have_text 'Hours: Monday - Friday, 9:00 am - 5:00 pm'
     end
   end
 
@@ -46,7 +48,7 @@ RSpec.describe Aeon::ReadingRoomBriefComponent, type: :component do
     it 'renders correctly' do
       expect(page).to have_text 'Field Reading Room'
       expect(page).to have_text 'Located on the second floor of Green Library'
-      expect(page).to have_text 'Hours: Monday - Friday, 9:00 - 4:45 pm'
+      expect(page).to have_text 'Hours: Monday - Friday, 9:00 am - 4:45 pm'
     end
   end
 end

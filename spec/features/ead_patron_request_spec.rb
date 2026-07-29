@@ -686,7 +686,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       # In the Appointment step
       expect(page).to have_text('Field Reading Room')
-      expect(page).to have_text('Hours: Monday - Friday, 9:00 - 4:45 pm')
+      expect(page).to have_text('Hours: Monday - Friday, 9:00 am - 4:45 pm')
 
       # In the Appointment step
       click_button 'Select appointment'
@@ -716,7 +716,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
         # In the Appointment step
         expect(page).to have_text('Field Reading Room')
-        expect(page).to have_text('Hours: Monday - Friday, 9:00 - 4:45 pm')
+        expect(page).to have_text('Hours: Monday - Friday, 9:00 am - 4:45 pm')
         expect(page).to have_text('You don’t have any appointments yet. Create one to continue.')
         expect(page).to have_button('Select appointment', disabled: true)
       end

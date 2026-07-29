@@ -26,10 +26,10 @@ RSpec.describe Aeon::ReadingRoom do
 
       it 'combines sequential days with the same hours and groups multiple hours for the same day' do
         expect(reading_room.human_readable_hours).to eq([
-          'Monday - Tuesday, 9:00 - 5:00 pm',
-          'Wednesday, 10:00 - 4:00 pm',
-          'Thursday, 10:00 - 12:00 pm and 1:00 - 5:00 pm',
-          'Friday, 9:00 - 5:00 pm'
+          'Monday - Tuesday, 9:00 am - 5:00 pm',
+          'Wednesday, 10:00 am - 4:00 pm',
+          'Thursday, 10:00 am - 12:00 pm and 1:00 pm - 5:00 pm',
+          'Friday, 9:00 am - 5:00 pm'
         ].join(', '))
       end
     end
@@ -47,7 +47,7 @@ RSpec.describe Aeon::ReadingRoom do
       end
 
       it 'lists each day separately' do
-        expect(reading_room.human_readable_hours).to eq('Monday, Thursday, and Friday, 9:00 - 5:00 pm')
+        expect(reading_room.human_readable_hours).to eq('Monday, Thursday, and Friday, 9:00 am - 5:00 pm')
       end
     end
   end
