@@ -26,7 +26,7 @@ RSpec.describe FolioRequestsController do
 
     let(:requests) do
       [
-        instance_double(Folio::Request, key: '1', sort_key: nil, catkey: 'a12345', full_call_number: '1234')
+        instance_double(Folio::Request, key: '1', sort_key: nil, catkey: 'a12345', full_call_number: '1234', title: '12345 title')
       ]
     end
 
@@ -50,7 +50,8 @@ RSpec.describe FolioRequestsController do
       let(:api_response) { instance_double(Faraday::Response, status: 204) }
 
       let(:requests) do
-        [instance_double(Folio::Request, key: '123', sort_key: nil, record: {}, catkey: 'a12345', full_call_number: '1234')]
+        [instance_double(Folio::Request, key: '123', sort_key: nil, record: {}, catkey: 'a12345', full_call_number: '1234',
+                                         title: '12345 title')]
       end
 
       let(:mock_client) { instance_double(FolioClient, ping: true) }
@@ -107,7 +108,7 @@ RSpec.describe FolioRequestsController do
       let(:mock_client) { instance_double(FolioClient, cancel_request: api_response, ping: true) }
 
       let(:requests) do
-        [instance_double(Folio::Request, key: '123', sort_key: nil, catkey: 'a1234', full_call_number: '1234')]
+        [instance_double(Folio::Request, key: '123', sort_key: nil, catkey: 'a1234', full_call_number: '1234', title: '1234 title')]
       end
 
       before do
@@ -117,7 +118,7 @@ RSpec.describe FolioRequestsController do
       context 'when everything is good' do
         it 'cancels the hold and sets flash messages' do
           delete :destroy, params: { id: '123' }
-          expect(flash[:success]).to include('Success!')
+          expect(flash[:success].first).to match(/Success.*"1234 title" was canceled/)
         end
 
         it 'cancels the hold and redirects to folio_requests_path' do
@@ -131,7 +132,7 @@ RSpec.describe FolioRequestsController do
 
         it 'does not cancel the hold and sets flash messages' do
           delete :destroy, params: { id: '123' }
-          expect(flash[:error]).to include('Sorry!')
+          expect(flash[:error].first).to match(/Sorry!.*Something went wrong and "1234 title" was not canceled./)
         end
 
         it 'does not cancel the hold and redirects to folio_requests_path' do

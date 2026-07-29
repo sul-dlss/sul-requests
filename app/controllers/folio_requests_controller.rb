@@ -8,6 +8,7 @@ class FolioRequestsController < ApplicationController
 
   before_action :load_requests
   before_action :load_request, except: [:index]
+  before_action :empty_flashes, only: [:destroy, :update]
   before_action :set_variant, only: [:edit]
 
   rescue_from RequestException, with: :deny_access
@@ -36,9 +37,6 @@ class FolioRequestsController < ApplicationController
   # PATCH /requests/:id
   # PUT /requests/:id
   def update # rubocop:disable Metrics/AbcSize
-    flash[:success] = []
-    flash[:error] = []
-
     handle_change_pickup_service_point if params['service_point'].present?
     handle_change_pickup_expiration if params['not_needed_after'].present? &&
                                        params['not_needed_after'] != params['current_fill_by_date']
@@ -52,23 +50,24 @@ class FolioRequestsController < ApplicationController
   # Handles form submission for canceling requests/holds/etc in FOLIO
   #
   # DELETE /requests/:id
-  def destroy # rubocop:disable Metrics/AbcSize
+  def destroy
     @response = FolioClient.new.cancel_request(@request.key, patron_or_group.key)
 
-    if @response.status == 204
-      flash[:success] = t 'mylibrary.request.cancel.success_html', title: params['title']
-    else
-      Rails.logger.error(@response.body)
-      flash[:error] = t 'mylibrary.request.cancel.error_html', title: params['title']
-    end
-
     respond_to do |format|
-      format.html { redirect_back_or_to(unified_requests_path) }
+      format.html do
+        response_flash_message(response: @response, translation_key: 'cancel')
+        redirect_back_or_to(unified_requests_path)
+      end
       format.turbo_stream
     end
   end
 
   private
+
+  def empty_flashes
+    flash[:success] = []
+    flash.now[:error] = []
+  end
 
   def load_requests
     @requests = patron_or_group.requests.sort_by { |request| request.sort_key(:date) }
@@ -96,10 +95,10 @@ class FolioRequestsController < ApplicationController
   def response_flash_message(response:, translation_key:)
     case response.status
     when 204
-      flash[:success].push(t("mylibrary.request.#{translation_key}.success_html", title: params['title']))
+      flash[:success].push(t("mylibrary.request.#{translation_key}.success_html", title: @request&.title))
     else
       Rails.logger.error(response.body)
-      flash[:error].push(t("mylibrary.request.#{translation_key}.success_html", title: params['title']))
+      flash[:error].push(t("mylibrary.request.#{translation_key}.error_html", title: @request&.title))
     end
   end
 
