@@ -54,7 +54,7 @@
                 </div>
                 <ul class="list-unstyled">
                   <% @patron_request.patron_request_items.map(&:folio_item).each do |avail_item| %>
-                    <li class="request border-top fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
+                    <li class="request border-top border-first-child-top-0 fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
                   <% end %>
                 </ul>
                 <% if @patron_request.needed_date %>
@@ -66,17 +66,17 @@
               <% else %>
                 <% available_items, unavailable_items = @patron_request.patron_request_items.map(&:folio_item).partition(&:available?) %>
                 <% if available_items.any? %>
-                  <div class="bg-light mb-3 p-1">
+                  <div class="bg-light mb-2 p-1">
                     <div><dt>Pickup after:</dt><dd><%= @patron_request.estimated_delivery %></dd></div>
                   </div>
                   <ul class="list-unstyled">
                     <% available_items.each do |avail_item| %>
-                      <li class="request border-top fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
+                      <li class="request border-top border-first-child-top-0 fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
                     <% end %>
                   </ul>
                 <% end %>
                 <% if unavailable_items.any? %>
-                  <div class="bg-light mb-3 p-1">
+                  <div class="bg-light mb-2 p-1">
                     <div><dt>Pickup after:</dt><dd>Notified by email</dd></div>
                     <% if @patron_request.fulfillment_type %>
                       <div>
@@ -95,7 +95,7 @@
                   </div>
                   <ul class="list-unstyled">
                     <% unavailable_items.each do |avail_item| %>
-                      <li class="request border-top fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
+                      <li class="request border-top border-first-child-top-0 fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
                     <% end %>
                   </ul>
                 <% end %>

@@ -148,7 +148,7 @@ label.btn-close {
     margin-bottom: 0 !important;
   }
 
-  .border-first-child-top-0:last-child {
+  .border-first-child-top-0:first-child {
     border-top: none !important;
   }
 
