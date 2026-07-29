@@ -4,7 +4,6 @@
     <h3 class="record-title"><%= @request.title %></h3>
     <%= hidden_field_tag :id, @request.key %>
     <%= hidden_field_tag :title, @request.title %>
-    <%= hidden_field_tag :group, params[:group] if params[:group] %>
     <%= hidden_field_tag :current_fill_by_date, @request&.fill_by_date&.strftime('%Y-%m-%d') %>
     <div class="form-group mb-3">
       <%= label_tag :service_point, 'Pickup point', class: 'form-label fw-semibold' %>
