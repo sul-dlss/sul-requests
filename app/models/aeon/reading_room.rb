@@ -115,7 +115,7 @@ module Aeon
         end
       end
 
-      day_groups.join(', ')
+      day_groups.join('; ')
     end
 
     def appointment_min_lead_days

@@ -89,8 +89,8 @@ RSpec.describe 'Appointments', :js do
 
         expect(page).to have_text 'Create new appointment Archive of Recorded Sound', normalize_ws: true
         expect(page).to have_text(
-          'Archive of Recorded Sound is open Monday - Wednesday, 9:00 am - 3:00 pm, ' \
-          'Thursday, 9:00 am - 11:00 am and 12:00 pm - 3:00 pm, Friday, 9:00 am - 3:00 pm'
+          'Archive of Recorded Sound is open Monday - Wednesday, 9:00 am - 3:00 pm; ' \
+          'Thursday, 9:00 am - 11:00 am and 12:00 pm - 3:00 pm; Friday, 9:00 am - 3:00 pm'
         )
         expect(page).to have_css 'label', text: 'Date'
         expect(page).to have_text('Duration')
