@@ -125,19 +125,19 @@
           </div>
         </div>
 
-        <fieldset class="mb-3 radio-button-group" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <legend class="fs-6 form-label fw-semibold">Will you accept an alternate edition of this item?</legend>
+        <fieldset class="mb-3" data-ill-request-target="section" data-ill-request-for-request-type="pickup">
+          <legend class="fs-6 form-label fw-semibold">Which formats would you accept?</legend>
 
-
-          <div class="form-check form-check-inline">
-            <%= f.radio_button :accept_alternate_edition, true, class: 'form-check-input' %>
-            <%= f.label :accept_alternate_edition, 'Yes', value: true, class: 'form-check-label' %>
-          </div>
-
-          <div class="form-check form-check-inline">
+          <div class="form-check">
             <%= f.radio_button :accept_alternate_edition, false, class: 'form-check-input' %>
-            <%= f.label :accept_alternate_edition, 'No', value: false, class: 'form-check-label' %>
+            <%= f.label :accept_alternate_edition, 'Print only', value: false, class: 'form-check-label' %>
           </div>
+
+          <div class="form-check">
+            <%= f.radio_button :accept_alternate_edition, true, class: 'form-check-input' %>
+            <%= f.label :accept_alternate_edition, 'Print or electronic', value: true, class: 'form-check-label' %>
+          </div>
+
         </fieldset>
       <% end %>
     <% end %>
