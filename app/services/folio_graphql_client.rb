@@ -337,15 +337,14 @@ class FolioGraphqlClient
                                         enumeration
                                         volume
                                         permanentLocation {
-                                          code
+                                          #{location_fields}
                                         }
                                         effectiveLocation {
                                           #{location_fields}
                                         }
                                         holdingsRecord {
                                           effectiveLocation {
-                                            id
-                                            code
+                                            #{location_fields}
                                           }
                                         }
                                       }
