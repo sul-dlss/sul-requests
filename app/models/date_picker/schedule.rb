@@ -34,7 +34,7 @@ module DatePicker
     end
 
     def default_max
-      (Time.zone.today + 3.years).iso8601
+      3.years.from_now.iso8601
     end
 
     private
