@@ -985,7 +985,7 @@ main:not(:has(#requests li, turbo-frame[busy])) .no-requests {
 .request.flash-on-add::before {
   content: '';
   position: absolute;
-  inset: 0.25rem 0.5rem;
+  inset: 0.25em -0.5rem;
   z-index: -1;
   pointer-events: none;
   border-radius: 4px;
@@ -993,23 +993,10 @@ main:not(:has(#requests li, turbo-frame[busy])) .no-requests {
   animation: flash 1s ease-out 4s forwards;
 }
 
-.appointment .request.flash-on-add {
-  margin-inline-start: -1rem;
-  margin-inline-end: -1rem;
-  padding-inline-start: 1rem;
-  padding-inline-end: 1rem;
-}
-
 #saved_for_later_aeon_requests_sidebar .request {
   &:has(.dropdown-toggle.show) {
     z-index: 5;
   }
-
-  --bs-list-group-item-padding-x: 0;
-  margin-inline-start: -1rem;
-  margin-inline-end: -1rem;
-  padding-inline-start: 1rem;
-  padding-inline-end: 1rem;
 }
 
 @keyframes slideUp {
