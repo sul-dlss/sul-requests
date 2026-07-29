@@ -79,8 +79,8 @@
     <% end %>
   <% end unless acting_as_proxy? %>
 
-  <%= turbo_frame_tag :ill_requests, src: ill_requests_path(async: true) %>
-  <%= turbo_frame_tag :mediated_requests, src: mediated_requests_path(async: true) %>
+  <%= turbo_frame_tag :ill_requests, src: ill_requests_path(async: true) unless acting_as_proxy? %>
+  <%= turbo_frame_tag :mediated_requests, src: mediated_requests_path(async: true) unless acting_as_proxy? %>
 
   <div class="no-requests">
     <h2>No submitted requests yet.</h2>
