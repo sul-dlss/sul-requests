@@ -7,6 +7,6 @@
                 data: { action: 'change->accordion-form#reenableNextButtons' }) %>
     <% else %>
         <%= f.label :needed_date, 'Not needed after', class: 'required-label py-2' %>
-        <%= f.date_field :needed_date, required: true, min: Date.today, value: Time.zone.today + 1.year, class: 'form-control' %>
+        <%= f.date_field :needed_date, required: true, min: Date.today, value: 1.year.from_now.to_date, class: 'form-control' %>
     <% end %>
 </div>
