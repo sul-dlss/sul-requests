@@ -5,29 +5,17 @@ module Aeon
   class RequestStatusMessageComponent < ViewComponent::Base
     attr_reader :request
 
-    delegate :cancelled?, :digital?, :saved_for_later?, :physical?, :scan_delivered?, to: :request
+    delegate :saved_for_later?, :digital?, to: :request
 
     def initialize(request:)
       @request = request
     end
 
     def render?
-      status_message.present?
-    end
-
-    def status_level
-      if saved_for_later?
-        :warning
-      elsif digital? && !scan_delivered?
-        :pending
-      else
-        :ready
-      end
+      saved_for_later?
     end
 
     def status_message
-      return unless saved_for_later?
-
       if digital?
         'Pages/instructions not specified'
       else
