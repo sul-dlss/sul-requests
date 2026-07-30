@@ -15,8 +15,5 @@
       </turbo-frame>
     </div>
 
-    <div class="rgi-footer pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
-      <div>Request #<%= transaction_number %></div>
-      <div>Date added/modified: <%= l(transaction_date, format: :full) %></div>
-    </div>
+    <%= render RequestRgiFooter.new(request_id: transaction_number, date: transaction_date) %>
 <% end %>

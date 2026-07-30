@@ -54,10 +54,7 @@
         <% end %>
       </div>
 
-      <div class="rgi-footer pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column">
-        <div>Request #<%= request.id %></div>
-        <span class="text-body-secondary small">Date added/modified: <span class="text-nowrap"><%= l(request.updated_at, format: :full) %></span></span>
-      </div>
+      <%= render RequestRgiFooter.new(request_id: request.id, date: request.updated_at) %>
     </div>
   <% end %>
 <% end %>
