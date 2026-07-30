@@ -53,7 +53,7 @@
                 </div>
                 <ul class="list-unstyled">
                   <% @patron_request.patron_request_items.map(&:folio_item).each do |avail_item| %>
-                    <li class="request border-top border-first-child-top-0 fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
+                    <li class="request border-top fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
                   <% end %>
                 </ul>
                 <% if @patron_request.needed_date %>
@@ -64,18 +64,21 @@
                 <% end %>
               <% else %>
                 <% available_items, unavailable_items = @patron_request.patron_request_items.map(&:folio_item).partition(&:available?) %>
+                <% both_pickup_sections = available_items.any? && unavailable_items.any? %>
+                <% pickup_section_classes = "mb-2#{' bg-light p-1 m-n1' if both_pickup_sections}" %>
+                <% pickup_item_classes = "request border-top fw-semibold text-pretty py-2#{' border-first-child-top-0' if both_pickup_sections}" %>
                 <% if available_items.any? %>
-                  <div class="bg-light mb-2 p-1 m-n1">
+                  <div class="<%= pickup_section_classes %>">
                     <div><dt>Pickup after:</dt><dd><%= @patron_request.estimated_delivery %></dd></div>
                   </div>
                   <ul class="list-unstyled">
                     <% available_items.each do |avail_item| %>
-                      <li class="request border-top border-first-child-top-0 fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
+                      <li class="<%= pickup_item_classes %>"><%= callnumber_label(avail_item) %></li>
                     <% end %>
                   </ul>
                 <% end %>
                 <% if unavailable_items.any? %>
-                  <div class="bg-light mb-2 p-1 m-n1">
+                  <div class="<%= pickup_section_classes %>">
                     <div><dt>Pickup after:</dt><dd>Notified by email</dd></div>
                     <% if @patron_request.fulfillment_type %>
                       <div>
@@ -94,7 +97,7 @@
                   </div>
                   <ul class="list-unstyled">
                     <% unavailable_items.each do |avail_item| %>
-                      <li class="request border-top border-first-child-top-0 fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
+                      <li class="<%= pickup_item_classes %>"><%= callnumber_label(avail_item) %></li>
                     <% end %>
                   </ul>
                 <% end %>

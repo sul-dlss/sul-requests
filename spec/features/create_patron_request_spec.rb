@@ -456,6 +456,9 @@ RSpec.describe 'Creating a request', :js do
         expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
+      # With only a single type of item, we don't need the background styles to break up the sections.
+      expect(page).to have_no_css('.bg-light.p-1')
+
       expect(PatronRequest.last).to have_attributes(patron_request_items: contain_exactly(have_attributes(item_id: '12345678')))
     end
 
@@ -491,6 +494,9 @@ RSpec.describe 'Creating a request', :js do
         end
         expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
+
+      # With multiple types of items (available/unavailable), we should use the background styles to break up the sections.
+      expect(page).to have_css('.bg-light.p-1')
 
       expect(PatronRequest.last).to have_attributes(fulfillment_type: 'hold',
                                                     patron_request_items: contain_exactly(have_attributes(item_id: '12345678'),
