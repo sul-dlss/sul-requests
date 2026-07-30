@@ -23,8 +23,15 @@ module System
       'dropdown-item'
     end
 
-    def initialize(active_label: 'All requests')
+    def dropdown_id
+      return "#{@prepend_id}DropdownFilterMenuLink" if @prepend_id
+
+      'dropdownFilterMenuLink'
+    end
+
+    def initialize(active_label: 'All requests', prepend_id: nil)
       @active_label = active_label
+      @prepend_id = prepend_id
     end
   end
 end
