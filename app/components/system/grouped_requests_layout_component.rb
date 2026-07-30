@@ -3,7 +3,9 @@
 module System
   # Render a request grouping
   class GroupedRequestsLayoutComponent < ViewComponent::Base
-    renders_one :type
+    renders_one :type, types: {
+      pill: ->(content:) { render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content(content) }
+    }
     renders_one :details, lambda { |content|
       tag.span content, class: 'ms-2 ps-1 text-nowrap text-lagunita-dark'
     }
