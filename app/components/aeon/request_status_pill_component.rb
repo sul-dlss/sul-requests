@@ -11,17 +11,6 @@ module Aeon
       @request = request
     end
 
-    def status_class
-      case status
-      when :completed
-        :ready
-      when :submitted
-        appointment? ? :ready : :pending
-      else
-        status.to_s.dasherize
-      end
-    end
-
     def status_text
       if digital?
         'Digitization'
