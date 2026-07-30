@@ -33,6 +33,7 @@
           <% end %>
 
           <dl class="dl-inline">
+            <% if mailer %><div><dt>Title:</dt><dd><%= @patron_request.item_title %></dd></div><% end %>
             <% if @patron_request.request_type == 'scan' %>
               <div><dt>Pages:</dt><dd><%= @patron_request.scan_page_range %></dd></div>
               <div><dt>Chapter/article:</dt><dd><%= @patron_request.scan_title %></dd></div>
