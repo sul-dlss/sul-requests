@@ -1,29 +1,12 @@
-<button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#<%= dom_id(request, :delete_modal) %>" data-modal-header="Delete request?">
-  <i class="bi bi-trash align-middle" aria-hidden></i><span class="visually-hidden"><%= button_label %></span>
-</button>
-
-<!-- Delete modal -->
-<%= render ModalComponent.new(id: dom_id(request, :delete_modal)) do |component| %>
-  <% component.with_title.with_content('Delete request?') %>
+<%= render System::DeleteWithConfirmationComponent.new(id: dom_id(request, :delete_modal), button_label: button_label, form_url: helpers.folio_request_path(request.key)) do |component| %>
   <% component.with_body do %>
-    <div class="d-flex flex-column gap-3">
-      <div class="text-lagunita-dark"><%= request_type %></div>
-      <div class="d-flex flex-column gap-1">
-        <div class="text-wrap fw-semibold"><%= request.title %></div>
-        <% if call_number.present? %>
-          <div>Call number: <%= call_number %></div>
-        <% end %>
-      </div>
-      <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'mb-0'], with_icon: false) do %>
-        <span class="fw-semibold text-wrap">This action cannot be undone.</span>
+    <div class="text-lagunita-dark"><%= request_type %></div>
+
+    <div class="d-flex flex-column gap-1">
+      <div class="text-wrap fw-semibold"><%= request.title %></div>
+      <% if call_number.present? %>
+        <div>Call number: <%= call_number %></div>
       <% end %>
     </div>
-  <% end %>
-  <% component.with_footer do %>
-    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-    <%= form_with url: helpers.folio_request_path(request.key), method: 'delete' do %>
-      <%= hidden_field_tag :modal, dom_id(request, :delete_modal) %>
-      <button type="submit" class="btn btn-primary">Yes - Delete</button>
-    <% end %>
   <% end %>
 <% end %>
