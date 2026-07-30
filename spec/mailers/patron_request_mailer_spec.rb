@@ -29,6 +29,7 @@ RSpec.describe PatronRequestMailer do
       expect(mail.body).to include('We received your pickup request!')
       expect(mail.body).to include('<dt>Title:</dt><dd>Item Title</dd>')
       expect(mail.body).to include('In library use only')
+      expect(mail.body).to include('ABC 123')
     end
   end
 

@@ -47,15 +47,18 @@
                 <div class="mb-3"><dt><%= @patron_request.location_label %>:</dt><dd><%= @patron_request.pickup_service_point.name %></dd></div>
               <% end %>
 
+              <% show_callnumbers = mailer || @patron_request.patron_request_items.many? %>
               <% if @patron_request.mediateable? || @patron_request.aeon_page? %>
-                <div class="mb-2">
-                  <span class="fw-semibold">Item(s) requested:</span>
-                </div>
-                <ul class="list-unstyled">
-                  <% @patron_request.patron_request_items.map(&:folio_item).each do |avail_item| %>
-                    <li class="request border-top fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
-                  <% end %>
-                </ul>
+                <% if show_callnumbers %>
+                  <div class="mb-2">
+                    <span class="fw-semibold">Item(s) requested:</span>
+                  </div>
+                  <ul class="list-unstyled">
+                    <% @patron_request.patron_request_items.map(&:folio_item).each do |avail_item| %>
+                      <li class="request border-top fw-semibold text-pretty py-2"><%= callnumber_label(avail_item) %></li>
+                    <% end %>
+                  </ul>
+                <% end %>
                 <% if @patron_request.needed_date %>
                   <div>
                     <dt><% if @patron_request.mediateable? %>I plan to visit on:<% else %>Not needed after:<% end %></dt>
@@ -71,11 +74,13 @@
                   <div class="<%= pickup_section_classes %>">
                     <div><dt>Pickup after:</dt><dd><%= @patron_request.estimated_delivery %></dd></div>
                   </div>
-                  <ul class="list-unstyled">
-                    <% available_items.each do |avail_item| %>
-                      <li class="<%= pickup_item_classes %>"><%= callnumber_label(avail_item) %></li>
-                    <% end %>
-                  </ul>
+                  <% if show_callnumbers %>
+                    <ul class="list-unstyled">
+                      <% available_items.each do |avail_item| %>
+                        <li class="<%= pickup_item_classes %>"><%= callnumber_label(avail_item) %></li>
+                      <% end %>
+                    </ul>
+                  <% end %>
                 <% end %>
                 <% if unavailable_items.any? %>
                   <div class="<%= pickup_section_classes %>">
@@ -95,11 +100,13 @@
                       </div>
                     <% end %>
                   </div>
-                  <ul class="list-unstyled">
-                    <% unavailable_items.each do |avail_item| %>
-                      <li class="<%= pickup_item_classes %>"><%= callnumber_label(avail_item) %></li>
-                    <% end %>
-                  </ul>
+                  <% if show_callnumbers %>
+                    <ul class="list-unstyled">
+                      <% unavailable_items.each do |avail_item| %>
+                        <li class="<%= pickup_item_classes %>"><%= callnumber_label(avail_item) %></li>
+                      <% end %>
+                    </ul>
+                  <% end %>
                 <% end %>
               <% end %>
             <% end %>
