@@ -1,19 +1,17 @@
-<%= tag.li id: dom_id(request), class: classes + ['request', request.status], data: request_sort_data do %>
-    <div class="rgi-id d-flex align-items-center">
-      <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
-    </div>
+<%= render System::GroupedRequestItemLayoutComponent.new(id: dom_id(request), request_id: transaction_number, date: transaction_date, classes: classes + [request.status], data: request_sort_data) do |c| %>
+  <% c.with_identifier do %>
+    <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
+  <% end %>
 
-    <div class="rgi-detail pb-1">
-      <%= render Aeon::RequestItemDetailComponent.new(request:) %>
-    </div>
+  <% c.with_detail do %>
+    <%= render Aeon::RequestItemDetailComponent.new(request:) %>
+  <% end %>
 
+  <% c.with_fulfillment do %>
     <%= render Aeon::RequestFulfillmentComponent.new(request:) %>
+  <% end unless request.saved_for_later? %>
 
-    <div class="rgi-actions">
-      <turbo-frame>
-        <%= render Aeon::RequestActionsComponent.new(request:) %>
-      </turbo-frame>
-    </div>
-
-    <%= render RequestRgiFooter.new(request_id: transaction_number, date: transaction_date) %>
+  <% c.with_actions do %>
+    <%= render Aeon::RequestActionsComponent.new(request:) %>
+  <% end %>
 <% end %>

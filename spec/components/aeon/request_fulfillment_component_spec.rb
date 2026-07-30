@@ -9,7 +9,7 @@ RSpec.describe Aeon::RequestFulfillmentComponent, type: :component do
     before { render_inline(described_class.new(request:)) }
 
     it 'shows the cancelled-by-staff message' do
-      expect(page).to have_css '.request-fulfillment .text-digital-red', text: 'Cancelled by staff'
+      expect(page).to have_css '.text-digital-red', text: 'Cancelled by staff'
     end
   end
 end
