@@ -1,9 +1,6 @@
 <%= render System::GroupedRequestsLayoutComponent.new(element: 'li', id: request_group.dom_id, data: { 'filter-value': 'pickup', 'default-sort-value': request_group.sort_key(:default), 'title-sort-value': request_group.sort_key(:title), 'date-sort-value': request_group.sort_key(:date)}) do |c| %>
   <% c.with_type_pill(content: 'Pickup') %>
-
-  <% c.with_title do %>
-    <%= tag.h2 request_group.title || 'Not available', class: 'h3' %>
-  <% end %>
+  <% c.with_title(request_group.title) %>
 
   <% c.with_record_header do %>
     <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">

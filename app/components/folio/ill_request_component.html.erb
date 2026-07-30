@@ -1,9 +1,7 @@
 <%= render System::GroupedRequestsLayoutComponent.new(id: dom_id(request), classes: 'request', data: { 'filter-value': type_label.downcase, 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) }) do |c| %>
   <% c.with_type_pill(content: type_label) %>
 
-  <% c.with_title do %>
-    <%= tag.h2 request.title || 'Not available', class: 'h3' %>
-  <% end %>
+  <% c.with_title(request.title) %>
 
   <% c.with_record_header do %>
     <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">

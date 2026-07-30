@@ -12,7 +12,9 @@ module System
 
     renders_one :status_message
 
-    renders_one :title
+    renders_one :title, lambda { |title|
+      tag.h2 title || 'Not available', class: 'h3'
+    }
     renders_one :record_header
 
     renders_one :cover_image

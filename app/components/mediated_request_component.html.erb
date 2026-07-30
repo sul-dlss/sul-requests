@@ -3,9 +3,7 @@
 
   <% c.with_details('Restricted to in-library use only') %>
 
-  <% c.with_title do %>
-    <%= tag.h2 request.item_title || 'Not available', class: 'h3' %>
-  <% end %>
+  <% c.with_title(request.item_title) %>
 
   <% c.with_body do %>
     <%= render System::GroupedRequestItemLayoutComponent.new(element: 'div', request_id: request.id, date: request.updated_at, classes: %w[request-grid bg-white px-3 py-2]) do |c| %>
