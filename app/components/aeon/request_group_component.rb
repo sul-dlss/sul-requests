@@ -5,7 +5,7 @@ module Aeon
   class RequestGroupComponent < ViewComponent::Base
     attr_reader :request_group, :element
 
-    delegate :appointment_reading_room, :base_callnumber, :requests, :status_request, :title, to: :request_group
+    delegate :appointment_reading_room, :base_callnumber, :requests, :status_request, :title, :digital?, to: :request_group
 
     def initialize(request_group:, element: 'div')
       @request_group = request_group
@@ -18,6 +18,14 @@ module Aeon
 
     def show_more?
       requests.first.cancelled? || requests.first.completed?
+    end
+
+    def status_text
+      if digital?
+        'Digitization'
+      else
+        'Reading room use'
+      end
     end
   end
 end

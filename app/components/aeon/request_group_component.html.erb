@@ -1,6 +1,6 @@
 <%= render System::GroupedRequestsLayoutComponent.new(element: element, id: request_group.dom_id, classes: 'request-group', data: { 'filter-value': request_group.digital? ? 'digitization' : 'reading room',  'default-sort-value': request_group.sort_key(:default), 'title-sort-value': request_group.sort_key(:title), 'date-sort-value': request_group.sort_key(:date) }, show_more: show_more?, sortable: true) do |c| %>
   <% c.with_type do %>
-    <%= render Aeon::RequestStatusPillComponent.new(request: status_request) %>
+    <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content(status_text) %>
   <% end %>
 
   <% c.with_details(appointment_reading_room.name) if appointment_reading_room.present? %>
