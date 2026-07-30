@@ -1,3 +1,7 @@
 <%= turbo_stream.action('close', params[:modal]) if params[:modal] %>
 
 <%= turbo_stream.remove(dom_id(@request)) %>
+
+<% request_group = @grouped_requests.find { |group| group.catkey == @request.catkey } %>
+<% remaining_requst_group_req = request_group.requests.reject { |req| req.id == @request.id } %>
+<%= turbo_stream.remove(request_group.dom_id) if remaining_requst_group_req.empty? %>

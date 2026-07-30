@@ -1,99 +1,40 @@
-<%= render CardComponent.new(element: 'li', id: dom_id(request), classes: 'request', data: { 'filter-value': 'pickup', 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date)}) do |c| %>
-  <% c.with_title do %>
-    <div class="flex-grow-1">
-      <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
-        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup') %>
-      </div>
-
-      <div>
-        <%= tag.h2 request.title || 'Not available', class: 'h3' %>
-        <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
-          <%= render FormatIndicatorComponent.new(record: request) %>
-          <% if request.full_call_number.present? %>
-            <span>Call number: <%= request.full_call_number %></span>
+<li id="<%= dom_id(request) %>" class="list-group-item request-grid request">
+  <div class="request-item-identifier fw-semibold text-pretty rgi-id">
+    <% if request.vol_enum_chron.present? %>
+      <%= request.vol_enum_chron %>
+    <% elsif request.call_number %>
+      <span class="fw-normal">Call number: </span><%= request.call_number %>
+    <% end %>
+  </div>
+  <div class="request-fulfillment">
+    <% if request.ready_for_pickup? %>
+      <span class="text-green">
+        <i class="bi bi-bag me-1" aria-hidden></i>Awaiting pick up at <span class="fw-semibold"><%= request.service_point_name %></span>
+          <% if request.expiration_date %>
+            by <span class="fw-semibold"><%= l(request.expiration_date, format: :date_only) %></span>.
           <% end %>
-          <span>
-            <%= detail_link_to_searchworks(request.catkey) %>
-          </span>
-        </div>
-        <% if request.author %>
-          <div class="mt-2">
-            <%= request.author %>
-          </div>
+      </span>
+    <% else %>
+      <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i><span class="fw-semibold">Processing request</span> for pickup at <span class="text-nowrap"><%= request.service_point_name %></span></span>
+    <% end %>
+  </div>
+
+  <div class="rgi-actions d-flex text-nowrap align-items-baseline justify-content-xl-end" data-turbo-prefetch="false">
+    <% if patron.can_modify_requests? %>
+      <% unless request.ready_for_pickup? %>
+        <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open', modal_header: 'Edit request' } do %>
+          <i class="bi bi-pencil-fill me-1 align-middle" aria-hidden></i><span class="visually-hidden">Edit request</span>
         <% end %>
-      </div>
-    </div>
-    <div>
-      <%= cover_image %>
-    </div>
-  <% end %>
-
-  <% c.with_body do %>
-    <div class="bg-white px-3 py-2 request-grid">
-      <div class="rgi-id d-flex justify-content-start gap-2">
-        <span class="text-body-secondary small">Date added/modified: <span class="text-nowrap"><%= l(request.placed_date, format: :full) %></span></span>
-      </div>
-
-      <div class="request-fulfillment d-flex flex-grow-1 column-gap-4 row-gap-2 justify-content-between align-items-start flex-wrap flex-md-nowrap">
-        <div>
-          <% if request.ready_for_pickup? %>
-            <span class="text-green">
-              <i class="bi bi-bag me-1" aria-hidden></i>Awaiting pick up at <span class="fw-semibold"><%= request.service_point_name %></span>
-                <% if request.expiration_date %>
-                  by <span class="fw-semibold"><%= l(request.expiration_date, format: :date_only) %></span>.
-                <% end %>
-            </span>
-          <% else %>
-            <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i><span class="fw-semibold">Processing request</span> for pickup at <span class="text-nowrap"><%= request.service_point_name %></span></span>
-          <% end %>
-
-        <% if request.proxy_request? %>
-          <div class="py-2">
-            <%= render Folio::ProxyIndicatorComponent.new(proxy: proxy_borrower, verb: 'Requested') %>
-          </div>
-        <% end %>
-        </div>
-      </div>
-
-      <div class="rgi-actions d-flex text-nowrap align-items-baseline justify-content-xl-end" data-turbo-prefetch="false">
-        <% if patron.can_modify_requests? %>
-          <% unless request.ready_for_pickup? %>
-            <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open', modal_header: 'Edit request' } do %>
-              <i class="bi bi-pencil-fill me-1 align-middle" aria-hidden></i><span class="visually-hidden">Edit request</span>
-            <% end %>
-          <% end %>
-          <button class="btn btn-link su-underline p-0" data-bs-toggle="modal" data-bs-target="#<%= dom_id(request, :delete) %>">
-            <i class="bi bi-trash align-middle" aria-hidden></i><span class="visually-hidden">Cancel request</span>
-          </button>
-
-          <!-- Delete modal -->
-          <%= render ModalComponent.new(id: dom_id(request, :delete)) do |component| %>
-            <% component.with_title.with_content('Delete request?') %>
-            <% component.with_body do %>
-              <div class="d-flex flex-column gap-3">
-                <div class="text-lagunita-dark">Pickup</div>
-                <div class="d-flex flex-column gap-1">
-                  <div class="text-wrap fw-semibold"><%= request.title %></div>
-                  <% if request.full_call_number.present? %>
-                    <div>Call number: <%= request.full_call_number %></div>
-                  <% end %>
-                </div>
-                <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none', 'mb-0'], with_icon: false) do %>
-                  <span class="fw-semibold text-wrap">This action cannot be undone.</span>
-                <% end %>
-              </div>
-            <% end %>
-
-            <% component.with_footer do %>
-              <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">No</button>
-              <%= form_with url: folio_request_path(request.key), method: 'delete' do %>
-                <%= hidden_field_tag :modal, dom_id(request, :delete) %>
-                <button type="submit" class="btn btn-primary">Yes - Delete</button>
-              <% end %>
-            <% end %>
-          <% end %>
-        <% end %>
-      </div>
+      <% end %>
+      <%= render Folio::RequestDeleteButtonComponent.new(request:) %>
+    <% end %>
+  </div>
+  <div class="rgi-footer d-flex justify-content-start gap-2">
+    <span class="text-body-secondary small">Date added/modified: <span class="text-nowrap"><%= l(request.placed_date, format: :full) %></span></span>
+  </div>
+  <% if request.proxy_request? %>
+    <div class="py-2">
+      <%= render Folio::ProxyIndicatorComponent.new(proxy: proxy_borrower, verb: 'Requested') %>
     </div>
   <% end %>
-<% end %>
+</li>

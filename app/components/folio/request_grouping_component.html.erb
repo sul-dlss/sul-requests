@@ -1,0 +1,36 @@
+<%= render CardComponent.new(element: 'li', id: request_group.dom_id, data: { 'filter-value': 'pickup', 'default-sort-value': request_group.sort_key(:default), 'title-sort-value': request_group.sort_key(:title), 'date-sort-value': request_group.sort_key(:date)}) do |c| %>
+  <% c.with_title do %>
+    <div class="flex-grow-1">
+      <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
+        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup') %>
+      </div>
+
+      <div>
+        <%= tag.h2 request_group.title || 'Not available', class: 'h3' %>
+        <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
+          <%= render FormatIndicatorComponent.new(record: request_group) %>
+          <% if request_group.call_number.present? && request_group.vol_enum_chron.present? %>
+            <span>Call number: <%= request_group.call_number %></span>
+          <% end %>
+          <span>
+            <%= detail_link_to_searchworks(request_group.catkey) %>
+          </span>
+        </div>
+        <% if request_group.author %>
+          <div class="mt-2">
+            <%= request_group.author %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div>
+      <%= cover_image %>
+    </div>
+  <% end %>
+
+  <% c.with_body do %>
+    <ul class="list-group list-group-flush gap-2">
+      <%= render Folio::RequestComponent.with_collection(request_group.requests, patron:) %>
+    </ul>
+  <% end %>
+<% end %>

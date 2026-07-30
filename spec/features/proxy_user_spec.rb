@@ -72,7 +72,7 @@ RSpec.describe 'Proxy User' do
       click_on 'Switch to proxy'
       click_on 'Proxy for: Shea Sponsor'
 
-      expect(page).to have_css('.requests li', count: 1)
+      expect(page).to have_css('.requests .request', count: 1)
 
       expect(page).to have_text('Fiction!')
       expect(page).to have_no_text('A history of Persia')
