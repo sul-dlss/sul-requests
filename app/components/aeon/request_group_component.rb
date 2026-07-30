@@ -5,7 +5,7 @@ module Aeon
   class RequestGroupComponent < ViewComponent::Base
     attr_reader :request_group, :element
 
-    delegate :appointment_reading_room, :base_callnumber, :requests, :status_request, :title, :digital?, :saved_for_later?,
+    delegate :appointment_reading_room, :base_callnumber, :requests, :title, :digital?, :saved_for_later?,
              to: :request_group
 
     def initialize(request_group:, element: 'div')

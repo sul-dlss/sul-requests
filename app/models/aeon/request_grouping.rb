@@ -31,13 +31,5 @@ module Aeon
 
       requests.submitted.first&.reading_room
     end
-
-    # For status display, prefer a pending request over a ready one
-    # so the group shows as pending if any request is still pending.
-    def status_request
-      return first unless digital? && any?(&:submitted?)
-
-      find { |r| !r.scan_delivered? } || first
-    end
   end
 end
