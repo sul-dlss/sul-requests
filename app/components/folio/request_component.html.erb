@@ -29,9 +29,7 @@
       <%= render Folio::RequestDeleteButtonComponent.new(request:) %>
     <% end %>
   </div>
-  <div class="rgi-footer d-flex justify-content-start gap-2">
-    <span class="text-body-secondary small">Date added/modified: <span class="text-nowrap"><%= l(request.placed_date, format: :full) %></span></span>
-  </div>
+  <%= render RequestRgiFooter.new(date: request.placed_date) %>
   <% if request.proxy_request? %>
     <div class="py-2">
       <%= render Folio::ProxyIndicatorComponent.new(proxy: proxy_borrower, verb: 'Requested') %>
