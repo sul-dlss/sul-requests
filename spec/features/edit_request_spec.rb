@@ -57,7 +57,7 @@ RSpec.describe 'Edit Aeon request', :js do
       expect(page).to have_css('.selected-item-title', text: 'PR9195.1 .S56 NO.1')
     end
 
-    # This serves to test RecordHeaderCardComponent
+    # This serves to test RecordHeaderComponent
     it 'Displays the long form of the record header in the edit modal' do
       expect(page).to have_css('.card .card-body h2', text: 'Slow poetry in America : a poetry quarterly')
       within('.modal-dialog .card .card-body') do

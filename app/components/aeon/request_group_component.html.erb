@@ -7,8 +7,20 @@
     <span><i class="bi bi-exclamation-triangle-fill align-middle mx-2 text-digital-red"></i><span class="text-digital-red fw-normal"><%= digital? ? 'Pages/instructions not specified' : 'Not scheduled' %></span></span>
   <% end if saved_for_later? %>
 
+  <% c.with_title(request_group.title) %>
+
   <% c.with_record_header do %>
-    <%= render RecordHeaderComponent.new(record: requests.first, brief: true, display_callnumber: requests.first.multi_item_selector?) %>
+    <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
+      <span>
+        <%= render FormatIndicatorComponent.new(record: request_group) %><% if request_group.date.present? %> (<%= request_group.date %>)<% end %>
+      </span>
+      <% if request_group.base_callnumber.present? && request_group.multi_item_selector? %>
+        <span>Call number: <%= request_group.base_callnumber %></span>
+      <% end %>
+      <span>
+        <%= render Aeon::RequestLinkComponent.new(url: request_group.item_url) %>
+      </span>
+    </div>
   <% end %>
 
   <% Aeon::RequestGroupItemComponent.with_collection(requests).each do |item| %>
