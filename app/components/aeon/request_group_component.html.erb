@@ -4,8 +4,8 @@
   <% c.with_details(appointment_reading_room.name) if appointment_reading_room.present? %>
 
   <% c.with_status_message do %>
-    <%= render Aeon::RequestStatusMessageComponent.new(request: status_request) %>
-  <% end %>
+    <span><i class="bi bi-exclamation-triangle-fill align-middle mx-2 text-digital-red"></i><span class="text-digital-red fw-normal"><%= digital? ? 'Pages/instructions not specified' : 'Not scheduled' %></span></span>
+  <% end if saved_for_later? %>
 
   <% c.with_record_header do %>
     <%= render RecordHeaderComponent.new(record: requests.first, brief: true, display_callnumber: requests.first.multi_item_selector?) %>
