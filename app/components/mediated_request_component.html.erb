@@ -1,16 +1,10 @@
-<%= render CardComponent.new(element: 'li', id: dom_id(request), classes: 'request', data: { 'filter-value': 'pickup', 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) }) do |c| %>
+<%= render System::GroupedRequestsLayoutComponent.new(id: dom_id(request), classes: 'request',  data: { 'filter-value': 'pickup', 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) }) do |c| %>
+  <% c.with_type_pill(content: 'Pickup') %>
+
+  <% c.with_details('Restricted to in-library use only') %>
+
   <% c.with_title do %>
-    <div class="flex-grow-1">
-      <div class="d-flex flex-wrap gap-1 justify-content-start align-items-center mt-2 mb-3">
-        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup') %>
-
-        <span class="ms-2 text-nowrap text-lagunita-dark">Restricted to in-library use only</span>
-      </div>
-
-      <div>
-        <%= tag.h2 request.item_title || 'Not available', class: 'h3' %>
-      </div>
-    </div>
+    <%= tag.h2 request.item_title || 'Not available', class: 'h3' %>
   <% end %>
 
   <% c.with_body do %>

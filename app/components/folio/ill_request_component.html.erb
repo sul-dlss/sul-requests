@@ -1,24 +1,21 @@
-<%= render CardComponent.new(element: 'li', id: dom_id(request), classes: 'request', data: { 'filter-value': type_label.downcase, 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) }) do |c| %>
-  <% c.with_title do %>
-    <div class="flex-grow-1">
-      <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
-        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content(type_label) %>
-      </div>
+<%= render System::GroupedRequestsLayoutComponent.new(id: dom_id(request), classes: 'request', data: { 'filter-value': type_label.downcase, 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) }) do |c| %>
+  <% c.with_type_pill(content: type_label) %>
 
-      <div>
-        <%= tag.h2 request.title || 'Not available', class: 'h3' %>
-        <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
-          <% if request.call_number.present? %>
-            <span>Call number: <%= request.call_number %></span>
-          <% end %>
-        </div>
-        <% if request.author %>
-          <div class="mt-2">
-            <%= request.author %>
-          </div>
-        <% end %>
-      </div>
+  <% c.with_title do %>
+    <%= tag.h2 request.title || 'Not available', class: 'h3' %>
+  <% end %>
+
+  <% c.with_record_header do %>
+    <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
+      <% if request.call_number.present? %>
+        <span>Call number: <%= request.call_number %></span>
+      <% end %>
     </div>
+    <% if request.author %>
+      <div class="mt-2">
+        <%= request.author %>
+      </div>
+    <% end %>
   <% end %>
 
   <% c.with_body do %>

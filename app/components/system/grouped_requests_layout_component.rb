@@ -16,6 +16,8 @@ module System
     renders_one :record_header
 
     renders_one :cover_image
+
+    renders_one :body
     renders_many :requests
 
     attr_reader :id, :element, :attr
