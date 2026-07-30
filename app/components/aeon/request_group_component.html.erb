@@ -1,39 +1,25 @@
-<%= render CardComponent.new id: request_group.dom_id, element: element, classes: 'request-group', data: { 'filter-value': request_group.digital? ? 'digitization' : 'reading room',  'default-sort-value': request_group.sort_key(:default), 'title-sort-value': request_group.sort_key(:title), 'date-sort-value': request_group.sort_key(:date)} do |c| %>
-  <% c.with_title do %>
-    <div class="flex-grow-1">
-      <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
-        <span>
-          <%= render Aeon::RequestStatusPillComponent.new(request: status_request) %>
-          <% if appointment_reading_room.present? %>
-          <span class="appointment-details ms-1">
-            <span class="ms-2 text-nowrap text-lagunita-dark"><%= appointment_reading_room.name %></span>
-          </span>
-          <% end %>
-        </span>
-
-        <span>
-          <%= render Aeon::RequestStatusMessageComponent.new(request: status_request) %>
-        </span>
-      </div>
-
-      <div>
-        <%= render RecordHeaderComponent.new(record: requests.first, brief: true, display_callnumber: requests.first.multi_item_selector?) %>
-      </div>
-    </div>
+<%= render System::GroupedRequestsLayoutComponent.new(element: element, id: request_group.dom_id, classes: 'request-group', data: { 'filter-value': request_group.digital? ? 'digitization' : 'reading room',  'default-sort-value': request_group.sort_key(:default), 'title-sort-value': request_group.sort_key(:title), 'date-sort-value': request_group.sort_key(:date) }, show_more: show_more?, sortable: true) do |c| %>
+  <% c.with_type do %>
+    <%= render Aeon::RequestStatusPillComponent.new(request: status_request) %>
   <% end %>
 
-  <% c.with_body(data: { controller: 'show-more'}) do %>
-    <ul id="<%= request_group.dom_id %>_list" class="list-group list-group-flush gap-2" data-sortable-target="subgroup" data-show-more-target="list">
-      <%= render Aeon::RequestGroupItemComponent.with_collection(requests) %>
-    </ul>
+  <% c.with_details do %>
+    <span class="appointment-details ms-1">
+      <span class="ms-2 text-nowrap text-lagunita-dark"><%= appointment_reading_room.name %></span>
+    </span>
+  <% end if appointment_reading_room.present? %>
 
-    <% if show_more? %>
-      <% inverse_content = capture do %>
-        <i class="bi bi-arrow-up-circle-fill me-1" aria-hidden></i>Show less
-      <% end %>
-      <%= button_tag class: 'btn btn-link su-underline mt-1', data: { show_more_target: 'button', action: 'show-more#toggle', content: inverse_content }, aria: { expanded: 'false', controls: "#{request_group.dom_id}_list" } do %>
-        <i class="bi bi-arrow-down-circle-fill me-1" aria-hidden></i>Show all <%= pluralize(requests.length, 'request') %>
-      <% end %>
+  <% c.with_status_message do %>
+    <%= render Aeon::RequestStatusMessageComponent.new(request: status_request) %>
+  <% end %>
+
+  <% c.with_record_header do %>
+    <%= render RecordHeaderComponent.new(record: requests.first, brief: true, display_callnumber: requests.first.multi_item_selector?) %>
+  <% end %>
+
+  <% Aeon::RequestGroupItemComponent.with_collection(requests).each do |item| %>
+    <% c.with_request do %>
+      <%= render item %>
     <% end %>
   <% end %>
 <% end %>
