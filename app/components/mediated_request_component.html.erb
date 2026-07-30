@@ -17,7 +17,7 @@
     <div class="request-grid bg-white p-2">
       <div class="rgi-id d-flex align-items-center">
         <% if request.requires_needed_date? %>
-          <span class="fw-semibold">Planned visit date:</span> <%= l(request.needed_date, format: :short) %>
+          <span class="fw-semibold me-1">Planned visit date:</span><%= l(request.needed_date, format: :short) %>
         <% end %>
       </div>
       <div class="request-fulfillment">
