@@ -4,7 +4,10 @@ module System
   # Render a request grouping
   class GroupedRequestsLayoutComponent < ViewComponent::Base
     renders_one :type
-    renders_one :details
+    renders_one :details, lambda { |content|
+      tag.span content, class: 'ms-2 ps-1 text-nowrap text-lagunita-dark'
+    }
+
     renders_one :status_message
 
     renders_one :title

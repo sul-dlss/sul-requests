@@ -3,11 +3,7 @@
     <%= render Aeon::RequestStatusPillComponent.new(request: status_request) %>
   <% end %>
 
-  <% c.with_details do %>
-    <span class="appointment-details ms-1">
-      <span class="ms-2 text-nowrap text-lagunita-dark"><%= appointment_reading_room.name %></span>
-    </span>
-  <% end if appointment_reading_room.present? %>
+  <% c.with_details(appointment_reading_room.name) if appointment_reading_room.present? %>
 
   <% c.with_status_message do %>
     <%= render Aeon::RequestStatusMessageComponent.new(request: status_request) %>
