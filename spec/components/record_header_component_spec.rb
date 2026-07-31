@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe RecordHeaderComponent, type: :component do
   before do
-    render_inline(described_class.new(record:))
+    render_inline(described_class.for(record))
   end
 
   context 'with aeon_request' do

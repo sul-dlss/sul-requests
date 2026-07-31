@@ -1,5 +1,5 @@
 <div data-controller="google-cover-image">
-  <%= render RecordHeaderComponent.new(record: @request) do |c| %>
+  <%= render RecordHeaderComponent.for(@request) do |c| %>
     <% c.with_cover_image do %>
       <%= render System::GoogleCoverImageComponent.new(identifiers: @request.identifiers) %>
     <% end %>

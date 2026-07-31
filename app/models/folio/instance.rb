@@ -83,8 +83,6 @@ module Folio
       single_item&.base_callnumber
     end
 
-    alias base_callnumber call_number
-
     def document_type
       document_formats&.first
     end
