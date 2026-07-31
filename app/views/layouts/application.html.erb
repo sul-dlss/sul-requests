@@ -38,7 +38,15 @@
       <%= render '/shared/feature_flag' %>
     </header>
     <main class="flex-fill container my-3">
-      <%= render 'shared/flashes' %>
+      <% if content_for?(:flash_column_classes) %>
+        <div class="row">
+          <div class="<%= content_for(:flash_column_classes) %>">
+            <%= render 'shared/flashes' %>
+          </div>
+        </div>
+      <% else %>
+        <%= render 'shared/flashes' %>
+      <% end %>
       <%= yield %>
     </main>
     <%= render 'shared/su_global_footer' %>

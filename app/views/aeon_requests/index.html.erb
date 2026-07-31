@@ -37,7 +37,8 @@
   <% end %>
 <% end %>
 
-<div class="container" <% if params[:kind] == 'saved_for_later' %>data-controller="request-bulk-delete"<% end %>>
+<%= flash_column_classes(content_for?(:sidebar) ? 'col-lg-8 pe-lg-5' : 'col-xl-9') %>
+<div <% if params[:kind] == 'saved_for_later' %>data-controller="request-bulk-delete"<% end %>>
   <div class="row">
     <div class="<% if content_for?(:sidebar) %>col-lg-8 pe-lg-5<% else %>col-xl-9<% end %>">
       <div class="d-flex flex-wrap gap-2 justify-content-between mb-4">

@@ -14,6 +14,11 @@ module ApplicationHelper
     'col-lg-6 offset-lg-3'
   end
 
+  def flash_column_classes(classes)
+    content_for(:flash_column_classes, classes)
+    nil
+  end
+
   def label_column_offset_class
     'offset-sm-4'
   end

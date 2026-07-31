@@ -1,5 +1,7 @@
-<div class="col-lg-9">
-  <div class="d-sm-flex mb-2">
+<%= flash_column_classes 'col-lg-9' %>
+<div class="row">
+  <div class="col-lg-9">
+    <div class="d-sm-flex mb-2">
     <h1 class="mt-2 me-3">Activities</h1>
     <ul class="nav nav-tabs">
       <li class="nav-item">
@@ -43,5 +45,6 @@
       <%= turbo_frame_tag 'past_activity_requests', src: requests_aeon_activities_path(filter: params[:filter], past: true), loading: :lazy %>
     </div>
 
+  </div>
   </div>
 </div>

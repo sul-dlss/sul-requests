@@ -1,29 +1,32 @@
+<%= flash_column_classes 'col-lg-9' %>
 <% if @checkouts.any? %>
-  <div id="checkouts" class="page-section col-lg-9" data-controller="sortable checkouts google-cover-image" data-sortable-sort-value="dueDate">
-    <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2">
-      <h1 class="mb-0">Borrowed (checked out) items</h1>
-      <div class="d-flex gap-2 align-items-center">
-        <div class="dropdown" data-sortable-target="sortMenu">
-          <button class="btn btn-outline-primary btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Sort by due date
-          </button>
+  <div class="row">
+    <div id="checkouts" class="page-section col-lg-9" data-controller="sortable checkouts google-cover-image" data-sortable-sort-value="dueDate">
+      <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-2">
+        <h1 class="mb-0">Borrowed (checked out) items</h1>
+        <div class="d-flex gap-2 align-items-center">
+          <div class="dropdown" data-sortable-target="sortMenu">
+            <button class="btn btn-outline-primary btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sort by due date
+            </button>
 
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="dueDate" data-sortable-label-param="Sort by due date">due date</button></li>
-            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="status" data-sortable-label-param="Sort by status">status</button></li>
-            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort by title">title</button></li>
-            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="author" data-sortable-label-param="Sort by author">author name</button></li>
-            <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="callNumber" data-sortable-label-param="Sort by call number">call number</button></li>
-          </ul>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li><button class="dropdown-item active" data-action="click->sortable#sort" data-sortable-sort-param="dueDate" data-sortable-label-param="Sort by due date">due date</button></li>
+              <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="status" data-sortable-label-param="Sort by status">status</button></li>
+              <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="title" data-sortable-label-param="Sort by title">title</button></li>
+              <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="author" data-sortable-label-param="Sort by author">author name</button></li>
+              <li><button class="dropdown-item" data-action="click->sortable#sort" data-sortable-sort-param="callNumber" data-sortable-label-param="Sort by call number">call number</button></li>
+            </ul>
 
+          </div>
+          <%= render 'checkouts/renew_all_button' %>
         </div>
-        <%= render 'checkouts/renew_all_button' %>
       </div>
-    </div>
 
-    <ul class="checkouts-list p-0 mt-4" data-sortable-target="list" aria-live="polite">
-      <%= render Folio::CheckoutComponent.with_collection(@checkouts, patron: patron_or_group) %>
-    </ul>
+      <ul class="checkouts-list p-0 mt-4" data-sortable-target="list" aria-live="polite">
+        <%= render Folio::CheckoutComponent.with_collection(@checkouts, patron: patron_or_group) %>
+      </ul>
+    </div>
   </div>
 <% else %>
   <div id="checkouts" class="page-section mt-4">
