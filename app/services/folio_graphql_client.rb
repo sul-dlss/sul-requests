@@ -611,6 +611,10 @@ class FolioGraphqlClient
           }
         }
 
+        publication {
+          dateOfPublication
+        }
+
         contributors {
           name
           primary

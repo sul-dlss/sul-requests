@@ -1,25 +1,32 @@
 <%= tag.div(class: "card border-0 #{classes}") do %>
-  <div class="card-body">
-    <%= tag.public_send title_tag, record.title || 'Not available', class: @title_classes %>
-    <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
-      <span>
-        <%= render FormatIndicatorComponent.new(record: record) %><% if record.date.present? %> (<%= record.date %>)<% end %>
-      </span>
-      <% if call_number.present? %>
-        <span>Call number: <%= call_number %></span>
-      <% end %>
-      <span>
-        <%= render Aeon::RequestLinkComponent.new(url: record.item_url) %>
-      </span>
-    </div>
-    <% if record.author %>
-      <div class="mt-2">
-        <%= record.author %>
+  <div class="card-body d-flex gap-3">
+    <% if cover_image %>
+      <div class="request-image">
+        <%= cover_image %>
       </div>
     <% end %>
-    <% if record.respond_to?(:extent) && record.extent %>
-      <hr class="my-2">
-      <div><b class="fw-semibold">Extent: </b><%= record.extent %></div>
-    <% end %>
+    <div class="request-metadata">
+      <%= tag.public_send title_tag, record.title || 'Not available', class: @title_classes %>
+      <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
+        <span>
+          <%= render FormatIndicatorComponent.new(record: record) %><% if record.date.present? %> (<%= record.date %>)<% end %>
+        </span>
+        <% if call_number.present? %>
+          <span>Call number: <%= call_number %></span>
+        <% end %>
+        <span>
+          <%= render Aeon::RequestLinkComponent.new(url: record.item_url) %>
+        </span>
+      </div>
+      <% if record.author %>
+        <div class="mt-2">
+          <%= record.author %>
+        </div>
+      <% end %>
+      <% if record.respond_to?(:extent) && record.extent %>
+        <hr class="my-2">
+        <div><b class="fw-semibold">Extent: </b><%= record.extent %></div>
+      <% end %>
+    </div>
   </div>
 <% end %>
