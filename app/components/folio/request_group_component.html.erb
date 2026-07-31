@@ -1,4 +1,4 @@
-<%= render System::GroupedRequestsLayoutComponent.new(element: 'li', id: request_group.dom_id, data: { 'filter-value': 'pickup', 'default-sort-value': request_group.sort_key(:default), 'title-sort-value': request_group.sort_key(:title), 'date-sort-value': request_group.sort_key(:date)}) do |c| %>
+<%= render System::GroupedRequestsLayoutComponent.new(element: 'li', id: dom_id(request_group), data: { 'filter-value': 'pickup', 'default-sort-value': request_group.sort_key(:default), 'title-sort-value': request_group.sort_key(:title), 'date-sort-value': request_group.sort_key(:date)}) do |c| %>
   <% c.with_type_pill(content: 'Pickup') %>
   <% c.with_title(request_group.title) %>
 
