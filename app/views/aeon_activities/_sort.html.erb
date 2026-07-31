@@ -1,13 +1,13 @@
-<div class="dropdown">
-  <% sort_fields = {'sort_key' => 'Date', 'name' => 'Activity name', 'activity_type' => 'Activity type'} %>
+<div class="dropdown" data-sortable-target="sortMenu">
+  <% sort_fields = {'date' => 'date', 'name' => 'activity name', 'activityType' => 'activity type'} %>
 
-  <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Sort by <%= params[:sort] ? sort_fields[params[:sort]] : '' %>
   </button>
   <ul class="dropdown-menu" role="menu">
     <% sort_fields.each do |sort_field, label| %>
       <li role="presentation">
-        <%= link_to url_for(request.query_parameters.merge({sort: sort_field})), role: 'menuitem', class: "dropdown-item #{'active' if params[:sort] == sort_field || (!params[:sort] && sort_field == sort_fields.keys.first )}" do %>
+        <%= tag.button(class: "dropdown-item #{'active' if params[:sort] == sort_field || (!params[:sort] && sort_field == sort_fields.keys.first )}", data: { action: 'click->sortable#sort', sortable_sort_param: sort_field, sortable_label_param: "Sort by #{label}" }, role: 'menuitem') do %>
           <%= label %>
         <% end %>
       </li>
