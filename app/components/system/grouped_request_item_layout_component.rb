@@ -13,6 +13,15 @@ module System
     }
     renders_one :actions
     renders_one :footer
+    renders_one :metadata, lambda { |date:, request_id: nil|
+      capture do
+        concat(tag.div("Request ##{request_id}")) if request_id
+        concat(tag.span do
+          concat('Date added/modified: ')
+          concat(tag.span(l(date, format: :full), class: 'text-nowrap'))
+        end)
+      end
+    }
 
     attr_reader :request_id, :date, :classes, :attr, :element
 

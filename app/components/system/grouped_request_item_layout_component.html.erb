@@ -23,10 +23,11 @@
       </turbo-frame>
     </div>
 
-    <div class="rgi-footer pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column text-body-secondary small">
-      <% if request_id %><div>Request #<%= request_id %></div><% end %>
-      <span>Date added/modified: <span class="text-nowrap"><%= l(date, format: :full) %></span></span>
-    </div>
+    <% if metadata? %>
+      <div class="rgi-footer pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column text-body-secondary small">
+        <%= metadata %>
+      </div>
+    <% end %>
 
     <%= footer %>
 <% end %>

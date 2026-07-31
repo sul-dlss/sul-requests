@@ -1,4 +1,4 @@
-<%= render System::GroupedRequestItemLayoutComponent.new(id: dom_id(request), request_id: transaction_number, date: transaction_date, classes: classes + [request.status], data: request_sort_data) do |c| %>
+<%= render System::GroupedRequestItemLayoutComponent.new(id: dom_id(request), classes: classes + [request.status], data: request_sort_data) do |c| %>
   <% c.with_identifier do %>
     <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
   <% end %>
@@ -29,4 +29,6 @@
   <% c.with_actions do %>
     <%= render Aeon::RequestActionsComponent.new(request:) %>
   <% end %>
+
+  <% c.with_metadata(date: transaction_date, request_id: transaction_number) %>
 <% end %>

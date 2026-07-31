@@ -17,7 +17,7 @@
   <% end %>
 
   <% c.with_body do %>
-    <%= render System::GroupedRequestItemLayoutComponent.new(element: 'div', request_id: request.id, date: request.placed_date, classes: %w[request-grid bg-white px-3 py-2]) do |item_component| %>
+    <%= render System::GroupedRequestItemLayoutComponent.new(element: 'div', classes: %w[request-grid bg-white px-3 py-2]) do |item_component| %>
       <% item_component.with_identifier do %>
         <div class="request-item-identifier fw-semibold text-pretty rgi-id">
           <%= request.call_number.presence || request.photo_article_title.presence || 'Interlibrary Loan' %>
@@ -58,6 +58,8 @@
           <% end %>
         <% end %>
       <% end %>
+
+      <% item_component.with_metadata(date: request.placed_date, request_id: request.id) %>
     <% end %>
   <% end %>
 <% end %>
