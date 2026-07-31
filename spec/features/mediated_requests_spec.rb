@@ -16,8 +16,6 @@ RSpec.describe 'Mediated requests' do
   end
 
   before do
-    stub_folio_instance_json(build(:searchable_holdings))
-
     create(
       :mediated_patron_request_with_holdings,
       patron_request_items_attributes: [
