@@ -1,0 +1,7 @@
+<turbo-frame id="<%= 'past_' if params[:past] %>activity_requests">
+  <% @activities.each do |activity| %>
+    <%= turbo_stream.replace dom_id(activity, :requests) do %>
+      <%= render Aeon::ActivityRequestsComponent.new(activity: activity) %>
+    <% end %>
+  <% end %>
+</turbo-frame>

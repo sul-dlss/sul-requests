@@ -14,15 +14,19 @@
   <% end %>
 
   <% c.with_body do %>
-    <%= render Aeon::AppointmentRequestGroupComponent.with_collection(activity.grouped_requests, classes: %w[activity-request-group card rounded-0 px-3 py-2 mb-2]) %>
-
-      <% if activity.grouped_requests.none? %>
-        <div role="alert" class="d-flex zero-items-alert align-items-center text-digital-red bg-body py-3 px-4">
-          <div role="img" aria-label="Danger icon" class="bi bi-exclamation-triangle-fill fs-3 me-3 align-self-center d-flex justify-content-center ms-2"></div>
-          <div class="me-2">
-            No items have been requested for this activity.
+    <% if requests? %>
+      <%= render Aeon::ActivityRequestsComponent.new(activity: activity) %>
+    <% else %>
+      <%= tag.div id: dom_id(activity, :requests), class: 'placeholder-glow' do %>
+        <% rand(1..3).times do %>
+          <div class="request-group request-group-per-appointment activity-request-group card rounded-0 px-3 py-2 mb-2">
+            <div class="placeholder w-50"></div>
+            <% rand(1..3).times do %>
+              <div class="placeholder w-75 mt-3 ms-4"></div>
+            <% end %>
           </div>
-        </div>
+        <% end %>
       <% end %>
+    <% end %>
   <% end %>
 <% end %>

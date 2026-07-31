@@ -41,5 +41,9 @@ module Aeon
     def past
       self.class.new(activities.reject(&:active?))
     end
+
+    def sort_by(...)
+      self.class.new(activities.sort_by(...))
+    end
   end
 end

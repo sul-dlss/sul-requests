@@ -94,7 +94,7 @@ Rails.application.routes.draw do
   end
 
   resources :aeon_activities, only: [:index] do
-      collection { get :active; get :past }
+      collection { get :requests }
   end
 
   resources :admin, only: [:index, :show] do

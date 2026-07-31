@@ -8,22 +8,11 @@ class AeonActivitiesController < ApplicationController
   include AeonController
 
   before_action :authorize_activity
+  before_action :load_activities
 
   def index; end
 
-  def active
-    @activities = all_activities.active
-    @activity_types = @activities.map(&:activity_type)
-    filter
-    sort_results
-  end
-
-  def past
-    @activities = all_activities.past
-    @activity_types = @activities.map(&:activity_type)
-    filter
-    sort_results
-  end
+  def requests; end
 
   private
 
@@ -31,10 +20,16 @@ class AeonActivitiesController < ApplicationController
     authorize! :read, Aeon::Activity
   end
 
+  def load_activities
+    @activities = all_activities
+    filter
+    sort_results
+  end
+
   def filter
     return unless params[:filter]
 
-    @activities = @activities.filter { |activity| activity.activity_type == params[:filter] }
+    @activities = @activities.select { |activity| activity.activity_type == params[:filter] }
   end
 
   def sort_results
