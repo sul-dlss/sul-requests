@@ -23,13 +23,13 @@
   <% end %>
 
   <% c.with_body do %>
-    <%= render System::GroupedRequestItemLayoutComponent.new(element: 'div', request_id: request.id, date: request.updated_at, classes: %w[request-grid bg-white px-3 py-2]) do |c| %>
+    <%= render System::GroupedRequestItemLayoutComponent.new(element: 'div', classes: %w[request-grid bg-white px-3 py-2]) do |c| %>
       <% c.with_identifier do %>
         <span class="fw-semibold me-1">Planned visit date:</span><%= l(request.needed_date, format: :short) %>
       <% end if request.needed_date.present? %>
 
-      <% c.with_fulfillment do %>
-        <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i>Pending staff review/approval</span>
+      <% c.with_fulfillment_pending do %>
+        <i class="bi bi-clock me-1" aria-hidden></i>Pending staff review/approval
       <% end %>
 
       <% c.with_actions do %>
@@ -43,6 +43,9 @@
           <% end %>
         <% end if helpers.can?(:destroy, request) %>
       <% end %>
+
+
+      <% c.with_metadata(date: request.updated_at, request_id: request.id) %>
     <% end %>
   <% end %>
 <% end %>

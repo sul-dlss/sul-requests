@@ -21,5 +21,18 @@ module Aeon
         'date-sort-value': request.sort_key(:date)
       }
     end
+
+    def fulfillment_mode
+      return if request.saved_for_later?
+
+      return :cancelled if request.cancelled_by_staff?
+      return :appointment if request.appointment?
+
+      if request.digital? # rubocop:disable Style/GuardClause
+        return :ready if request.scan_delivered?
+
+        :pending if request.submitted?
+      end
+    end
   end
 end

@@ -5,9 +5,23 @@ module System
   class GroupedRequestItemLayoutComponent < ViewComponent::Base
     renders_one :identifier
     renders_one :detail
-    renders_one :fulfillment
+    renders_one :fulfillment, types: {
+      pending: ->(&block) { tag.span class: %w[text-spirited-dark], &block },
+      ready: ->(&block) { tag.span class: %w[text-green], &block },
+      cancelled: ->(&block) { tag.span class: %w[text-digital-red], &block },
+      custom: ->(&block) { tag.span(&block) }
+    }
     renders_one :actions
     renders_one :footer
+    renders_one :metadata, lambda { |date:, request_id: nil|
+      capture do
+        concat(tag.div("Request ##{request_id}")) if request_id
+        concat(tag.span do
+          concat('Date added/modified: ')
+          concat(tag.span(l(date, format: :full), class: 'text-nowrap'))
+        end)
+      end
+    }
 
     attr_reader :request_id, :date, :classes, :attr, :element
 

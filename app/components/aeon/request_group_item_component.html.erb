@@ -1,4 +1,4 @@
-<%= render System::GroupedRequestItemLayoutComponent.new(id: dom_id(request), request_id: transaction_number, date: transaction_date, classes: classes + [request.status], data: request_sort_data) do |c| %>
+<%= render System::GroupedRequestItemLayoutComponent.new(id: dom_id(request), classes: classes + [request.status], data: request_sort_data) do |c| %>
   <% c.with_identifier do %>
     <%= render Aeon::RequestItemIdentifierComponent.new(request:) %>
   <% end %>
@@ -7,11 +7,28 @@
     <%= render Aeon::RequestItemDetailComponent.new(request:) %>
   <% end %>
 
-  <% c.with_fulfillment do %>
-    <%= render Aeon::RequestFulfillmentComponent.new(request:) %>
-  <% end unless request.saved_for_later? %>
+  <% case fulfillment_mode %>
+  <% when :appointment %>
+    <% c.with_fulfillment_custom do %>
+      <%= render Aeon::RequestAppointmentTimeComponent.new(request:, with_reading_room: false) %>
+    <% end %>
+  <% when :cancelled %>
+    <% c.with_fulfillment_cancelled { 'Cancelled by staff' } %>
+  <% when :ready %>
+    <% c.with_fulfillment_ready do %>
+      <i class="bi bi-envelope me-1"></i>
+      <span class="ms-1"><span class="fw-semibold">Delivered</span> on <%= l(request.delivered_date.to_date, format: :short) %></span>
+    <% end %>
+  <% when :pending %>
+    <% c.with_fulfillment_pending do %>
+      <i class="bi bi-clock me-1"></i>
+      <span class="ms-1">Pending delivery</span>
+    <% end %>
+  <% end %>
 
   <% c.with_actions do %>
     <%= render Aeon::RequestActionsComponent.new(request:) %>
   <% end %>
+
+  <% c.with_metadata(date: transaction_date, request_id: transaction_number) %>
 <% end %>
