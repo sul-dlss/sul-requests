@@ -19,7 +19,7 @@
   <% c.with_body do %>
     <%= render System::GroupedRequestItemLayoutComponent.new(element: 'div', classes: %w[request-grid bg-white px-3 py-2]) do |item_component| %>
       <% item_component.with_identifier do %>
-        <div class="request-item-identifier fw-semibold text-pretty rgi-id">
+        <div class="request-item-identifier fw-semibold text-pretty">
           <%= request.call_number.presence || request.photo_article_title.presence || 'Interlibrary Loan' %>
         </div>
       <% end %>

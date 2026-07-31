@@ -734,8 +734,8 @@ main:not(:has(#requests li, turbo-frame[busy])) .no-requests {
   }
 }
 
-.requests:has(.request-grid .request-fulfillment) .request-grid,
-.list-group:has(.request-grid .request-fulfillment) .request-grid {
+.requests:has(.request-grid .request-grid-fulfillment) .request-grid,
+.list-group:has(.request-grid .request-grid-fulfillment) .request-grid {
   grid-template-columns: 1fr;
   grid-template-areas:
     "id"
@@ -753,32 +753,26 @@ main:not(:has(#requests li, turbo-frame[busy])) .no-requests {
       "footer      footer";
   }
 
-  &:not(.cancelled) {
-    @media (min-width: 992px) {
-      grid-template-columns: 1fr 19.5rem 3rem;
-      grid-template-areas:
-        "id     fulfillment actions"
-        "detail detail      detail"
-        "footer footer      footer";
-    }
+  @media (min-width: 992px) {
+    grid-template-columns: 1fr 19.5rem 3rem;
+    grid-template-areas:
+      "id     fulfillment actions"
+      "detail detail      detail"
+      "footer footer      footer";
   }
 
   &.cancelled {
     @media (min-width: 992px) {
       grid-template-columns: 1fr 19.5rem 8rem;
-      grid-template-areas:
-        "id     fulfillment actions"
-        "detail detail      detail"
-        "footer footer      footer";
     }
   }
 }
 
-.request-grid > .rgi-id      { grid-area: id; }
-.request-grid > .rgi-detail  { grid-area: detail; }
-.request-grid > .request-fulfillment { grid-area: fulfillment; }
-.request-grid > .rgi-actions { grid-area: actions; }
-.request-grid > .rgi-footer  { grid-area: footer; }
+.request-grid > .request-grid-id      { grid-area: id; }
+.request-grid > .request-grid-detail  { grid-area: detail; }
+.request-grid > .request-grid-fulfillment { grid-area: fulfillment; }
+.request-grid > .request-grid-actions { grid-area: actions; }
+.request-grid > .request-grid-footer  { grid-area: footer; }
 
 .confirmation-request-summary {
   display: grid;
