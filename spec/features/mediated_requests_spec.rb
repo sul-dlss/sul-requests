@@ -19,12 +19,14 @@ RSpec.describe 'Mediated requests' do
     create(
       :mediated_patron_request_with_holdings,
       patron_request_items_attributes: [
-        { item_id: '12345678' },
+        { item_id: '12345678', item_callnumber: 'Test Call Number' },
         { item_id: '23456789' }
       ],
       created_at: 1.day.ago,
       needed_date: 3.days.from_now,
-      user: user
+      user: user,
+      instance_author: 'Test Author',
+      instance_document_type: 'Book'
     )
 
     login_as(current_user)
