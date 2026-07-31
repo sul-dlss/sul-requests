@@ -5,7 +5,12 @@ module System
   class GroupedRequestItemLayoutComponent < ViewComponent::Base
     renders_one :identifier
     renders_one :detail
-    renders_one :fulfillment
+    renders_one :fulfillment, types: {
+      pending: ->(&block) { tag.span class: %w[text-spirited-dark], &block },
+      ready: ->(&block) { tag.span class: %w[text-green], &block },
+      cancelled: ->(&block) { tag.span class: %w[text-digital-red], &block },
+      custom: ->(&block) { tag.span(&block) }
+    }
     renders_one :actions
     renders_one :footer
 

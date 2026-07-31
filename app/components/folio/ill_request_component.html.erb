@@ -24,16 +24,16 @@
         </div>
       <% end %>
 
-      <% item_component.with_fulfillment do %>
-        <% if request.ready_for_pickup? %>
-          <span class="text-green">
+      <% if request.ready_for_pickup? %>
+        <% item_component.with_fulfillment_ready do %>
             <i class="bi bi-bag me-1" aria-hidden></i>Awaiting pick up at <span class="fw-semibold"><%= request.service_point_name %></span>
               <% if request.expiration_date %>
                 by <span class="fw-semibold"><%= l(request.expiration_date, format: :date_only) %></span>.
               <% end %>
-          </span>
-        <% else %>
-          <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i><span class="fw-semibold">Staff processing</span><% if request.service_point_name %> for pick up at <%= request.service_point_name %><% end %></span>
+        <% end %>
+      <% else %>
+        <% item_component.with_fulfillment_pending do %>
+          <i class="bi bi-clock me-1" aria-hidden></i><span class="fw-semibold">Staff processing</span><% if request.service_point_name %> for pick up at <%= request.service_point_name %><% end %>
         <% end %>
       <% end %>
 
