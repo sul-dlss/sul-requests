@@ -38,7 +38,7 @@ module System
     end
 
     def show_more?
-      @show_more
+      @show_more && requests?
     end
   end
 end

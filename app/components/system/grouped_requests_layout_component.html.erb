@@ -22,8 +22,8 @@
   <% c.with_body(data: ({ controller: 'show-more'} if show_more?)) do %>
     <%= body %>
 
-    <%= tag.ul id: "#{id}_list", class: 'list-group list-group-flush gap-2', data: { sortable_target: ('subgroup' if sortable?), show_more_target: ('list' if show_more?) } do %>
-      <% if requests? %>
+    <% if requests? %>
+      <%= tag.ul id: "#{id}_list", class: 'list-group list-group-flush gap-2', data: { sortable_target: ('subgroup' if sortable?), show_more_target: ('list' if show_more?) } do %>
         <% requests.each do |request| %>
           <%= request %>
         <% end %>
