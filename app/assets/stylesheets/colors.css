@@ -62,7 +62,8 @@ input[type="radio"] {
 
 /* Restore the upstream bootstrap danger alert color. */
 .alert-danger {
-  color: rgb(88, 21, 28);
+  --bs-danger-text-emphasis: rgb(130, 0, 0);
+  --bs-alert-border-color: var(--bs-danger-text-emphasis);
 }
 
 /* Restore the upstream bootstrap warning alert color. */

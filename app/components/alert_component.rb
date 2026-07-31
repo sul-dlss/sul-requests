@@ -5,13 +5,15 @@ class AlertComponent < ViewComponent::Base
   ICONS = {
     info: 'bi-info-circle-fill',
     success: 'bi-check-circle-fill',
-    warning: 'bi-exclamation-triangle-fill'
+    warning: 'bi-exclamation-triangle-fill',
+    danger: 'bi-exclamation-triangle-fill'
   }.freeze
 
   ALERTS = {
     info: 'alert-info',
     success: 'alert-success',
-    warning: 'alert-warning'
+    warning: 'alert-warning',
+    danger: 'alert-danger'
   }.freeze
 
   def initialize(type:, dismissable: false, classes: [], icon_classes: [], with_icon: true)
