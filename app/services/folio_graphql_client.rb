@@ -371,7 +371,6 @@ class FolioGraphqlClient
                                       code
                                     }
                                     queueTotalLength
-                                    queuePosition
                                     cancellationReasonId
                                     canceledByUserId
                                     cancellationAdditionalInformation
