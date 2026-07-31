@@ -19,9 +19,7 @@
     <% end %>
   <% end %>
 
-  <% c.with_cover_image do %>
-    <%= render System::GoogleCoverImageComponent.new(identifiers: request_group.identifiers) %>
-  <% end %>
+  <% c.with_cover_image(identifiers: request_group.identifiers) %>
 
   <% Folio::RequestComponent.with_collection(request_group.requests, patron:).each do |item| %>
     <% c.with_request do %>
