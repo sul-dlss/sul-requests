@@ -1,0 +1,42 @@
+<%= render CardComponent.new(id: id, element: element, **attr) do |c| %>
+  <% c.with_title do %>
+    <div class="flex-grow-1">
+      <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
+        <span>
+          <%= type %>
+          <%= details %>
+        </span>
+
+        <%= status_message %>
+      </div>
+
+      <div>
+        <%= title %>
+        <%= record_header %>
+      </div>
+    </div>
+
+    <%= cover_image %>
+  <% end %>
+
+  <% c.with_body(data: ({ controller: 'show-more'} if show_more?)) do %>
+    <%= body %>
+
+    <%= tag.ul id: "#{id}_list", class: 'list-group list-group-flush gap-2', data: { sortable_target: ('subgroup' if sortable?), show_more_target: ('list' if show_more?) } do %>
+      <% if requests? %>
+        <% requests.each do |request| %>
+          <%= request %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% if show_more? %>
+      <% inverse_content = capture do %>
+        <i class="bi bi-arrow-up-circle-fill me-1" aria-hidden></i>Show less
+      <% end %>
+      <%= button_tag class: 'btn btn-link su-underline mt-1', data: { show_more_target: 'button', action: 'show-more#toggle', content: inverse_content }, aria: { expanded: 'false', controls: "#{id}_list" } do %>
+        <i class="bi bi-arrow-down-circle-fill me-1" aria-hidden></i>Show all <%= pluralize(requests.length, 'request') %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

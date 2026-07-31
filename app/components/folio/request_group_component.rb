@@ -2,7 +2,7 @@
 
 module Folio
   # card on requests page for displaying requests grouped by catkey
-  class RequestGroupingComponent < ViewComponent::Base
+  class RequestGroupComponent < ViewComponent::Base
     with_collection_parameter :request_group
 
     attr_reader :request_group, :patron

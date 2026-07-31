@@ -1,30 +1,21 @@
-<%= render CardComponent.new(element: 'li', id: dom_id(request), classes: 'request', data: { 'filter-value': 'pickup', 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) }) do |c| %>
-  <% c.with_title do %>
-    <div class="flex-grow-1">
-      <div class="d-flex flex-wrap gap-1 justify-content-start align-items-center mt-2 mb-3">
-        <%= render PillComponent.new(classes: %w[bg-lagunita-dark text-white]).with_content('Pickup') %>
+<%= render System::GroupedRequestsLayoutComponent.new(id: dom_id(request), classes: 'request',  data: { 'filter-value': 'pickup', 'default-sort-value': request.sort_key(:default), 'title-sort-value': request.sort_key(:title), 'date-sort-value': request.sort_key(:date) }) do |c| %>
+  <% c.with_type_pill(content: 'Pickup') %>
 
-        <span class="ms-2 text-nowrap text-lagunita-dark">Restricted to in-library use only</span>
-      </div>
+  <% c.with_details('Restricted to in-library use only') %>
 
-      <div>
-        <%= tag.h2 request.item_title || 'Not available', class: 'h3' %>
-      </div>
-    </div>
-  <% end %>
+  <% c.with_title(request.item_title) %>
 
   <% c.with_body do %>
-    <div class="request-grid bg-white p-2">
-      <div class="rgi-id d-flex align-items-center">
-        <% if request.requires_needed_date? %>
-          <span class="fw-semibold me-1">Planned visit date:</span><%= l(request.needed_date, format: :short) %>
-        <% end %>
-      </div>
-      <div class="request-fulfillment">
-        <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i>Pending staff review/approval</span>
-      </div>
+    <%= render System::GroupedRequestItemLayoutComponent.new(element: 'div', request_id: request.id, date: request.updated_at, classes: %w[request-grid bg-white px-3 py-2]) do |c| %>
+      <% c.with_identifier do %>
+        <span class="fw-semibold me-1">Planned visit date:</span><%= l(request.needed_date, format: :short) %>
+      <% end if request.requires_needed_date? %>
 
-      <div class="rgi-actions">
+      <% c.with_fulfillment do %>
+        <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i>Pending staff review/approval</span>
+      <% end %>
+
+      <% c.with_actions do %>
         <%= render System::DeleteWithConfirmationComponent.new(id: dom_id(request, :delete), button_label: 'Cancel request', form_url: patron_request_path(request)) do |component| %>
           <% component.with_body do %>
             <div class="text-lagunita-dark">Pickup</div>
@@ -34,9 +25,7 @@
             </div>
           <% end %>
         <% end if helpers.can?(:destroy, request) %>
-      </div>
-
-      <%= render RequestRgiFooter.new(request_id: request.id, date: request.updated_at) %>
-    </div>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>

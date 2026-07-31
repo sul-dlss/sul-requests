@@ -1,12 +1,13 @@
-<li id="<%= dom_id(request) %>" class="list-group-item request-grid request">
-  <div class="request-item-identifier fw-semibold text-pretty rgi-id">
+<%= render System::GroupedRequestItemLayoutComponent.new(id: dom_id(request), date: request.placed_date, classes: %w[list-group-item request-grid]) do |c| %>
+  <% c.with_identifier do %>
     <% if request.vol_enum_chron.present? %>
       <%= request.vol_enum_chron %>
     <% elsif request.call_number %>
       <span class="fw-normal">Call number: </span><%= request.call_number %>
     <% end %>
-  </div>
-  <div class="request-fulfillment">
+  <% end %>
+
+  <% c.with_fulfillment do %>
     <% if request.ready_for_pickup? %>
       <span class="text-green">
         <i class="bi bi-bag me-1" aria-hidden></i>Awaiting pick up at <span class="fw-semibold"><%= request.service_point_name %></span>
@@ -17,9 +18,9 @@
     <% else %>
       <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i><span class="fw-semibold">Processing request</span> for pickup at <span class="text-nowrap"><%= request.service_point_name %></span></span>
     <% end %>
-  </div>
+  <% end %>
 
-  <div class="rgi-actions d-flex text-nowrap align-items-baseline justify-content-xl-end" data-turbo-prefetch="false">
+  <% c.with_actions do %>
     <% if patron.can_modify_requests? %>
       <% unless request.ready_for_pickup? %>
         <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open', modal_header: 'Edit request' } do %>
@@ -28,11 +29,11 @@
       <% end %>
       <%= render Folio::RequestDeleteButtonComponent.new(request:) %>
     <% end %>
-  </div>
-  <%= render RequestRgiFooter.new(date: request.placed_date) %>
-  <% if request.proxy_request? %>
+  <% end %>
+
+  <% c.with_footer do %>
     <div class="py-2">
       <%= render Folio::ProxyIndicatorComponent.new(proxy: proxy_borrower, verb: 'Requested') %>
     </div>
-  <% end %>
-</li>
+  <% end if request.proxy_request? %>
+<% end %>

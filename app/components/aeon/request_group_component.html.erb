@@ -1,39 +1,31 @@
-<%= render CardComponent.new id: request_group.dom_id, element: element, classes: 'request-group', data: { 'filter-value': request_group.digital? ? 'digitization' : 'reading room',  'default-sort-value': request_group.sort_key(:default), 'title-sort-value': request_group.sort_key(:title), 'date-sort-value': request_group.sort_key(:date)} do |c| %>
-  <% c.with_title do %>
-    <div class="flex-grow-1">
-      <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center mt-2 mb-3">
-        <span>
-          <%= render Aeon::RequestStatusPillComponent.new(request: status_request) %>
-          <% if appointment_reading_room.present? %>
-          <span class="appointment-details ms-1">
-            <span class="ms-2 text-nowrap text-lagunita-dark"><%= appointment_reading_room.name %></span>
-          </span>
-          <% end %>
-        </span>
+<%= render System::GroupedRequestsLayoutComponent.new(element: element, id: request_group.dom_id, classes: 'request-group', data: { 'filter-value': request_group.digital? ? 'digitization' : 'reading room',  'default-sort-value': request_group.sort_key(:default), 'title-sort-value': request_group.sort_key(:title), 'date-sort-value': request_group.sort_key(:date) }, show_more: show_more?, sortable: true) do |c| %>
+  <% c.with_type_pill(content: status_text) %>
 
-        <span>
-          <%= render Aeon::RequestStatusMessageComponent.new(request: status_request) %>
-        </span>
-      </div>
+  <% c.with_details(appointment_reading_room.name) if appointment_reading_room.present? %>
 
-      <div>
-        <%= render RecordHeaderComponent.new(record: requests.first, brief: true, display_callnumber: requests.first.multi_item_selector?) %>
-      </div>
+  <% c.with_status_message do %>
+    <span><i class="bi bi-exclamation-triangle-fill align-middle mx-2 text-digital-red"></i><span class="text-digital-red fw-normal"><%= digital? ? 'Pages/instructions not specified' : 'Not scheduled' %></span></span>
+  <% end if saved_for_later? %>
+
+  <% c.with_title(request_group.title) %>
+
+  <% c.with_record_header do %>
+    <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
+      <span>
+        <%= render FormatIndicatorComponent.new(record: request_group) %><% if request_group.date.present? %> (<%= request_group.date %>)<% end %>
+      </span>
+      <% if request_group.base_callnumber.present? && request_group.multi_item_selector? %>
+        <span>Call number: <%= request_group.base_callnumber %></span>
+      <% end %>
+      <span>
+        <%= render Aeon::RequestLinkComponent.new(url: request_group.item_url) %>
+      </span>
     </div>
   <% end %>
 
-  <% c.with_body(data: { controller: 'show-more'}) do %>
-    <ul id="<%= request_group.dom_id %>_list" class="list-group list-group-flush gap-2" data-sortable-target="subgroup" data-show-more-target="list">
-      <%= render Aeon::RequestGroupItemComponent.with_collection(requests) %>
-    </ul>
-
-    <% if show_more? %>
-      <% inverse_content = capture do %>
-        <i class="bi bi-arrow-up-circle-fill me-1" aria-hidden></i>Show less
-      <% end %>
-      <%= button_tag class: 'btn btn-link su-underline mt-1', data: { show_more_target: 'button', action: 'show-more#toggle', content: inverse_content }, aria: { expanded: 'false', controls: "#{request_group.dom_id}_list" } do %>
-        <i class="bi bi-arrow-down-circle-fill me-1" aria-hidden></i>Show all <%= pluralize(requests.length, 'request') %>
-      <% end %>
+  <% Aeon::RequestGroupItemComponent.with_collection(requests).each do |item| %>
+    <% c.with_request do %>
+      <%= render item %>
     <% end %>
   <% end %>
 <% end %>

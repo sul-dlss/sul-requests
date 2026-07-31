@@ -1,7 +1,7 @@
 <div id="requests" class="page-section col-lg-9" data-controller="sortable google-cover-image" data-sortable-sort-value="default">
   <div class="d-flex align-items-center justify-content-between mb-4">
     <h1 class="mb-0">Requests</h1>
-    <% if @requests.any? %>
+    <% if @grouped_requests.any? %>
     <div class="dropdown" data-sortable-target="sortMenu">
       <button class="btn btn-outline-primary btn-sm dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Sort by request timing
@@ -15,9 +15,9 @@
     </div>
     <% end %>
   </div>
-  <% if @requests.any? %>
+  <% if @grouped_requests.any? %>
     <ul class="requests p-0" data-sortable-target="list" aria-live="polite">
-      <%= render Folio::RequestGroupingComponent.with_collection(@grouped_requests, patron: patron_or_group) %>
+      <%= render Folio::RequestGroupComponent.with_collection(@grouped_requests, patron: patron_or_group) %>
     </ul>
   <% end %>
 </div>

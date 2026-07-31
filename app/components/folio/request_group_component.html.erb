@@ -1,0 +1,31 @@
+<%= render System::GroupedRequestsLayoutComponent.new(element: 'li', id: request_group.dom_id, data: { 'filter-value': 'pickup', 'default-sort-value': request_group.sort_key(:default), 'title-sort-value': request_group.sort_key(:title), 'date-sort-value': request_group.sort_key(:date)}) do |c| %>
+  <% c.with_type_pill(content: 'Pickup') %>
+  <% c.with_title(request_group.title) %>
+
+  <% c.with_record_header do %>
+    <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
+      <%= render FormatIndicatorComponent.new(record: request_group) %>
+      <% if request_group.call_number.present? && request_group.vol_enum_chron.present? %>
+        <span>Call number: <%= request_group.call_number %></span>
+      <% end %>
+      <span>
+        <%= detail_link_to_searchworks(request_group.catkey) %>
+      </span>
+    </div>
+    <% if request_group.author %>
+      <div class="mt-2">
+        <%= request_group.author %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% c.with_cover_image do %>
+    <%= cover_image %>
+  <% end %>
+
+  <% Folio::RequestComponent.with_collection(request_group.requests, patron:).each do |item| %>
+    <% c.with_request do %>
+      <%= render item %>
+    <% end %>
+  <% end %>
+<% end %>
