@@ -1,7 +1,7 @@
 <%# locals: (mailer: false) %>
 <div class="row">
+  <h1>We received your <%= @patron_request.request_type == 'scan' ? 'digital scan' : (@patron_request.mediateable? || @patron_request.aeon_page?) ? '' : 'pickup' %> request!</h1>
   <div class="confirmation col-12 col-lg-8">
-    <h1>We received your <%= @patron_request.request_type == 'scan' ? 'digital scan' : (@patron_request.mediateable? || @patron_request.aeon_page?) ? '' : 'pickup' %> request!</h1>
     <%= render RecordHeaderComponent.new(record: @patron_request.bib_record, classes: 'bg-light mt-4 mb-4 p-4 rounded-0', title_classes: ['h3']) %>
         <% @patron_request.patron_request_items.map(&:folio_item).select(&:bound_with_child_holdings_record).each do |item| %>
           <%= render AlertComponent.new(type: :warning) do %>
