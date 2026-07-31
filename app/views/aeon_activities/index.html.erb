@@ -15,13 +15,8 @@
 
   <div class="tab-content">
     <div id="active-tab" class="tab-pane fade <%= 'show active' unless params[:past] %>">
-      <% if @activities.present? %>
-        <div class="d-flex flex-wrap justify-content-end gap-2 my-2">
-          <%= render 'filters', activity_types: @activities.active.map(&:activity_type) %>
-          <%= render 'sort' %>
-        </div>
-
-        <%= render Aeon::ActivityComponent.with_collection(@activities.active) %>
+      <% if @activities.active.present? %>
+        <%= render 'activities_list', activities: @activities.active %>
       <% else %>
         You have no activities
       <% end %>
@@ -30,13 +25,8 @@
     </div>
 
     <div id="past-tab" class="tab-pane fade <%= 'show active' if params[:past] %>">
-      <% if @activities.present? %>
-        <div class="d-flex flex-wrap justify-content-end gap-2 my-2">
-          <%= render 'filters', activity_types: @activities.past.map(&:activity_type) %>
-          <%= render 'sort' %>
-        </div>
-
-        <%= render Aeon::ActivityComponent.with_collection(@activities.past) %>
+      <% if @activities.past.present? %>
+        <%= render 'activities_list', activities: @activities.past %>
       <% else %>
         You have no past activities
       <% end %>

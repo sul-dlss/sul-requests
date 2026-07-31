@@ -64,8 +64,15 @@ module Aeon
 
     def reading_room; end
 
-    def sort_key
-      start_time || 100.years.from_now
+    def sort_key(key) # rubocop:disable Metrics/AbcSize
+      case key
+      when :date
+        [(start_time || 100.years.from_now.end_of_day).strftime('%FT%T'), name, activity_type].join('---')
+      when :name
+        [name, (start_time || 100.years.from_now.end_of_day).strftime('%FT%T'), activity_type].join('---')
+      when :activity_type
+        [activity_type, name, (start_time || 100.years.from_now.end_of_day).strftime('%FT%T')].join('---')
+      end
     end
 
     def self.sites(location)
