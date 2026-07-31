@@ -1,11 +1,15 @@
 <% inner = capture do %>
   <span class="<%= classes.join(' ') %>">
-    <% unless request.multi_item_selector? %>
-      <span class="fw-normal">Call number: </span>
+    <% if call_number.present? || container.present? %>
+      <% unless request.multi_item_selector? %>
+        <span class="fw-normal">Call number: </span>
+      <% end %>
+      <%= call_number %>
+      <% if separator? %><i class="bi bi-chevron-right"></i><% end %>
+      <%= container %>
+    <% else %>
+      <span class="fw-normal fst-italic">(no call number)</span>
     <% end %>
-    <%= call_number %>
-    <% if separator? %><i class="bi bi-chevron-right"></i><% end %>
-    <%= container %>
   </span>
 <% end %>
 <% if wrapper_tag %>

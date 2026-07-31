@@ -1,6 +1,6 @@
 <%= tag.public_send element, class: Array(classes) + ['request'], **attr do %>
     <div class="rgi-id d-flex align-items-center">
-      <%= identifier %>
+      <%= identifier.presence || tag.span('(no call number)', class: 'fst-italic') %>
     </div>
 
     <% if detail? %>

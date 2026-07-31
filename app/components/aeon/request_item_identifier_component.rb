@@ -26,10 +26,6 @@ module Aeon
       call_number.present? && container.present?
     end
 
-    def render?
-      request.multi_item_selector? || call_number.present? || container.present?
-    end
-
     private
 
     def strip_ead_prefix(call_num)
