@@ -38,10 +38,6 @@ module Folio
       status == 'Open___Awaiting_pickup'
     end
 
-    def queue_position
-      record['queuePosition']
-    end
-
     def queue_length
       record['queueTotalLength']
     end
@@ -57,12 +53,6 @@ module Folio
 
     def fill_by_date
       Time.zone.parse(record['expirationDate']) if record['expirationDate']
-    end
-
-    def waitlist_position
-      return 'Unknown' if queue_position.nil? && queue_length.nil?
-
-      "#{queue_position} of #{queue_length}"
     end
 
     def active?
@@ -111,7 +101,5 @@ module Folio
         (expiration_date || fill_by_date || END_OF_DAYS).strftime('%FT%T')
       ]
     end
-
-    def manage_request_link; end
   end
 end

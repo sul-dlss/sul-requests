@@ -162,8 +162,6 @@ module Illiad
     end
     alias item_info4 service_point_code
 
-    def waitlist_position; end
-
     def to_partial_path
       'requests/request'
     end
