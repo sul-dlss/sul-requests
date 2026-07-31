@@ -47,6 +47,10 @@ class PatronAbility
       request.patron&.can_modify_requests?
     end
 
+    can :renew, Folio::Checkout do |checkout|
+      checkout.patron.can_renew? && checkout.renewable?
+    end
+
     can :create, PatronRequest do |request|
       request.selected_items.all? { |item| request.scan? ? can?(:scan, item) : can?(:request, item) }
     end

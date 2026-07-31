@@ -18,7 +18,7 @@ module Folio
 
     def initialize(record, patron_type_id = nil, loan_policy: nil, patron: nil)
       @record = record
-      @patron_type_id = patron_type_id || patron&.patron_type_id
+      @patron_type_id = patron_type_id || patron&.patron_group_id
       @loan_policy = loan_policy
       @patron = patron
     end
