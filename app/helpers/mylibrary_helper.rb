@@ -49,8 +49,6 @@ module MylibraryHelper
   def detail_link_to_searchworks(catkey)
     return if catkey.blank?
 
-    link_to "#{Settings.searchworks_link}/#{catkey}", rel: 'noopener', target: '_blank', class: 'su-underline' do
-      safe_join(['View in SearchWorks', tag.i(class: 'ms-1 bi bi-arrow-up-right')])
-    end
+    render ItemLinkComponent.new(url: "#{Settings.searchworks_link}/#{catkey}")
   end
 end

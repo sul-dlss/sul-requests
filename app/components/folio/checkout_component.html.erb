@@ -48,7 +48,7 @@
     <div class="d-flex justify-content-between gap-5">
       <div>
         <h2 class="h3 mb-1 clamp clamp-3"><%= checkout.title %></h2>
-        <div class="d-flex flex-row flex-wrap position-relative justify-content-start gap-3 mb-1">
+        <div class="d-flex flex-row flex-wrap position-relative justify-content-start column-gap-3 row-gap-1 mb-1 align-items-baseline">
           <%= render FormatIndicatorComponent.new(record: checkout) %>
           <div>Call number: <%= checkout.full_call_number %></div>
           <%= detail_link_to_searchworks(checkout.catkey) unless checkout.from_ill? %>
