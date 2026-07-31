@@ -60,7 +60,7 @@
         </div>
       </div>
       <div>
-        <%= cover_image %>
+        <%= render System::GoogleCoverImageComponent.new(identifiers: checkout.identifiers) %>
       </div>
     </div>
   <% end %>
