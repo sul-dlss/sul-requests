@@ -1,3 +1,5 @@
+<%= flash_column_classes 'col-12 col-md-9' %>
+<div class="row">
 <%= tag.div class: 'page-section col-12 col-md-9', data: { controller: 'sortable google-cover-image', 'sortable-sort-value': 'default', 'sortable-filter-value': params[:filter] } do %>
   <div class="d-flex flex-wrap gap-2 justify-content-between mb-4">
     <h1>Submitted requests</h1>
@@ -89,3 +91,4 @@
     </p>
   </div>
 <% end %>
+</div>

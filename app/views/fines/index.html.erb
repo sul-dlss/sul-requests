@@ -1,5 +1,7 @@
-<%= render 'fines/shared_computer_alert' %>
-<div class="col-lg-9">
+<%= flash_column_classes 'col-lg-9' %>
+<div class="row">
+  <div class="col-lg-9">
+    <%= render 'fines/shared_computer_alert' %>
   <div class="d-sm-flex mb-4">
     <h1 class="mt-2 me-3">Fees and fines</h1>
     <ul class="nav nav-tabs">
@@ -41,5 +43,6 @@
         Loading...
       </turbo-frame>
     </div>
+  </div>
   </div>
 </div>

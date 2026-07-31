@@ -1,10 +1,11 @@
 <% content_for :page_title do %>Request: <%= @patron_request.item_title %><% end %>
+<%= flash_column_classes 'col-12 col-lg-9' %>
 
 <%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
 
 <%= render 'messages', messages: @patron_request.active_messages %>
 
-<div class="container mt-4">
+<div class="mt-4">
 <h1 class="mb-4"> New request </h1>
 
 

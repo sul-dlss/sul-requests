@@ -1,3 +1,5 @@
+<%= flash_column_classes 'col-lg-9' %>
+<div class="row">
 <div id="requests" class="page-section col-lg-9" data-controller="sortable google-cover-image" data-sortable-sort-value="default">
   <div class="d-flex align-items-center justify-content-between mb-4">
     <h1 class="mb-0">Requests</h1>
@@ -20,6 +22,7 @@
       <%= render Folio::RequestGroupComponent.with_collection(@grouped_requests, patron: patron_or_group) %>
     </ul>
   <% end %>
+</div>
 </div>
 
 <div class="page-section">
