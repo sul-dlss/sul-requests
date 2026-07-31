@@ -11,7 +11,7 @@
           <span>Call number: <%= call_number %></span>
         <% end %>
         <span>
-          <%= render System::RequestLinkComponent.new(url: record.item_url) %>
+          <%= render ItemLinkComponent.new(url: record.item_url) %>
         </span>
       </div>
       <% if record.author %>

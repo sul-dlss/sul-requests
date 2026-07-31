@@ -1,0 +1,26 @@
+# frozen_string_literal: true
+
+# Render the link to an item's source in an external system
+class ItemLinkComponent < ViewComponent::Base
+  def initialize(url:)
+    @item_url = url
+  end
+
+  def render?
+    link_text.present?
+  end
+
+  def call
+    link_to @item_url, class: 'su-underline fs-15', target: '_blank', rel: 'noopener' do
+      safe_join([link_text, tag.i(class: 'ms-1 bi bi-arrow-up-right')])
+    end
+  end
+
+  def link_text
+    if @item_url&.match?('/archives.stanford.edu/')
+      'View in Archival Collections at Stanford'
+    elsif @item_url&.match?('/searchworks.stanford.edu/')
+      'View in SearchWorks'
+    end
+  end
+end

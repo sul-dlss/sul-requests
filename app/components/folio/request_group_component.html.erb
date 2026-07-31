@@ -3,7 +3,7 @@
   <% c.with_title(request_group.title) %>
 
   <% c.with_record_header do %>
-    <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
+    <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap align-items-baseline">
       <%= render FormatIndicatorComponent.new(record: request_group) %>
       <% if request_group.call_number.present? && request_group.vol_enum_chron.present? %>
         <span>Call number: <%= request_group.call_number %></span>
