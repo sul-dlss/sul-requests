@@ -21,7 +21,7 @@
 <%# remove groups that are entirely gone %>
 <% group_keys = @update_response.next_aeon_request_groups.map(&:group_key) %>
 <% @update_response.previous_aeon_request_groups.reject { |group| group.group_key.in? group_keys }.each do |group| %>
-  <%= turbo_stream.remove(group.dom_id) %>
+  <%= turbo_stream.remove(dom_id(group)) %>
 <% end %>
 
 <% @update_response.appointments_to_update.each do |appointment| %>

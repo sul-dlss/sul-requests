@@ -3,6 +3,8 @@
 module Folio
   # Wraps Folio request records
   class RequestGrouping
+    extend ActiveModel::Naming
+    include ActiveModel::Conversion
     include Enumerable
 
     attr_reader :requests
@@ -22,8 +24,8 @@ module Folio
       @requests = requests.sort_by(&:full_call_number)
     end
 
-    def dom_id
-      "group_#{catkey}"
+    def to_key
+      [catkey]
     end
   end
 end

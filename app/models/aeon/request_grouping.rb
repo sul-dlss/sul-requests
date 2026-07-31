@@ -3,6 +3,8 @@
 module Aeon
   # Wraps Aeon request records
   class RequestGrouping
+    extend ActiveModel::Naming
+    include ActiveModel::Conversion
     include Enumerable
 
     attr_reader :requests
@@ -20,10 +22,10 @@ module Aeon
       @requests = requests.is_a?(Aeon::RequestFinders) ? requests : Aeon::RequestFinders.new(requests)
     end
 
-    def dom_id
-      return "group_#{first.id}" unless multi_item_selector?
+    def to_key
+      return [first.id] unless multi_item_selector?
 
-      "group_#{status}_#{title.parameterize}_#{digital? ? 'digital' : 'reading_room'}"
+      [status, title.parameterize, (digital? ? 'digital' : 'reading_room')].compact
     end
 
     def appointment_reading_room

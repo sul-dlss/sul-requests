@@ -28,7 +28,7 @@ RSpec.describe 'FOLIO Request Page' do
   it 'has ready for pickup request data' do
     visit folio_requests_path
 
-    within('#group_a244393632') do
+    within('#folio_request_grouping_a244393632') do
       expect(page).to have_text(/Rothko : the color field paintings/)
       expect(page).to have_text('Awaiting pick up at Green Library')
       expect(page).to have_text 'ND237 .R725 A4 2017 F'
