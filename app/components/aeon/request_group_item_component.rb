@@ -22,14 +22,17 @@ module Aeon
       }
     end
 
-    def fulfillment_mode # rubocop:disable Metrics/CyclomaticComplexity
+    def fulfillment_mode
       return if request.saved_for_later?
 
-      return :cancelled_by_staff if request.cancelled_by_staff?
+      return :cancelled if request.cancelled_by_staff?
       return :appointment if request.appointment?
-      return :delivered if request.digital? && request.scan_delivered?
 
-      :delivery_pending if request.digital? && request.submitted?
+      if request.digital? # rubocop:disable Style/GuardClause
+        return :ready if request.scan_delivered?
+
+        :pending if request.submitted?
+      end
     end
   end
 end
