@@ -1,21 +1,21 @@
 <%= tag.public_send element, class: Array(classes) + ['request'], **attr do %>
-    <div class="rgi-id d-flex align-items-center">
+    <div class="request-grid-id d-flex align-items-center">
       <%= identifier %>
     </div>
 
     <% if detail? %>
-      <div class="rgi-detail pb-1">
+      <div class="request-grid-detail pb-1">
         <%= detail %>
       </div>
     <% end %>
 
     <% if fulfillment? %>
-      <div class="request-fulfillment">
+      <div class="request-grid-fulfillment">
         <%= fulfillment %>
       </div>
     <% end %>
 
-    <div class="rgi-actions">
+    <div class="request-grid-actions">
       <turbo-frame>
         <div class="d-flex text-nowrap align-items-baseline align-self-start justify-content-xl-end">
           <%= actions %>
@@ -24,7 +24,7 @@
     </div>
 
     <% if metadata? %>
-      <div class="rgi-footer pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column text-body-secondary small">
+      <div class="request-grid-footer pt-2 fs-14 text-body-secondary d-flex gap-sm-3 flex-sm-row flex-column text-body-secondary small">
         <%= metadata %>
       </div>
     <% end %>
