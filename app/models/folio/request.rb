@@ -69,10 +69,6 @@ module Folio
       status.start_with?('Open')
     end
 
-    def item_call_key
-      item&.dig('effectiveCallNumberComponents', 'callNumber')
-    end
-
     def contact_info
       location&.contact_info
     end
