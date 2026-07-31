@@ -76,16 +76,25 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       )
     end
 
-    it 'allows the user to submit a reading room request' do
-      choose 'Reading room appointment'
+    it 'allows the user to submit a reading room request' do # rubocop:disable RSpec/ExampleLength
+      # Start down the digitization path and fill in a note we later abandon.
+      choose 'Digitization'
+      check 'I agree to these terms'
+      click_button 'Continue'
+      fill_in 'Requested pages', with: 'Pages 1-10'
+      choose 'Yes'
+      fill_in 'Additional information', with: 'abandoned digitization note'
 
+      # Change our mind: go back to the request-type step and switch flows.
+      within('#request-type-accordion') { click_button 'Edit' }
+      choose 'Reading room appointment'
       click_button 'Continue'
 
       # In the Appointment step
       click_button 'Select appointment'
       click_button appointment_start_time.strftime('%b %-d')
 
-      fill_in 'Additional information', with: 'Testing only'
+      fill_in 'Additional information', with: 'reading room note'
 
       click_button 'Submit request'
 
@@ -99,7 +108,8 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       expect(page).to have_text 'Please review Reading room policies'
 
       expect(StubAeonClient::Request.last).to have_attributes(
-        callNumber: 'ABC 123'
+        callNumber: 'ABC 123',
+        specialRequest: 'reading room note'
       )
     end
   end
