@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Aeon
+module System
   # Render request link
   class RequestLinkComponent < ViewComponent::Base
     def initialize(url:)
