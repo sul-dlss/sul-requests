@@ -38,6 +38,9 @@ RSpec.describe 'Creating a request', :js do
         expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
+      # Single items omit the call number because it's shown in the record header component
+      expect(page).to have_no_css('li.request', text: 'ABC 123')
+
       expect(PatronRequest.last).to have_attributes(
         patron_id: user.patron_key,
         instance_hrid: 'a1234',
@@ -128,7 +131,7 @@ RSpec.describe 'Creating a request', :js do
           perform_enqueued_jobs do
             click_on 'Submit request'
           end
-          expect(page).to have_text 'We received your scan request'
+          expect(page).to have_text 'We received your digital scan request'
         end.to change(PatronRequest, :count).by(1)
 
         expect(PatronRequest.last).to have_attributes(
@@ -230,7 +233,7 @@ RSpec.describe 'Creating a request', :js do
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_text 'We received your scan request'
+        expect(page).to have_text 'We received your digital scan request'
       end
     end
 
@@ -456,6 +459,9 @@ RSpec.describe 'Creating a request', :js do
         expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
 
+      # With only a single type of item, we don't need the background styles to break up the sections.
+      expect(page).to have_no_css('.bg-light.p-1')
+
       expect(PatronRequest.last).to have_attributes(patron_request_items: contain_exactly(have_attributes(item_id: '12345678')))
     end
 
@@ -491,6 +497,13 @@ RSpec.describe 'Creating a request', :js do
         end
         expect(page).to have_text 'We received your pickup request'
       end.to change(PatronRequest, :count).by(1)
+
+      # With multiple types of items (available/unavailable), we should use the background styles to break up the sections.
+      expect(page).to have_css('.bg-light.p-1')
+
+      # With multiple callnumbers, we list them all
+      expect(page).to have_css('li.request', text: 'ABC 123')
+      expect(page).to have_css('li.request', text: 'ABC 321')
 
       expect(PatronRequest.last).to have_attributes(fulfillment_type: 'hold',
                                                     patron_request_items: contain_exactly(have_attributes(item_id: '12345678'),
@@ -541,7 +554,7 @@ RSpec.describe 'Creating a request', :js do
         perform_enqueued_jobs do
           click_on 'Submit request'
         end
-        expect(page).to have_text 'We received your scan request'
+        expect(page).to have_text 'We received your digital scan request'
       end.to change(PatronRequest, :count).by(1)
 
       expect(PatronRequest.last).to have_attributes(

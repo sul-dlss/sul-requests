@@ -136,6 +136,11 @@ label.btn-close {
   margin: -0.5rem !important;
 }
 
+.m-n1 {
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
+}
+
 /* Override bootstrap tabs to give them a more visible decoration */
 .nav-tabs .nav-link:not(.active):hover {
   background-color: var(--bs-nav-tabs-link-hover-bg);
@@ -148,7 +153,7 @@ label.btn-close {
     margin-bottom: 0 !important;
   }
 
-  .border-first-child-top-0:last-child {
+  .border-first-child-top-0:first-child {
     border-top: none !important;
   }
 

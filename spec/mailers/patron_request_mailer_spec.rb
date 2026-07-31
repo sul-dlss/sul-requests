@@ -29,6 +29,7 @@ RSpec.describe PatronRequestMailer do
       expect(mail.body).to include('We received your pickup request!')
       expect(mail.body).to include('<dt>Title:</dt><dd>Item Title</dd>')
       expect(mail.body).to include('In library use only')
+      expect(mail.body).to include('ABC 123')
     end
   end
 
@@ -39,7 +40,7 @@ RSpec.describe PatronRequestMailer do
       expect(mail.subject).to eq('Item Title - Stanford University Libraries request confirmation')
       expect(mail.to).to eq(['test@example.com'])
       expect(mail.from).to eq(['scan-and-deliver@stanford.edu'])
-      expect(mail.body).to include('We received your scan request!')
+      expect(mail.body).to include('We received your digital scan request!')
       expect(mail.body).to include('<dt>Title:</dt><dd>Item Title</dd>')
     end
   end
