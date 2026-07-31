@@ -1,7 +1,16 @@
+<%= render RecordHeaderComponent.new(record: @request) do |c| %>
+  <% c.with_cover_image(identifiers: @request.identifiers) %>
+<% end %>
 <%= form_tag folio_request_path(@request.key), method: :patch do %>
   <%= hidden_field_tag :modal, params[:modal] if params[:modal] %>
-  <div class="modal-body request-edit">
-    <h3 class="record-title"><%= @request.title %></h3>
+  <div class="modal-body request-edit pt-0">
+    <% if @request.vol_enum_chron.present? %>
+      <div class="mb-3">
+        <span class="text-black fw-semibold selected-item-title">
+          <%= @request.vol_enum_chron %>
+        </span>
+      </div>
+    <% end %>
     <%= hidden_field_tag :id, @request.key %>
     <%= hidden_field_tag :title, @request.title %>
     <%= hidden_field_tag :current_fill_by_date, @request&.fill_by_date&.strftime('%Y-%m-%d') %>

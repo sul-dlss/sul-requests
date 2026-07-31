@@ -4,6 +4,12 @@
 class RecordHeaderComponent < ViewComponent::Base
   attr_reader :record, :classes, :title_tag, :title_classes
 
+  renders_one :cover_image, lambda { |identifiers:|
+    tag.div(class: 'cover-image', data: { controller: 'google-cover-image' }) do
+      render System::GoogleCoverImageComponent.new(identifiers:)
+    end
+  }
+
   def initialize(record: nil, classes: 'bg-light rounded-0 mb-4', title_tag: :h2, title_classes: ['h3'])
     @record = record
     @classes = classes

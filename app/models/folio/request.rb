@@ -9,6 +9,9 @@ module Folio
 
     attr_reader :record
 
+    alias date publication_date
+    alias base_callnumber call_number
+
     # A sufficiently large time used to sort nil values last
     END_OF_DAYS = 100.years.from_now.end_of_day # rubocop:disable Rails/RelativeDateConstant
 

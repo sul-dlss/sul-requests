@@ -25,6 +25,14 @@ module Folio
       bib['author']
     end
 
+    def publication_date
+      bib.dig('instance', 'publication')&.first&.dig('dateOfPublication')
+    end
+
+    def item_url
+      "#{Settings.searchworks_link}/#{catkey}" if catkey.present?
+    end
+
     def call_number
       item.dig('effectiveCallNumberComponents', 'callNumber')
     end
