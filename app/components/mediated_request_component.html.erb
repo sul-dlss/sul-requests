@@ -9,7 +9,7 @@
     <%= render System::GroupedRequestItemLayoutComponent.new(element: 'div', request_id: request.id, date: request.updated_at, classes: %w[request-grid bg-white px-3 py-2]) do |c| %>
       <% c.with_identifier do %>
         <span class="fw-semibold me-1">Planned visit date:</span><%= l(request.needed_date, format: :short) %>
-      <% end if request.requires_needed_date? %>
+      <% end if request.needed_date.present? %>
 
       <% c.with_fulfillment do %>
         <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i>Pending staff review/approval</span>
