@@ -18,7 +18,7 @@
         <span>Call number: <%= request_group.base_callnumber %></span>
       <% end %>
       <span>
-        <%= render Aeon::RequestLinkComponent.new(url: request_group.item_url) %>
+        <%= render System::RequestLinkComponent.new(url: request_group.item_url) %>
       </span>
     </div>
   <% end %>

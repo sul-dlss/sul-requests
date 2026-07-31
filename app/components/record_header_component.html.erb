@@ -9,7 +9,7 @@
         <span>Call number: <%= call_number %></span>
       <% end %>
       <span>
-        <%= render Aeon::RequestLinkComponent.new(url: record.item_url) %>
+        <%= render System::RequestLinkComponent.new(url: record.item_url) %>
       </span>
     </div>
     <% if record.author %>
