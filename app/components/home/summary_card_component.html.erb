@@ -18,6 +18,9 @@
         <%= secondary_label %>
       <% end %>
     </p>
-    <%= render Home::ArrowLinkComponent.new(label: link_label, path: path, classes: ['stretched-link']) if path %>
+
+    <%= link_to path, class: ['btn btn-link btn-sm ps-0 su-underline stretched-link'] do %>
+      <%= link_label %><i class="bi bi-arrow-right ms-1"></i>
+    <% end if path %>
   <% end %>
 <% end %>
