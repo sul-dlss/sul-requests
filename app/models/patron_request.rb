@@ -18,7 +18,7 @@ class PatronRequest < ApplicationRecord
   store :data, accessors: [
     :folio_responses, :illiad_response_data, :activity_ids,
     :proxy, :for_sponsor, :for_sponsor_id, :estimated_delivery, :patron_name, :item_title, :requested_barcodes,
-    :aeon_reading_special, :aeon_terms, :ead_url
+    :aeon_reading_special, :aeon_terms, :ead_url, :instance_author, :instance_document_type
   ], coder: JSON
 
   delegate :instance_id, :finding_aid, :finding_aid?, to: :folio_instance
@@ -57,6 +57,8 @@ class PatronRequest < ApplicationRecord
     self.request_type = 'mediated' if mediateable? && !request_type.start_with?('mediated') && !aeon_page?
     self.display_type = calculate_display_type
     self.item_title = folio_instance&.title || ead_doc&.title
+    self.instance_author = author
+    self.instance_document_type = document_type
     self.estimated_delivery = earliest_delivery_estimate(scan: scan?)&.dig('display_date')
   end
 
@@ -256,7 +258,7 @@ class PatronRequest < ApplicationRecord
     super || bib_record&.title
   end
 
-  delegate :author, :date, :document_type, to: :bib_record
+  delegate :date, to: :bib_record
 
   def view_url
     bib_record&.item_url
@@ -607,6 +609,18 @@ class PatronRequest < ApplicationRecord
 
   def mediation_library_key
     Settings.mediateable_origins[origin_location_code]&.library_override || origin_library_code
+  end
+
+  def document_type
+    return instance_document_type if instance_document_type.present?
+
+    bib_record&.document_type
+  end
+
+  def author
+    return instance_author if instance_author.present?
+
+    bib_record&.author
   end
 
   private

@@ -5,6 +5,23 @@
 
   <% c.with_title(request.item_title) %>
 
+  <% c.with_record_header do %>
+    <div class="d-flex column-gap-md-3 flex-md-row flex-column flex-wrap">
+      <%= render FormatIndicatorComponent.new(record: request) %>
+      <% if request.patron_request_items.first&.item_callnumber.present? %>
+        <span>Call number: <%= request.patron_request_items.first.item_callnumber %></span>
+      <% end %>
+      <span>
+        <%= helpers.detail_link_to_searchworks(request.instance_hrid) %>
+      </span>
+    </div>
+    <% if request.author %>
+      <div class="mt-2">
+        <%= request.author %>
+      </div>
+    <% end %>
+  <% end %>
+
   <% c.with_body do %>
     <%= render System::GroupedRequestItemLayoutComponent.new(element: 'div', request_id: request.id, date: request.updated_at, classes: %w[request-grid bg-white px-3 py-2]) do |c| %>
       <% c.with_identifier do %>
