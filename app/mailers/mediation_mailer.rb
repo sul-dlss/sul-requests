@@ -8,7 +8,7 @@ class MediationMailer < ApplicationMailer
     return if !Settings.features.mediator_email || request.mediator_notification_email_address.blank?
 
     @request = request
-    @mediation_url = root_url
+    @mediation_url = admin_url(request.mediation_library_key)
     mail(
       to: request.mediator_notification_email_address,
       from: from_address,

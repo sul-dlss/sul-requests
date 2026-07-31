@@ -605,6 +605,10 @@ class PatronRequest < ApplicationRecord
     end
   end
 
+  def mediation_library_key
+    Settings.mediateable_origins[origin_location_code]&.library_override || origin_library_code
+  end
+
   private
 
   # @return [Folio::ServicePoint] the selected service point for pickup
