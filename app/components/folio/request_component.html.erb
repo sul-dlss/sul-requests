@@ -1,10 +1,12 @@
 <%= render System::GroupedRequestItemLayoutComponent.new(id: dom_id(request), date: request.placed_date, classes: %w[list-group-item request-grid]) do |c| %>
   <% c.with_identifier do %>
-    <% if request.vol_enum_chron.present? %>
-      <%= request.vol_enum_chron %>
-    <% elsif request.call_number %>
-      <span class="fw-normal me-1">Call number:</span><%= request.call_number %>
-    <% end %>
+    <span class="request-item-identifier fw-semibold text-pretty">
+      <% if request.vol_enum_chron.present? %>
+        <%= request.vol_enum_chron %>
+      <% elsif request.call_number %>
+        <span class="fw-normal me-1">Call number:</span><%= request.call_number %>
+      <% end %>
+    </span>
   <% end %>
 
   <% c.with_fulfillment do %>
