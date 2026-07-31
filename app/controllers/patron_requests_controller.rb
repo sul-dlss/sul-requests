@@ -197,7 +197,7 @@ class PatronRequestsController < ApplicationController
           activity_ids: patron_request_params[:activity_ids],
           for_publication: item[:for_publication],
           requested_pages: item[:requested_pages],
-          additional_information: item[:additional_information] || patron_request_params[:aeon_reading_special],
+          additional_information: item[:additional_information].presence || patron_request_params[:aeon_reading_special],
           hierarchy: item[:hierarchy]
         }
       end
