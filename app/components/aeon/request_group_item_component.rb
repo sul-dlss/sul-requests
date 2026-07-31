@@ -21,5 +21,15 @@ module Aeon
         'date-sort-value': request.sort_key(:date)
       }
     end
+
+    def fulfillment_mode # rubocop:disable Metrics/CyclomaticComplexity
+      return if request.saved_for_later?
+
+      return :cancelled_by_staff if request.cancelled_by_staff?
+      return :appointment if request.appointment?
+      return :delivered if request.digital? && request.scan_delivered?
+
+      :delivery_pending if request.digital? && request.submitted?
+    end
   end
 end

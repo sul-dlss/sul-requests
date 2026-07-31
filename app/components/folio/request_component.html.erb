@@ -7,16 +7,16 @@
     <% end %>
   <% end %>
 
-  <% c.with_fulfillment do %>
-    <% if request.ready_for_pickup? %>
-      <span class="text-green">
-        <i class="bi bi-bag me-1" aria-hidden></i>Awaiting pick up at <span class="fw-semibold"><%= request.service_point_name %></span>
-          <% if request.expiration_date %>
-            by <span class="fw-semibold"><%= l(request.expiration_date, format: :date_only) %></span>.
-          <% end %>
-      </span>
-    <% else %>
-      <span class="text-spirited-dark"><i class="bi bi-clock me-1" aria-hidden></i><span class="fw-semibold">Processing request</span> for pickup at <span class="text-nowrap"><%= request.service_point_name %></span></span>
+  <% if request.ready_for_pickup? %>
+    <% c.with_fulfillment_ready do %>
+      <i class="bi bi-bag me-1" aria-hidden></i>Awaiting pick up at <span class="fw-semibold"><%= request.service_point_name %></span>
+        <% if request.expiration_date %>
+          by <span class="fw-semibold"><%= l(request.expiration_date, format: :date_only) %></span>.
+        <% end %>
+    <% end %>
+  <% else %>
+    <% c.with_fulfillment_pending do %>
+      <i class="bi bi-clock me-1" aria-hidden></i><span class="fw-semibold">Processing request</span> for pickup at <span class="text-nowrap"><%= request.service_point_name %></span>
     <% end %>
   <% end %>
 
