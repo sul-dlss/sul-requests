@@ -173,6 +173,8 @@ RSpec.describe 'Requests', :js do
     it 'removes the request from its activity when deleted' do
       visit aeon_activities_path
 
+      click_button 'A Class Visit'
+
       expect(page).to have_text('An Activity Book')
 
       click_on 'Remove An Activity Book from activity'
@@ -196,6 +198,10 @@ RSpec.describe 'Requests', :js do
 
       it 'removes the empty group card while keeping the other group visible' do
         visit aeon_activities_path
+
+        expect(page).to have_text('2 items')
+
+        click_button 'A Class Visit'
 
         expect(page).to have_text('An Activity Book')
         expect(page).to have_text('Another Activity Book')
@@ -237,6 +243,10 @@ RSpec.describe 'Requests', :js do
 
       it 'removes the request from its activity when deleted' do
         visit aeon_activities_path
+
+        expect(page).to have_text('1 item')
+
+        click_button 'A Class Visit'
 
         expect(page).to have_text('An Activity Book')
 

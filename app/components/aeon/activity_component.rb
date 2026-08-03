@@ -13,5 +13,14 @@ module Aeon
     def requests?
       @requests
     end
+
+    def item_pill
+      if requests?
+        return PillComponent.new(classes: %w[bg-stanford-20-black px-2
+                                             text-stanford-black]).with_content(pluralize(activity.requests.length, 'item'))
+      end
+
+      PillComponent.new(id: dom_id(activity, :item_pill), classes: %w[placeholder placeholder-glow px-2]).with_content('Loading')
+    end
   end
 end

@@ -3,5 +3,8 @@
     <%= turbo_stream.replace dom_id(activity, :requests) do %>
       <%= render Aeon::ActivityRequestsComponent.new(activity: activity) %>
     <% end %>
+    <%= turbo_stream.replace dom_id(activity, :item_pill) do %>
+      <%= render PillComponent.new(classes: %w[bg-stanford-20-black text-stanford-black px-2]).with_content(pluralize(activity.requests.length, 'item')) %>
+    <% end %>
   <% end %>
 </turbo-frame>
