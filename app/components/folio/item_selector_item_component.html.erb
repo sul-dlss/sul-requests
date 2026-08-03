@@ -1,4 +1,4 @@
-<tr data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>" >
+<tr data-sortby-status="<%= item.status_text.downcase.gsub(' ', '_') %>" data-sortby-callnumber="<%= index %>">
   <td>
     <label>
       <%= f.check_box 'item_ids', { multiple: true, class: 'form-check-input', disabled: not_requestable?, data: { 'item-selector-target': 'item', 'item-selector-id-param': item.id, 'item-selector-status-param': item.available? ? 'available' : 'unavailable', 'item-selector-duequeueinfo-param': helpers.queue_length_display(item), 'item-selector-label-param': helpers.callnumber_label(item), action: 'item-selector#change' } }, item.id, "" %>
