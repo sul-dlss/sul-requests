@@ -6,6 +6,14 @@ export default class extends Controller {
     availabilityRoute: String
   }
 
+  handleChange() {
+    if (this.hasAvailabilityTarget) {
+      this.refreshAvailability();
+    } else {
+      this.updateBanner();
+    }
+  }
+
   filterDurationFields() {
     const data = this.fieldsetTarget.dataset;
     const maxDuration = data.maxSlot;

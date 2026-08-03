@@ -119,14 +119,15 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_text 'Current'
         expect(page).to have_text appointment_start_time.strftime('%b %-d, %Y')
         expect(page).to have_no_text appointment_start_time.strftime('%l:%M %p')
-        expect(page).to have_text 'New'
-        expect(page).to have_text 'Select date'
+        expect(page).to have_text 'New Select date', normalize_ws: true
         expect(page).to have_text '1 item will move to the new appointment.'
 
         click_on appointment_start_time.strftime('%b %-d, %Y')
         click_on 'Next month'
 
         first('td[role="gridcell"]:not(:has(button:disabled))').click
+
+        expect(page).to have_no_text 'New Select date', normalize_ws: true
 
         click_on 'Save'
       end
