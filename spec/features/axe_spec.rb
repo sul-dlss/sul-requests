@@ -72,6 +72,7 @@ RSpec.describe 'Accessibility testing', :js do
       expect(page).to be_accessible
 
       click_on 'Submit request'
+      expect(page).to have_text 'We received your pickup request'
       expect(page).to be_accessible
     end
   end
