@@ -1,16 +1,16 @@
-<div class="dropdown">
-  <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+<div class="dropdown" data-sortable-target="filterMenu">
+  <button id="<%= id %>" class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Filter by <%= params[:filter] ? params[:filter] : '' %>
   </button>
-  <ul class="dropdown-menu" role="menu">
+  <ul class="dropdown-menu" role="menu" aria-labelledby="<%= id %>">
     <li role="presentation">
-      <%= link_to url_for(request.query_parameters.merge({filter: nil})), role: 'menuitem', class: "dropdown-item #{'active' unless params[:filter]}" do %>
+      <%= tag.button class: 'dropdown-item active', role: 'menuitem', data: { action: 'click->sortable#filter', sortable_filter_param: '', sortable_label_param: 'All' } do %>
         All
       <% end %>
     </li>
     <% activity_types&.each do |activity_type| %>
       <li role="presentation">
-        <%= link_to url_for(request.query_parameters.merge({filter: activity_type})), role: 'menuitem', class: "dropdown-item #{'active' if params[:filter] == activity_type}" do %>
+        <%= tag.button class: "dropdown-item #{'active' if params[:filter] == activity_type}", role: 'menuitem', data: { action: 'click->sortable#filter', sortable_filter_param: activity_type, sortable_label_param: activity_type } do %>
           <%= activity_type %>
         <% end %>
       </li>
