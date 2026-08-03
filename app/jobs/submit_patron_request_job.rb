@@ -12,6 +12,9 @@ class SubmitPatronRequestJob < ApplicationJob
     return place_title_hold(patron_request) if patron_request.patron_request_items.blank?
     return perform_scan_request(patron_request) if patron_request.scan?
 
+    items = patron_request.patron_request_items.filter_map(&:folio_item)
+    FolioGraphqlClient.new.hydrate_circulation_status(items:)
+
     ilb_items, folio_items = patron_request.patron_request_items.partition do |item|
       send_to_illiad?(patron_request, item.folio_item)
     end

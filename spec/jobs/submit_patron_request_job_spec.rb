@@ -134,14 +134,36 @@ RSpec.describe SubmitPatronRequestJob do
       end
     end
 
-    context 'when the item has a request queue' do
+    context 'when the refreshed item has a request queue' do
       before do
-        allow(folio_instance.items[0]).to receive(:queue_length).and_return(1)
+        circulation_status = {
+          'id' => folio_instance.items[0].id,
+          'queueTotalLength' => 1,
+          'dueDate' => nil
+        }
+        allow_any_instance_of(FolioGraphqlClient).to receive(:item_circulation_status).and_return([circulation_status]) # rubocop:disable RSpec/AnyInstance
       end
 
       it 'requests items via ILLiad' do
         described_class.perform_now(request)
         expect(SubmitIlliadPatronRequestJob).to have_received(:perform_now)
+          .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
+      end
+    end
+
+    context 'when the refreshed item does not have a request queue' do
+      before do
+        circulation_status = {
+          'id' => folio_instance.items[0].id,
+          'queueTotalLength' => 0,
+          'dueDate' => nil
+        }
+        allow_any_instance_of(FolioGraphqlClient).to receive(:item_circulation_status).and_return([circulation_status]) # rubocop:disable RSpec/AnyInstance
+      end
+
+      it 'requests items via FOLIO' do
+        described_class.perform_now(request)
+        expect(SubmitFolioPatronRequestJob).to have_received(:perform_now)
           .with(an_object_having_attributes(patron_request: request, item_id: folio_instance.items[0].id))
       end
     end
