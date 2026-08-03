@@ -6,6 +6,7 @@
 ###
 class PatronRequestMailer < ApplicationMailer
   helper :requests
+  helper :icons
   helper_method :use_requests_redesign?
 
   def confirmation_email(patron_request)

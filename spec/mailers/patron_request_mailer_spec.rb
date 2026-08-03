@@ -31,6 +31,17 @@ RSpec.describe PatronRequestMailer do
       expect(mail.body).to include('In library use only')
       expect(mail.body).to include('ABC 123')
     end
+
+    context 'when the bib record has a document_type that triggers icon rendering' do
+      before do
+        allow(request.bib_record).to receive_messages(document_type: 'Book', document_formats: ['Book'])
+      end
+
+      it 'renders the format indicator without raising for the missing helper' do
+        expect { mail.body }.not_to raise_error
+        expect(mail.body).to include('Book')
+      end
+    end
   end
 
   context 'scan request_type' do
