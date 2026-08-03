@@ -72,7 +72,7 @@
                 <% pickup_item_classes = "request border-top fw-semibold text-pretty py-2#{' border-first-child-top-0' if both_pickup_sections}" %>
                 <% if available_items.any? %>
                   <div class="<%= pickup_section_classes %>">
-                    <div><dt>Pickup after:</dt><dd><%= @patron_request.estimated_delivery %></dd></div>
+                    <dt>Pickup after:</dt><dd><%= @patron_request.estimated_delivery %></dd>
                   </div>
                   <% if show_callnumbers %>
                     <ul class="list-unstyled">
@@ -83,23 +83,21 @@
                   <% end %>
                 <% end %>
                 <% if unavailable_items.any? %>
-                  <div class="<%= pickup_section_classes %>">
-                    <div><dt>Pickup after:</dt><dd>Notified by email</dd></div>
-                    <% if @patron_request.fulfillment_type %>
-                      <div>
-                        <dt>Processing method:</dt>
-                        <dd>
-                          <%= @patron_request.fulfillment_type == 'hold' ? 'Wait for a Stanford copy to become available' : 'Expedite a copy from a partner library' %>
-                        </dd>
-                      </div>
-                    <% end %>
-                    <% if @patron_request.needed_date %>
-                      <div>
-                        <dt>Not needed after:</dt>
-                        <dd><%= l @patron_request.needed_date, format: :short %></dd>
-                      </div>
-                    <% end %>
-                  </div>
+                  <div class="<%= pickup_section_classes %>"><dt>Pickup after:</dt><dd>Notified by email</dd></div>
+                  <% if @patron_request.fulfillment_type %>
+                    <div class="<%= pickup_section_classes %>">
+                      <dt>Processing method:</dt>
+                      <dd>
+                        <%= @patron_request.fulfillment_type == 'hold' ? 'Wait for a Stanford copy to become available' : 'Expedite a copy from a partner library' %>
+                      </dd>
+                    </div>
+                  <% end %>
+                  <% if @patron_request.needed_date %>
+                    <div class="<%= pickup_section_classes %>">
+                      <dt>Not needed after:</dt>
+                      <dd><%= l @patron_request.needed_date, format: :short %></dd>
+                    </div>
+                  <% end %>
                   <% if show_callnumbers %>
                     <ul class="list-unstyled">
                       <% unavailable_items.each do |avail_item| %>
