@@ -12,7 +12,7 @@ class SidebarAppointmentDropdownComponent < ViewComponent::Base
     request.reading_room.present?
   end
 
-  def selectable_appointments
-    helpers.current_user.aeon.appointments.for_reading_room(request.reading_room).select(&:editable?)
+  def appointments
+    helpers.current_user.aeon.appointments.for_reading_room(request.reading_room)
   end
 end

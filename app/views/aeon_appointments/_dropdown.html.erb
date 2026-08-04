@@ -5,8 +5,5 @@
     </div>
   <% end %>
   <%= button_tag 'Appointment', class: 'dropdown-toggle btn btn-link su-underline p-0', type: 'button', data: { bs_toggle: 'dropdown', 'appointment-select-submit-target': 'button', turbo_submits_with: spinner }, aria: { expanded: false  }, disabled: appointments.blank? %>
-  <menu class="dropdown-menu sidebar-appt-dropdown">
-    <li></li>
-    <%= render Aeon::AppointmentOptionComponent.with_collection(appointments, name: 'aeon_request[appointment_id]', data_action: nil) %>
-  </menu>
+  <%= render Aeon::AppointmentOptionMenuComponent.new(appointments:, name: 'aeon_request[appointment_id]', menu_classes: %w[sidebar-appt-dropdown]) %>
 </div>
