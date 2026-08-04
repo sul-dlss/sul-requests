@@ -14,7 +14,7 @@
       </div>
       <div class="d-flex">
         <% if requests? %>
-          <%= render PillComponent.new(classes: %w[bg-stanford-20-black px-2 text-stanford-black]).with_content(pluralize(activity.requests.length, 'item')) %>
+          <%= render PillComponent.new(id: dom_id(activity, :item_pill), classes: %w[bg-stanford-20-black px-2 text-stanford-black]).with_content(pluralize(activity.requests.length, 'item')) %>
         <% else %>
           <span class="placeholder-glow" id="<%= dom_id(activity, :item_pill) %>">
             <%= render PillComponent.new(classes: %w[placeholder px-2]).with_content('Loading') %>
@@ -27,7 +27,9 @@
 
   <% c.with_body(classes: 'accordion-collapse collapse', data: { bs_parent: 'activity-accordions' }, id: dom_id(activity, :accordion), aria: {labelledby: dom_id(activity, :header) }) do %>
     <% if requests? %>
-      <%= render Aeon::ActivityRequestsComponent.new(activity: activity) %>
+      <%= tag.div id: dom_id(activity, :requests) do %>
+        <%= render Aeon::ActivityRequestsComponent.new(activity: activity) %>
+      <% end %>
     <% else %>
       <%= tag.div id: dom_id(activity, :requests), class: 'placeholder-glow' do %>
         <% rand(1..3).times do %>

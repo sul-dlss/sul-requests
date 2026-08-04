@@ -159,6 +159,7 @@ RSpec.describe 'Requests', :js do
       StubAeonClient::Request.create(
         requestFor: { type: 'Activity', reference: 42 },
         itemTitle: 'An Activity Book',
+        callNumber: 'Box 1',
         username: aeon_user.username,
         webRequestForm: 'multiple',
         transactionStatus: 1
@@ -211,6 +212,39 @@ RSpec.describe 'Requests', :js do
 
         expect(page).to have_text('Another Activity Book')
         expect(page).to have_no_text('An Activity Book')
+      end
+    end
+
+    context 'when the group has multiple items (e.g. multiple containers from the same EAD)' do
+      let(:sibling_activity_request) do
+        StubAeonClient::Request.create(
+          requestFor: { type: 'Activity', reference: 42 },
+          itemTitle: 'An Activity Book',
+          callNumber: 'Box 2',
+          username: aeon_user.username,
+          webRequestForm: 'multiple',
+          transactionStatus: 1
+        )
+      end
+
+      before { sibling_activity_request }
+
+      it 'removes only the deleted row, updates the item count, and keeps the accordion open' do
+        visit aeon_activities_path
+
+        expect(page).to have_text('2 items')
+
+        click_button 'A Class Visit'
+
+        expect(page).to have_text('Box 1')
+        expect(page).to have_text('Box 2')
+
+        within('li', text: 'Box 2') { click_on 'Remove An Activity Book from activity' }
+        click_on 'Yes - Delete'
+
+        expect(page).to have_text('Box 1')
+        expect(page).to have_text('1 item')
+        expect(page).to have_no_text('Box 2')
       end
     end
 
