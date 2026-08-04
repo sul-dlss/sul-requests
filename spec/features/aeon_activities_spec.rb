@@ -93,6 +93,14 @@ RSpec.describe 'Activities', :js do
   end
 
   it 'displays all appointments' do
+    expect(page).to have_text('1 item', count: 2)
+    expect(page).to have_text('0 items', count: 1)
+
+    # expand all accordions
+    click_button 'Activity1'
+    click_button 'Activity3'
+    click_button 'Exhibit'
+
     expect(page).to have_css('h1', text: 'Activities')
     expect(page).to have_text 'Activity1 Feb 19, 2026 12:00 pm - 1:00 pm Special Collections', normalize_ws: true
     expect(page).to have_text 'Activity3 Apr 19, 2026 2:00 pm - 3:00 pm Special Collections', normalize_ws: true

@@ -1,4 +1,4 @@
-<%= render CardComponent.new(id: id, classes: %w[shadow-none border-0 rounded-1], header_classes: %w[border-bottom-0], margin_classes: nil) do |c| %>
+<%= render CardComponent.new(id: id, classes: %w[shadow-none border-0 rounded-1], margin_classes: nil, header_attributes: {classes: %w[border-bottom-0]}) do |c| %>
   <% c.with_title do %>
     <%= icon %>
   <% end %>
