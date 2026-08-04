@@ -331,11 +331,7 @@ class FolioGraphqlClient
                                           staffOnly
                                         }
                                         effectiveShelvingOrder
-                                        effectiveCallNumberComponents {
-                                          callNumber
-                                        }
-                                        enumeration
-                                        volume
+                                        #{call_number_fields}
                                         permanentLocation {
                                           #{location_fields}
                                         }
@@ -502,13 +498,23 @@ class FolioGraphqlClient
     data.dig('data', 'patron')
   end
 
+  def call_number_fields
+    <<-GQL
+      effectiveCallNumberComponents {
+        callNumber
+      }
+      chronology
+      enumeration
+      volume
+    GQL
+  end
+
   # rubocop:enable Metrics/MethodLength
   def item_fields
     <<-GQL
       id
       barcode
       discoverySuppress
-      volume
       queueTotalLength
       status {
         name
@@ -518,11 +524,7 @@ class FolioGraphqlClient
         id
         name
       }
-      chronology
-      enumeration
-      effectiveCallNumberComponents {
-        callNumber
-      }
+      #{call_number_fields}
       notes {
         note
         itemNoteType {
