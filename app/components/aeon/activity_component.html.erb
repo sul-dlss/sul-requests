@@ -13,7 +13,13 @@
         </div>
       </div>
       <div class="d-flex">
-        <%= render item_pill %>
+        <% if requests? %>
+          <%= render PillComponent.new(classes: %w[bg-stanford-20-black px-2 text-stanford-black]).with_content(pluralize(activity.requests.length, 'item')) %>
+        <% else %>
+          <span class="placeholder-glow" id="<%= dom_id(activity, :item_pill) %>">
+            <%= render PillComponent.new(classes: %w[placeholder px-2]).with_content('Loading') %>
+          </span>
+        <% end %>
         <i class="ms-3 bi bi-chevron-down accordion-header-icon"></i>
       </div>
     </button>
