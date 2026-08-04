@@ -1,7 +1,7 @@
 <%= flash_column_classes 'col-lg-9' %>
 <div class="row accordion" id="activity-accordions">
   <div class="col-lg-9">
-    <div class="d-sm-flex mb-2">
+    <div class="d-sm-flex mb-4">
     <h1 class="mt-2 me-3">Activities</h1>
     <ul class="nav nav-tabs">
       <li class="nav-item">
@@ -18,7 +18,7 @@
   <div class="tab-content">
     <div id="active-tab" class="tab-pane fade <%= 'show active' unless params[:past] %>">
       <% if @activities.present? %>
-        <div class="d-flex flex-wrap justify-content-end gap-2 my-2">
+        <div class="d-flex flex-wrap justify-content-end gap-2 mb-4">
           <%= render 'filters', activity_types: @activities.active.map(&:activity_type) %>
           <%= render 'sort' %>
         </div>
@@ -33,7 +33,7 @@
 
     <div id="past-tab" class="tab-pane fade <%= 'show active' if params[:past] %>">
       <% if @activities.present? %>
-        <div class="d-flex flex-wrap justify-content-end gap-2 my-2">
+        <div class="d-flex flex-wrap justify-content-end gap-2 mb-4">
           <%= render 'filters', activity_types: @activities.past.map(&:activity_type) %>
           <%= render 'sort' %>
         </div>
