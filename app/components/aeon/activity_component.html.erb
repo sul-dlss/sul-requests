@@ -1,6 +1,6 @@
 <%= render CardComponent.new(id: dom_id(activity), classes: 'accordion-item', header_attributes: {classes: %w[accordion-header p-0], id: dom_id(activity, :header)}) do |c| %>
   <% c.with_title do %>
-    <button class="accordion-button d-flex justify-content-between px-3 py-2 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#<%= dom_id(activity, :accordion) %>" aria-expanded="false" aria-controls="#<%= dom_id(activity, :accordion) %>">
+    <button class="accordion-button d-flex justify-content-between px-3 py-2 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#<%= dom_id(activity, :accordion) %>" aria-expanded="false" aria-controls="<%= dom_id(activity, :accordion) %>">
       <div class="d-flex flex-wrap gap-3 align-items-center">
         <%= render PillComponent.new(classes: %w[bg-bay-dark text-white]).with_content(activity.activity_type) %>
         <div class="d-flex flex-column">
