@@ -59,7 +59,7 @@ RSpec.describe 'Proxy User' do
       expect(page).to have_css('.checkouts-list li', count: 2)
 
       expect(page).to have_text('Music, sound, language, theater')
-      expect(page).to have_text('See this sound')
+      expect(page).to have_text('"See" this sound')
 
       expect(page).to have_no_text('Blue-collar Broadway')
     end
