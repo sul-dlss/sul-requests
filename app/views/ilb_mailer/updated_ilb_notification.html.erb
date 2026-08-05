@@ -2,7 +2,7 @@
 
 <div>Username: <%= @patron&.username %><%= @patron&.blocked? ? ' (Blocked)' : nil %></div>
 <div>Title: <%= link_to(@illiad_request.title, @illiad_request.item_link) %></div>
-<div>ILLiad request: <%= link_to @illiad_request.id, @illiad_request.manage_request_link %></div>
+<div>ILLiad request: <%= link_to @illiad_request.key, "https://sulils.stanford.edu/illiad.dll?Action=10&Form=72&Value=#{@illiad_request.key}" %></div>
 
 
 <% @form_fields.each do |key, value| %>
