@@ -48,7 +48,12 @@
 <% end %>
 
 <% @update_response.activities_to_update.each do |activity| %>
-  <%= turbo_stream.replace(dom_id(activity)) do %>
-    <%= render Aeon::ActivityComponent.new(activity: activity, requests: true) %>
+  <%= turbo_stream.replace(dom_id(activity, :requests)) do %>
+    <div id="<%= dom_id(activity, :requests) %>">
+      <%= render Aeon::ActivityRequestsComponent.new(activity: activity) %>
+    </div>
+  <% end %>
+  <%= turbo_stream.replace(dom_id(activity, :item_pill)) do %>
+    <%= render PillComponent.new(id: dom_id(activity, :item_pill), classes: %w[bg-stanford-20-black px-2 text-stanford-black]).with_content(pluralize(activity.requests.length, 'item')) %>
   <% end %>
 <% end %>
