@@ -4,7 +4,7 @@ module Folio
   # Determines the presentable library or location for a checkout or request record
   class RecordLocation
     # TODO: Add FOLIO ILL code once we know what it is
-    ILL_LOCATION_CODES = %w[SUL-BORROW-DIRECT].freeze
+    ILL_LOCATION_CODES = %w[SUL-BORROW-DIRECT SUL-ILLIAD].freeze
 
     def initialize(item)
       @item = item
