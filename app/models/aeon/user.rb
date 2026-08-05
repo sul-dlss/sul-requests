@@ -66,16 +66,14 @@ module Aeon
     end
 
     def appointments
-      @appointments ||= begin
-        appointments = self.class.aeon_client.appointments_for(username:)
+      appointments = self.class.aeon_client.appointments_for(username:)
 
-        # augment appointments with their requests
-        appointments.each do |appointment|
-          appointment.user = self
-        end
-
-        Aeon::AppointmentFinders.new(appointments.sort_by(&:sort_key).reject(&:cancelled?))
+      # augment appointments with their requests
+      appointments.each do |appointment|
+        appointment.user = self
       end
+
+      Aeon::AppointmentFinders.new(appointments.sort_by(&:sort_key).reject(&:cancelled?))
     end
 
     def persisted? = true
