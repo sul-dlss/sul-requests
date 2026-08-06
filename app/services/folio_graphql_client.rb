@@ -63,9 +63,7 @@ class FolioGraphqlClient
                 effectiveLocation {
                   code
                 }
-                effectiveCallNumberComponents {
-                  callNumber
-                }
+                #{call_number_fields}
                 instance {
                   title
                 }
@@ -441,9 +439,7 @@ class FolioGraphqlClient
                                           name
                                         }
                                         effectiveShelvingOrder
-                                        effectiveCallNumberComponents {
-                                          callNumber
-                                        }
+                                        #{call_number_fields}
                                         permanentLoanTypeId
                                         temporaryLoanTypeId
                                         materialTypeId
