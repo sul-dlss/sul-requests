@@ -22,8 +22,9 @@ module Folio
     # Statuses that indicate that the patron actually didn't pay anything
     UNPAID_STATUSES = ['Waived fully', 'Cancelled as error'].freeze
 
-    def initialize(record)
+    def initialize(record, patron: nil)
       @record = record
+      @patron = patron
     end
 
     def key
