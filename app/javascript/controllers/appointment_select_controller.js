@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Dropdown } from "bootstrap";
 
 export default class extends Controller {
-  static targets = ["button", "input", "option"]
+  static targets = ["button", "input", "option", "availableOptions"]
 
   connect() {
     this.updateSelected();
@@ -25,14 +25,14 @@ export default class extends Controller {
       const inputs = this.element.closest('#reading').querySelectorAll("input[data-appointment-select-target='input']")
       const formCount = Array.from(inputs).filter(input => input.value == option.dataset.appointmentId).length;
       const newCount = baseCount + formCount;
+      option.querySelector('.item-count').innerHTML = newCount + " item" + ((newCount) !== 1 ? "s" : "");
 
-      option.innerHTML = newCount + " item" + ((newCount) !== 1 ? "s" : "");
-
-      if (limit && newCount >= limit) {
-        if (option.closest('.dropdown-menu')) option.closest('button').disabled = true;
+      const appointmentFull = limit && newCount >= limit
+      option.querySelector('.appointment-full').hidden = !appointmentFull
+      if (option.closest('.dropdown-menu')) option.closest('button').disabled = appointmentFull;
+      if (appointmentFull) {
         option.classList.add(option.dataset.limitClass);
       } else {
-        if (option.closest('.dropdown-menu')) option.closest('button').disabled = false;
         option.classList.remove(option.dataset.limitClass);
       }
     });
@@ -67,7 +67,7 @@ export default class extends Controller {
       this.selectItem(option);
     }
 
-    const menu = this.element.querySelector('menu');
+    const menu = this.availableOptionsTarget;
 
     Array.from(menu.children).sort((a, b) => {
       const aKey = a.dataset.sortKey || "";

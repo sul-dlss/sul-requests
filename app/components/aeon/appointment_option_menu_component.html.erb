@@ -1,0 +1,14 @@
+<%= tag.menu(class: menu_classes) do %>
+  <ul class="available-options list-unstyled mb-0" data-appointment-select-target="availableOptions">
+    <li></li>
+    <%= render Aeon::AppointmentOptionComponent.with_collection(selectable_appointments, name: , data_action:) %>
+  </ul>
+  <% if non_selectable_appointments.present? %>
+    <ul class="unavailable-options list-unstyled mb-0">
+      <li class="small p-0 ps-4 pe-2 text-wrap">
+          Unavailable - must be scheduled at least <%= lead_time %> days in advance
+      </li>
+      <%= render Aeon::AppointmentOptionComponent.with_collection(non_selectable_appointments, name: , data_action:) %>
+    </ul>
+  <% end %>
+<% end %>

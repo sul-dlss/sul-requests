@@ -1,6 +1,6 @@
 <%= turbo_stream.action('close', params[:modal]) if params[:modal] %>
 
-<%= turbo_stream.after_all '.appt-dropdown li:last-child' do %>
+<%= turbo_stream.after_all '.appt-dropdown .available-options li:last-child' do %>
   <%= render Aeon::AppointmentOptionComponent.new(appointment: @appointment, data: { 'appointment-select-target': 'option' }, data_action: 'appointment-select#select') %>
 <% end %>
 
