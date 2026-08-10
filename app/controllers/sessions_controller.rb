@@ -3,6 +3,7 @@
 # :nodoc:
 class SessionsController < ApplicationController
   before_action :logout_user, only: [:login_by_university_id, :login_by_sunetid, :register_visitor]
+  before_action :verify_recaptcha_challenge, only: :register_visitor
 
   # Handle login for University ID + PIN users by authenticating them with the
   # ILS using the Warden configuration.
@@ -32,25 +33,14 @@ class SessionsController < ApplicationController
   # Handle visitor name and email registration
   #
   # GET /sessions/register_visitor
-  def register_visitor # rubocop:disable Metrics/AbcSize
+  def register_visitor
     if Settings.features.authenticate_name_email_users && params[:code].blank?
-      verify_recaptcha!
-      SendOtpJob.perform_later(params[:patron_email])
-
-      render 'sessions/register_visitor'
+      send_otp_challenge
     elsif request.env['warden'].authenticate(:register_visitor)
-      verify_recaptcha! unless Settings.features.authenticate_name_email_users
-
       redirect_after_action
     else
       redirect_to post_action_redirect_url, flash: { error: t('.alert') }
     end
-  end
-
-  def verify_recaptcha!
-    return if !Rails.env.production? || verify_recaptcha
-
-    redirect_to post_action_redirect_url, flash: { error: t('.recaptcha_alert') }
   end
 
   # Handle user logout by destroying their current application session and
@@ -73,6 +63,30 @@ class SessionsController < ApplicationController
   end
 
   private
+
+  def send_otp_challenge
+    unless params[:patron_email].to_s.match?(URI::MailTo::EMAIL_REGEXP)
+      return redirect_to post_action_redirect_url, flash: { error: t('.alert') }
+    end
+
+    SendOtpJob.perform_later(params[:patron_email])
+
+    render 'sessions/register_visitor'
+  end
+
+  def verify_recaptcha_challenge
+    return unless recaptcha_required?
+    return if verify_recaptcha
+
+    redirect_to post_action_redirect_url, flash: { error: t('.recaptcha_alert') }
+  end
+
+  def recaptcha_required?
+    return false unless Rails.env.production?
+    return true unless Settings.features.authenticate_name_email_users
+
+    params[:code].blank?
+  end
 
   def needs_shibboleth_logout?
     return false if Rails.env.development?
