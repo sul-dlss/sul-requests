@@ -97,7 +97,7 @@ GEM
     bot_challenge_page (1.2.0)
       http (>= 5.2, < 7)
       rails (>= 7.1, < 8.2)
-    brakeman (8.0.5)
+    brakeman (8.0.6)
       racc
     builder (3.3.0)
     bundler-audit (0.9.3)
@@ -461,10 +461,10 @@ GEM
       rack (>= 3.2.0)
       redis-client (>= 0.29.0)
     simplecov (1.0.3)
-    sqlite3 (2.9.5)
+    sqlite3 (2.9.6)
       mini_portile2 (~> 2.8.0)
-    sqlite3 (2.9.5-x86_64-darwin)
-    sqlite3 (2.9.5-x86_64-linux-gnu)
+    sqlite3 (2.9.6-x86_64-darwin)
+    sqlite3 (2.9.6-x86_64-linux-gnu)
     sshkit (1.25.1)
       base64
       logger
