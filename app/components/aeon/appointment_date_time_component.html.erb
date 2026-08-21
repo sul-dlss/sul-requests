@@ -1,5 +1,5 @@
 <% if appointment.start_time %>
-  <span><i class="bi bi-calendar <%= icon_class %>"></i><%= l(appointment.start_time, format: :date_only) %></span>
+  <span><i class="bi bi-calendar <%= icon_class %>"></i><%= date_label %></span>
   <% if time_range_label %>
     <span><i class="bi bi-clock <%= icon_class %>"></i><%= time_range_label %></span>
   <% end %>

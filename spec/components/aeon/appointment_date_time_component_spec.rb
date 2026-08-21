@@ -25,6 +25,18 @@ RSpec.describe Aeon::AppointmentDateTimeComponent, type: :component do
     end
   end
 
+  context 'with an Aeon::Activity that spans more than one day' do
+    let(:appointment) { build(:aeon_activity, stop_time: Time.zone.local(2026, 2, 25, 13, 0, 0)) }
+
+    it 'renders the date range' do
+      expect(page).to have_text('Feb 19, 2026 - Feb 25, 2026')
+    end
+
+    it 'omits the clock range' do
+      expect(page).to have_no_css('i.bi-clock')
+    end
+  end
+
   context 'with an Aeon::Activity missing stop_time' do
     let(:appointment) { build(:aeon_activity, stop_time: nil) }
 
