@@ -18,19 +18,23 @@ RSpec.describe 'aeon_appointments/index.html.erb' do
   context 'with multiple appointments on the same day' do
     let(:appointments) do
       [
-        build(:aeon_appointment, start_time: Time.zone.parse('2024-03-11T21:00:00Z')),
-        build(:aeon_appointment, start_time: Time.zone.parse('2024-03-11T22:00:00Z')),
-        build(:aeon_appointment, start_time: Time.zone.parse('2024-03-12T21:00:00Z'), reading_room: build(:aeon_reading_room)),
+        build(:aeon_appointment, start_time: Time.zone.parse('2024-03-11T21:00:00Z'),
+                                 stop_time: Time.zone.parse('2024-03-11T22:00:00Z')),
+        build(:aeon_appointment, start_time: Time.zone.parse('2024-03-11T22:00:00Z'),
+                                 stop_time: Time.zone.parse('2024-03-11T23:00:00Z')),
         build(:aeon_appointment, start_time: Time.zone.parse('2024-03-12T21:00:00Z'),
+                                 stop_time: Time.zone.parse('2024-03-12T22:00:00Z'), reading_room: build(:aeon_reading_room)),
+        build(:aeon_appointment, start_time: Time.zone.parse('2024-03-12T21:00:00Z'),
+                                 stop_time: Time.zone.parse('2024-03-12T22:00:00Z'),
                                  reading_room: build(:aeon_reading_room, id: 6, name: 'Other Reading Room', sites: ['Other']))
       ]
     end
 
     it 'displays appointments in a list' do
-      expect(rendered).to have_css('h2', text: /Mar 11, 2024.*Field Reading Room/m)
-      expect(rendered).to have_css('h2', text: /Mar 11, 2024.*Field Reading Room/m)
-      expect(rendered).to have_css('h2', text: /Mar 12, 2024.*Field Reading Room/m)
-      expect(rendered).to have_css('h2', text: /Mar 12, 2024.*2:00 pm - 1:15 pm.*Other Reading Room/m)
+      expect(rendered).to have_css('h2', text: /Mar 11, 2024.*2:00 pm - 3:00 pm.*Field Reading Room/m)
+      expect(rendered).to have_css('h2', text: /Mar 11, 2024.*3:00 pm - 4:00 pm.*Field Reading Room/m)
+      expect(rendered).to have_css('h2', text: /Mar 12, 2024.*2:00 pm - 3:00 pm.*Field Reading Room/m)
+      expect(rendered).to have_css('h2', text: /Mar 12, 2024.*2:00 pm - 3:00 pm.*Other Reading Room/m)
     end
   end
 end
