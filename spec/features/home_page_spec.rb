@@ -107,5 +107,74 @@ RSpec.describe 'Home Page' do
         expect(page).to have_css('.card', text: 'Activities')
       end
     end
+
+    context 'with an activity that has not started yet' do
+      let(:patron) { Folio::NullPatron.new }
+
+      before do
+        activity = build(:aeon_activity, start_time: 2.days.from_now, stop_time: 4.days.from_now)
+        allow(aeon_user).to receive(:activities).and_return(Aeon::ActivityFinders.new([activity]))
+      end
+
+      it 'shows the start date as the next one up' do
+        visit root_path
+
+        expect(page).to have_css('.card', text: '1 upcoming activity')
+        expect(page).to have_css('.card', text: "Next up: #{2.days.from_now.strftime('%b %-d, %Y')}")
+      end
+    end
+
+    context 'with an activity already in progress' do
+      let(:patron) { Folio::NullPatron.new }
+
+      before do
+        activity = build(:aeon_activity, start_time: 1.day.ago, stop_time: 3.days.from_now)
+        allow(aeon_user).to receive(:activities).and_return(Aeon::ActivityFinders.new([activity]))
+      end
+
+      it 'counts the activity as in progress' do
+        visit root_path
+
+        expect(page).to have_css('.card', text: '1 in progress')
+      end
+
+      it 'shows no next up date, because nothing is waiting to start' do
+        visit root_path
+
+        within('#aeon-activities') { expect(page).to have_no_text('Next up') }
+      end
+
+      it 'links to the current activities, not the past ones' do
+        visit root_path
+
+        within('#aeon-activities') do
+          expect(page).to have_link('View details', href: aeon_activities_path)
+        end
+      end
+    end
+
+    context 'with one activity in progress and another still to start' do
+      let(:patron) { Folio::NullPatron.new }
+
+      before do
+        activities = [
+          build(:aeon_activity, id: 1, start_time: 1.day.ago, stop_time: 3.days.from_now),
+          build(:aeon_activity, id: 2, start_time: 2.days.from_now, stop_time: 4.days.from_now)
+        ]
+        allow(aeon_user).to receive(:activities).and_return(Aeon::ActivityFinders.new(activities))
+      end
+
+      it 'counts each kind separately' do
+        visit root_path
+
+        expect(page).to have_css('.card', text: '1 in progress, 1 upcoming')
+      end
+
+      it 'shows the start date of the one still to start' do
+        visit root_path
+
+        expect(page).to have_css('.card', text: "Next up: #{2.days.from_now.strftime('%b %-d, %Y')}")
+      end
+    end
   end
 end

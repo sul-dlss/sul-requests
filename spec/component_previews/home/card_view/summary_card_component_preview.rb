@@ -107,31 +107,29 @@ module Home
         )
       end
 
+      # No activity is upcoming, so the card sends the user to the past ones.
       def activities_empty
-        render Home::SummaryCardComponent.new(
-          title: 'Activities',
-          icon: 'bi-person-video3',
-          count: 0,
-          item_label: 'upcoming activity',
-          empty_label: 'No upcoming activities',
-          path: '#',
-          empty_path: '#',
-          empty_link_label: 'View past activities'
-        )
+        render activities_card(in_progress: 0, upcoming: 0, link_label: 'View past activities')
       end
 
+      # One activity, still to start. The card reports the date it starts.
       def activities_with_next_up
-        render Home::SummaryCardComponent.new(
-          title: 'Activities',
-          icon: 'bi-person-video3',
-          count: 4,
-          item_label: 'upcoming activity',
-          empty_label: 'No upcoming activities',
-          path: '#',
-          empty_path: '#',
-          empty_link_label: 'View past activities',
-          next_up_date: Date.new(2026, 6, 18)
-        )
+        render activities_card(in_progress: 0, upcoming: 1) do |c|
+          c.with_status_next_up(date: Date.new(2026, 6, 18))
+        end
+      end
+
+      # One activity, already started. Nothing is waiting to start, so no date shows.
+      def activities_in_progress
+        render activities_card(in_progress: 1, upcoming: 0)
+      end
+
+      # One activity in progress and one still to start. The body counts both kinds.
+      # The date belongs to the one still to start.
+      def activities_in_progress_with_another_upcoming
+        render activities_card(in_progress: 1, upcoming: 1) do |c|
+          c.with_status_next_up(date: Date.new(2026, 6, 18))
+        end
       end
 
       def appointments_empty
@@ -161,6 +159,19 @@ module Home
           secondary_label: 'item',
           secondary_label_suffix: 'scheduled',
           next_up_date: Date.new(2026, 6, 18)
+        )
+      end
+
+      private
+
+      def activities_card(in_progress:, upcoming:, link_label: nil)
+        Home::SummaryCardComponent.new(
+          id: 'aeon-activities',
+          title: 'Activities',
+          icon_class: 'bi-person-video3',
+          label: ApplicationController.helpers.activities_card_label(in_progress:, upcoming:),
+          path: '#',
+          link_label:
         )
       end
     end

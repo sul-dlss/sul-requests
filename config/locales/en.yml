@@ -331,3 +331,5 @@ en:
         zero: 'No upcoming activities'
         one: '<span class="fw-semibold fs-5">1</span> upcoming activity'
         other: '<span class="fw-semibold fs-5">%{count}</span> upcoming activities'
+      in_progress_label_html: '<span class="fw-semibold fs-5">%{count}</span> in progress'
+      in_progress_with_upcoming_label_html: '<span class="fw-semibold fs-5">%{in_progress}</span> in progress, <span class="fw-semibold fs-5">%{upcoming}</span> upcoming'

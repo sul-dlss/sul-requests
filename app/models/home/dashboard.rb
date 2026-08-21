@@ -88,9 +88,22 @@ module Home
       aeon.activities.any?
     end
 
+    def activities_in_progress_count
+      @activities_in_progress_count ||= upcoming_activities&.count(&:in_progress?) || 0
+    end
+
+    def activities_upcoming_count
+      @activities_upcoming_count ||= (upcoming_activities&.count || 0) - activities_in_progress_count
+    end
+
+    # The next activity to start. An activity already in progress is reported by
+    # the card body instead, because its start date has passed.
+    def next_activity
+      @next_activity ||= upcoming_activities&.reject(&:in_progress?)&.first
+    end
+
     def next_activity_date
-      first_activity = upcoming_activities&.first
-      @next_activity_date ||= first_activity&.start_time&.to_date
+      next_activity&.start_time&.to_date
     end
 
     def upcoming_activities

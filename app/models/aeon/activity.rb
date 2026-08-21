@@ -45,6 +45,12 @@ module Aeon
       status == 'Completed'
     end
 
+    def in_progress?
+      return false unless start_time && stop_time
+
+      (start_time..stop_time).cover?(Time.zone.now)
+    end
+
     def requests=(requests)
       @requests = requests.submitted.sort_by(&:default_sort_key)
       @grouped_requests = nil
