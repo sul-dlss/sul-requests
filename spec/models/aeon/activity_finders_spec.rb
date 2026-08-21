@@ -68,6 +68,20 @@ RSpec.describe Aeon::ActivityFinders do
     let(:tomorrow) { build(:aeon_activity, id: 12, start_time: now + 1.day) }
     let(:far_future) { build(:aeon_activity, id: 13, start_time: now + 30.days) }
     let(:no_start) { build(:aeon_activity, id: 14, start_time: nil) }
+    let(:in_progress) { build(:aeon_activity, id: 15, start_time: now - 1.day, stop_time: now + 1.day) }
+    let(:ended) { build(:aeon_activity, id: 16, start_time: now - 3.days, stop_time: now - 1.day) }
+
+    it 'includes an activity that has started but not ended, before the ones still to start' do
+      finders = described_class.new([tomorrow, in_progress, soon])
+
+      expect(finders.upcoming(within: 7.days, fallback: 1).map(&:id)).to eq [15, 11, 12]
+    end
+
+    it 'excludes an activity whose stop_time has passed' do
+      finders = described_class.new([ended, soon])
+
+      expect(finders.upcoming(within: 7.days, fallback: 1).map(&:id)).to eq [11]
+    end
 
     it 'returns future activities within the window sorted by start_time' do
       finders = described_class.new([tomorrow, past, soon, far_future, no_start])
