@@ -95,6 +95,8 @@ class CheckoutsController < ApplicationController
   # Make sure the checkout belongs to the user trying to do the renewal
   # and make sure the item is renewable
   def authorize_renew!
+    authorize! :renew, @checkout
+
     raise CheckoutException, 'Error' if @checkout.item_category_non_renewable?
   end
 end

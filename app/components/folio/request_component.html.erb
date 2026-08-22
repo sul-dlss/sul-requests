@@ -23,14 +23,12 @@
   <% end %>
 
   <% c.with_actions do %>
-    <% if patron.can_modify_requests? %>
-      <% unless request.ready_for_pickup? %>
-        <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open', modal_header: 'Edit request' } do %>
-          <i class="bi bi-pencil-fill me-1 align-middle" aria-hidden></i><span class="visually-hidden">Edit request</span>
-        <% end %>
+    <% if helpers.can? :update, request %>
+      <%= link_to edit_folio_request_path(request.key), class: 'btn btn-link btn-sm su-underline p-0 me-sm-2', data: { action: 'modal#open', modal_header: 'Edit request' } do %>
+        <i class="bi bi-pencil-fill me-1 align-middle" aria-hidden></i><span class="visually-hidden">Edit request</span>
       <% end %>
-      <%= render Folio::RequestDeleteButtonComponent.new(request:) %>
     <% end %>
+    <%= render Folio::RequestDeleteButtonComponent.new(request:) %>
   <% end %>
 
   <% c.with_metadata(date: request.placed_date) %>

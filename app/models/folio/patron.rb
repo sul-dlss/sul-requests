@@ -217,7 +217,7 @@ module Folio
     ##
     # FOLIO data accessors
     def all_accounts
-      @all_accounts ||= patron_graphql_response['accounts'].map { |account| Account.new(account) }
+      @all_accounts ||= patron_graphql_response['accounts'].map { |account| Account.new(account, patron: self) }
     end
 
     def fines
@@ -229,12 +229,12 @@ module Folio
     end
 
     def checkouts
-      @checkouts ||= patron_graphql_response['loans']&.map { |checkout| Checkout.new(checkout, patron_group_id) } || []
+      @checkouts ||= patron_graphql_response['loans']&.map { |checkout| Checkout.new(checkout, patron_group_id, patron: self) } || []
     end
 
     # this is all requests including self and group/proxy
     def folio_requests
-      patron_graphql_response['holds'].map { |request| Request.new(request) }
+      patron_graphql_response['holds'].map { |request| Request.new(request, patron: self) }
     end
 
     # Self requests from FOLIO

@@ -20,5 +20,9 @@ module Folio
     def button_label
       "Delete #{request.title} request"
     end
+
+    def render?
+      helpers.can?(:destroy, request)
+    end
   end
 end

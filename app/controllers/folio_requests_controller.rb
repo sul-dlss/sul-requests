@@ -37,6 +37,8 @@ class FolioRequestsController < ApplicationController
   # PATCH /requests/:id
   # PUT /requests/:id
   def update # rubocop:disable Metrics/AbcSize
+    authorize! :update, @request
+
     handle_change_pickup_service_point if params['service_point'].present?
     handle_change_pickup_expiration if params['not_needed_after'].present? &&
                                        params['not_needed_after'] != params['current_fill_by_date']
@@ -51,6 +53,8 @@ class FolioRequestsController < ApplicationController
   #
   # DELETE /requests/:id
   def destroy
+    authorize! :destroy, @request
+
     @response = FolioClient.new.cancel_request(@request.key, patron_or_group.key)
 
     respond_to do |format|
