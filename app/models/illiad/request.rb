@@ -166,10 +166,6 @@ module Illiad
       'requests/request'
     end
 
-    def manage_request_link
-      "https://sulils.stanford.edu/illiad.dll?Action=10&Form=72&Value=#{key}"
-    end
-
     private
 
     def library_code
