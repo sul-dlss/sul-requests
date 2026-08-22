@@ -1,8 +1,10 @@
 <% 
     appointments = [
-      FactoryBot.build(:aeon_appointment, id: 1, start_time: Time.zone.now + 8.days, requests: 5.times.map { FactoryBot.build(:aeon_request) }),
-      FactoryBot.build(:aeon_appointment, id: 2, start_time: Time.zone.now + 12.days, requests: [FactoryBot.build(:aeon_request)]),
-      FactoryBot.build(:aeon_appointment, id: 3, start_time: Time.zone.now + 32.days)
+      FactoryBot.build(:aeon_appointment, id: 1, start_time: 8.days.from_now, requests: 5.times.map { FactoryBot.build(:aeon_request) }),
+      FactoryBot.build(:aeon_appointment, id: 4, start_time: 11.days.from_now, requests: 10.times.map {FactoryBot.build(:aeon_request, call_number: 'XYZ 123')}),
+      FactoryBot.build(:aeon_appointment, id: 2, start_time: 12.days.from_now, requests: [FactoryBot.build(:aeon_request)]),
+      FactoryBot.build(:aeon_appointment, id: 3, start_time: 32.days.from_now),
+      FactoryBot.build(:aeon_appointment, start_time: 1.days.from_now)
     ]
 
 %>

@@ -25,13 +25,13 @@ class AeonAppointmentsController < ApplicationController
     authorize! :update, @appointment
   end
 
-  def create # rubocop:disable Metrics/AbcSize
+  def create
     authorize! :create, @appointment
 
     render :new, status: :unprocessable_content and return unless @appointment.save
 
     @other_reading_room_appointments = (@appointments + [@appointment]).select do |appt|
-      appt.reading_room.id == @appointment.reading_room.id && can?(:update, appt)
+      appt.reading_room.id == @appointment.reading_room.id
     end.sort_by(&:sort_key)
 
     respond_to do |format|

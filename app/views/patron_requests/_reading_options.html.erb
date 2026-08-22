@@ -1,16 +1,19 @@
 <fieldset class="row p-3 pt-0 gap-4 flex-column flex-md-row selected-items-container" data-patron-request-target="typePanel" data-request-type="pickup" disabled>
   <legend class="visually-hidden">Reading room appointment details</legend>
-  <% appointments = current_user.aeon.appointments.for_site(f.object.aeon_site).select(&:editable?) %>
+  <% appointments = current_user.aeon.appointments.for_site(f.object.aeon_site) %>
+  <% selectable_appointments = appointments.select(&:editable?) %>
   <div id="new-appt-alert">
     <div class="alert alert-warning alert-dismissible shadow-sm d-flex align-items-center">
       <div role="img" aria-label="Warning icon" class="text-warning bi bi-exclamation-triangle-fill fs-3 me-3"></div>
       <ul class="text-body mb-0">
         <% if appointments.blank? %>
           <li>You don’t have any appointments yet. Create one to continue.</li>
-        <% elsif appointments.one? %>
+        <% elsif selectable_appointments.blank? %>
+          <li>You don’t have any schedulable appointments. Create one to continue.</li>
+        <% elsif selectable_appointments.one? %>
           <li>Select your eligible appointment - or - create a new one.</li>
         <% else %>
-          <li>Select from your <%= appointments.count %> eligible appointments - or - create a new one.</li>
+          <li>Select from your <%= selectable_appointments.count %> eligible appointments - or - create a new one.</li>
         <% end %>
 
         <% if (f.object.aeon_reading_room.appointment_min_lead_days || 0) > 0 %>

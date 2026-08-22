@@ -23,10 +23,7 @@
       <div class="dropdown custom-select flex-grow-1 flex-md-grow-0" data-controller="appointment-select" data-action="change->appointment-select#updateSelected input->appointment-select#updateSelected appointment-select:change@document->appointment-select#updateItemCounts">
         <%= button_tag 'Select appointment', class: 'py-1 btn border dropdown-toggle text-start d-flex align-items-center justify-content-between', type: 'button', data: { bs_toggle: 'dropdown', appointment_select_target: 'button' }, aria: { expanded: false }, disabled: selectable_appointments.blank? %>
         <%= f.text_field :appointment_id, class: 'visually-hidden-focusable required-placeholder', data: { 'appointment-select-target': 'input' }, required: true %>
-        <menu class="dropdown-menu appt-dropdown w-100">
-          <li></li>
-          <%= render Aeon::AppointmentOptionComponent.with_collection(selectable_appointments, data_action: 'appointment-select#select') %>
-        </menu>
+        <%= render Aeon::AppointmentOptionMenuComponent.new(appointments:, data_action: 'appointment-select#select', menu_classes: %w[appt-dropdown w-100]) %>
       </div>
 
       <span class="create-appointment-section">
