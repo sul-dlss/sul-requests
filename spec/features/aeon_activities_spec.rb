@@ -89,6 +89,7 @@ RSpec.describe 'Activities', :js do
     requests
 
     login_as(current_user)
+
     visit aeon_activities_path
   end
 

@@ -5,8 +5,10 @@ require 'rails_helper'
 RSpec.describe PagingScheduleController do
   describe 'index' do
     describe 'by anonmyous users' do
+      render_views
       it 'is forbidden' do
         get :index
+        expect(response.body).to have_css('h1', text: 'Login')
         expect(response).to have_http_status(:forbidden)
       end
     end
