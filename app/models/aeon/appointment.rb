@@ -83,7 +83,7 @@ module Aeon
     def editable?
       return true unless start_time
 
-      start_time.after?(edit_policy.days.from_now)
+      start_time.after?(edit_policy.days.from_now.beginning_of_day)
     end
 
     def item_limit
