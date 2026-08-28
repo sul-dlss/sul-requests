@@ -7,7 +7,7 @@ module Folio
     include ActiveModel::Model
     include RequestSorting
 
-    attr_reader :record
+    attr_reader :record, :patron
 
     alias date publication_date
     alias base_callnumber call_number
@@ -15,8 +15,9 @@ module Folio
     # A sufficiently large time used to sort nil values last
     END_OF_DAYS = 100.years.from_now.end_of_day # rubocop:disable Rails/RelativeDateConstant
 
-    def initialize(record)
+    def initialize(record, patron: nil)
       @record = record
+      @patron = patron
     end
 
     def key

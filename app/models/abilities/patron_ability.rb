@@ -39,6 +39,18 @@ class PatronAbility
       Settings.illiad.noncancellable_statuses.exclude?(request.status)
     end
 
+    can :update, Folio::Request do |request|
+      !request.ready_for_pickup? && request.patron&.can_modify_requests?
+    end
+
+    can :destroy, Folio::Request do |request|
+      request.patron&.can_modify_requests?
+    end
+
+    can :renew, Folio::Checkout do |checkout|
+      checkout.patron.can_renew? && checkout.renewable?
+    end
+
     can :create, PatronRequest do |request|
       request.selected_items.all? { |item| request.scan? ? can?(:scan, item) : can?(:request, item) }
     end
