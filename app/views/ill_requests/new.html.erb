@@ -169,7 +169,7 @@
           <div class="col pe-0">
             <%= render 'scan_form', f: %>
 
-            <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal" data-ill-request-for-request-subtype="journal">
+            <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal" data-ill-request-target="section" data-ill-request-for-request-subtype="article">
               <%= f.label :cited_in, 'Link to article, DOI, or citation', class: 'form-label fw-semibold redesign-required-label' %>
               <%= f.text_area :cited_in, maxlength: 255, required: true, class: 'form-control', data: { action: "input->char-counter#updateCharCounter" } %>
               <div class="d-flex gap-4 align-items-baseline">
