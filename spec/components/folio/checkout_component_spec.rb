@@ -35,6 +35,25 @@ RSpec.describe Folio::CheckoutComponent, type: :component do
     end
   end
 
+  context 'when the checkout is not renewable' do
+    let(:loan_policy) { build(:reserves_loan_policy) }
+
+    it 'does not show a renew button' do
+      expect(page).to have_no_button('Renew', disabled: :all)
+    end
+  end
+
+  context 'when it is too soon to renew the checkout' do
+    let(:loan_policy) do
+      policy = build(:grad_mono_loans).loan_policy.deep_merge('loansPolicy' => { 'fixedDueDateSchedule' => nil })
+      Folio::LoanPolicy.new(loan_policy: policy)
+    end
+
+    it 'shows the reason next to the due date' do
+      expect(page).to have_css('.card-header .text-digital-red-dark', text: 'Too soon to renew')
+    end
+  end
+
   context 'when a checkout is overdue' do
     let(:checkout) { build(:overdue_checkout, loan_policy:) }
     let(:overdue_fines_policy_id) { '12d0d55b-bcb9-473e-9bd7-1a54d52c007f' }
