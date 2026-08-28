@@ -22,6 +22,15 @@ module Folio
     # Statuses that indicate that the patron actually didn't pay anything
     UNPAID_STATUSES = ['Waived fully', 'Cancelled as error'].freeze
 
+    # FOLIO fee/fine types whose patron-facing labels differ from their staff-facing names.
+    FEE_FINE_LABELS = {
+      'Manual Replacement Fee' => 'Replacement processing',
+      'Recall manual fine' => 'Item overdue (recalled)',
+      'Reserve manual fine' => 'Item overdue (reserve)',
+      'Lost item fee' => 'Lost item',
+      'Short term fine' => 'Item overdue'
+    }.freeze
+
     def initialize(record)
       @record = record
     end
@@ -57,9 +66,7 @@ module Folio
 
     def sort_date = bill_date
 
-    def status_label
-      fine_type&.ends_with?('fee') ? fine_type : "#{fine_type} fee"
-    end
+    def status_label = FEE_FINE_LABELS.fetch(fine_type, fine_type)
 
     # dateUpdated on the account is often null, so we use the last action date if closed
     def payment_date
