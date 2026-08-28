@@ -85,7 +85,7 @@
 
         <% component.with_nav_item do %>
           <%= link_to 'Fees/fines', fines_path, class: 'nav-link fw-semibold' %>
-        <% end if current_user.patron.present? %>
+        <% end if current_user.patron.present? && !acting_as_proxy? %>
 
         <%= render AdminNavDropdownComponent.new(masthead_component: component) %>
       <% end %>

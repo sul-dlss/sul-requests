@@ -13,7 +13,7 @@
         title: 'Fees and fines',
         icon_class: 'bi-cash-coin',
         label: t('dashboard.fines_and_fees.label_placeholder_html'),
-        path: fines_path) if dashboard.folio? %>
+        path: fines_path) if dashboard.folio? && !acting_as_proxy? %>
 
   <%= render Home::SummaryCardComponent.new(
         id: 'folio-pickup-requests',

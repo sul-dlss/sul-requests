@@ -121,6 +121,7 @@ RSpec.describe 'Proxy User' do
       click_on 'Proxy for: Shea Sponsor'
 
       expect(page).to have_css('.card', text: '2 due soon')
+      expect(page).to have_no_css('.card', text: 'Fees and fines')
     end
   end
 end
