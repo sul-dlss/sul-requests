@@ -28,8 +28,6 @@
           <i class="bi bi-arrow-repeat me-1"></i>Renew
         <% end %>
       <% end %>
-    <% elsif !renewable? %>
-        <button disabled class="btn btn-outline-primary btn-disabled btn-xs"><i class="bi bi-arrow-repeat me-1"></i><%= non_renewable_reason %></button>
     <% end %>
   <% end %>
   <% c.with_footer do %>

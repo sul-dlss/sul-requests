@@ -17,12 +17,6 @@ module Folio
       super()
     end
 
-    def non_renewable_reason
-      return 'Too soon to renew' if too_soon_to_renew? && header_message.blank?
-
-      'Renew'
-    end
-
     def header_message # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       @header_message ||= 'This item was requested by another user. Please return as soon as possible.' if recalled? || renewal_blocked_by_hold? # rubocop:disable Layout/LineLength
       @header_message ||= accruing_message if checkout.accruing?
@@ -32,6 +26,7 @@ module Folio
       @header_message ||= 'Renewals are not allowed.' if checkout.item_category_non_renewable?
       @header_message ||= 'Online renewals are not allowed. Renew in person.' unless checkout.unseen_renewals_allowed?
       @header_message ||= 'No online renewals remain. Renew in person.' if unseen_renewals_remaining.zero?
+      @header_message ||= 'Too soon to renew' if too_soon_to_renew?
 
       @header_message
     end
