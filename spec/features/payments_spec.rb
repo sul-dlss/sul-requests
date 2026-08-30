@@ -31,7 +31,7 @@ RSpec.describe 'Payments History' do
         expect(page).to have_css('li h2',
                                  text: 'Aspects of twentieth century art : Picasso - Important paintings, ' \
                                        'watercolours, and new linocuts.')
-        expect(page).to have_css('li .status', text: 'Lost item fee')
+        expect(page).to have_css('li .status', text: 'Lost item')
         expect(page).to have_css('li .fine-status', text: 'PAID')
       end
     end

@@ -67,6 +67,18 @@ RSpec.describe Folio::Account do
     end
   end
 
+  describe '#status_label' do
+    it 'maps a FOLIO fee/fine type to its patron-facing label' do
+      expect(account.status_label).to eq 'Replacement processing'
+    end
+
+    it 'uses an unmapped FOLIO fee/fine type as-is' do
+      fine['feeFine']['feeFineType'] = 'A local fee type'
+
+      expect(account.status_label).to eq 'A local fee type'
+    end
+  end
+
   describe '#author' do
     subject(:author) { account.author }
 
