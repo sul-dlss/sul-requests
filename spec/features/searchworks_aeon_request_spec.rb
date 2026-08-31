@@ -48,7 +48,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       expect(page).to have_no_text 'Select item'
 
       choose 'Digitization'
-      check 'I agree to these terms'
 
       click_button 'Continue'
 
@@ -79,7 +78,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
     it 'allows the user to submit a reading room request' do # rubocop:disable RSpec/ExampleLength
       # Start down the digitization path and fill in a note we later abandon.
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
       fill_in 'Requested pages', with: 'Pages 1-10'
       choose 'Yes'
@@ -149,7 +147,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
     it 'has working save for later undo and delete buttons' do
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       check 'ABC 321'
@@ -171,7 +168,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
     it 'allows the user to submit a digitization request' do # rubocop:disable RSpec/ExampleLength
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       # Proceed with 1 selected item
@@ -219,7 +215,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
     it 'allows the user to save items for later' do # rubocop:disable RSpec/ExampleLength
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       check 'ABC 123'

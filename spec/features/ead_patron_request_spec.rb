@@ -207,7 +207,6 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       within('#request-type-accordion') { click_button 'Edit' }
       expect(page).to have_css('#request-type.accordion-collapse.show')
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
       expect(page).to have_css('#items-accordion .accordion-collapse.show')
       click_button 'Continue'
@@ -234,7 +233,6 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       click_link 'Computers and Typesetting'
@@ -326,7 +324,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_text('Knuth (Donald E.) papers')
 
       choose 'Digitization'
-      check 'I agree to these terms'
+      expect(page).to have_no_text('Copyright and permission to publish')
+      expect(page).to have_no_field('I agree to these terms')
       click_button 'Continue'
 
       click_link 'Computers and Typesetting'
@@ -433,7 +432,6 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       click_link 'Concrete Mathematics'
@@ -470,7 +468,6 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       first('[data-manual-items-row] input[type=text]').set('Box 1')
@@ -520,7 +517,6 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       within('#items-accordion') do
@@ -546,7 +542,6 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_text('Hilton (Ozzie) Collection')
 
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       first('[data-manual-items-row] input[type=text]').set('Box 1')
@@ -614,7 +609,6 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     it 'does not display view container modal for digitization' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       first('[data-manual-items-row] input[type=text]').set('Box 1')
@@ -725,7 +719,6 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     it 'shows expanded item info for digitization request' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       check 'Box 1'

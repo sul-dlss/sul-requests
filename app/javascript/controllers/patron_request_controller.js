@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Collapse } from "bootstrap"
 
 export default class extends Controller {
-  static targets = ['earliestAvailable', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitizationItems', 'terms', 'typePanel']
+  static targets = ['earliestAvailable', 'destination', 'proxyScanWarning', 'sponsorScanWarning', 'selectSponsor', 'sponsorRadioButton', 'digitizationItems', 'typePanel']
 
   static values = { type: String }
 
@@ -66,17 +66,6 @@ export default class extends Controller {
     this.typePanelTargets.forEach(panel => {
       panel.disabled = panel.dataset.requestType !== requestType;
     });
-
-    // if this request type needs to display terms
-    if(this.hasTermsTarget) {
-      if(event.target.dataset.terms && event.target.dataset.terms == 'true') {
-        this.termsTarget.classList.remove('d-none')
-        this.enableRequiredInputs(this.termsTarget);
-      } else {
-        this.termsTarget.classList.add('d-none')
-        this.disableRequiredInputs(this.termsTarget)
-      }
-    }
   }
 
   updateProxy(event) {
