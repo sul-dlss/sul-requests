@@ -151,6 +151,8 @@ RSpec.describe 'ILL Request Page', :js do
       fill_in 'Journal', with: 'Test Journal'
       click_on 'Continue'
 
+      expect(page).to have_css('[role="alert"]', text: 'Stanford University Libraries reserves the right')
+
       fill_in 'Article title', with: 'Test Article'
       fill_in 'Article author', with: 'Test Author'
 

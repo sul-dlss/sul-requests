@@ -1,4 +1,5 @@
-<%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none'], with_icon: false) do %>
+<% alert_classes = ['border-0', 'shadow-none', *local_assigns.fetch(:classes, [])] %>
+<%= render AlertComponent.new(type: :info, classes: alert_classes, with_icon: false) do %>
   <span class="fw-bold">Copyright</span>
   <p>
     The copyright law of the United States (title 17, United States Code) governs the making of photocopies or other
