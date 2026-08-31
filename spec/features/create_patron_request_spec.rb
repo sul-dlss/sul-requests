@@ -183,9 +183,7 @@ RSpec.describe 'Creating a request', :js do
         click_on 'Continue'
 
         click_on 'Select a date'
-        next_monday = today.next_week(:monday)
-        click_on 'Next month' if today.month != next_monday.month
-        click_on next_monday.strftime('%B %-d, %Y')
+        first('td[role="gridcell"]:not(:has(button:disabled))').click
 
         expect do
           perform_enqueued_jobs do
