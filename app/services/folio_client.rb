@@ -136,7 +136,7 @@ class FolioClient
   CirculationRequestData = Data.define(:request_level, :request_type, :instance_id, :item_id, :holdings_record_id,
                                        :requester_id, :proxy_user_id, :fulfillment_preference, :pickup_service_point_id,
                                        :patron_comments, :request_expiration_date) do
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:disable-next Metrics/AbcSize, Metrics/MethodLength
     def as_json
       {
         requestLevel: request_level,
@@ -153,7 +153,6 @@ class FolioClient
         fulfillmentPreference: fulfillment_preference
       }
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
   end
 
   def circulation_request_policy(item_type_id:, loan_type_id:, patron_type_id:, location_id:)
@@ -367,7 +366,7 @@ class FolioClient
 
   # Mark all of a user's fines (accounts) as having been paid
   # The payment will show as being made from the 'Online' service point
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable-next Metrics/MethodLength
   def pay_fines(user_id:, amount:)
     patron = Folio::Patron.find(user_id)
     payload = {
@@ -383,7 +382,6 @@ class FolioClient
     response = post('/accounts-bulk/pay', json: payload)
     check_response(response, title: 'Pay fines', context: payload)
   end
-  # rubocop:enable Metrics/MethodLength
 
   # Find a user by barcode in FOLIO; raise an error if not found
   def find_user_by_barcode(barcode)

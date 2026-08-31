@@ -8,7 +8,7 @@ class AccordionStepComponent < ViewComponent::Base
 
   attr_reader :step_index, :id, :classes, :data, :patron_request_data, :form_id, :request
 
-  # rubocop:disable Metrics/ParameterLists
+  # rubocop:disable-next Metrics/ParameterLists
   def initialize(id:,
                  step_index: -1,
                  classes: [],
@@ -26,7 +26,6 @@ class AccordionStepComponent < ViewComponent::Base
     @item_request = request
     @submit_text = submit_text
   end
-  # rubocop:enable Metrics/ParameterLists
 
   def expanded?
     step_index == 1

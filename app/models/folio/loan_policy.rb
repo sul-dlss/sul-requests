@@ -96,7 +96,7 @@ module Folio
       loan_policy.dig('renewalsPolicy', 'renewFromId') == 'CURRENT_DUE_DATE'
     end
 
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable-next Metrics/MethodLength
     def renewal_duration
       case effective_policy_interval
       when 'Months'
@@ -111,7 +111,6 @@ module Folio
         effective_policy_duration.minutes
       end
     end
-    # rubocop:enable Metrics/MethodLength
 
     def effective_policy_interval
       renewals_policy_interval || loan_policy_interval

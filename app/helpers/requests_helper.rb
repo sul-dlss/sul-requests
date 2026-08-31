@@ -64,7 +64,7 @@ module RequestsHelper
     end
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  # rubocop:disable-next Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def request_status_emoji(patron_request)
     return '🔄' if patron_request.folio_api_responses.none? && patron_request.illiad_response_data.blank?
     return unless patron_request.folio_api_responses.any?
@@ -85,7 +85,6 @@ module RequestsHelper
       tag.span('🔴', title: errors.uniq.join('; '))
     end
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   private
 

@@ -12,7 +12,7 @@ module Folio
       Folio::Instance.from_dynamic(data)
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    # rubocop:disable-next Metrics/MethodLength, Metrics/AbcSize
     def self.from_dynamic(json)
       new(
         id: json.fetch('id'),
@@ -34,9 +34,8 @@ module Folio
         marc_hash: json['marcRecord']
       )
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
-    # rubocop:disable Metrics/MethodLength, Metrics/ParameterLists
+    # rubocop:disable-next Metrics/MethodLength, Metrics/ParameterLists
     def initialize(id:, hrid: '', title: '', contributors: [], pub_date: nil, pub_place: nil, publisher: nil,
                    isbn: [], oclcn: [], electronic_access: [], edition: [], holdings_records: [], marc_hash: nil)
       @id = id
@@ -53,7 +52,6 @@ module Folio
       @holdings_records = holdings_records
       @marc_hash = marc_hash
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/ParameterLists
 
     TITLE_AUTHOR_DELIMITER = ' / '
 

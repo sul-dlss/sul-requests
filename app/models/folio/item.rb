@@ -60,7 +60,7 @@ module Folio
       STATUS_RESTRICTED
     ].freeze
 
-    # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength, Metrics/AbcSize
+    # rubocop:disable-next Metrics/ParameterLists, Metrics/MethodLength, Metrics/AbcSize
     def initialize(barcode:, status:, effective_location:, permanent_location: nil, temporary_location: nil,
                    public_note: nil, material_type: nil, loan_type: nil, enumeration: nil,
                    full_enumeration: nil,
@@ -85,7 +85,6 @@ module Folio
       @instance = instance
       @bound_with_holdings_per_item = bound_with_holdings_per_item
     end
-    # rubocop:enable Metrics/ParameterLists, Metrics/MethodLength, Metrics/AbcSize
 
     def with_status(status)
       Folio::ItemWithStatus.new(self).with_status(status)
@@ -116,7 +115,7 @@ module Folio
       [availability_class, circ_class].compact.join(' ')
     end
 
-    # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:disable-next Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def status_text
       return temporary_location&.discovery_display_name || 'Not requestable' unless requestable?
 
@@ -130,7 +129,6 @@ module Folio
         'Not requestable'
       end
     end
-    # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
     def callnumber
       @callnumber ||= [base_callnumber.presence, full_enumeration.presence].compact.join(' ')
@@ -171,7 +169,7 @@ module Folio
     end
 
     def pageable?(patron = nil, request_types: nil)
-      request_types ||=  patron&.allowed_request_types(self) || allowed_request_types
+      request_types ||= patron&.allowed_request_types(self) || allowed_request_types
       PAGEABLE_STATUSES.include?(status) && request_types.include?('Page')
     end
 
@@ -199,7 +197,7 @@ module Folio
       permanent_location.pages_prefer_to_send_via_illiad?
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:disable-next Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     def self.from_hash(dyn)
       new(id: dyn['id'],
           barcode: dyn['barcode'],
@@ -231,7 +229,6 @@ module Folio
           holdings_record_id: dyn.dig('holdingsRecord', 'id'),
           queue_length: dyn.fetch('queueTotalLength', 0))
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
     def circulates?
       loan_policy&.fetch('loanable', false)
