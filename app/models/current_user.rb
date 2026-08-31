@@ -68,7 +68,7 @@ class CurrentUser
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def update_ldap_attributes(user)
     user.name = ldap_name
     user.ldap_group_string = ldap_group_string
@@ -80,7 +80,6 @@ class CurrentUser
 
     user.save if user.changed?
   end
-  # rubocop:enable Metrics/AbcSize
 
   def update_folio_attributes(user)
     user.patron_key = data['patron_key']

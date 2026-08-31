@@ -5,7 +5,7 @@ module Icons
   class SulIconsComponent < ViewComponent::Base
     attr_reader :classes
 
-    # rubocop:disable Metrics/ParameterLists
+    # rubocop:disable-next Metrics/ParameterLists
     def initialize(svg: nil, tag: :span, name: nil, label: nil, aria_hidden: nil, classes: nil, **options)
       self.svg = svg if svg
       @name = name
@@ -13,7 +13,6 @@ module Icons
       @tag = tag
       @options = options.merge(aria: options.fetch(:aria, {}).reverse_merge(label: label, hidden: aria_hidden))
     end
-    # rubocop:enable Metrics/ParameterLists
 
     def call
       tag.public_send(@tag, svg&.html_safe, # rubocop:disable Rails/OutputSafety

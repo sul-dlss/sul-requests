@@ -6,8 +6,8 @@ module Folio
   # accessing the types.
   class Types
     class << self
-      delegate  :policies, :circulation_rules, :criteria,
-                :locations, :libraries, :campuses, :service_points, :patron_groups, to: :instance
+      delegate :policies, :circulation_rules, :criteria,
+               :locations, :libraries, :campuses, :service_points, :patron_groups, to: :instance
     end
 
     def self.instance
@@ -21,7 +21,7 @@ module Folio
       @folio_client = folio_client
     end
 
-    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable-next Metrics/AbcSize
     def sync!
       @policies = nil
       @criteria = nil
@@ -37,7 +37,6 @@ module Folio
       File.write(cache_dir.join('circulation_rules.csv'),
                  Folio::CirculationRules::PolicyService.rules(circulation_rules).map(&:to_csv).join)
     end
-    # rubocop:enable Metrics/AbcSize
 
     def circulation_rules
       file = cache_dir.join('circulation_rules.txt')
@@ -58,7 +57,7 @@ module Folio
       @patron_groups ||= TypeStore.new(Folio::PatronGroup, get_type('patron_groups'))
     end
 
-    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable-next Metrics/AbcSize
     def criteria
       @criteria ||= {
         'group' => patron_groups.index_by(&:id),
@@ -70,7 +69,6 @@ module Folio
         'location-location' => locations.index_by(&:id).transform_values(&:to_h).transform_values(&:with_indifferent_access)
       }
     end
-    # rubocop:enable Metrics/AbcSize
 
     def libraries
       @libraries ||= TypeStore.new(Folio::Library, get_type('libraries'))
@@ -97,7 +95,7 @@ module Folio
 
     private
 
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable-next Metrics/MethodLength
     def types_of_interest
       %w[
         request_policies
@@ -115,6 +113,5 @@ module Folio
         service_points
       ]
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end

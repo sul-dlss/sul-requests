@@ -5,7 +5,7 @@ module Folio
   class ServicePoint
     attr_reader :id, :code, :name, :pickup_location, :is_default_pickup, :is_default_for_campus
 
-    # rubocop:disable Metrics/ParameterLists
+    # rubocop:disable-next Metrics/ParameterLists
     def initialize(id:, code:, name:, is_default_pickup:, is_default_for_campus:, pickup_location: false)
       @id = id
       @code = code
@@ -14,7 +14,6 @@ module Folio
       @is_default_pickup = is_default_pickup
       @is_default_for_campus = is_default_for_campus
     end
-    # rubocop:enable Metrics/ParameterLists
 
     def self.from_dynamic(json)
       new(id: json.fetch('id'),

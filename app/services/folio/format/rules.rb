@@ -32,7 +32,7 @@ module Folio
         @rules << (rule || block)
       end
 
-      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Layout/LineLength, Metrics/MethodLength, Metrics/PerceivedComplexity, Rails/NegateInclude
+      # rubocop:disable-next Metrics/AbcSize, Metrics/CyclomaticComplexity, Layout/LineLength, Metrics/MethodLength, Metrics/PerceivedComplexity, Rails/NegateInclude
       def define_rules
         # Start of searchworks_traject_indexer add_folio_format_fields
         to_field 'format_hsim',
@@ -468,7 +468,6 @@ module Folio
         # TODO: Website|Archived website
         # End of searchworks_traject_indexer add_folio_format_fields
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Layout/LineLength, Metrics/MethodLength, Metrics/PerceivedComplexity, Rails/NegateInclude
     end
     # rubocop:enable Metrics/ClassLength
   end

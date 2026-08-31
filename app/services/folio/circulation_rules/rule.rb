@@ -6,7 +6,7 @@ module Folio
     Rule = Struct.new(:criteria, :policy, :indent, :line, :priority) do
       include Comparable
 
-      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      # rubocop:disable-next Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       def self.type_debug_string
         {
           'group' => ->(v) { Folio::Types.criteria['group']&.dig(v)&.group },
@@ -18,7 +18,6 @@ module Folio
           'location-location' => ->(v) { Folio::Types.criteria['location-location']&.dig(v, 'code') }
         }
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
       # Rules are sorted by priority
       def <=>(other)
@@ -45,7 +44,7 @@ module Folio
       # @param include_line_metadata [Boolean] Include the line number and priority in the CSV output; it's necessary
       #                               to omit line metadata when comparing two sets of rules, but it's helpful
       #                               to include it when debugging within a single set of rules
-      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable-next Metrics/MethodLength
       def to_csv(include_line_metadata: false)
         CSV.generate_line([
           criteria_name('group'),
@@ -62,7 +61,6 @@ module Folio
           policy_name('lost-item')
         ] + (include_line_metadata ? [line, priority] : []))
       end
-      # rubocop:enable Metrics/MethodLength
 
       private
 
