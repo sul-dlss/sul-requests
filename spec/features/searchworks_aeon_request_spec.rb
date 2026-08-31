@@ -51,6 +51,13 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
       click_button 'Continue'
 
+      # Rochelle says it's critical to have this exact text, quotes and all.
+      # rubocop:disable Layout/LineLength
+      expect(page).to have_text('The copyright law of the United States (title 17, United States Code) governs the making of photocopies or other reproductions of copyrighted material.')
+      expect(page).to have_text 'Under certain conditions specified in the law, libraries and archives are authorized to furnish a photocopy or other reproduction. One of these specific conditions is that the photocopy or reproduction is not to be "used for any purpose other than private study, scholarship, or research." If a user makes a request for, or later uses, a photocopy or reproduction for purposes in excess of "fair use," that user may be liable for copyright infringement.'
+      expect(page).to have_text 'Stanford University Libraries reserves the right to refuse to accept a copying order if, in its judgment, fulfillment of the order would involve violation of copyright law.'
+      # rubocop:enable Layout/LineLength
+
       within('.selected-items-container') do
         within('.accordion-item', text: 'ABC 123') do
           expect(page).to have_css('.accordion-button[disabled][aria-expanded="true"]')
