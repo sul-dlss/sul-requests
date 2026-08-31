@@ -1,0 +1,13 @@
+<% if current_user.name_email_user? %>
+  <div class="mt-3 px-3 py-3 bg-cardinal-10 rounded">
+    <p class="mb-2">
+      Visitors may request materials for <span class="fw-bold">in-person use at Stanford University Libraries</span>.
+      Materials cannot be mailed or otherwise sent to visitors, and digitization services
+      are not available to visitors.
+    </p>
+    <div class="d-flex flex-row justify-content-start align-items-baseline gap-2">
+      <%= check_box_tag :visitor_terms, '1', false, required: true %>
+      <%= label_tag :visitor_terms, 'I agree to these terms', class: 'required-label' %>
+    </div>
+  </div>
+<% end %>

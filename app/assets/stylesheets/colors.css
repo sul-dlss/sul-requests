@@ -108,6 +108,10 @@ input[type="radio"] {
   --bs-dark-rgb: var(--stanford-cardinal-rgb);
 }
 
+.bg-cardinal-10 {
+  background-color: rgba(var(--stanford-cardinal-rgb), .1);
+}
+
 .bg-digital-red-10 {
   background-color: rgba(var(--stanford-digital-red-rgb), .1);
 }

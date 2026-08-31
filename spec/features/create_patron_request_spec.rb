@@ -69,6 +69,13 @@ RSpec.describe 'Creating a request', :js do
       )
     end
 
+    it 'does not show the visitor terms' do
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+      expect(page).to have_button 'Submit request'
+      expect(page).to have_no_text 'Materials cannot be mailed or otherwise sent to visitors'
+    end
+
     it 'enqueues a job to submit the request to FOLIO' do
       folio_client = FolioClient.new
       allow(folio_client).to receive(:create_circulation_request)
@@ -411,6 +418,7 @@ RSpec.describe 'Creating a request', :js do
       fill_in 'Email', with: 'me@example.com'
       click_on 'Continue'
 
+      check 'I agree to these terms'
       expect(page).to have_button 'Submit request'
 
       perform_enqueued_jobs do
