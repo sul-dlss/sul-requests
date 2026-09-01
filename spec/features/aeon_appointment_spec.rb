@@ -74,9 +74,10 @@ RSpec.describe 'Appointments', :js do
       created = StubAeonClient::Appointment.last
       start_time = Time.zone.parse(created.startTime)
       stop_time = Time.zone.parse(created.stopTime)
-      hours = reading_room.open_range_on(start_time.to_date)
-      expect(start_time).to eq hours.begin
-      expect(stop_time).to eq hours.end
+
+      hours = reading_room.send(:open_range_on, start_time.to_date)
+      expect(start_time).to eq hours.first.begin
+      expect(stop_time).to eq hours.first.end
     end
 
     it 'opens and closes the create new appointment modal for ARS' do # rubocop:disable RSpec/ExampleLength
