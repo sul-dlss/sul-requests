@@ -47,6 +47,7 @@ RSpec.describe 'ILL Request Page', :js do
       expect(mail.to).to include('illiad-test@stanford.edu')
       expect(mail.cc).to include('superuser1@stanford.edu')
       expect(mail.subject).to eq('ILLiad request update, please remediate')
+      expect(mail.body).to have_link('1', href: 'https://sulils.stanford.edu/illiad.dll?Action=10&Form=72&Value=1')
       expect(mail.body).to have_text('Previously requested item info4: GREEN-LOAN')
       expect(mail.body).to have_text('New request item info4: MUSIC')
       expect(mail.body).to have_no_text('New request not wanted after')
@@ -103,6 +104,7 @@ RSpec.describe 'ILL Request Page', :js do
       expect(mail.body).to have_text('New request photo journal inclusive pages: 1-2')
       expect(mail.body).to have_text('Previously requested photo article title: photo article title')
       expect(mail.body).to have_text('New request photo article title: New Journal update')
+      expect(mail.body).to have_link('2', href: 'https://sulils.stanford.edu/illiad.dll?Action=10&Form=72&Value=2')
     end
   end
 
