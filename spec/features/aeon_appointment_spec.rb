@@ -102,7 +102,9 @@ RSpec.describe 'Appointments', :js do
         first('td[role="gridcell"]:not(:has(button:disabled))').click
 
         find(:label, text: '2 hours').click
-        find(:label, text: '1:00 pm').click
+
+        expect(page).to have_text('9:00 am')
+        find(:label, text: '9:00 am').click
 
         click_on 'Save'
       end
