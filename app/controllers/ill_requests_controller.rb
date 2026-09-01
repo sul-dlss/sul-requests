@@ -39,7 +39,7 @@ class IllRequestsController < ApplicationController
                   end
 
     illiad_create_params = IlliadClient::RequestData.with_defaults.with_patron(current_patron).with(
-      process_type: scan ? 'DocDel' : 'Borrowing',
+      process_type: 'Borrowing',
       web_request_form: 'LoanRequest',
       request_type: scan ? IlliadClient::UNSET : 'Loan',
       accept_alternate_edition: create_params[:accept_alternate_edition] || IlliadClient::UNSET,
