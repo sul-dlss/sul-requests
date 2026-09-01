@@ -33,7 +33,7 @@
           <% end %>
   <% end %>
 
-  <% if params[:include_illiad] %>
+  <% if params[:include_illiad] && !acting_as_proxy? %>
     <%= turbo_stream.replace 'aeon-illiad-digitization-requests' do %>
       <%= render Home::SummaryCardComponent.new(
           id: 'aeon-illiad-digitization-requests',
