@@ -57,6 +57,8 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       expect(page).to have_text 'Under certain conditions specified in the law, libraries and archives are authorized to furnish a photocopy or other reproduction. One of these specific conditions is that the photocopy or reproduction is not to be "used for any purpose other than private study, scholarship, or research." If a user makes a request for, or later uses, a photocopy or reproduction for purposes in excess of "fair use," that user may be liable for copyright infringement.'
       expect(page).to have_text 'Stanford University Libraries reserves the right to refuse to accept a copying order if, in its judgment, fulfillment of the order would involve violation of copyright law.'
       # rubocop:enable Layout/LineLength
+      expect(page).to have_text 'Requests are subject to staff review and may be denied based on copyright restrictions'
+      expect(page).to have_no_text 'Materials commercially available at a reasonable price'
 
       within('.selected-items-container') do
         within('.accordion-item', text: 'ABC 123') do
@@ -94,6 +96,9 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       within('#request-type-accordion') { click_button 'Edit' }
       choose 'Reading room appointment'
       click_button 'Continue'
+
+      expect(page).to have_text 'Select an eligible appointment - or - create a new one.'
+      expect(page).to have_no_text 'recorded sound materials may need to be digitized by staff'
 
       # In the Appointment step
       click_button 'Select appointment'

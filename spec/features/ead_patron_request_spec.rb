@@ -555,6 +555,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       expect(page).to have_text('Requested pages')
       expect(page).to have_text('Box 1')
+      expect(page).to have_text('Materials commercially available at a reasonable price')
+      expect(page).to have_text('Up to 8 media or print items, or 1 rare monograph')
       fill_in 'Requested pages', with: 'Pages 1-10'
       fill_in 'Additional information', with: 'Testing only'
       click_button 'Next item'
@@ -601,6 +603,8 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       click_button 'Add container'
       all('[data-manual-items-row] input[type=text]')[1].set('Box 24 ')
       click_button 'Continue'
+
+      expect(page).to have_text('recorded sound materials may need to be digitized by staff')
 
       # Expect no viewing modal links
       expect(page).to have_no_css('button[data-action="view-container-contents#openViewModal"]')
@@ -681,6 +685,9 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       # In the Appointment step
       expect(page).to have_text('Field Reading Room')
       expect(page).to have_text('Hours: Monday - Friday, 9:00 am - 4:45 pm')
+      expect(page).to have_text('Select an eligible appointment - or - create a new one.')
+      expect(page).to have_text('Schedule an appointment at least 5 business days')
+      expect(page).to have_text('Up to 10 items are allowed per appointment.')
 
       # In the Appointment step
       click_button 'Select appointment'

@@ -2,15 +2,12 @@
   <legend class="visually-hidden">Reading room appointment details</legend>
   <% appointments = current_user.aeon.appointments.for_site(f.object.aeon_site).select(&:editable?) %>
   <div id="new-appt-alert">
-    <div class="alert alert-warning alert-dismissible shadow-sm d-flex align-items-center">
-      <div role="img" aria-label="Warning icon" class="text-warning bi bi-exclamation-triangle-fill fs-3 me-3"></div>
-      <ul class="text-body mb-0">
+    <%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none'], dismissable: true) do %>
+      <ul class="mb-0">
         <% if appointments.blank? %>
           <li>You don’t have any appointments yet. Create one to continue.</li>
-        <% elsif appointments.one? %>
-          <li>Select your eligible appointment - or - create a new one.</li>
         <% else %>
-          <li>Select from your <%= appointments.count %> eligible appointments - or - create a new one.</li>
+          <li>Select an eligible appointment - or - create a new one.</li>
         <% end %>
 
         <% if (f.object.aeon_reading_room.appointment_min_lead_days || 0) > 0 %>
@@ -20,9 +17,12 @@
         <% if f.object.aeon_reading_room.appointment_item_limit %>
           <li>Up to <%= f.object.aeon_reading_room.appointment_item_limit %> items are allowed per appointment.</li>
         <% end %>
+
+        <% if f.object.aeon_site == 'ARS' %>
+          <li>Depending on the format, recorded sound materials may need to be digitized by staff before they can be used in the reading room. <span class="fw-semibold">Scheduling an appointment does not provide faster access to these materials.</span></li>
+        <% end %>
       </ul>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <% end %>
   </div>
 
   <%= render Aeon::ReadingRoomBriefComponent.new(reading_room: f.object.aeon_reading_room, create_appointment: true) %>

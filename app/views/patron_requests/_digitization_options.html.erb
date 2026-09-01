@@ -1,7 +1,7 @@
 <fieldset class="row p-3 pt-0 gap-3 flex-column flex-md-row selected-items-container" data-patron-request-target="typePanel" data-request-type="scan" disabled>
   <legend class="visually-hidden">Digitization request details</legend>
   <%= render 'shared/copyright_statement' %>
-  <%= render 'digitization_notice' %>
+  <%= render 'digitization_notice', ars: f.object.aeon_site == 'ARS' %>
 
   <%= render 'save_for_later' %>
   <div class="accordion digitization-accordion px-0" data-patron-request-target="digitizationItems" data-item-selector-target="selectedItems" data-template="#digitizationTemplate">
