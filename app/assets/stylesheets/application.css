@@ -807,6 +807,15 @@ main:not(:has(#requests li, turbo-frame[busy])) .no-requests {
   --bs-modal-padding: 1rem;
 }
 
+/* Turbo frame modals wrap the header/body/footer in a form, which breaks the height
+   chain Bootstrap's scrollable variant needs. Make that wrapper pass the constraint on. */
+.modal-dialog-scrollable .modal-content > form {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  overflow: hidden;
+}
+
 .modal-body.add-items {
   .reading-room {
     display: none;
