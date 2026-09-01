@@ -18,10 +18,12 @@
     },
     class: 'form-select'
     ) %>
+    <%= render 'visitor_terms', f: %>
     </div>
 <% else %>
     <div class="mb-2">
         <strong><%= f.object.location_label %>:</strong> <%= f.object.pickup_service_point&.name %>
     </div>
     <%= f.hidden_field :service_point_code, :value => f.object.pickup_service_point&.code %>
+    <%= render 'visitor_terms', f: %>
 <% end %>
