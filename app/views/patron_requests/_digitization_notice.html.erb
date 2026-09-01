@@ -1,7 +1,12 @@
-<%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none'], with_icon: false) do %>
-  <span class="fw-bold">Notice</span>
+<%= render AlertComponent.new(type: :info, classes: ['border-0', 'shadow-none'], dismissable: true) do %>
   <ul class="mb-0">
-    <li>Digitization requests are subject to staff review and may be denied due to copyright, material condition, collection restrictions, or other limitations.</li>
+    <li>Requests are subject to staff review and may be denied based on copyright restrictions, material condition, collection restrictions, or other limitations.</li>
+    <% if ars %>
+      <li>Materials commercially available at a reasonable price or available in digital form elsewhere are not eligible for digitization.</li>
+    <% end %>
     <li>A fee may apply to some digitization requests. Staff will contact you before proceeding.</li>
+    <% if ars %>
+      <li>Up to 8 media or print items, or 1 rare monograph, may be requested every 30 days.</li>
+    <% end %>
   </ul>
 <% end %>
