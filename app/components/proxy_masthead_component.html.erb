@@ -19,8 +19,8 @@
     <% end %>
 
     <% if selected.proxies.any? %>
-      <button class="btn btn-link <%= 'text-poppy-darker' unless personal? %> su-underline" data-bs-toggle="modal" data-bs-target="#proxy-group" aria-label="View proxy group">
-        <i class="bi bi-people align-middle me-1" aria-hidden></i><span class="d-none d-md-inline">View proxy group</span>
+      <button class="btn btn-link <%= 'text-poppy-darker' unless personal? %> su-underline" data-bs-toggle="modal" data-bs-target="#proxy-group" aria-label="View proxy details">
+        <i class="bi bi-people align-middle me-1" aria-hidden></i><span class="d-none d-md-inline">View proxy details</span>
       </button>
     <% end %>
 
@@ -57,7 +57,7 @@
 
 <%= render ModalComponent.new(id: 'proxy-group', header_classes: ['border-0', 'pb-2']) do |c| %>
   <% c.with_title do %>
-    Proxy Group
+    Proxy details
   <% end %>
 
   <% c.with_banner do %>
@@ -65,13 +65,23 @@
   <% end %>
 
   <% c.with_body do %>
-    <ul class="list-unstyled mb-0 flex-column d-flex gap-2">
+    <h4>Proxies</h4>
+    <ul class="list-unstyled mb-0 flex-column d-flex gap-1">
       <% selected.proxy_group.members.each do |member| %>
         <li>
           <%= member.display_name %>
         </li>
       <% end %>
     </ul>
+
+    <hr>
+
+    <dl class="mb-0">
+      <dt class="fw-semibold"><i class="bi bi-eye me-2"></i>What you can see</dt>
+      <dd class="ms-2 ps-3">Borrowed items and pickup requests made by anyone in this group on the sponsor's behalf.</dd>
+      <dt class="fw-semibold"><i class="bi bi-eye-slash me-2"></i>What you can't see (with no visibility icon)</dt>
+      <dd class="ms-2 ps-3">The sponsor's own loans and requests, fees and fines, and other account details are not shown here. Digitization requests are also not shown, including those submitted by proxies on the sponsor's behalf. Only the sponsor can see their full account information.</dd>
+    </dl>
   <% end %>
 
   <% c.with_footer do %>
