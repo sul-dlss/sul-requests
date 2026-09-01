@@ -178,7 +178,7 @@ class PatronRequestsController < ApplicationController
                                                  :for_sponsor_id, :for_sponsor,
                                                  :fulfillment_type, :request_type,
                                                  :scan_page_range, :scan_authors, :scan_title,
-                                                 :aeon_reading_special, :aeon_terms, :ead_url,
+                                                 :aeon_reading_special, :ead_url,
                                                  { item_ids: [], requested_barcodes: [], activity_ids: [], aeon_item: aeon_term_params }])
 
     transform_to_patron_request_item_params(orig_params)

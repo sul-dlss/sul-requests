@@ -48,9 +48,15 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       expect(page).to have_no_text 'Select item'
 
       choose 'Digitization'
-      check 'I agree to these terms'
 
       click_button 'Continue'
+
+      # Rochelle says it's critical to have this exact text, quotes and all.
+      # rubocop:disable Layout/LineLength
+      expect(page).to have_text('The copyright law of the United States (title 17, United States Code) governs the making of photocopies or other reproductions of copyrighted material.')
+      expect(page).to have_text 'Under certain conditions specified in the law, libraries and archives are authorized to furnish a photocopy or other reproduction. One of these specific conditions is that the photocopy or reproduction is not to be "used for any purpose other than private study, scholarship, or research." If a user makes a request for, or later uses, a photocopy or reproduction for purposes in excess of "fair use," that user may be liable for copyright infringement.'
+      expect(page).to have_text 'Stanford University Libraries reserves the right to refuse to accept a copying order if, in its judgment, fulfillment of the order would involve violation of copyright law.'
+      # rubocop:enable Layout/LineLength
 
       within('.selected-items-container') do
         within('.accordion-item', text: 'ABC 123') do
@@ -79,7 +85,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
     it 'allows the user to submit a reading room request' do # rubocop:disable RSpec/ExampleLength
       # Start down the digitization path and fill in a note we later abandon.
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
       fill_in 'Requested pages', with: 'Pages 1-10'
       choose 'Yes'
@@ -149,7 +154,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
     it 'has working save for later undo and delete buttons' do
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       check 'ABC 321'
@@ -171,7 +175,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
     it 'allows the user to submit a digitization request' do # rubocop:disable RSpec/ExampleLength
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       # Proceed with 1 selected item
@@ -219,7 +222,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
 
     it 'allows the user to save items for later' do # rubocop:disable RSpec/ExampleLength
       choose 'Digitization'
-      check 'I agree to these terms'
       click_button 'Continue'
 
       check 'ABC 123'

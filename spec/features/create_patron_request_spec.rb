@@ -122,7 +122,7 @@ RSpec.describe 'Creating a request', :js do
         click_on 'Continue'
         choose 'ABC 123'
         click_on 'Continue'
-        expect(page).to have_text 'Copyright notice'
+        expect(page).to have_css('[role="alert"]', text: 'Stanford University Libraries reserves the right')
         fill_in 'Page range', with: '1-15'
         fill_in 'Title of article or chapter', with: 'Some title'
         fill_in 'Author(s)', with: 'Some author'
@@ -225,7 +225,7 @@ RSpec.describe 'Creating a request', :js do
         click_on 'Continue'
         choose 'ABC 123'
         click_on 'Continue'
-        expect(page).to have_text 'Copyright notice'
+        expect(page).to have_css('[role="alert"]', text: 'Stanford University Libraries reserves the right')
         fill_in 'Page range', with: '1-15'
         fill_in 'Title of article or chapter', with: 'Some title'
         perform_enqueued_jobs do

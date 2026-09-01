@@ -1,0 +1,18 @@
+<% alert_classes = ['border-0', 'shadow-none', *local_assigns.fetch(:classes, [])] %>
+<%= render AlertComponent.new(type: :info, classes: alert_classes, with_icon: false) do %>
+  <span class="fw-bold">Copyright</span>
+  <p>
+    The copyright law of the United States (title 17, United States Code) governs the making of photocopies or other
+    reproductions of copyrighted material.
+  </p>
+  <p>
+    Under certain conditions specified in the law, libraries and archives are authorized to furnish a photocopy or other
+    reproduction. One of these specific conditions is that the photocopy or reproduction is not to be "used for any purpose
+    other than private study, scholarship, or research." If a user makes a request for, or later uses, a photocopy or
+    reproduction for purposes in excess of "fair use," that user may be liable for copyright infringement.
+  </p>
+  <p class="mb-0">
+    Stanford University Libraries reserves the right to refuse to accept a copying order if, in its judgment, fulfillment of
+    the order would involve violation of copyright law.
+  </p>
+<% end %>
