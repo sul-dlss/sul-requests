@@ -2,12 +2,16 @@
 <fieldset class="mb-4">
   <legend class="fs-6"></legend>
   <% if f.object.patron.sponsor? %>
-    <div class="alert alert-warning d-flex align-items-center d-none" data-patron-request-target="proxyScanWarning">
-      <i class="bi bi-exclamation-triangle-fill me-2 text-warning fs-4"></i>Please be advised that scans are not sent to proxies.
+    <div class="d-none" data-patron-request-target="proxyScanWarning">
+      <%= render AlertComponent.new(type: :warning) do %>
+        Please be advised that scans are not sent to proxies.
+      <% end %>
     </div>
   <% elsif f.object.patron.proxy? %>
-    <div class="alert alert-warning d-flex align-items-center d-none" data-patron-request-target="sponsorScanWarning">
-      <i class="bi bi-exclamation-triangle-fill me-2 text-warning fs-4"></i>Please be advised that scans are not sent to the sponsor.
+    <div class="d-none" data-patron-request-target="sponsorScanWarning">
+      <%= render AlertComponent.new(type: :warning) do %>
+        Please be advised that scans are not sent to the sponsor.
+      <% end %>
     </div>
   <% end %>
   <div>
