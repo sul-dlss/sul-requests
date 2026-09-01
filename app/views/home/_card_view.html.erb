@@ -32,7 +32,7 @@
         path: aeon_requests_path(kind: 'submitted', filter: 'digitization'),
         link_label: nil) do |c| %>
             <% c.with_status_count(label: t('dashboard.digitization_requests_delivered.label_placeholder_html')) %>
-        <% end if dashboard.aeon? || dashboard.folio? %>
+        <% end if (dashboard.aeon? || dashboard.folio?) && !acting_as_proxy? %>
 
   <%= render Home::SummaryCardComponent.new(
         id: 'aeon-reading-room-appointments',
