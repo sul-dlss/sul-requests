@@ -50,8 +50,8 @@
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :loan_author, 'Author(s) or Editor(s)', class: 'form-label fw-semibold redesign-required-label' %>
-          <%= f.text_field :loan_author, required: true, class: 'form-control', maxlength: 255 %>
+          <%= f.label :author, 'Author(s) or Editor(s)', class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.text_field :author, required: true, class: 'form-control', maxlength: 255 %>
         </div>
 
         <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
@@ -84,28 +84,28 @@
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :loan_publisher, 'Name of publisher', class: 'form-label fw-semibold' %>
-          <%= f.text_field :loan_publisher, class: 'form-control' %>
+          <%= f.label :publisher, 'Name of publisher', class: 'form-label fw-semibold' %>
+          <%= f.text_field :publisher, class: 'form-control' %>
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :loan_date, 'Date of publication', class: 'form-label fw-semibold' %>
-          <%= f.text_field :loan_date, class: 'form-control' %>
+          <%= f.label :date, 'Date of publication', class: 'form-label fw-semibold' %>
+          <%= f.text_field :date, class: 'form-control' %>
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :loan_place, 'Place of publication', class: 'form-label fw-semibold' %>
-          <%= f.text_field :loan_place, class: 'form-control' %>
+          <%= f.label :place, 'Place of publication', class: 'form-label fw-semibold' %>
+          <%= f.text_field :place, class: 'form-control' %>
         </div>
 
         <div class="mb-3">
-          <%= f.label :item_info2, 'Volume', class: 'form-label fw-semibold' %>
-          <%= f.text_field :item_info2, class: 'form-control' %>
+          <%= f.label :volume, 'Volume', class: 'form-label fw-semibold' %>
+          <%= f.text_field :volume, class: 'form-control' %>
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :loan_edition, 'Edition', class: 'form-label fw-semibold' %>
-          <%= f.text_field :loan_edition, class: 'form-control' %>
+          <%= f.label :edition, 'Edition', class: 'form-label fw-semibold' %>
+          <%= f.text_field :edition, class: 'form-control' %>
         </div>
 
         <div data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="article">
