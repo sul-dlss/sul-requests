@@ -279,6 +279,9 @@ libraries:
       location_slug: operations
   SAL3:
     label: SAL3 (off-campus storage)
+    contact_info:
+      phone: "(650) 723-1493"
+      email: greencirc@stanford.edu
     hours:
       library_slug: sal3
       location_slug: operations
