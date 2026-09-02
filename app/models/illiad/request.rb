@@ -29,7 +29,7 @@ module Illiad
     ].freeze
 
     # illiad_result is a hash with the results from the Illiad Request
-    def initialize(illiad_result)
+    def initialize(illiad_result = {})
       @illiad_result = illiad_result
     end
 
@@ -42,6 +42,8 @@ module Illiad
     end
 
     def request_type
+      return unless persisted?
+
       scan? ? 'scan' : 'pickup'
     end
 
@@ -169,6 +171,8 @@ module Illiad
     def manage_request_link
       "https://sulils.stanford.edu/illiad.dll?Action=10&Form=72&Value=#{key}"
     end
+
+    def persisted? = id.present?
 
     private
 

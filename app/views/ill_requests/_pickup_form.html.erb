@@ -7,10 +7,10 @@
 </div>
 
 <div class="text-cardinal mb-3 mt-1">
-  Processing typically takes 5-7 business days.
+  Processing typically takes 7-10 business days.
 </div>
 
 <div class="mb-4">
   <%= f.label :not_wanted_after, 'Not needed after', class: 'form-label fw-semibold' %>
-  <%= f.date_field :not_wanted_after, class: 'form-control' %>
+  <%= f.date_field :not_wanted_after, class: 'form-control', value: ((Date.today + 2.months).strftime("%Y-%m-%d") unless f.object.persisted?) %>
 </div>
