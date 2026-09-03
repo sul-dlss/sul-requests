@@ -358,12 +358,12 @@ RSpec.describe 'Requesting an item from an EAD', :js do
         expect(page).to have_no_css('.accordion-button[disabled]')
       end
 
-      expect(page).to have_text('Requested pages')
-      fill_in 'Requested pages', with: 'Pages 1-10'
+      expect(page).to have_text('Materials you would like digitized')
+      fill_in 'Materials you would like digitized', with: 'Pages 1-10'
       fill_in 'Additional information', with: 'Testing only'
 
       click_button 'Next item'
-      fill_in 'Requested pages', with: 'Pages 6-8'
+      fill_in 'Materials you would like digitized', with: 'Pages 6-8'
 
       click_button 'Submit request'
 
@@ -507,7 +507,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_css('.saved-item', text: 'Box 2')
       expect(page).to have_css('[data-content-id] .selected-item-title', text: 'Box 3')
 
-      fill_in 'Requested pages', with: 'Pages 1-10'
+      fill_in 'Materials you would like digitized', with: 'Pages 1-10'
       click_button 'Submit request'
       expect(page).to have_css('.confirmation')
       expect(PatronRequest.last.patron_request_items.map(&:title)).to contain_exactly('Box 1', 'Box 2', 'Box 3')
@@ -553,16 +553,16 @@ RSpec.describe 'Requesting an item from an EAD', :js do
 
       click_button 'Continue'
 
-      expect(page).to have_text('Requested pages')
+      expect(page).to have_text('Materials you would like digitized')
       expect(page).to have_text('Box 1')
       expect(page).to have_text('Materials commercially available at a reasonable price')
       expect(page).to have_text('Up to 8 media or print items, or 1 rare monograph')
-      fill_in 'Requested pages', with: 'Pages 1-10'
+      fill_in 'Materials you would like digitized', with: 'Pages 1-10'
       fill_in 'Additional information', with: 'Testing only'
       click_button 'Next item'
 
       expect(page).to have_text('Box 25')
-      fill_in 'Requested pages', with: 'Pages 10-14'
+      fill_in 'Materials you would like digitized', with: 'Pages 10-14'
       fill_in 'Additional information', with: 'Testing only'
 
       click_button 'Submit request'

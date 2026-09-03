@@ -66,7 +66,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
         end
       end
 
-      fill_in 'Requested pages', with: 'Pages 1-10'
+      fill_in 'Materials you would like digitized', with: 'Pages 1-10'
       choose 'Yes'
       fill_in 'Additional information', with: 'Testing only'
 
@@ -88,7 +88,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       # Start down the digitization path and fill in a note we later abandon.
       choose 'Digitization'
       click_button 'Continue'
-      fill_in 'Requested pages', with: 'Pages 1-10'
+      fill_in 'Materials you would like digitized', with: 'Pages 1-10'
       choose 'Yes'
       fill_in 'Additional information', with: 'abandoned digitization note'
 
@@ -208,10 +208,10 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
         expect(page).to have_no_css('.accordion-button[disabled]')
       end
 
-      fill_in 'Requested pages', with: 'Pages 1-10'
+      fill_in 'Materials you would like digitized', with: 'Pages 1-10'
       choose 'Yes'
       click_button 'Next item'
-      fill_in 'Requested pages', with: 'Pages 11-20'
+      fill_in 'Materials you would like digitized', with: 'Pages 11-20'
       choose 'No'
 
       click_button 'Submit request'
@@ -236,7 +236,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
       # Submit disabled: no items are complete yet
       expect(page).to have_button('Submit request', disabled: true)
 
-      fill_in 'Requested pages', with: 'Pages 1-10'
+      fill_in 'Materials you would like digitized', with: 'Pages 1-10'
       choose 'Yes'
       click_button 'Next item'
 
