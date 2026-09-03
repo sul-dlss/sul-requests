@@ -1,7 +1,11 @@
 <% content_for :page_title do %>Request: <%= @patron_request.item_title %><% end %>
 <%= flash_column_classes 'col-12 col-lg-9' %>
 
-<%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+<div class="row">
+  <div class="col-12 col-lg-9">
+    <%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+  </div>
+</div>
 
 <%= render 'messages', messages: @patron_request.active_messages %>
 

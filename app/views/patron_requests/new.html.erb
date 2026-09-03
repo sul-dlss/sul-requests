@@ -1,6 +1,8 @@
 <% content_for :page_title do %>Request: <%= @patron_request.item_title %><% end %>
 
-<%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+<div class="col-lg-8">
+  <%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+</div>
 
 <%= render 'messages', messages: @patron_request.active_messages %>
 

@@ -1,7 +1,9 @@
 <% content_for :page_title do %>Request: <%= @patron_request.item_title %><% end %>
 <%- contact_info = @patron_request.contact_info -%>
 
-<%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+<div class="col-lg-8 p-0">
+  <%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+</div>
 
 
 <h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
