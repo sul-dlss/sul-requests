@@ -1,4 +1,8 @@
-<%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+<div class="row">
+  <div class="col-7 mb-3">
+    <%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-7">
