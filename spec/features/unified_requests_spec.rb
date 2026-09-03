@@ -16,6 +16,12 @@ RSpec.describe 'Request Page', :js do
 
     expect(page).to have_text('Submitted requests')
     expect(page).to have_no_css('.placeholder-glow')
-    expect(page).to have_text('No submitted requests yet')
+    expect(page).to have_text('No submitted requests.')
+  end
+
+  it 'uses the active filter in the empty state' do
+    visit unified_requests_path(filter: 'digitization')
+
+    expect(page).to have_text('No digitization requests.')
   end
 end
