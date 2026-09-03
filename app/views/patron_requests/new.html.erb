@@ -6,7 +6,8 @@
 
 <% if use_requests_redesign? %>
   <div class="mt-3 col-lg-8">
-    <%= render RecordHeaderComponent.new(record: @patron_request.bib_record, title_tag: :h1) %>
+    <h1 class="mb-4"> New request </h1>
+    <%= render RecordHeaderComponent.new(record: @patron_request.bib_record) %>
   </div>
 <% else %>
   <h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
