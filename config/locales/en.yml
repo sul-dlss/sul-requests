@@ -214,6 +214,10 @@ en:
       user: "Library cardholder"
       label: "Library ID"
       help_text: "Nine digit number below your name on your library card"
+    enterprise_id:
+      user: "Library cardholder"
+      label: "Enterprise ID"
+      help_text: "SID or EPIC for Health Care or Network ID for Children's Health"
     login_by_university_id:
       alert_html: <span class="fw-bold">Login error!</span><br />Please verify your credentials and try again. If you continue to experience problems, contact the Privileges desk at <a href="mailto:sul-privileges@stanford.edu" class="alert-link">sul-privileges@stanford.edu</a> or call (650) 723-1492 for assistance.
     login_by_sunetid:

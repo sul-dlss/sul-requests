@@ -400,6 +400,46 @@ RSpec.describe 'Creating a request', :js do
     end
   end
 
+  context 'with a Stanford Medicine user' do
+    let(:stub_client) { FolioClient.new }
+    let(:patron) { build(:library_id_patron) }
+
+    before do
+      allow(FolioClient).to receive(:new).and_return(stub_client)
+
+      allow(stub_client).to receive(:login_by_barcode).with('SU123', '54321').and_return(nil)
+      allow(stub_client).to receive(:login_by_university_id).with('SU123', '54321')
+                                                            .and_return({ 'patronKey' => 'some-lib-id-uuid' })
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: 'some-lib-id-uuid').and_return(patron)
+    end
+
+    it 'submits the request for pickup at Green' do
+      logout
+      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+      expect(page).to have_css 'summary', text: 'Login with Enterprise ID/Library PIN'
+      find('summary', text: 'Login with Enterprise ID/Library PIN').click
+
+      fill_in 'Enterprise ID', with: 'SU123'
+      fill_in 'Library PIN', with: '54321'
+
+      within('form', text: 'Enterprise ID') { click_on 'Login' }
+
+      expect do
+        perform_enqueued_jobs do
+          click_on 'Submit request'
+        end
+        expect(page).to have_text 'We received your pickup request'
+      end.to change(PatronRequest, :count).by(1)
+
+      expect(PatronRequest.last).to have_attributes(
+        patron_id: 'some-lib-id-uuid',
+        instance_hrid: 'a1234',
+        origin_location_code: 'SAL3-STACKS',
+        service_point_code: 'GREEN-LOAN'
+      )
+    end
+  end
+
   context 'with a name+email user' do
     context 'for an item that a purchased account cannot page' do
       let(:folio_instance) { build(:single_holding, items: [build(:item, effective_location: build(:law_location))]) }
