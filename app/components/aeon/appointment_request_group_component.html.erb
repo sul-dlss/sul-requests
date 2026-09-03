@@ -7,9 +7,9 @@
       <% end %>
     </h3>
     <% if request_group.base_callnumber && request_group.multi_item_selector? %>
-      <span class="ms-2 text-nowrap">Call number: <%= request_group.base_callnumber %></span>
+      <span class="text-nowrap">Call number: <%= request_group.base_callnumber %></span>
     <% end %>
-    <ul class="list-unstyled mb-0 mt-2">
+    <ul class="list-unstyled mb-0 mt-2 ps-3">
       <%= render Aeon::AppointmentRequestGroupItemComponent.with_collection(requests) %>
     </ul>
   </div>

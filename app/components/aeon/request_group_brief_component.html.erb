@@ -7,10 +7,10 @@
       <h2 class="h4"><%= title %></h2>
       <div class="d-flex gap-sm-3 flex-sm-row flex-wrap flex-column">
         <% if base_callnumber.present? && request_group.multi_item_selector? %>
-          <div>Call number: <%= base_callnumber %></div>
+          <div class="mb-2">Call number: <%= base_callnumber %></div>
         <% end %>
       </div>
-      <ul class="list-group list-group-flush mt-2">
+      <ul class="list-group list-group-flush">
         <%= render Aeon::RequestGroupBriefListItemComponent.with_collection(requests, after_request_item_component: @after_request_item_component) %>
       </ul>
     </div>
