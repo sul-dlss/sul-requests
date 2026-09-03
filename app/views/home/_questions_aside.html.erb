@@ -1,6 +1,6 @@
 <aside class="col-lg-3 mt-4 mt-lg-0">
   <div class="border-start ps-3 pb-1">
-    <h2 class="mb-4">Questions?</h2>
+    <h2 class="mb-4">Need help?</h2>
 
     <div class="row">
       <div class="col-md-6 col-lg-12 mb-4">
@@ -28,15 +28,24 @@
           <% end %>
         </p>
 
-        <h3>The Libraries doesn't have what you need?</h3>
+        <h3>Can’t find what you need?</h3>
+        <p class="mb-1 text-70-black">Interlibrary loan</p>
         <p class="mb-1">
-          Place a request via <%= link_to new_ill_request_path, class: 'su-underline' do %>
-          Interlibrary loan.
+          <%= link_to new_ill_request_path, class: 'su-underline' do %>
+            Request it from another library
           <% end %>
         </p>
-        <p>
-          Submit a <%= link_to 'https://stanforduniversity.qualtrics.com/jfe/form/SV_5iQABR6VSszIQMR', class: 'su-underline', target: '_blank' do %>
-            purchase <span class="text-nowrap">recommendation<i class="bi bi-arrow-up-right ms-1"></i></span>
+        <p class="mb-1">
+          <%= link_to "mailto:#{Settings.libraries.default.contact_info.email}", class: 'su-underline' do %>
+            <i class="align-middle bi bi-envelope me-1"></i><%= Settings.libraries.ILL.contact_info.email %>
+          <% end %>
+        </p>
+        <p class="mb-1">
+          <i class="align-middle bi bi-phone me-1"></i><%= Settings.libraries.ILL.contact_info.phone %>
+        </p>
+        <p class="mt-3">
+          <%= link_to 'https://stanforduniversity.qualtrics.com/jfe/form/SV_5iQABR6VSszIQMR', class: 'su-underline', target: '_blank' do %>
+          Recommend a <span class="text-nowrap">purchase<i class="bi bi-arrow-up-right ms-1"></i></span>
           <% end %>
         </p>
       </div>

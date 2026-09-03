@@ -210,6 +210,10 @@ input[type="radio"] {
   color: var(--stanford-60-black);
 }
 
+.text-70-black {
+  color: var(--stanford-70-black);
+}
+
 .text-80-black {
   color: var(--stanford-80-black);
 }
