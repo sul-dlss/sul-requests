@@ -50,6 +50,8 @@ class ApplicationController < ActionController::Base
   end
 
   def rescue_can_can(exception)
+    return render 'home/login', status: :forbidden unless current_user?
+
     logger.debug { "Access denied on #{exception.action} #{exception.subject.inspect}" }
     render status: :forbidden, plain: 'Access to this resource is denied.'
   end
