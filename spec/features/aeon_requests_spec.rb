@@ -52,6 +52,12 @@ RSpec.describe 'Requests', :js do
       expect(page).to have_no_text('Medium poetry in America : a poetry quarterly')
     end
 
+    it 'describes the active filter when there are no matching requests' do
+      visit aeon_requests_path(kind: 'saved_for_later', filter: 'digitization')
+
+      expect(page).to have_text('No digitization requests.')
+    end
+
     it 'displays appointments' do
       visit aeon_requests_path(kind: 'saved_for_later')
 
@@ -113,6 +119,7 @@ RSpec.describe 'Requests', :js do
       click_on 'Yes - Delete'
 
       expect(page).to have_no_text('Slow poetry in America : a poetry quarterly')
+      expect(page).to have_text('No saved for later requests.')
     end
   end
 

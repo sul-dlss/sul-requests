@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['list', 'sortMenu', 'filterMenu', 'observe', 'subgroup']
+  static targets = ['list', 'sortMenu', 'filterMenu', 'observe', 'subgroup', 'emptyHeading']
   static values = {
     sort: String,
     filter: { type: String, default: '' }
@@ -101,6 +101,20 @@ export default class extends Controller {
 
       item.hidden = (this.filterValue == '' || this.filterValue == itemFilterValue) ? false : true;
     });
+
+    this.updateEmptyHeading();
+  }
+
+  updateEmptyHeading() {
+    if (!this.hasEmptyHeadingTarget) return;
+
+    const emptyHeadings = {
+      digitization: 'No digitization requests.',
+      pickup: 'No pickup requests.',
+      'reading room': 'No reading room use requests.'
+    };
+
+    this.emptyHeadingTarget.textContent = emptyHeadings[this.filterValue] || 'No submitted requests.';
   }
 
   resortChildren(target, sortValue) {

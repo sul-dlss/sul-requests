@@ -67,7 +67,7 @@
         <%= render Aeon::RequestGroupComponent.with_collection(@aeon_request_groups, element: 'li') %>
       </ol>
       <div class="no-requests">
-        <h2>No <%= params[:kind] %> requests yet.</h2>
+        <h2><%= t(current_aeon_filter, scope: 'aeon_requests.index.empty_filtered', default: t(params[:kind], scope: 'aeon_requests.index.empty', default: 'No requests.')) %></h2>
       </div>
     </div>
 

@@ -696,7 +696,7 @@ summary .disclosure-icon::before {
   display: none;
 }
 
-main:not(:has(#requests li, turbo-frame[busy])) .no-requests {
+main:not(:has(#requests li:not([hidden]), turbo-frame[busy])) .no-requests {
   display: block;
 }
 

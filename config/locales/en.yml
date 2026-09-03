@@ -161,6 +161,14 @@ en:
       cancel_button: Cancel
   aeon_requests:
     index:
+      empty:
+        cancelled: No cancelled requests.
+        completed: No completed requests.
+        saved_for_later: No saved for later requests.
+        submitted: No submitted requests.
+      empty_filtered:
+        digitization: No digitization requests.
+        reading_room: No reading room use requests.
       header:
         cancelled: Cancelled requests
         completed: Completed requests
