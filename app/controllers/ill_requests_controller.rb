@@ -28,15 +28,34 @@ class IllRequestsController < ApplicationController
     authorize! :edit, @request
   end
 
-  def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+  def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     authorize! :create, Illiad::Request
 
-    scan = create_params[:photo_article_title].present?
-    title_param = if scan
-                    { photo_journal_title: create_params[:title] }
-                  else
-                    { loan_title: create_params[:title] }
-                  end
+    scan = mapped_create_params[:request_type] == 'scan'
+    illiad_params_that_inexplicably_use_different_fields_based_on_the_request_type = (
+      if scan && params[:subtype] == 'article'
+        { photo_journal_title: mapped_create_params[:title],
+          photo_journal_volume: mapped_create_params[:volume] }
+      elsif scan && params[:subtype] == 'book'
+        {
+          photo_journal_title: mapped_create_params[:title],
+          photo_item_author: mapped_create_params[:author],
+          photo_journal_year: mapped_create_params[:date],
+          photo_item_edition: mapped_create_params[:edition],
+          photo_item_place: mapped_create_params[:place],
+          photo_item_publisher: mapped_create_params[:publisher],
+          item_info2: mapped_create_params[:volume]
+        }
+      else
+        { loan_title: mapped_create_params[:title],
+          loan_author: mapped_create_params[:author],
+          loan_date: mapped_create_params[:date],
+          loan_edition: mapped_create_params[:edition],
+          loan_place: mapped_create_params[:place],
+          loan_publisher: mapped_create_params[:publisher],
+          item_info2: mapped_create_params[:volume] }
+      end
+    )
 
     illiad_create_params = IlliadClient::RequestData.with_defaults.with_patron(current_patron).with(
       process_type: 'Borrowing',
@@ -44,8 +63,8 @@ class IllRequestsController < ApplicationController
       request_type: scan ? IlliadClient::UNSET : 'Loan',
       accept_alternate_edition: create_params[:accept_alternate_edition] || IlliadClient::UNSET,
       not_wanted_after: not_wanted_after_param || IlliadClient::UNSET,
-      **title_param,
-      **create_params.except(:title, :not_wanted_after, :accept_alternate_edition, :note).to_h.compact_blank
+      **illiad_params_that_inexplicably_use_different_fields_based_on_the_request_type,
+      **create_params.except(:not_wanted_after, :accept_alternate_edition, :note).to_h.compact_blank
     )
 
     request = illiad_client.create(illiad_create_params)
@@ -108,15 +127,19 @@ class IllRequestsController < ApplicationController
                                            :photo_article_author, :photo_journal_inclusive_pages)
   end
 
+  # The ILLiad fields these parameters map to change based on the type of request and the material type...
+  def mapped_create_params
+    params.require(:illiad_request).permit(:request_type, :title, :author, :date, :edition, :place, :publisher, :volume)
+  end
+
   def create_params
     illiad_params = %w[
-      loan_author
       cited_in issn esp_number item_info2
-      loan_publisher loan_place loan_date loan_edition accept_alternate_edition
+      accept_alternate_edition
       photo_journal_issue photo_journal_month photo_journal_year
       item_info4 not_wanted_after note
       photo_article_title photo_article_author photo_journal_inclusive_pages
     ]
-    params.require(:illiad_request).permit(:title, *illiad_params)
+    params.require(:illiad_request).permit(*illiad_params)
   end
 end
