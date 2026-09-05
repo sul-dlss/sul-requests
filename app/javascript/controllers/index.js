@@ -105,3 +105,6 @@ application.register("submit-message", SubmitMessageController)
 
 import Checkoutscontroller from "./checkouts_controller"
 application.register("checkouts", Checkoutscontroller)
+
+import SerializeTurboSubmitsController from "./serialize_turbo_submits_controller"
+application.register("serialize-turbo-submits", SerializeTurboSubmitsController)
