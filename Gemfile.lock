@@ -89,7 +89,7 @@ GEM
     benchmark (0.5.0)
     bigdecimal (4.1.2)
     bindex (0.8.1)
-    bootsnap (1.25.0)
+    bootsnap (1.26.0)
       msgpack (~> 1.5)
     bootstrap5-kaminari-views (0.0.1)
       kaminari (>= 0.13)
@@ -154,7 +154,7 @@ GEM
       capistrano-one_time_key (>= 0.2.0)
       capistrano-shared_configs
       ed25519
-    domain_name (0.6.20260829)
+    domain_name (0.6.20260902)
     drb (2.2.3)
     dumb_delegator (1.1.0)
     ed25519 (1.4.0)
@@ -188,7 +188,7 @@ GEM
       logger
       ostruct
     htmlbeautifier (1.4.3)
-    htmlentities (4.3.4)
+    htmlentities (4.4.2)
     http (6.0.4)
       http-cookie (~> 1.0)
       llhttp (~> 0.6.1)
@@ -207,7 +207,7 @@ GEM
       activesupport (>= 7.0.0)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
-    json (2.21.2)
+    json (3.0.0)
     jwt (3.2.0)
       base64
     kaminari (1.2.2)
@@ -238,15 +238,15 @@ GEM
     loofah (2.25.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    lookbook (2.3.14)
+    lookbook (2.3.15)
       activemodel
       css_parser
       htmlbeautifier (~> 1.3)
-      htmlentities (~> 4.3.4)
-      marcel (~> 1.0)
+      htmlentities (~> 4.3)
+      marcel (>= 1.0)
       railties (>= 5.0)
       redcarpet (~> 3.5)
-      rouge (>= 3.26, < 5.0)
+      rouge (>= 3.26, < 6.0)
       view_component (>= 2.0)
       yard (~> 0.9)
       zeitwerk (~> 2.5)
@@ -296,7 +296,7 @@ GEM
     okcomputer (1.19.2)
       benchmark
     ostruct (0.6.3)
-    parallel (2.1.0)
+    parallel (2.2.0)
     parser (3.3.12.0)
       ast (~> 2.4.1)
       racc
@@ -389,7 +389,8 @@ GEM
       rack (>= 1.4)
     rexml (3.4.4)
     rotp (6.3.0)
-    rouge (4.7.0)
+    rouge (5.1.0)
+      strscan (~> 3.1)
     rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
@@ -446,7 +447,7 @@ GEM
       rubocop (~> 1.72, >= 1.72.1)
       rubocop-rspec (~> 3.5)
     ruby-progressbar (1.13.0)
-    rubyzip (3.5.0)
+    rubyzip (3.6.0)
     securerandom (0.4.1)
     selenium-webdriver (4.48.0)
       base64 (~> 0.2)
@@ -460,7 +461,7 @@ GEM
       logger (>= 1.7.0)
       rack (>= 3.2.0)
       redis-client (>= 0.29.0)
-    simplecov (1.1.1)
+    simplecov (1.2.0)
     sqlite3 (2.9.6)
       mini_portile2 (~> 2.8.0)
     sqlite3 (2.9.6-x86_64-darwin)
@@ -475,6 +476,7 @@ GEM
     ssrf_filter (1.5.0)
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
+    strscan (3.1.8)
     thor (1.5.0)
     timecop (0.9.11)
     timeout (0.6.1)
@@ -595,4 +597,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-  4.0.19
+  4.0.20
