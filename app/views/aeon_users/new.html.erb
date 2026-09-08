@@ -58,11 +58,11 @@
       <% component.with_title.with_content('Terms') %>
       <% component.with_body do %>
         <%= render 'terms_text' %>
-        <div class="mt-2 px-3 py-2 bg-light d-flex flex-row justify-content-start align-items-baseline gap-2">
+        <div class="mt-2 px-3 py-2 bg-danger-subtle rounded-bottom d-flex flex-row justify-content-start align-items-baseline gap-2">
           <%= f.check_box :aeon_terms, { required: true }, 1, nil %>
           <div>
             <%= f.label :aeon_terms, 'I agree to these terms', class:'fw-bold redesign-required-label d-block' %>
-            By checking this box, you acknowledge and agree to comply with the policies and regulations above.
+            By checking this box, you acknowledge that you have read and agree to these Terms of use and to the policies applicable to the Stanford University Libraries reading rooms and services you use.
           </div>
         </div>
       <% end %>

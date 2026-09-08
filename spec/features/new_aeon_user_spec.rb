@@ -35,6 +35,16 @@ RSpec.describe 'Creating new accounts for patrons', :js do
 
       expect(page).to have_text('New request')
     end
+
+    it 'disables the Continue button until the terms are accepted' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      expect(page).to have_button('Continue', disabled: true)
+
+      check('I agree to these terms')
+
+      expect(page).to have_button('Continue', disabled: false)
+    end
   end
 
   context 'with a name/email user' do
