@@ -138,6 +138,9 @@ libraries:
       location_slug: library-circulation
   EARTH-SCI:
     label: Earth Sciences Library (Branner)
+    contact_info:
+      phone: "(650) 723-2746"
+      email: brannerlibrary@stanford.edu
     folio_pickup_service_point_code: EARTH-SCI
     hold_pseudopatron: HOLD@ES
     hours:
@@ -171,6 +174,9 @@ libraries:
     hours:
       library_slug: englib
       location_slug: library-circulation
+    contact_info:
+      phone: "(650) 723-0001"
+      email: englibrary@stanford.edu
   GREEN:
     label: Green Library
     contact_info:
@@ -194,6 +200,9 @@ libraries:
       library_slug: lane
       location_slug: library-circulation
     unpermitted_pickup_groups: [bus-guest, law-alumni, law-guest, sul-contractprograms, sul-guest, sul-purchased, sul-short-term]
+    contact_info:
+      phone: "(650) 723-6831"
+      email: LaneAskUs@stanford.edu
   LATHROP:
     label: Lathrop Library
     hours:
@@ -227,6 +236,9 @@ libraries:
     hours:
       library_slug: green
       location_slug: media-microtext-center
+    contact_info:
+      phone: "(650) 723-9394"
+      email: mediamicro@stanford.edu
   MUSIC:
     label: Music Library
     contact_info:
@@ -318,6 +330,9 @@ libraries:
     hours:
       library_slug: philosophy
       location_slug: library-circulation
+    contact_info:
+      phone: "(650) 723-1539"
+      email: tanner-library@stanford.edu
 
 locations:
   GRE-HH-SVA:
