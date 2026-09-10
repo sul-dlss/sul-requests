@@ -11,4 +11,8 @@ module EadRequestsHelper
   def collapsible_content_id(prefix:, hierarchy: [], index: nil)
     [prefix, hierarchy.map(&:parameterize), index].compact.flatten.join('-')
   end
+
+  def aeon_request_identifier(request)
+    render Aeon::RequestItemIdentifierComponent.new(request:)
+  end
 end
