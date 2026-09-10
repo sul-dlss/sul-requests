@@ -80,9 +80,6 @@ features:
   requests_redesign: false
   authenticate_name_email_users: false
 
-background_jobs:
-  enabled: false
-
 embed:
   url: https://embed.stanford.edu
 
