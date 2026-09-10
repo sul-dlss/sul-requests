@@ -78,7 +78,11 @@ module Folio
     end
 
     def call_number
-      single_item&.base_callnumber
+      if items.one?
+        single_item&.base_callnumber
+      elsif holdings_records.one?
+        holdings_records.first&.call_number
+      end
     end
 
     alias base_callnumber call_number
