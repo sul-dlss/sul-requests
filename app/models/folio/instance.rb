@@ -78,6 +78,8 @@ module Folio
     end
 
     def call_number
+      return unless items.one?
+
       single_item&.base_callnumber
     end
 
