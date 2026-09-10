@@ -44,6 +44,10 @@ module SULRequests
       manager.default_strategies :shibboleth
     end
 
+    # Set SameSite protection to none so that we can receive POST requests
+    # from Cybersource that include our authentication cookie
+    config.action_dispatch.cookies_same_site_protection = :none
+
     # Load all request types automatically
     config.autoload_paths += %W(#{config.root}/app/mailers/factories #{config.root}/app/models/abilities)
 
