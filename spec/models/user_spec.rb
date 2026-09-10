@@ -152,6 +152,12 @@ RSpec.describe User do
       expect(user).to be_library_id_user
     end
 
+    it 'is false when the user has a sunetid' do
+      user.sunetid = 'jstanford'
+      user.library_id = '12345'
+      expect(user).not_to be_library_id_user
+    end
+
     it 'is false when the user has not supplied a library ID' do
       expect(user).not_to be_library_id_user
     end
@@ -164,7 +170,15 @@ RSpec.describe User do
       expect(user).to be_name_email_user
     end
 
-    it 'is false when the user has not supplied a library ID' do
+    it 'is false when the user has a library id' do
+      user.library_id = '12345'
+      user.name = 'jstanford'
+      user.email = 'jstanford@stanford.edu'
+
+      expect(user).not_to be_name_email_user
+    end
+
+    it 'is false when the user has not supplied information' do
       expect(user).not_to be_name_email_user
     end
   end

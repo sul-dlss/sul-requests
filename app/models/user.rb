@@ -67,10 +67,14 @@ class User < ApplicationRecord
   end
 
   def library_id_user?
+    return false if sso_user?
+
     library_id.present?
   end
 
   def name_email_user?
+    return false if sso_user? || library_id_user?
+
     name.present? && email.present?
   end
 
