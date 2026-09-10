@@ -132,6 +132,9 @@ RSpec.describe 'Checkout Page' do
     within '#checkouts' do
       expect(page).to have_css('.dropdown-toggle', text: 'Sort by due date')
       click_on 'Sort by due date'
+      due_date_order = page.all('ul.checkouts-list li').map { |li| li.find('h2').text }
+
+      expect(due_date_order).to eq ['Blue-collar Broadway', '"See" this sound', 'Music, sound, language, theater']
 
       within '[data-sortable-target="sortMenu"] .dropdown-menu' do
         click_on 'title'
@@ -140,9 +143,8 @@ RSpec.describe 'Checkout Page' do
       expect(page).to have_css('.dropdown-toggle', text: 'Sort by title')
       expect(page).to have_css('.active[data-sortable-sort-param="title"]', visible: :all)
 
-      within(first('ul.checkouts-list li')) do
-        expect(page).to have_text(/Blue-collar Broadway/)
-      end
+      title_order = page.all('ul.checkouts-list li').map { |li| li.find('h2').text }
+      expect(title_order).to eq ['Blue-collar Broadway', 'Music, sound, language, theater', '"See" this sound']
     end
   end
 
