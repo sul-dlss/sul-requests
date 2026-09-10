@@ -17,7 +17,7 @@
 
 <% if @patron_request.selectable_items.one? %>
   <% single_item = @patron_request.selectable_items.first %>
-  <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
+  <% if @patron_request.items_in_location.many? && (single_item.instance.blank? || single_item.instance&.hrid == @patron_request.instance_hrid) %>
     <div class="lead fw-normal mb-4">Call number: <%= callnumber_label(single_item) %></div>
   <% end %>
   <% if single_item.public_note %>
