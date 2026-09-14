@@ -145,3 +145,5 @@ gem 'bot_challenge_page'
 gem 'rotp'
 
 gem "csv", "~> 3.3"
+
+gem 'json', '~> 2.0' # Pinned until Rails 8.1.4 is released https://github.com/rails/rails/issues/58685
