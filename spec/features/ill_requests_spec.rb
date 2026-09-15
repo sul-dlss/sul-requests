@@ -141,7 +141,7 @@ RSpec.describe 'ILL Request Page', :js do
                                                              ))
     end
 
-    it 'submits a new journal scan request to ILLiad' do
+    it 'submits a new journal scan request to ILLiad' do # rubocop:disable RSpec/ExampleLength
       visit new_ill_request_path
       choose 'Email digital scan'
       click_on 'Continue'
@@ -149,6 +149,9 @@ RSpec.describe 'ILL Request Page', :js do
       find('label[for="subtype_article"]').click
 
       fill_in 'Journal', with: 'Test Journal'
+      fill_in 'Volume', with: '42'
+      fill_in 'Issue', with: '3'
+      fill_in 'Year of issue', with: '2023'
       click_on 'Continue'
 
       expect(page).to have_css('[role="alert"]', text: 'Stanford University Libraries reserves the right')

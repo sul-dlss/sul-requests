@@ -103,7 +103,8 @@
         </div>
 
         <div class="mb-3">
-          <%= f.label :volume, 'Volume', class: 'form-label fw-semibold' %>
+          <%= f.label :volume, 'Volume', class: 'form-label fw-semibold', data: { ill_request_target: 'section', ill_request_for_request_subtype: 'book' } %>
+          <%= f.label :volume, 'Volume', class: 'form-label fw-semibold redesign-required-label', data: { ill_request_target: 'section', ill_request_for_request_subtype: 'article' } %>
           <%= f.text_field :volume, class: 'form-control' %>
         </div>
 
@@ -114,16 +115,20 @@
 
         <div data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="article">
           <div class="mb-3">
-            <%= f.label :photo_journal_issue, 'Issue', class: 'form-label fw-semibold' %>
-            <%= f.text_field :photo_journal_issue, class: 'form-control', maxlength: 40 %>
+            <%= f.label :photo_journal_issue, 'Issue', class: 'form-label fw-semibold redesign-required-label' %>
+            <%= f.text_field :photo_journal_issue, class: 'form-control', maxlength: 40, required: true %>
           </div>
+
+          <div class="mb-3">
+            <%= f.label :photo_journal_year, 'Year of issue', class: 'form-label fw-semibold redesign-required-label' %>
+            <%= f.text_field :photo_journal_year, class: 'form-control', maxlength: 20, required: true %>
+
+            <div class="form-text">If year of issue is unknown, enter ????</div>
+          </div>
+
           <div class="mb-3">
             <%= f.label :photo_journal_month, 'Month/day of issue', class: 'form-label fw-semibold' %>
             <%= f.text_field :photo_journal_month, class: 'form-control', maxlength: 40 %>
-          </div>
-          <div class="mb-3">
-            <%= f.label :photo_journal_year, 'Year of issue', class: 'form-label fw-semibold' %>
-            <%= f.text_field :photo_journal_year, class: 'form-control', maxlength: 20 %>
           </div>
         </div>
 
