@@ -137,8 +137,8 @@ input[type="radio"] {
   background-color: #A34444;
 }
 
-.bg-plum {
-  background-color: rgb(var(--stanford-plum-rgb));
+.bg-palo-verde-dark {
+  background-color: rgb(var(--stanford-palo-verde-dark-rgb), 1);
 }
 
 .bg-poppy-darker {
@@ -187,10 +187,6 @@ input[type="radio"] {
 
 .text-lagunita-dark {
   color: rgba(var(--stanford-lagunita-dark-rgb), 1);
-}
-
-.text-plum-dark {
-  color: rgba(var(--stanford-plum-dark-rgb), 1);
 }
 
 .text-poppy-darker {
