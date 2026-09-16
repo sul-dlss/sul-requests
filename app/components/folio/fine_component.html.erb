@@ -2,14 +2,14 @@
   <% c.with_title do %>
     <div class="d-flex flex-row gap-4 align-items-center">
       <%= render PillComponent.new(classes: %w[status bg-plum text-white text-nowrap]).with_content(fine.status_label) %>
-      <% if checked_out? %>
-        <span class="small ms-2">Payment cannot be processed until item is returned</span>
-      <% end %>
     </div>
   <% end %>
   <% c.with_actions do %>
     <% if checked_out? %>
-      <%= render Folio::CheckedOutActionsComponent.new(checkout: fine) %>
+      <div class="d-flex flex-column text-end">
+        <%= render Folio::CheckedOutActionsComponent.new(checkout: fine) %>
+        <span class="small ms-2">Payment cannot be processed until item is returned</span>
+      </div>
     <% else %>
       <%= render Folio::FineActionsComponent.new(fine:) %>
       <%= render Folio::FineStatusPillComponent.new(fine: fine) %>
