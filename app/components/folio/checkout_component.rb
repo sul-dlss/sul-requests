@@ -44,8 +44,8 @@ module Folio
     end
 
     def status_pill_html
-      return safe_join([tag.i(class: 'bi bi-exclamation-triangle me-1'), 'Recalled']) if checkout.recalled?
-      return safe_join([tag.i(class: 'bi bi-exclamation-triangle me-1'), 'Overdue']) if checkout.overdue? || checkout.lost?
+      return safe_join([tag.i(class: 'bi bi-exclamation-triangle-fill me-1'), 'Recalled']) if checkout.recalled?
+      return safe_join([tag.i(class: 'bi bi-exclamation-triangle-fill me-1'), 'Overdue']) if checkout.overdue? || checkout.lost?
 
       nil
     end
@@ -59,7 +59,7 @@ module Folio
     def checkout_status_pill
       return unless status_pill_html
 
-      render PillComponent.new(classes: %w[text-digital-red-dark bg-digital-red-10 text-nowrap]).with_content(status_pill_html)
+      tag.span status_pill_html, class: 'status-pill text-cardinal text-nowrap fw-semibold'
     end
 
     def contact_email
