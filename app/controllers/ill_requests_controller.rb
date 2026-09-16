@@ -44,7 +44,7 @@ class IllRequestsController < ApplicationController
           photo_item_edition: mapped_create_params[:edition],
           photo_item_place: mapped_create_params[:place],
           photo_item_publisher: mapped_create_params[:publisher],
-          item_info2: mapped_create_params[:volume]
+          photo_journal_volume: mapped_create_params[:volume]
         }
       else
         { loan_title: mapped_create_params[:title],
