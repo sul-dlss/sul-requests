@@ -47,13 +47,20 @@ class IllRequestsController < ApplicationController
           item_info2: mapped_create_params[:volume]
         }
       else
+        item_info3 = if ActiveModel::Type::Boolean.new.cast(mapped_create_params[:electronic_format_ok]) == false
+                       'Print Required'
+                     else
+                       'E Version Acceptable'
+                     end
+
         { loan_title: mapped_create_params[:title],
           loan_author: mapped_create_params[:author],
           loan_date: mapped_create_params[:date],
           loan_edition: mapped_create_params[:edition],
           loan_place: mapped_create_params[:place],
           loan_publisher: mapped_create_params[:publisher],
-          item_info2: mapped_create_params[:volume] }
+          item_info2: mapped_create_params[:volume],
+          item_info3: item_info3 }
       end
     )
 
@@ -129,7 +136,8 @@ class IllRequestsController < ApplicationController
 
   # The ILLiad fields these parameters map to change based on the type of request and the material type...
   def mapped_create_params
-    params.require(:illiad_request).permit(:request_type, :title, :author, :date, :edition, :place, :publisher, :volume)
+    params.require(:illiad_request).permit(:request_type, :electronic_format_ok, :title, :author, :date, :edition, :place, :publisher,
+                                           :volume)
   end
 
   def create_params
