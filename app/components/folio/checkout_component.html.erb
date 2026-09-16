@@ -10,8 +10,10 @@
         <span class="fw-semibold"><%= today_with_time_or_date(checkout.due_date, short_term: checkout.short_term_loan?) %></span>
       </div>
 
-      <%= checkout_status_pill %>
-      <span class="text-digital-red-dark"><%= header_message %></span>
+      <div class="d-flex flex-column">
+        <%= checkout_status_pill %>
+        <span class="text-80-black"><%= header_message %></span>
+      </div>
     </div>
      <% if patron.can_renew? && renewable? %>
       <%= form_tag renew_checkout_path(checkout.item_id), method: :post do %>

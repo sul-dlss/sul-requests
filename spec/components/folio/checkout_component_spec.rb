@@ -50,7 +50,7 @@ RSpec.describe Folio::CheckoutComponent, type: :component do
     end
 
     it 'shows the reason next to the due date' do
-      expect(page).to have_css('.card-header .text-digital-red-dark', text: 'Too soon to renew')
+      expect(page).to have_css('.card-header', text: 'Too soon to renew')
     end
   end
 
