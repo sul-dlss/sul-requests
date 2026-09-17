@@ -9,6 +9,7 @@ RSpec.describe 'Home Page' do
 
   describe 'layout' do
     before do
+      allow(Settings.features).to receive(:requests_redesign).and_return(false)
       visit root_path
     end
 
