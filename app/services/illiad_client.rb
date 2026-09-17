@@ -128,8 +128,8 @@ class IlliadClient
   end
 
   def create_transaction_note(transaction_number:, note:)
-    connection.post("ILLiadWebPlatform/Transaction/#{transaction_number}/Note", { Note: note, NoteType: 'Staff' },
-                    content_type: 'application/json')
+    response = connection.post("ILLiadWebPlatform/Transaction/#{transaction_number}/Notes", { Note: note, NoteType: 'Staff' },
+                               content_type: 'application/json')
 
     handle_response(response)
   end
