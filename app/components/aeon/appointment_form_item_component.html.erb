@@ -1,7 +1,11 @@
 <li data-controller="selected-item-form" data-action="input->selected-item-form#updateStatus" class="appointments-item rounded mb-2 d-grid column-gap-3 text-nowrap" data-content-id="<%= dom_id %>">
   <i class="bi bi-check2 selected-item-status"></i>
-  <div class="appt-title text-wrap">
-    <span class="text-black fw-semibold selected-item-title"><%= title %></span>
+  <div id="<%= item_label_element_id %>" class="appt-title text-wrap">
+    <% if request %>
+      <%= render Aeon::RequestItemIdentifierComponent.new(request:, classes: %w[request-item-identifier text-black fw-semibold text-pretty selected-item-title]) %>
+    <% else %>
+      <span class="text-black fw-semibold selected-item-title"><%= item_label %></span>
+    <% end %>
   </div>
   <div class="appt-actions d-flex flex-wrap gap-2">
     <button class="btn btn-link p-0 ps-1 d-none su-underline fs-14" data-action="view-container-contents#openViewModal"
@@ -13,11 +17,11 @@
       <i class="bi bi-pin-angle-fill me-1" aria-hidden></i>Save for later
     </button>
     <% end %>
-    <button class="btn btn-link p-0 ps-1 su-underline fs-14 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>">
-      <i class="bi bi-trash" aria-hidden></i>Delete <span class="visually-hidden"><%= title %></span>
+    <button class="btn btn-link p-0 ps-1 su-underline fs-14 selected-item-remove" data-action="item-selector#remove" data-item-selector-id-param="<%= dom_id %>" aria-labelledby="<%= delete_label_element_id %> <%= item_label_element_id %>">
+      <i class="bi bi-trash" aria-hidden></i><span id="<%= delete_label_element_id %>">Delete</span>
     </button>
   </div>
-  <%= fields_for base_name, object do |f| %>
+  <%= fields_for base_name, request do |f| %>
     <div class="appt-select d-flex flex-wrap align-items-center column-gap-2 row-gap-1">
       <div class="fs-6 mb-0 w-100 form-label fw-semibold redesign-required-label possibly-visually-hidden-appointments-label">Appointment</div>
       <div class="dropdown custom-select flex-grow-1 flex-md-grow-0" data-controller="appointment-select" data-action="change->appointment-select#updateSelected input->appointment-select#updateSelected appointment-select:change@document->appointment-select#updateItemCounts">
