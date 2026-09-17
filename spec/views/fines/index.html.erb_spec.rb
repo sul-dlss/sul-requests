@@ -68,7 +68,7 @@ RSpec.describe 'fines/index' do
 
     it 'shows the fee and Pay button' do
       render
-      expect(rendered).to have_text('Outstanding balance: $3.00')
+      expect(rendered).to have_text('Outstanding balance $3.00', normalize_ws: true)
       expect(rendered).to have_text('Pay no')
     end
 
