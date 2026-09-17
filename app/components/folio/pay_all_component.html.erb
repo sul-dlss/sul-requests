@@ -1,0 +1,22 @@
+<div class="d-flex flex-row align-items-center justify-content-between gap-3 my-3">
+  <div>
+    <h2 class="fs-6 mb-0 fw-normal text-80-black">Outstanding balance</h2>
+    <div class="text-cardinal fw-semibold fs-2"><%= number_to_currency(amount) %></div>
+  </div>
+  <div>
+    <% if patron.can_pay_fines? %>
+      <%= form_tag payments_path, data: { turbo: false }, method: :post do %>
+        <%= hidden_field_tag :user_id, patron.key %>
+        <%= hidden_field_tag :amount, format('%.2f', amount) %>
+        <% fines.each do |fine| %>
+          <%= hidden_field_tag 'fine_ids[]', fine.key %>
+        <% end %>
+        <%= button_tag class: 'btn btn-secondary p-2', type: 'submit', data: { 'pay-button' => true } do %>
+          <span class="mx-1">Pay now</span>
+        <% end %>
+      <% end %>
+    <% else %>
+      <button class="btn btn-info" disabled><%= render Icons::PaymentComponent.new %> Payments blocked</button>
+    <% end %>
+  </div>
+</div>

@@ -18,12 +18,7 @@
 
   <div class="tab-content">
     <div id="active-tab" class="tab-pane fade <%= 'show active' unless params[:past] %>">
-      <% if @fines.any? %>
-        <div class="d-flex flex-row align-items-center gap-3 my-3">
-          <span class="text-cardinal">Outstanding balance: <strong><%= number_to_currency(@fines.sum(&:owed)) %></strong></span>
-          <%= render 'fines/pay_all_button' %>
-        </div>
-      <% end %>
+      <%= render Folio::PayAllComponent.new(patron: patron_or_group) %>
       <% if @fines_and_accruing.any? %>
         <ul class="fines ps-0">
           <% @fines_and_accruing.each do |item| %>

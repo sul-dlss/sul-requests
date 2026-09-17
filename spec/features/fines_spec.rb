@@ -18,7 +18,7 @@ RSpec.describe 'Fines Page' do
 
   context 'with fines' do
     it 'totals all the fines into the header' do
-      expect(page).to have_text('Outstanding balance: $325.00')
+      expect(page).to have_text('Outstanding balance $325.00', normalize_ws: true)
     end
 
     it 'renders a list item for every fine' do
