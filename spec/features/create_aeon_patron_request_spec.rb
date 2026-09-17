@@ -20,111 +20,115 @@ RSpec.describe 'Creating an Aeon patron request', :js do
     stub_folio_instance_json(build(folio_instance))
   end
 
-  describe 'reading room info' do
+  describe 'with the old experience' do
     before do
-      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
+      allow(Settings.features).to receive_messages(requests_redesign: false)
     end
 
-    it 'identifies the library of the item' do
-      expect(page).to have_text 'Special Collections access'
-    end
-
-    it 'provides a link to the reading room info for the library of the item' do
-      expect(page).to have_link 'Special Collections Reading Room service page', href: 'https://library.stanford.edu/spc/using-our-collections'
-    end
-
-    context 'when the item is in SAL3 but will be paged to a reading room' do
-      let(:folio_instance) { :sal3_as_holding }
-
-      it 'provides a link to the appropriate reading room' do
-        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-PAGE-AS')
-        expect(page).to have_link 'Archive of Recorded Sound Reading Room service page', href: 'https://library.stanford.edu/libraries/archive-recorded-sound'
-      end
-    end
-
-    context 'when there are multiple items' do
-      let(:folio_instance) { :special_collections_holdings }
-
-      it 'identifies the reading room where the items will be prepared' do
+    describe 'reading room info' do
+      before do
         visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
-        expect(page).to have_button('Continue', disabled: true)
-        check 'ABC 123'
-        check 'ABC 321'
-        click_on 'Continue'
-        expect(page).to have_text 'Use in: Special Collections & University Archives Reading Room'
-      end
-    end
-  end
-
-  context 'with an item without a finding aid' do
-    before do
-      visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
-    end
-
-    context 'with a single holding' do
-      it 'provides instructions for the user to complete the request' do
-        expect(page).to have_text 'Complete the request form'
       end
 
-      it 'goes to aeon when submitted' do
-        expect(page).to have_css('form[action^="https://stanford.aeon.atlas-sys.com/"')
-        within('form[action^="https://stanford.aeon.atlas-sys.com/"]') do
-          expect(page).to have_button('Continue')
+      it 'identifies the library of the item' do
+        expect(page).to have_text 'Special Collections access'
+      end
+
+      it 'provides a link to the reading room info for the library of the item' do
+        expect(page).to have_link 'Special Collections Reading Room service page', href: 'https://library.stanford.edu/spc/using-our-collections'
+      end
+
+      context 'when the item is in SAL3 but will be paged to a reading room' do
+        let(:folio_instance) { :sal3_as_holding }
+
+        it 'provides a link to the appropriate reading room' do
+          visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-PAGE-AS')
+          expect(page).to have_link 'Archive of Recorded Sound Reading Room service page', href: 'https://library.stanford.edu/libraries/archive-recorded-sound'
         end
       end
 
-      describe 'request form' do
-        it 'includes an identifier for the system making the request' do
-          expect(page).to have_field(type: 'hidden', name: 'SystemID', with: 'sul-requests')
-        end
+      context 'when there are multiple items' do
+        let(:folio_instance) { :special_collections_holdings }
 
-        it 'uses the aeon form for a monograph' do
-          expect(page).to have_field(type: 'hidden', name: 'WebRequestForm', with: 'GenericRequestMonograph')
-          expect(page).to have_field(type: 'hidden', name: 'DocumentType', with: 'Monograph')
-        end
-
-        it 'preselects the correct reading room to fulfill the request' do
-          expect(page).to have_field(type: 'hidden', name: 'Site', with: 'SPECUA')
-        end
-
-        it 'includes a link to view the item in searchworks' do
-          expect(page).to have_field(type: 'hidden', name: 'ItemInfo1', with: 'https://searchworks.stanford.edu/view/1234')
-        end
-
-        it 'includes the origin location of the item' do
-          expect(page).to have_field(type: 'hidden', name: 'Location', with: 'SPEC-STACKS')
-        end
-
-        it 'includes the title of the item' do
-          expect(page).to have_field(type: 'hidden', name: 'ItemTitle', with: 'Special Collections Item Title')
-        end
-
-        it 'includes the author of the item' do
-          expect(page).to have_field(type: 'hidden', name: 'ItemAuthor', with: 'John Q. Public')
-        end
-
-        it 'includes the publication date of the item' do
-          expect(page).to have_field(type: 'hidden', name: 'ItemDate', with: '2018')
-        end
-
-        it 'includes the request index' do
-          expect(page).to have_field(type: 'hidden', name: 'Request', with: '1')
-        end
-
-        it 'includes the call number of the item' do
-          expect(page).to have_field(type: 'hidden', name: 'CallNumber_1', with: 'ABC 123')
-        end
-
-        it 'includes the barcode of the item' do
-          expect(page).to have_field(type: 'hidden', name: 'ItemNumber_1', with: '3610512345678')
+        it 'identifies the reading room where the items will be prepared' do
+          visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
+          expect(page).to have_button('Continue', disabled: true)
+          check 'ABC 123'
+          check 'ABC 321'
+          click_on 'Continue'
+          expect(page).to have_text 'Use in: Special Collections & University Archives Reading Room'
         end
       end
     end
 
-    describe 'with multiple holdings' do
-      let(:folio_instance) { :special_collections_holdings }
+    context 'with an item without a finding aid' do
+      before do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SPEC-STACKS')
+      end
 
-      describe 'item selector' do
+      context 'with a single holding' do
+        it 'provides instructions for the user to complete the request' do
+          expect(page).to have_text 'Complete the request form'
+        end
+
+        it 'goes to aeon when submitted' do
+          expect(page).to have_css('form[action^="https://stanford.aeon.atlas-sys.com/"')
+          within('form[action^="https://stanford.aeon.atlas-sys.com/"]') do
+            expect(page).to have_button('Continue')
+          end
+        end
+
+        describe 'request form' do
+          it 'includes an identifier for the system making the request' do
+            expect(page).to have_field(type: 'hidden', name: 'SystemID', with: 'sul-requests')
+          end
+
+          it 'uses the aeon form for a monograph' do
+            expect(page).to have_field(type: 'hidden', name: 'WebRequestForm', with: 'GenericRequestMonograph')
+            expect(page).to have_field(type: 'hidden', name: 'DocumentType', with: 'Monograph')
+          end
+
+          it 'preselects the correct reading room to fulfill the request' do
+            expect(page).to have_field(type: 'hidden', name: 'Site', with: 'SPECUA')
+          end
+
+          it 'includes a link to view the item in searchworks' do
+            expect(page).to have_field(type: 'hidden', name: 'ItemInfo1', with: 'https://searchworks.stanford.edu/view/1234')
+          end
+
+          it 'includes the origin location of the item' do
+            expect(page).to have_field(type: 'hidden', name: 'Location', with: 'SPEC-STACKS')
+          end
+
+          it 'includes the title of the item' do
+            expect(page).to have_field(type: 'hidden', name: 'ItemTitle', with: 'Special Collections Item Title')
+          end
+
+          it 'includes the author of the item' do
+            expect(page).to have_field(type: 'hidden', name: 'ItemAuthor', with: 'John Q. Public')
+          end
+
+          it 'includes the publication date of the item' do
+            expect(page).to have_field(type: 'hidden', name: 'ItemDate', with: '2018')
+          end
+
+          it 'includes the request index' do
+            expect(page).to have_field(type: 'hidden', name: 'Request', with: '1')
+          end
+
+          it 'includes the call number of the item' do
+            expect(page).to have_field(type: 'hidden', name: 'CallNumber_1', with: 'ABC 123')
+          end
+
+          it 'includes the barcode of the item' do
+            expect(page).to have_field(type: 'hidden', name: 'ItemNumber_1', with: '3610512345678')
+          end
+        end
+      end
+
+      describe 'with multiple holdings' do
+        let(:folio_instance) { :special_collections_holdings }
+
         describe 'with no items selected' do
           it 'disables request indices' do
             expect(page).to have_button('Continue', disabled: true)
@@ -161,17 +165,17 @@ RSpec.describe 'Creating an Aeon patron request', :js do
           end
         end
       end
-    end
 
-    describe 'for an item with a finding aid' do
-      let(:folio_instance) { :special_collections_finding_aid_holdings }
+      describe 'for an item with a finding aid' do
+        let(:folio_instance) { :special_collections_finding_aid_holdings }
 
-      it 'provides instructions for the user to complete the request' do
-        expect(page).to have_text 'Review the Collection Guide in external archival repository'
-      end
+        it 'provides instructions for the user to complete the request' do
+          expect(page).to have_text 'Review the Collection Guide in external archival repository'
+        end
 
-      it 'visits the Stanford finding if one exists' do
-        expect(page).to have_css('form[action^="https://archives.stanford.edu"')
+        it 'visits the Stanford finding if one exists' do
+          expect(page).to have_css('form[action^="https://archives.stanford.edu"')
+        end
       end
     end
   end
