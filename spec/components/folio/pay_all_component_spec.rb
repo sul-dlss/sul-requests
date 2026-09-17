@@ -2,12 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe 'fines/_pay_all_button' do
-  subject(:output) { Capybara.string rendered.to_s }
-
+RSpec.describe Folio::PayAllComponent, type: :component do
   let(:patron) do
     instance_double(Folio::Patron, key: '513a9054-5897-11ee-8c99-0242ac120002', fines:, can_pay_fines?: true)
   end
+
   let(:fines) do
     [
       instance_double(Folio::Account, owed: 3, key: '4085f2b-80f4-431d-ac3c-25cc2b62d4f6'),
@@ -15,28 +14,19 @@ RSpec.describe 'fines/_pay_all_button' do
     ]
   end
 
-  before do
-    without_partial_double_verification do
-      allow(view).to receive(:patron_or_group).and_return(patron)
-    end
-  end
-
   it 'renders a button' do
-    render
-
-    expect(output).to have_button 'Pay now'
+    render_inline(described_class.new(patron: patron))
+    expect(page).to have_button 'Pay now'
   end
 
   context 'when the patron is e.g. blocked and unable to renew material' do
     before do
       allow(patron).to receive(:can_pay_fines?).and_return(false)
+      render_inline(described_class.new(patron: patron))
     end
 
     it 'renders a disabled button' do
-      render
-
-      button = output.find('button', text: 'Payments blocked')
-      expect(button).to be_disabled
+      expect(page).to have_css('button[disabled]', text: 'Payments blocked')
     end
   end
 end
