@@ -20,7 +20,7 @@
     <% end %>
 
     <div class="mb-3">
-      <%= f.label :date, class: "form-label fw-semibold redesign-required-label" %>
+      <%= f.label :date, class: "form-label fw-semibold required-label" %>
       <% existing_appointments = @appointments.for_reading_room(@appointment.reading_room).map(&:date).map(&:iso8601) %>
       <div class="d-flex align-items-center gap-3">
         <%= render DatePickerComponent.new(:date, form: f,

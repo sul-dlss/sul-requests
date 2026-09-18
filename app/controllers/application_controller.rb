@@ -7,11 +7,7 @@ class ApplicationController < ActionController::Base
   layout :determine_layout
 
   def determine_layout
-    if use_requests_redesign?
-      'application_redesign'
-    else
-      'application'
-    end
+    'application'
   end
 
   # Prevent CSRF attacks by raising an exception.
@@ -32,15 +28,11 @@ class ApplicationController < ActionController::Base
     @request_feature_flags ||= cookies[:feature_flags].to_s.split(',').map(&:strip)
   end
 
-  def use_requests_redesign?
-    Settings.features.requests_redesign || request_feature_flags.include?('requests_redesign')
-  end
-
   def authenticate_user!
     redirect_to root_url unless sso_user?
   end
 
-  helper_method :current_user, :sso_user?, :request_feature_flags, :use_requests_redesign?
+  helper_method :current_user, :sso_user?, :request_feature_flags
 
   private
 

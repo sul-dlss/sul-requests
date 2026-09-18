@@ -7,7 +7,6 @@
 class PatronRequestMailer < ApplicationMailer
   helper :requests
   helper :icons
-  helper_method :use_requests_redesign?
 
   def confirmation_email(patron_request)
     return unless patron_request.patron_email
@@ -33,9 +32,5 @@ class PatronRequestMailer < ApplicationMailer
 
   def from_address
     %("Stanford Libraries Requests" <#{@patron_request.contact_info[:email] || 'sul-requests-support@stanford.edu'}>)
-  end
-
-  def use_requests_redesign?
-    Settings.features.requests_redesign
   end
 end

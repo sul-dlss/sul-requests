@@ -1,102 +1,138 @@
 <% content_for :page_title do %>Request: <%= @patron_request.item_title %><% end %>
+<%= flash_column_classes 'col-12 col-lg-9' %>
 
-<div class="col-lg-8">
-  <%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+<div class="row">
+  <div class="col-12 col-lg-9">
+    <%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+  </div>
 </div>
 
 <%= render 'messages', messages: @patron_request.active_messages %>
 
-<h1 class="fw-semibold mt-4 fs-1"><%= @patron_request.item_title %></h1>
-<% if @patron_request.selectable_items.one? %>
-  <% single_item = @patron_request.selectable_items.first %>
-  <% unless single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
-    <div class="lead fw-normal mb-4">Call number: <%= callnumber_label(single_item) %></div>
-  <% end %>
-  <% if single_item.public_note %>
-    <span class="text-cardinal d-block ms-4">
-      <%= single_item.public_note %>
-    </span>
-  <% end %>
+<div class="mt-4">
+<h1 class="mb-4"> New request </h1>
 
-  <% if single_item.bound_with_holdings_per_item.any? && (single_item.instance.nil? || single_item.instance&.hrid == @patron_request.instance_hrid) %>
-    <div class="card col-lg-8 shadow-sm">
-      <div class="card-header h4 bg-light">This item is bound with</div>
-      <ul class="list-group list-group-flush">
-        <% single_item.bound_with_holdings_per_item.each do |bound_with_child| %>
-          <li class="list-group-item d-flex bg-light">
-            <span class="me-auto"><%= bound_with_child.instance.title %></span>
-            <span class="text-nowrap"><%= bound_with_child.call_number %></span>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
 
-  <% if single_item.instance && single_item.instance&.hrid != @patron_request.instance_hrid %>
-    <div class="lead fw-normal mb-4">Call number: <%= @patron_request.folio_instance.holdings_records.first.call_number %></div>
+<div class="row">
+  <div class="col-12 col-lg-9">
 
-    <div class="card col-lg-8 shadow-sm">
-      <div class="card-header h4 bg-light">This item is bound and shelved with</div>
-      <div class="card-body bg-light">
-        <div><%= single_item.instance.title %></div>
-        <div>Call number: <%= callnumber_label(single_item) %></div>
-      </div>
-    </div>
+    <%= render RecordHeaderComponent.new(record: @patron_request.bib_record) %>
+    <%= render 'contact_brief' %>
+
+    <%= form_for(@patron_request,
+                 data: {
+                   controller: 'patron-request accordion-form item-selector save-for-later view-container-contents',
+                   action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged manual-items:changed->item-selector#syncFromManualItems manual-items:changed->accordion-form#reenableNextButtons',
+                   'patron-request-type-value': 'aeon',
+                 },
+                 html: { class: 'accordion' },
+                 url: patron_requests_path,
+                 method: 'POST') do |f| %>
+<% step_enum = Enumerator.new { |y| n = 0; loop { y << (n += 1) } } %>
+<% current_step = nil %>
+<% scan_or_pickup_step = nil %>
+<%= f.hidden_field :instance_hrid %>
+<%= f.hidden_field :origin_location_code %>
+<% f.object.requested_barcodes&.each do |barcode| %>
+  <%= f.hidden_field :requested_barcodes, multiple: true, value: barcode %>
+<% end if f.object.selectable_items.any? %>
+<% if f.object.selectable_items.one? %>
+  <% single_item = f.object.selectable_items.first %>
+  <%= f.hidden_field :item_ids, multiple: true, value: single_item&.id %>
+<% end %>
+<%= f.hidden_field :ead_url if f.object.ead_url.present? %>
+<%# only allow submitting on enter if the final submit button is focused %>
+<%# see: https://stackoverflow.com/a/51507806 %>
+<button type="submit" disabled style="display: none" aria-hidden="true"></button>
+
+<%= render AccordionStepComponent.new(id: 'request-type', step_index: step_enum.next, form_id: f.id) do |c| %>
+  <% c.with_title.with_content('Request type') %>
+  <% c.with_body do %>
+      <%= render 'reading_or_digitization', f: %>
   <% end %>
 <% end %>
 
-<%= form_for(@patron_request,
-             data: { controller: 'patron-request accordion-form item-selector', action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->patron-request#showHideItemGroups item-selector:changed->accordion-form#typeValueChanged' },
-             html: { class: 'col-lg-8 accordion' },
-             url: @patron_request.aeon_form_target,
-             method: @patron_request.finding_aid? ? 'GET' : 'POST') do |f| %>
-  <% step_enum = Enumerator.new { |y| n = 0; loop { y << (n += 1) } } %>
-  <% current_step = nil %>
-  <% scan_or_pickup_step = nil %>
-  <%= f.hidden_field :instance_hrid %>
-  <%= f.hidden_field :origin_location_code %>
-  <% f.object.requested_barcodes&.each do |barcode| %>
-    <%= f.hidden_field :requested_barcodes, multiple: true, value: barcode %>
-  <% end if f.object.selectable_items.any? %>
-  <%= f.hidden_field :aeon_system_id, name: 'SystemID', value: 'sul-requests' %>
-  <%= f.hidden_field :aeon_request_form, name: 'WebRequestForm', value: 'GenericRequestMonograph' %>
-  <%= f.hidden_field :aeon_document_type, name: 'DocumentType', value: 'Monograph' %>
-  <%= f.hidden_field :aeon_site, name: 'Site', value: f.object.aeon_site %>
-  <%= f.hidden_field :aeon_location, name: 'Location', value: f.object.origin_location_code %>
-  <%= f.hidden_field :aeon_title, name: 'ItemTitle', value: f.object.folio_instance.title %>
-  <%= f.hidden_field :aeon_author, name: 'ItemAuthor', value: f.object.folio_instance.author %>
-  <%= f.hidden_field :aeon_date, name: 'ItemDate', value: f.object.folio_instance.pub_date %>
-  <%= f.hidden_field :item_url, name: 'ItemInfo1', value: f.object.view_url %>
-  <% if f.object.selectable_items.one? %>
-    <% single_item = f.object.selectable_items.first %>
-    <%= f.hidden_field :item_ids, multiple: true, value: single_item.id %>
-    <%= f.hidden_field :aeon_request_index, name: 'Request', value: 1 %>
-    <%= f.hidden_field :aeon_callnumber, name: 'CallNumber_1', value: single_item.callnumber %>
-    <%= f.hidden_field :aeon_barcode, name: 'ItemNumber_1', value: single_item.barcode %>
+
+<!-- item selector -->
+
+<% if f.object.ead_doc %>
+  <%= render AccordionStepComponent.new(id: 'items', step_index: step_enum.next, form_id: f.id) do |component| %>
+    <% component.with_title.with_content('Items') %>
+    <% component.with_body do %>
+      <% if f.object.ead_doc.series_and_subseries.present? %>
+        <div data-controller="archives-series ead-search">
+          <div class="mb-2 d-flex flex-wrap gap-2 align-items-center">
+            <div>Use checkboxes to select items.</div>
+            <!--TODO: pull out text into template?-->
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-link p-0 su-underline text-start" data-action="click->archives-series#expandAll"><i class="bi bi-chevron-double-right me-1"></i>Expand all (see full content list)</button>
+              <button class="btn btn-link p-0 su-underline text-start" data-action="click->archives-series#collapseAll"><i class="bi bi-chevron-double-down me-1"></i>Collapse all</button>
+            </div>
+          </div>
+          <% if f.object.ead_doc.digital_content? %>
+            <div class="mb-2"><%= render Icons::OnlineComponent.new classes: 'me-1 align-text-bottom text-digital-blue' %><span class="fw-semibold">Digital content</span> - Some materials from this collection are available online.</div>
+          <% end %>
+          <div class="my-3">
+            <div class="input-group input-group-sm position-relative ead-search-input-group">
+              <span class="input-group-text bg-white border-end-0" aria-hidden="true"><i class="bi bi-search"></i></span>
+              <input type="search" class="form-control form-control-sm border-start-0 ps-1 rounded-end-1 ead-search-input"
+                     placeholder="Search contents"
+                     autocomplete="off"
+                     aria-controls="series-contents-container"
+                     data-ead-search-target="input"
+                     data-action="input->ead-search#onInput keydown->ead-search#onKeydown">
+              <div class="ead-search-overlay d-none position-absolute top-50 end-0 translate-middle-y d-flex align-items-center gap-2 pe-2"
+                   data-ead-search-target="countPill">
+                <span class="small rounded-pill bg-stanford-10-black d-inline-flex align-items-center px-2 py-0 fw-semibold"
+                      role="status" aria-live="polite">
+                  <button type="button" class="btn btn-sm btn-link p-0 text-digital-blue border-0"
+                          aria-label="Previous match"
+                          data-ead-search-target="prevButton"
+                          data-action="click->ead-search#prev"><i class="bi bi-arrow-left-short fs-6"></i></button>
+                  <span class="mx-2" data-ead-search-target="countText"></span>
+                  <button type="button" class="btn btn-sm btn-link p-0 text-digital-blue border-0"
+                          aria-label="Next match"
+                          data-ead-search-target="nextButton"
+                          data-action="click->ead-search#next"><i class="bi bi-arrow-right-short fs-6"></i></button>
+                </span>
+                <button type="button" class="btn btn-sm btn-link p-0 text-body"
+                        aria-label="Clear search"
+                        data-ead-search-target="clearButton"
+                        data-action="click->ead-search#clear"><i class="bi bi-x-lg"></i></button>
+              </div>
+            </div>
+          </div>
+          <%# Loop through each series in the collection %>
+          <div class="series-contents-container" data-ead-search-target="tree">
+            <%= render partial: 'ead_series_contents', locals: { contents: Ead::DisplayGroup.build_display_groups(f.object.ead_doc.series_and_subseries), f: f, series_title: nil, parent_title: nil, nested: false } %>
+          </div>
+        </div>
+      <% else %>
+        <p class="mb-2">Enter the containers you want to request.</p>
+        <div id="manual-items-container" data-controller="manual-items" data-action="save-for-later:changed@document->manual-items#syncSavedForLater" class="d-flex flex-column">
+          <div data-manual-items-target="rows"></div>
+
+          <button class="btn btn-link px-0 text-black mt-1 align-self-start" data-action="manual-items#addRow accordion-form#enableNextButton">
+            <i class="bi bi-plus-square-fill text-green me-1"></i>Add container
+          </button>
+
+          <template data-manual-items-target="template">
+            <div data-manual-items-row class="mt-2">
+              <%= fields_for "patron_request[aeon_item][__NEW_ROW__]" do |form_fields| %>
+                <%= form_fields.text_field :title, placeholder: 'e.g., Box 1, Reel 5', required: true, data: { action: 'manual-items#emitChange' } %>
+                <%= form_fields.hidden_field :id %>
+              <% end %>
+              <button class="btn btn-link ms-3 px-0 text-black" data-action="manual-items#removeRow">
+                <i class="bi bi-dash-square-fill text-danger me-1"></i>Delete
+              </button>
+            </div>
+          </template>
+        </div>
+      <% end %>
+    <% end %>
   <% end %>
-  <%# only allow submitting on enter if the final submit button is focused %>
-  <%# see: https://stackoverflow.com/a/51507806 %>
-  <button type="submit" disabled style="display: none" aria-hidden="true"></button>
-
-  <!-- aeon items usage note -->
-  <div class="alert alert-warning alert-dismissible shadow-sm d-flex gap-3 align-items-center mt-3">
-    <i class="bi bi-exclamation-triangle-fill fs-3"></i>
-    <div>
-      <span class="fw-bold">
-        <%= t('aeon_pages.info_modal.header', library: LibraryLocation.library_name_by_code(f.object.aeon_reading_room_code)) %>
-      </span>
-      <br>
-      <span>
-        <%= t('aeon_pages.info_modal.reading_room_info') %>
-        <%= t('aeon_pages.info_modal.more_details_html', library: LibraryLocation.library_name_by_code(f.object.aeon_reading_room_code), reading_room_url: Settings.libraries[f.object.aeon_reading_room_code].reading_room_url) %>
-      </span>
-    </div>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-
-  <!-- item selector -->
-  <div data-controller="item-selector" data-item-selector-request-type-value="pickup" data-action="item-selector:changed->patron-request#showItemSelector">
-  <% if f.object.selectable_items.many? && (can?(:request_scan, f.object) || can?(:request_pickup, f.object)) && !f.object.finding_aid? %>
+<% else %>
+  <% if f.object.selectable_items.many? %>
     <%= render 'item_selector', f: f, step_enum: step_enum %>
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -109,69 +145,73 @@
       </div>
     </div>
   <% end %>
-
-  <!-- aeon request -->
-  <%= render AccordionStepComponent.new(
-    request: f.object,
-    id: 'aeon',
-    step_index: step_enum.next,
-    form_id: f.id,
-    data: { 'patronrequest-forRequestType': 'aeon' },
-    submit: true,
-    submit_text: t('aeon_pages.new.continue_button')) do |c| %>
-    <% c.with_title.with_content('Aeon request') %>
-    <% c.with_body do %>
-      <% if f.object.selectable_items.many? && !f.object.finding_aid? %>
-      <div class="selected-items-group selected-items-container">
-        <div class="card">
-          <div class="card-body bg-light rounded">
-            <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
-              <div class="text-black fw-semibold">Selected items</div>
-                <div class="text-cardinal">
-                  <span data-patron-request-target="destination">Use in: <%= f.object.aeon_reading_room_name %></span>
-                </div>
-            </div>
-            <ul data-item-selector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="available" class="list-unstyled d-flex flex-wrap gap-2 bg-white p-3 m-0"></ul>
-          </div>
-        </div>
-      </div>
-      <div class="card selected-items-group my-3 selected-items-container">
-        <div class="card-body bg-light rounded">
-          <div class="d-flex flex-column flex-xl-row align-items-start justify-content-xl-between align-items-xl-center mb-3 gap-2 gap-xl-0">
-            <div class="text-black fw-semibold">Unavailable items</div>
-          </div>
-          <div class="bg-white">
-            <ul data-item-selector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="unavailable" class="list-unstyled d-flex flex-wrap gap-2 p-3 m-0"></ul>
-          </div>
-        </div>
-      </div>
-
-      <template id="selectedItemsTemplate">
-        <li class="d-flex gap-2 w-100 align-items-baseline" data-content-id="__ID__">
-          <span class="item-selector-callnumber-pill bg-light rounded-pill border">
-            <span class="callnumber">
-              __LABEL__
-            </span>
-            <button data-action="item-selector#remove" data-item-selector-id-param="__ID__" type="button" class="btn-close py-0 pill-close">
-              <span class="visually-hidden">Remove __LABEL__</span>
-            </button>
-          </span>
-          <span class="text-cardinal d-block align-self-center flex-shrink-2">__DUEQUEUEINFO__</span>
-        </li>
-      </template>
-      <% end %>
-      <div class="mt-3">
-        <p><%= t('aeon_pages.info_modal.how_to.body') %></p>
-        <p><%= t('aeon_pages.info_modal.steps.header') %></p>
-        <ol class="dialog-steps">
-          <% if f.object.finding_aid? %>
-            <%= t('aeon_pages.info_modal.steps.finding_aid_html') %>
-          <% else %>
-            <%= t('aeon_pages.info_modal.steps.single_vol_html') %>
-          <% end %>
-        </ol>
-      </div>
-    <% end %>
-  <% end %>
-  </div>
 <% end %>
+
+<%= render AccordionStepComponent.new(id: 'scan-or-pickup-placeholder', classes: [('d-none' if f.object.request_type)], form_id: f.id, step_index: (scan_or_pickup_step ||= step_enum.next), data: { 'patronrequest-forRequestType': 'none' }) do |c| %>
+  <% c.with_title.with_content('Request details') %>
+<% end %>
+
+<!-- aeon reading room request -->
+<!-- removed any 'can do this' part for both -->
+<%= render AccordionStepComponent.new(request: f.object, id: 'reading', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { controller: 'status-counter', action: 'selected-item-form:status-changed->status-counter#update item-selector:changed@document->status-counter#update save-for-later:changed@document->status-counter#update save-for-later:changed@document->accordion-form#reenableNextButtons', 'save-for-later-target': 'section', 'patronrequest-forRequestType': 'pickup' }, submit: true) do |c| %>
+  <% c.with_title.with_content('Reading room') %>
+  <% c.with_body do %>
+    <%= render 'reading_options', f: %>
+  <% end %>
+  <% c.with_footer do %>
+    <span class="px-2 py-1" data-status-counter-target="counter">
+      0 items ready to submit
+    </span>
+  <% end %>
+<% end %>
+
+<!-- aeon activities -->
+<%= render AccordionStepComponent.new(request: f.object, id: 'activity', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { controller: 'status-counter', action: 'selected-item-form:status-changed->status-counter#update item-selector:changed@document->status-counter#update save-for-later:changed@document->status-counter#update save-for-later:changed@document->accordion-form#reenableNextButtons', 'save-for-later-target': 'section', 'patronrequest-forRequestType': 'activity' }, submit: true) do |c| %>
+  <% c.with_title.with_content('Activity') %>
+  <% c.with_body do %>
+    <%= render 'activity', f: %>
+  <% end %>
+<% end %>
+
+<!-- aeon digitization request -->
+
+<%= render AccordionStepComponent.new(request: f.object, id: 'digitization', classes: ['d-none'], step_index: (scan_or_pickup_step ||= step_enum.next), form_id: f.id, data: { controller: 'status-counter', action: 'selected-item-form:status-changed->status-counter#update item-selector:changed@document->status-counter#update save-for-later:changed@document->status-counter#update save-for-later:changed@document->accordion-form#reenableNextButtons', 'save-for-later-target': 'section', 'patronrequest-forRequestType': 'scan' }, submit: true) do |c| %>
+  <% c.with_title.with_content('Digitization') %>
+  <% c.with_body do %>
+    <%= render 'digitization_options', f: %>
+  <% end %>
+  <% c.with_footer do %>
+    <span class="px-2 py-1" data-status-counter-target="counter">
+      0 items ready to submit
+    </span>
+  <% end %>
+<% end %>
+
+<template data-save-for-later-target="savedItemTemplate">
+  <li class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center saved-item border-bottom py-1">
+    <span data-role="title"></span>
+    <div class="text-nowrap">
+      <button class="su-underline btn btn-link fs-14 ps-0 text-nowrap" data-action="save-for-later#restore">Undo</button>
+      <button class="btn btn-link p-0 ps-1 fs-14 saved-for-later-remove" data-action="item-selector#remove" aria-label="Delete __TITLE__" data-item-selector-id-param="__ID__">
+        <i class="bi bi-trash"></i><span class="visually-hidden">Delete __TITLE__</span>
+      </button>
+    </div>
+  </li>
+</template>
+<!-- View container contents modal -->
+<%= render ModalComponent.new(id: "view-container-contents", data: {view_container_contents_target: "viewModal"}, size: :lg) do |component| %>
+  <% component.with_title.with_content('Contents') %>
+  <% component.with_banner do %>
+    <div data-view-container-contents-target="banner" class="banner"></div>
+  <% end %>
+  <% component.with_body do %>
+    <div data-view-container-contents-target="contents">
+    </div>
+  <% end %>
+<% end %>
+
+<% end %>
+</div>
+<%= render 'contact_aside' %>
+</div>
+</div>

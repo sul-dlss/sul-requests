@@ -16,7 +16,7 @@ RSpec.describe 'Home Page' do
     it 'renders the page' do
       expect(page).to have_title('My Library Account : Stanford Libraries')
       expect(page).to have_css('.navbar-logo')
-      expect(page).to have_link('My Account')
+      expect(page).to have_link('My Library Account')
       expect(page).to have_link('Feedback')
 
       within('#su-footer') do

@@ -106,12 +106,6 @@ label.btn-close {
   --clamp-lines: 3;
 }
 
-.required-label::after {
-  content: '*';
-  color: var(--stanford-cardinal);
-  margin-left: 5px;
-}
-
 .rounded-pill {
   padding-top: 4px;
   padding-bottom: 4px;

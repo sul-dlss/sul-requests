@@ -402,7 +402,7 @@ summary .disclosure-icon::before {
   font-size: 1rem;
 }
 
-.redesign-required-label::after {
+.required-label::after {
   content: '*required';
   color: var(--stanford-cardinal);
   margin-left: 5px;
