@@ -9,11 +9,11 @@
       <% component.with_title.with_content('Account information') %>
       <% component.with_body do %>
         <div>
-          <%= f.label :first_name, 'Name', class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.label :first_name, 'Name', class: 'form-label fw-semibold required-label' %>
           <%= f.text_field :first_name, value: current_user.name, class: 'form-control', required: true %>
         </div>
         <div class="mt-2">
-          <%= f.label :email_address, class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.label :email_address, class: 'form-label fw-semibold required-label' %>
           <%= f.text_field :email_address, value: current_user.email_address, class: 'form-control', required: true %>
         </div>
         <div class="mt-2">
@@ -21,7 +21,7 @@
           <%= f.text_field :phone, class: 'form-control' %>
         </div>
         <div class="mt-2">
-          <%= f.label :address, class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.label :address, class: 'form-label fw-semibold required-label' %>
           <%= f.text_field :address, class: 'form-control', required: true %>
         </div>
         <div class="mt-2">
@@ -29,21 +29,21 @@
           <%= f.text_field :address2, class: 'form-control' %>
         </div>
         <div class="mt-2">
-          <%= f.label :city, class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.label :city, class: 'form-label fw-semibold required-label' %>
           <%= f.text_field :city, class: 'form-control', required: true %>
         </div>
         <div class="row mt-2">
           <div class="col-8">
-            <%= f.label :state_or_province, class: 'form-label fw-semibold redesign-required-label' %>
+            <%= f.label :state_or_province, class: 'form-label fw-semibold required-label' %>
             <%= f.text_field :state_or_province, class: 'form-control', required: true %>
           </div>
           <div class="col-4">
-            <%= f.label :zip_code, class: 'form-label fw-semibold redesign-required-label' %>
+            <%= f.label :zip_code, class: 'form-label fw-semibold required-label' %>
             <%= f.text_field :zip_code, class: 'form-control', required: true %>
           </div>
         </div>
         <div class="mt-2">
-          <%= f.label :country, class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.label :country, class: 'form-label fw-semibold required-label' %>
           <%= f.text_field :country, class: 'form-control', required: true %>
         </div>
       <% end %>
@@ -61,7 +61,7 @@
         <div class="mt-2 px-3 py-2 bg-danger-subtle rounded-bottom d-flex flex-row justify-content-start align-items-baseline gap-2">
           <%= f.check_box :aeon_terms, { required: true }, 1, nil %>
           <div>
-            <%= f.label :aeon_terms, 'I agree to these terms', class:'fw-bold redesign-required-label d-block' %>
+            <%= f.label :aeon_terms, 'I agree to these terms', class:'fw-bold required-label d-block' %>
             By checking this box, you acknowledge that you have read and agree to these Terms of use and to the policies applicable to the Stanford University Libraries reading rooms and services you use.
           </div>
         </div>

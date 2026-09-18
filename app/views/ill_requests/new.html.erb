@@ -45,7 +45,7 @@
         </fieldset>
 
         <div class="mb-3">
-          <%= f.label :title, class: 'form-label fw-semibold redesign-required-label' do %>
+          <%= f.label :title, class: 'form-label fw-semibold required-label' do %>
             <span data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="book">Book title</span>
             <span data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="article">Journal</span>
             <span data-ill-request-target="section" data-ill-request-for-request-type="pickup">Title</span>
@@ -54,12 +54,12 @@
         </div>
 
         <div class="mb-3" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :author, 'Author(s) or Editor(s)', class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.label :author, 'Author(s) or Editor(s)', class: 'form-label fw-semibold required-label' %>
           <%= f.text_field :author, required: true, class: 'form-control', maxlength: 255 %>
         </div>
 
         <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal" data-ill-request-target="section" data-ill-request-for-request-subtype="book">
-          <%= f.label :cited_in, 'Link to book, chapter, or citation', class: 'form-label fw-semibold redesign-required-label' %>
+          <%= f.label :cited_in, 'Link to book, chapter, or citation', class: 'form-label fw-semibold required-label' %>
           <%= f.text_area :cited_in, maxlength: 255, required: true, class: 'form-control', data: { action: "input->char-counter#updateCharCounter" } %>
           <div class="d-flex gap-4 align-items-baseline">
             <div class="form-text">Examples are a WorldCat link, publisher link, website link, or citation from a specific journal article or book.</div>
@@ -104,7 +104,7 @@
 
         <div class="mb-3">
           <%= f.label :volume, 'Volume', class: 'form-label fw-semibold', data: { ill_request_target: 'section', ill_request_for_request_subtype: 'book' } %>
-          <%= f.label :volume, 'Volume', class: 'form-label fw-semibold redesign-required-label', data: { ill_request_target: 'section', ill_request_for_request_subtype: 'article' } %>
+          <%= f.label :volume, 'Volume', class: 'form-label fw-semibold required-label', data: { ill_request_target: 'section', ill_request_for_request_subtype: 'article' } %>
           <%= f.text_field :volume, class: 'form-control' %>
         </div>
 
@@ -115,12 +115,12 @@
 
         <div data-ill-request-target="section" data-ill-request-for-request-type="scan" data-ill-request-for-request-subtype="article">
           <div class="mb-3">
-            <%= f.label :photo_journal_issue, 'Issue', class: 'form-label fw-semibold redesign-required-label' %>
+            <%= f.label :photo_journal_issue, 'Issue', class: 'form-label fw-semibold required-label' %>
             <%= f.text_field :photo_journal_issue, class: 'form-control', maxlength: 40, required: true %>
           </div>
 
           <div class="mb-3">
-            <%= f.label :photo_journal_year, 'Year of issue', class: 'form-label fw-semibold redesign-required-label' %>
+            <%= f.label :photo_journal_year, 'Year of issue', class: 'form-label fw-semibold required-label' %>
             <%= f.text_field :photo_journal_year, class: 'form-control', maxlength: 20, required: true %>
 
             <div class="form-text">If year of issue is unknown, enter ????</div>
@@ -179,7 +179,7 @@
             <%= render 'scan_form', f: %>
 
             <div class="mb-3" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal" data-ill-request-target="section" data-ill-request-for-request-subtype="article">
-              <%= f.label :cited_in, 'Link to article, DOI, or citation', class: 'form-label fw-semibold redesign-required-label' %>
+              <%= f.label :cited_in, 'Link to article, DOI, or citation', class: 'form-label fw-semibold required-label' %>
               <%= f.text_area :cited_in, maxlength: 255, required: true, class: 'form-control', data: { action: "input->char-counter#updateCharCounter" } %>
               <div class="d-flex gap-4 align-items-baseline">
                 <div class="form-text">Examples are a WorldCat link, publisher link, website link, or citation from a specific journal article or book.</div>

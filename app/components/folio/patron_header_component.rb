@@ -5,7 +5,7 @@ module Folio
   class PatronHeaderComponent < ViewComponent::Base
     attr_reader :patron
 
-    delegate :use_requests_redesign?, to: :helpers
+    delegate to: :helpers
 
     def initialize(patron:)
       @patron = patron

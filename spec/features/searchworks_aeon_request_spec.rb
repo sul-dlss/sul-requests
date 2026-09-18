@@ -33,7 +33,6 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
     allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
     login_as(current_user)
     stub_folio_instance_json(build(folio_instance))
-    allow(Settings.features).to receive(:requests_redesign).and_return(true)
     login_as(current_user)
 
     aeon_user

@@ -4,8 +4,6 @@
 class IllRequestsController < ApplicationController
   include FolioController
 
-  layout 'application_redesign'
-
   before_action :authenticate_user!
 
   before_action :load_requests

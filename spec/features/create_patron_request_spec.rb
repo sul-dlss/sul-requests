@@ -479,21 +479,6 @@ RSpec.describe 'Creating a request', :js do
     end
   end
 
-  context 'with an aeon request' do
-    let(:folio_instance) { build(:sal3_as_holding) }
-
-    before do
-      allow(Settings.features).to receive_messages(requests_redesign: false)
-    end
-
-    it 'sends the user over to Aeon' do
-      visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3-PAGE-AS')
-
-      expect(page).to have_text 'On-site and digital access requests are managed by Aeon'
-      expect(page).to have_button 'Continue to complete request'
-    end
-  end
-
   context 'with multiple items to pick from' do
     let(:folio_instance) { build(:checkedout_holdings) }
 
