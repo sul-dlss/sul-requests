@@ -6,7 +6,6 @@ RSpec.describe 'Requesting an item from an EAD', :js do
   use_stub_aeon_client
 
   before do
-    allow(Settings.features).to receive(:requests_redesign).and_return(true)
     allow(EadClient).to receive(:fetch).and_return(Ead::Document.new(eadxml, url: 'whatever'))
     create(:remote_aeon_activity, users: [{ username: aeon_user.username }])
 

@@ -9,6 +9,7 @@ RSpec.describe 'Home Page' do
 
   describe 'layout' do
     before do
+      allow(Settings.features).to receive(:requests_redesign).and_return(false)
       visit root_path
     end
 
@@ -45,7 +46,6 @@ RSpec.describe 'Home Page' do
 
   context 'with the new layout', :js do
     before do
-      allow(Settings.features).to receive(:requests_redesign).and_return(true)
       allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(patron)
       allow(Aeon::User).to receive(:find_by).and_return(aeon_user)
       login_as(current_user)

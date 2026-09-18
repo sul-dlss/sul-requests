@@ -31,6 +31,7 @@ RSpec.describe 'Creating new accounts for patrons', :js do
       expect(page).to have_text('Terms')
       check('I agree to these terms')
 
+      expect(page).to have_button('Continue', disabled: false)
       click_button 'Continue'
 
       expect(page).to have_text('New request')

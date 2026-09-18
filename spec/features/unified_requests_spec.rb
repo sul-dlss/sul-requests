@@ -9,6 +9,8 @@ RSpec.describe 'Request Page', :js do
 
   before do
     login_as(current_user)
+
+    allow(Aeon::User).to receive(:find_by).and_return(Aeon::NullUser.new)
   end
 
   it 'loads the page and clears all the visible placeholders' do
