@@ -31,10 +31,11 @@ RSpec.describe 'Appointments', :js do
       itemTitle: 'Medium poetry in America : a poetry quarterly',
       appointmentID: appointment.id,
       username: aeon_user.username,
-      webRequestForm: 'multiple',
+      webRequestForm: submitted_request_form,
       transactionStatus: 3
     )
   end
+  let(:submitted_request_form) { 'multiple' }
 
   before do
     saved_for_later_request
@@ -153,6 +154,20 @@ RSpec.describe 'Appointments', :js do
         expect(page).to have_no_css "#appointment_aeon_request_#{submitted_request.id}"
         expect(page).to have_text 'No items have been requested for this appointment.'
         expect(page).to have_link 'Add items'
+      end
+    end
+
+    context 'when the request does not have an existing saved-for-later group' do
+      let(:submitted_request_form) { 'single' }
+
+      it 'adds the request to a new sidebar group' do
+        within "#appointment_aeon_request_#{submitted_request.id}" do
+          click_on 'Save for later'
+        end
+
+        within '#saved_for_later_aeon_requests_sidebar' do
+          expect(page).to have_css "#sidebar_aeon_request_#{submitted_request.id}"
+        end
       end
     end
   end

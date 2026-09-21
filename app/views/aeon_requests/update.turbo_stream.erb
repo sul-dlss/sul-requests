@@ -9,6 +9,12 @@
   <% end %>
 <% end %>
 
+<%# remove groups that are entirely gone %>
+<% group_keys = @update_response.next_aeon_request_groups.map(&:group_key) %>
+<% @update_response.previous_aeon_request_groups.reject { |group| group.group_key.in? group_keys }.each do |group| %>
+  <%= turbo_stream.remove(dom_id(group)) %>
+<% end %>
+
 <% if @update_response.saved_for_later_sidebar_needs_update? %>
   <%# update the saved for later list %>
   <%= turbo_stream.replace('aeon-requests') do %>
@@ -16,12 +22,6 @@
       <%= render Aeon::RequestGroupBriefComponent.with_collection(@update_response.saved_for_later_request_groups, after_request_item_component: SidebarAppointmentDropdownComponent) %>
     </div>
   <% end %>
-<% end %>
-
-<%# remove groups that are entirely gone %>
-<% group_keys = @update_response.next_aeon_request_groups.map(&:group_key) %>
-<% @update_response.previous_aeon_request_groups.reject { |group| group.group_key.in? group_keys }.each do |group| %>
-  <%= turbo_stream.remove(dom_id(group)) %>
 <% end %>
 
 <% @update_response.appointments_to_update.each do |appointment| %>
