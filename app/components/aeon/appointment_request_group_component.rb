@@ -7,11 +7,13 @@ module Aeon
   class AppointmentRequestGroupComponent < Aeon::RequestGroupComponent
     with_collection_parameter :request_group
 
-    attr_reader :classes
+    attr_reader :classes, :show_item_link
 
-    def initialize(request_group:, classes: %w[card rounded-0 px-3 py-2 mb-3 border-0 border-top border-first-child-top-0 mb-last-child-0])
+    def initialize(request_group:, classes: %w[card rounded-0 px-3 py-2 mb-3 border-0 border-top border-first-child-top-0 mb-last-child-0],
+                   show_item_link: false)
       @request_group = request_group
       @classes = Array(classes)
+      @show_item_link = show_item_link
     end
 
     def group_id

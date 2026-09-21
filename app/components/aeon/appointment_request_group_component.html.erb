@@ -6,8 +6,11 @@
         <span class="text-warning ms-2"><i class="bi bi-exclamation-triangle me-1"></i>Saved for later</span>
       <% end %>
     </h3>
-    <% if request_group.base_callnumber && request_group.multi_item_selector? %>
-      <span class="text-nowrap">Call number: <%= request_group.base_callnumber %></span>
+    <%= tag.div(class: show_item_link ? 'd-flex flex-wrap' : 'd-inline') do %>
+      <% if request_group.base_callnumber && request_group.multi_item_selector? %>
+        <span class="text-nowrap me-3">Call number: <%= request_group.base_callnumber %></span>
+      <% end %>
+      <%= render ItemLinkComponent.new(url: request_group.item_url) if show_item_link %>
     <% end %>
     <ul class="list-unstyled mb-0 mt-2 ps-3">
       <%= render Aeon::AppointmentRequestGroupItemComponent.with_collection(requests) %>
