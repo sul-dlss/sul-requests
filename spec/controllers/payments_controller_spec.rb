@@ -93,6 +93,31 @@ RSpec.describe PaymentsController do
       expect(flash[:success]).to include('Success!').and include('$10.00 paid.')
     end
 
+    context 'when Cybersource posts a signed accepted payment' do
+      let(:signed_data) do
+        {
+          signed_field_names: 'signed_field_names,decision,req_reference_number,req_amount',
+          decision: 'ACCEPT',
+          req_reference_number: '513a9054-5897-11ee-8c99-0242ac120002',
+          req_amount: '10.00'
+        }
+      end
+      let(:callback_params) do
+        signed_data.merge(signature: Cybersource::Security.generate_signature(signed_data))
+      end
+
+      before do
+        allow(controller).to receive(:cybersource_response).and_call_original
+      end
+
+      it 'records the payment in the ILS' do
+        post :accept, params: callback_params
+
+        expect(mock_client).to have_received(:pay_fines)
+          .with(user_id: '513a9054-5897-11ee-8c99-0242ac120002', amount: '10.00')
+      end
+    end
+
     context 'when the params sent back from cybersource do not pass validation' do
       before do
         allow(controller).to receive(:cybersource_response).and_raise(Cybersource::Security::InvalidSignature)
