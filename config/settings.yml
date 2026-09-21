@@ -77,8 +77,8 @@ features:
   hold_recall_via: 'illiad'
   scan_service: true
   mediator_email: true
-  requests_redesign: false
-  authenticate_name_email_users: false
+  requests_redesign: true
+  authenticate_name_email_users: true
 
 background_jobs:
   enabled: false

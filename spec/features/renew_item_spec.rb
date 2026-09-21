@@ -44,8 +44,6 @@ RSpec.describe 'Renew item', :js do
 
     login_as(CurrentUser.new(username: 'stub_user', patron_key: 'ec52d62d-9f0e-4ea5-856f-a1accb0121d1', shibboleth: true))
     allow(Folio::Patron).to receive(:find_by).with(patron_key: 'ec52d62d-9f0e-4ea5-856f-a1accb0121d1').and_return(patron)
-
-    allow(Settings.features).to receive(:requests_redesign).and_return(true)
   end
 
   it 'enabled through checkout page' do

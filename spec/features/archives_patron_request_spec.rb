@@ -4,6 +4,10 @@ require 'rails_helper'
 
 RSpec.describe 'Requesting an item from an EAD' do
   context 'when the redesign feature flag is disabled' do
+    before do
+      allow(Settings.features).to receive(:requests_redesign).and_return(false)
+    end
+
     it 'redirects the user to Aeon' do
       begin
         visit new_archives_request_path(value: 'http://example.com/ead.xml')

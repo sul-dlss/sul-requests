@@ -24,8 +24,7 @@ end
 Capybara.javascript_driver = :selenium_chrome_headless
 
 # Set a little higher for github actions, to avoid flappy tests
-Capybara.default_max_wait_time = ENV['CI'] ? 10 : 5
-
+Capybara.default_max_wait_time = ENV['CI'] ? 5 : 2
 Capybara.disable_animation = true
 
 # Allow selecting capybara elements via aria-label

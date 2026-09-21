@@ -352,7 +352,9 @@ RSpec.describe 'Creating a request', :js do
       fill_in 'Library ID', with: '12345'
       fill_in 'PIN', with: '54321'
 
-      click_on 'Login'
+      within 'form' do
+        click_on 'Login'
+      end
 
       expect do
         perform_enqueued_jobs do
@@ -381,7 +383,10 @@ RSpec.describe 'Creating a request', :js do
         fill_in 'Library ID', with: '12345'
         fill_in 'PIN', with: '54321'
 
-        click_on 'Login'
+        within 'form' do
+          click_on 'Login'
+        end
+
         expect(page).to have_text('This item is not available to request for Stanford Libraries cardholders.')
       end
     end
@@ -451,11 +456,15 @@ RSpec.describe 'Creating a request', :js do
     end
 
     it 'logs the user out before creating a request' do
+      allow(Settings.features).to receive(:authenticate_name_email_users).and_return(false)
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
       expect(page).to have_css 'summary', text: 'Proceed as visitor'
       find('summary', text: 'Proceed as visitor').click
       fill_in 'Name', with: 'My Name'
       fill_in 'Email', with: 'me@example.com'
+
+      expect(page).to have_button('Continue', disabled: false)
+
       click_on 'Continue'
 
       check 'I agree to these terms'
@@ -472,6 +481,10 @@ RSpec.describe 'Creating a request', :js do
 
   context 'with an aeon request' do
     let(:folio_instance) { build(:sal3_as_holding) }
+
+    before do
+      allow(Settings.features).to receive_messages(requests_redesign: false)
+    end
 
     it 'sends the user over to Aeon' do
       visit new_patron_request_path(instance_hrid: 'a12345', origin_location_code: 'SAL3-PAGE-AS')
