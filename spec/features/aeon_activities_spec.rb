@@ -14,6 +14,8 @@ RSpec.describe 'Activities', :js do
       StubAeonClient::Request.create(
         requestFor: { type: 'Activity', reference: 1 },
         itemTitle: 'title1',
+        itemInfo1: 'https://searchworks.stanford.edu/view/12345678',
+        eadNumber: 'SC1234',
         username: aeon_user.username,
         webRequestForm: 'multiple',
         transactionStatus: 1
@@ -28,6 +30,7 @@ RSpec.describe 'Activities', :js do
       StubAeonClient::Request.create(
         requestFor: { type: 'Activity', reference: 3 },
         itemTitle: 'title3',
+        itemInfo1: 'https://archives.stanford.edu/repositories/2/resources/1234',
         username: aeon_user.username,
         webRequestForm: 'multiple',
         transactionStatus: 1
@@ -108,8 +111,12 @@ RSpec.describe 'Activities', :js do
     expect(page).to have_no_text('Activity2')
 
     expect(page).to have_css('h3', text: 'title1', count: 1)
+    expect(page).to have_link('View in SearchWorks', href: 'https://searchworks.stanford.edu/view/12345678')
+    expect(page).to have_text('Call number: SC1234 View in SearchWorks', normalize_ws: true)
     expect(page).to have_no_text('title2')
     expect(page).to have_css('h3', text: 'title3', count: 1)
+    expect(page).to have_link('View in Archival Collections at Stanford',
+                              href: 'https://archives.stanford.edu/repositories/2/resources/1234')
     expect(page).to have_text('No items have been requested for this activity.', count: 1)
   end
 end
