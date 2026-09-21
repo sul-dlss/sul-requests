@@ -1,0 +1,28 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 70,
+      "fingerprint": "1ae843003a49ff77f6b28b0fe8b3da14582f927c6b1e53ac24f212e09a072e86",
+      "check_name": "MassAssignment",
+      "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
+      "file": "app/controllers/payments_controller.rb",
+      "line": 79,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.permit!",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "PaymentsController",
+        "method": "cybersource_response"
+      },
+      "user_input": null,
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "The callback hash is passed only to Cybersource::PaymentResponse, which validates the HMAC signature before the controller uses the patron ID or amount; it is not mass-assigned to a model."
+    }
+  ],
+  "brakeman_version": "8.0.6"
+}
