@@ -223,7 +223,7 @@ en:
       label: "Library ID"
       help_text: "Nine digit number below your name on your library card"
     enterprise_id:
-      user: "Library cardholder"
+      user: "Stanford Medicine"
       label: "Enterprise ID"
       help_text: "SID or EPIC for Health Care or Network ID for Children's Health"
     login_by_university_id:
@@ -242,8 +242,8 @@ en:
     invalid_token_html: <span class="fw-bold">Sorry!</span><br/> That reset PIN link is invalid or expired. Enter your library ID to request a new link.
   reset_pin:
     title: Request set/reset PIN
-    instructions: Enter your Library ID below and we’ll send you an email with instructions on how to set or reset your PIN.
-    success_html: <span class="fw-bold">Success!</span><br/> A set/reset link and instructions were sent to the email address associated with Library ID %{university_id}.
+    instructions: Enter your %{id_label} below and we’ll send you an email with instructions on how to set or reset your PIN.
+    success_html: <span class="fw-bold">Success!</span><br/> A set/reset link and instructions were sent to the email address associated with %{id_label} %{university_id}.
     request_failed_html: <span class="fw-bold">Sorry!</span><br/> Something went wrong, possibly due to a connection failure. Try again or contact us for help.
   reset_pins_mailer:
     subject: Stanford Libraries PIN reset

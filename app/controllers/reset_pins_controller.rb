@@ -5,7 +5,7 @@ class ResetPinsController < ApplicationController
   rescue_from ActiveSupport::MessageEncryptor::InvalidMessage, with: :invalid_token
   rescue_from FolioClient::Error, with: :request_failed
 
-  helper_method :cancel_url_param
+  helper_method :cancel_url_param, :id_type_param, :id_label
 
   # Renders the first step for resetting the PIN
   #
@@ -26,7 +26,7 @@ class ResetPinsController < ApplicationController
       ResetPinsMailer.with(patron:, referrer: post_action_redirect_url).reset_pin.deliver_now if patron
     end
 
-    flash[:success] = t 'reset_pin.success_html', university_id: university_id_param
+    flash[:success] = t 'reset_pin.success_html', university_id: university_id_param, id_label: id_label
     redirect_after_action
   end
 
@@ -68,6 +68,15 @@ class ResetPinsController < ApplicationController
   def request_failed
     flash[:error] = t 'reset_pin.request_failed_html'
     redirect_to reset_pin_path
+  end
+
+  # Stanford Medicine patrons use the same flow, but know their library ID as an Enterprise ID
+  def id_type_param
+    params[:id_type] == 'enterprise_id' ? 'enterprise_id' : 'university_id'
+  end
+
+  def id_label
+    t("sessions.#{id_type_param}.label")
   end
 
   def cancel_url_param

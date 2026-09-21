@@ -62,9 +62,12 @@
               <input class="form-control" id="enterprise_id" name="university_id" aria-describedby="enterprise-id-help" required>
               <div class="form-text" id="enterprise-id-help"><%= t('sessions.enterprise_id.help_text') %></div>
             </div>
-            <div class="form-group mt-2 mb-4">
+            <div class="form-group mt-2">
               <label class="form-label required-label" for="enterprise_pin">Library PIN</label>
               <input class="form-control" type="password" id="enterprise_pin" name="pin" required autocomplete="on">
+            </div>
+            <div class="form-text">
+              <%= link_to "Forgot your library PIN? Don't have one yet?", reset_pin_url(referrer: request.original_url, id_type: 'enterprise_id'), class: 'su-underline' %>
             </div>
             <div class="d-flex justify-content-end">
               <button type="submit" class="btn btn-outline-secondary">
