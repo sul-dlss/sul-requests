@@ -209,14 +209,14 @@ en:
         one: "Select an item from the list above."
         other: "Select one or more items from the list above."
   shared:
-    default_page_title: "Requests : Stanford Libraries"
+    default_page_title: "My Library Account : Stanford Libraries"
     sul_header:
       sul: Stanford Libraries
       login: Login
       logout: "%{sunetid}: Logout"
       mylibrary: My Account
       feedback: Feedback
-      application_name: Requests
+      application_name: My Library Account
   sessions:
     university_id:
       user: "Library cardholder"
