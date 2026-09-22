@@ -75,6 +75,10 @@ module Aeon
       self.class.new requests.select(&:submitted?)
     end
 
+    def submitted_or_completed
+      self.class.new(requests.select { |request| request.submitted? || request.completed? })
+    end
+
     def cancelled
       self.class.new requests.select(&:cancelled?)
     end

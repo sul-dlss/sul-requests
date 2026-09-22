@@ -70,6 +70,22 @@ RSpec.describe Aeon::RequestFinders do
     end
   end
 
+  describe '#submitted_or_completed' do
+    let(:submitted) { build(:aeon_request, :submitted, :without_appointment, transaction_number: 1) }
+    let(:completed) { build(:aeon_request, :delivered, :without_appointment, transaction_number: 2) }
+    let(:cancelled) { build(:aeon_request, :cancelled_by_staff, :without_appointment, transaction_number: 3) }
+    let(:saved_for_later) { build(:aeon_request, :saved_for_later, transaction_number: 4) }
+    let(:finders) { described_class.new([submitted, completed, cancelled, saved_for_later]) }
+
+    it 'keeps submitted and completed requests, dropping cancelled and saved for later ones' do
+      expect(finders.submitted_or_completed.map(&:transaction_number)).to contain_exactly(1, 2)
+    end
+
+    it 'returns a RequestFinders instance' do
+      expect(finders.submitted_or_completed).to be_a(described_class)
+    end
+  end
+
   describe '#recently_delivered' do
     let(:recently_delivered) do
       build(:aeon_request, :digitized,
