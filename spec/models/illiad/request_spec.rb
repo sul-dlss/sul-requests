@@ -74,11 +74,11 @@ RSpec.describe Illiad::Request do
     end
 
     it 'correctly calculates the expiration date' do
-      expect(hold.expiration_date.to_s).to eq('2024-10-11')
+      expect(hold.expiration_date.to_s).to start_with('2024-10-11')
     end
 
     it 'handles ILLIAD expiration date of format mm/dd/yyyy' do
-      expect(expiration_hold.expiration_date.to_s).to eq('2022-07-15')
+      expect(expiration_hold.expiration_date.to_s).to start_with('2022-07-15')
     end
 
     it 'handles an empty ILLIAD expiration date and returns a date two months after placed date' do

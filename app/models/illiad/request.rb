@@ -132,7 +132,7 @@ module Illiad
       date_regex = %r{\d{1,2}/\d{1,2}/\d{4}}
       date_to_parse = illiad_date.match?(date_regex) ? Date.strptime(illiad_date, '%m/%d/%Y').to_s : illiad_date
       # We still want to return a date that provides a time portion/is consistent with the other results
-      Time.zone.parse(date_to_parse).to_date
+      Time.zone.parse(date_to_parse)
     rescue ArgumentError => e
       Honeybadger.notify(e, error_message: "Parsing #{illiad_date} for ILLIAD request expiration date returns #{e}")
       nil
