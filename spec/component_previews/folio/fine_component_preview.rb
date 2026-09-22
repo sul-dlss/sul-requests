@@ -11,5 +11,12 @@ module Folio
         patron: FactoryBot.build(:sponsor_patron)
       )
     end
+
+    def no_bib
+      render Folio::FineComponent.new(
+        fine: FactoryBot.build(:account),
+        patron: FactoryBot.build(:sponsor_patron)
+      )
+    end
   end
 end
