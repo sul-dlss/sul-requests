@@ -368,7 +368,7 @@ class FolioClient
   # The payment will show as being made from the 'Online' service point
   # rubocop:disable-next Metrics/MethodLength
   def pay_fines(user_id:, amount:)
-    patron = Folio::Patron.find(user_id)
+    patron = Folio::Patron.find_by(patron_key: user_id)
     payload = {
       accountIds: patron.fines.map(&:key),
       paymentMethod: 'Credit card',
