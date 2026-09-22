@@ -43,6 +43,30 @@ RSpec.describe 'Reset PIN workflow' do
     end
   end
 
+  describe 'the wording of the form and the success message' do
+    it 'uses library card terms by default' do
+      visit reset_pin_path(referrer: request_path)
+      expect(page).to have_css 'h1', text: 'Library cardholder'
+      expect(page).to have_text 'Enter your Library ID below'
+      expect(page).to have_text 'below your name on your library card'
+
+      fill_in('university_id', with: '1234567890')
+      click_on 'Set/Reset PIN'
+      expect(page).to have_css '.flash_messages', text: 'associated with Library ID 1234567890'
+    end
+
+    it 'uses Stanford Medicine terms when the link says so' do
+      visit reset_pin_path(referrer: request_path, id_type: 'enterprise_id')
+      expect(page).to have_css 'h1', text: 'Stanford Medicine'
+      expect(page).to have_text 'Enter your Enterprise ID below'
+      expect(page).to have_text 'SID or EPIC for Health Care'
+
+      fill_in('university_id', with: '1234567890')
+      click_on 'Set/Reset PIN'
+      expect(page).to have_css '.flash_messages', text: 'associated with Enterprise ID 1234567890'
+    end
+  end
+
   describe 'changing the pin with a token' do
     context 'when the token is valid' do
       before do
