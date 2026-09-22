@@ -14,11 +14,11 @@
       <%= text_field_tag :name, "", class:"form-control", placeholder: 'Enter your name' %>
     </div>
     <div class="mb-3">
-      <%= label_tag(:to, 'Email', class:"px-0 fw-bold mb-2 redesign-required-label") %>
+      <%= label_tag(:to, 'Email', class:"px-0 fw-bold mb-2 required-label") %>
       <%= email_field_tag :to, "", class:"form-control", required: true, placeholder: 'Enter your email' %>
     </div>
     <div class="mb-3">
-      <%= label_tag(:message, 'Message', class:"px-0 fw-bold mb-2 redesign-required-label") %>
+      <%= label_tag(:message, 'Message', class:"px-0 fw-bold mb-2 required-label") %>
       <%= text_area_tag :message, "", rows:"2", class:"form-control", required: true, placeholder: 'Enter your message' %>
     </div>
 

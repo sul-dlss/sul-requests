@@ -4,10 +4,6 @@
 module AeonController
   extend ActiveSupport::Concern
 
-  included do
-    layout 'application_redesign'
-  end
-
   def current_ability
     @current_ability ||= SiteAbility.new(current_user).merge(AeonAbility.new((current_user.aeon if current_user.authenticated?)))
   end

@@ -1,35 +1,30 @@
 <!-- SUL header -->
-<div id="sul-header" class="bg-white text-cardinal py-1 fs-7">
-  <div class="container d-flex flex-column flex-sm-row gap-1 gap-sm-0 justify-content-between align-items-center">
-
-    <a
-      class="mb-0 navbar-brand navbar-logo polychrome"
-      href="https://library.stanford.edu"
-      aria-label="Stanford University Libraries"></a>
-    <nav aria-label="Header menu">
-      <ul class="list-unstyled d-flex gap-4 m-0">
-        <% if current_user.sso_user? || current_user.library_id_user? %>
+<nav class="navbar navbar-expand-md bg-dark bg-cardinal" data-turbo-prefetch="false">
+  <div class="container">
+    <a class="mb-0 navbar-brand navbar-logo" href="https://library.stanford.edu" aria-label="Stanford University Libraries"></a>
+    <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-target="#user-util-collapse" data-bs-target="#user-util-collapse" aria-controls="user-util-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="d-md-block d-none">
+      <ul class="navbar-nav">
+        <% if current_user.authenticated? %>
           <% logout_path = current_user.site_admin? ? root_path : request.url %>
-          <li>
-            <%= link_to t('.logout', sunetid: current_user.sunetid || current_user.library_id), logout_path(referrer: logout_path) %>
+          <li class="nav-item">
+            <%= link_to t('shared.sul_header.logout', sunetid: current_user.sunetid || current_user.library_id || current_user.email), logout_path(referrer: logout_path), class: 'nav-link' %>
           </li>
         <% else %>
-          <li>
-            <%= link_to 'Staff login', login_by_sunetid_path(referrer: request.original_url) %>
+          <li class="nav-item">
+            <%= link_to t('shared.sul_header.login'), login_by_sunetid_path(referrer: request.original_url), class: 'nav-link' %>
           </li>
         <% end %>
-        <li>
-          <%= link_to t('.my_account'), "https://mylibrary.stanford.edu/" %>
-        </li>
         <% unless current_page?(feedback_form_path) %>
-          <li>
-            <%= link_to "#feedback-form", role: 'button', data: {'bs-toggle':"modal", 'bs-target':"#feedback-form"} do %>
+          <li class="nav-item">
+            <%= link_to "#feedback-form", role: 'button', data: {'bs-toggle':"modal", 'bs-target':"#feedback-form"}, class: 'nav-link' do %>
               Feedback
             <% end %>
           </li>
         <% end %>
       </ul>
-    </nav>
+    </div>
   </div>
-</div>
-<%= render 'feedback_forms/modal' unless current_page?(feedback_form_path) %>
+</nav>

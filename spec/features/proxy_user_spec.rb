@@ -22,7 +22,6 @@ RSpec.describe 'Proxy User' do
     #       take place when Time.now is included in the fixture's
     #       loan policy schedule date range.
     travel_to Time.zone.parse('2023-06-13T07:00:00.000+00:00')
-    allow(Settings.features).to receive_messages(requests_redesign: true)
 
     allow(FolioClient).to receive(:new) { mock_client }
     allow(Folio::LoanPolicy).to receive(:new).and_return(build(:grad_mono_loans))

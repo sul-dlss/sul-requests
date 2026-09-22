@@ -6,7 +6,6 @@ RSpec.describe 'Creating new accounts for patrons', :js do
   use_stub_aeon_client
 
   before do
-    allow(Settings.features).to receive_messages(requests_redesign: true, authenticate_name_email_users: true)
     allow(EadClient).to receive(:fetch).and_return(Ead::Document.new(eadxml, url: 'whatever'))
   end
 

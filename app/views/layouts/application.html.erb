@@ -26,18 +26,74 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
 
-  <body class="d-flex flex-column min-vh-100" data-controller="analytics">
+  <body class="d-flex flex-column min-vh-100" data-controller="analytics modal">
+    <nav id="skip-link" class="visually-hidden-focusable" aria-label="Skip links">
+      <div class="container-xl">
+        <a href="#main" class="element-invisible element-focusable" data-turbo="false">Skip to main content</a>
+      </div>
+    </nav>
     <header>
-      <%= render 'shared/sul_header' %>
-      <!-- Application header -->
-      <div id="app-header" class="text-white bg-cardinal py-3 d-flex">
+      <div class="identity-bar">
         <div class="container">
-          <%= tag.span t('shared.sul_header.application_name'), class: "fs-3" %>
+          <a class="su-brand-bar__logo" href="https://www.stanford.edu">Stanford University</a>
         </div>
       </div>
+      <%= render 'shared/sul_header' %>
+
+      <!-- Application header -->
+      <%= render ApplicationMastheadComponent.new(application_name: 'My Library Account', classes: 'bg-dark bg-cardinal') do |component| %>
+        <% component.with_nav_item do %>
+          <%= link_to 'Borrowed items', checkouts_path, class: 'nav-link fw-semibold' %>
+        <% end if current_user.patron.present? %>
+
+        <% if acting_as_proxy? && !can?(:manage, :site) %>
+          <% component.with_nav_item do %>
+            <%= link_to 'Submitted requests', unified_requests_url, class: 'nav-link fw-semibold' %>
+          <% end %>
+        <% elsif current_user.authenticated? && (current_user.aeon.present? || current_user.patron.present?) %>
+          <% component.with_nav_item(classes: ['dropdown']) do %>
+            <button class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" aria-expanded="false">
+              Requests
+            </button>
+            <ul class="dropdown-menu">
+              <li><%= link_to 'Submitted requests', unified_requests_url, class: 'dropdown-item' %></li>
+              <% if current_user.aeon.present? && !acting_as_proxy? %>
+              <li><%= link_to 'Saved for later', aeon_requests_url(kind: 'saved_for_later'), class: 'dropdown-item' %></li>
+              <li><%= link_to 'Cancelled requests', aeon_requests_url(kind: 'cancelled'), class: 'dropdown-item' %></li>
+              <li><%= link_to 'Completed requests', aeon_requests_url(kind: 'completed'), class: 'dropdown-item' %></li>
+              <% end %>
+
+              <% if can? :manage, :site %>
+                <li><span class="h6 dropdown-header text-cardinal text-uppercase">Admin views</span></li>
+                <li><%= link_to 'FOLIO requests', folio_requests_url, class: 'dropdown-item' %></li>
+                <li><%= link_to 'ILL requests', ill_requests_url, class: 'dropdown-item' %></li>
+                <li><%= link_to 'Submitted Aeon requests', aeon_requests_url(kind: 'submitted'), class: 'dropdown-item' %></li>
+              <% end %>
+            </ul>
+          <% end %>
+        <% end %>
+
+        <% if current_user.authenticated? && current_user.aeon.present? && !acting_as_proxy? %>
+          <% component.with_nav_item do %>
+            <%= link_to 'Activities', aeon_activities_url, class: 'nav-link fw-semibold' %>
+          <% end if current_user.aeon.activities.present? %>
+
+          <% component.with_nav_item do %>
+            <%= link_to 'Appointments', aeon_appointments_url, class: 'nav-link fw-semibold' %>
+          <% end %>
+        <% end %>
+
+        <% component.with_nav_item do %>
+          <%= link_to 'Fees/fines', fines_path, class: 'nav-link fw-semibold' %>
+        <% end if current_user.patron.present? && !acting_as_proxy? %>
+
+        <%= render AdminNavDropdownComponent.new(masthead_component: component) %>
+      <% end %>
+
+      <%= render ProxyMastheadComponent.new patron: current_user.patron, selected: patron_or_group if show_proxy_masthead? %>
       <%= render '/shared/feature_flag' %>
     </header>
-    <main class="flex-fill container my-3">
+    <main id="main" class="flex-fill container my-3 pt-3">
       <% if content_for?(:flash_column_classes) %>
         <div class="row">
           <div class="<%= content_for(:flash_column_classes) %>">
@@ -48,6 +104,19 @@
         <%= render 'shared/flashes' %>
       <% end %>
       <%= yield %>
+      <template id="modal-template" data-modal-target="template">
+        <div class="modal" tabindex="-1">
+          <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <turbo-frame class="modal-content">
+              <div class="modal-header">
+                <h1 class="mb-0"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">Loading...</div>
+            </turbo-frame>
+          </div>
+        </div>
+      </template>
     </main>
     <%= render 'shared/su_global_footer' %>
   </body>
