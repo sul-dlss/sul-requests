@@ -30,16 +30,5 @@ module Folio
     def checked_out?
       fine.is_a?(Folio::Checkout)
     end
-
-    def body_title
-      return fine.title if checked_out?
-
-      case fine.fine_type
-      when 'SUL library card'
-        'Lost library card'
-      else
-        fine.title
-      end
-    end
   end
 end

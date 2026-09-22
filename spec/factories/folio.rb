@@ -142,4 +142,25 @@ FactoryBot.define do
 
     initialize_with { new(record) }
   end
+
+  factory :account, class: 'Folio::Account' do
+    transient do
+      custom_properties { {} } # Properties you can override in the test cases
+    end
+
+    record do
+      { 'id' => 'example-id',
+        'userId' => 'example-user-id',
+        'amount' => 100,
+        'remaining' => 100,
+        'paymentStatus' => {
+          'name' => 'Open'
+        },
+        'status' => {},
+        'dateCreated' => '2023-06-26T17:45:01.000+00:00',
+        'feeFine' => { 'feeFineType' => 'SUL library card' } }.deep_merge(custom_properties)
+    end
+
+    initialize_with { new(record) }
+  end
 end
