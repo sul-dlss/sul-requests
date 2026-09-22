@@ -131,7 +131,9 @@ class IlliadClient
     response = connection.post("ILLiadWebPlatform/Transaction/#{transaction_number}/Notes", { Note: note, NoteType: 'Staff' },
                                content_type: 'application/json')
 
-    handle_response(response)
+    handle_response(response) do |_ignored|
+      true
+    end
   end
 
   def update_request_route(transaction_number:, status:)
