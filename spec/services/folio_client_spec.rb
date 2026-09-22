@@ -30,7 +30,7 @@ RSpec.describe FolioClient do
                 accountIds: [fine.key],
                 paymentMethod: 'Credit card',
                 amount: '10.00',
-                userName: 'libsys_admin',
+                userName: 'app_mylibrary',
                 transactionInfo: user_id,
                 servicePointId: Settings.folio.online_service_point_id,
                 notifyPatron: true
