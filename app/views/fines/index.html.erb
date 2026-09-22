@@ -1,43 +1,45 @@
 <%= flash_column_classes 'col-lg-9' %>
+
 <div class="row">
   <div class="col-lg-9">
     <%= render 'fines/shared_computer_alert' %>
-  <div class="d-sm-flex mb-4">
-    <h1 class="mt-2 me-3">Fees and fines</h1>
-    <ul class="nav nav-tabs">
-      <li class="nav-item">
-        <button class="nav-link <%= 'active' unless params[:past] %> fs-5" data-bs-toggle="tab" data-bs-target="#active-tab">Current</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link <%= 'active' if params[:past] %> fs-5" data-bs-toggle="tab" data-bs-target="#past-payments-tab">Past</button>
-      </li>
-    </ul>
-    <div class="tab-underline-extend flex-grow-1 border-bottom d-none d-sm-block">
-    </div>
-  </div>
 
-  <div class="tab-content">
-    <div id="active-tab" class="tab-pane fade <%= 'show active' unless params[:past] %>">
-      <%= render Folio::PayAllComponent.new(patron: patron_or_group) %>
-      <% if @fines_and_accruing.any? %>
-        <ul class="fines ps-0">
-          <% @fines_and_accruing.each do |item| %>
-            <%= render Folio::FineComponent.new(fine: item, patron: patron_or_group) %>
-          <% end %>
-        </ul>
-      <% else %>
-        <h2><%= t('dashboard.fines_and_fees.no_fees') %></h2>
-      <% end %>
-      <% if params[:group] && patron.sponsor? %>
-        Fines incurred by proxy borrowers appear in the list of fines under their sponsor's Self tab.
-      <% end %>
+    <div class="d-sm-flex mb-4">
+      <h1 class="mt-2 me-3">Fees and fines</h1>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <button class="nav-link <%= 'active' unless params[:past] %> fs-5" data-bs-toggle="tab" data-bs-target="#active-tab">Current</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link <%= 'active' if params[:past] %> fs-5" data-bs-toggle="tab" data-bs-target="#past-payments-tab">Past</button>
+        </li>
+      </ul>
+      <div class="tab-underline-extend flex-grow-1 border-bottom d-none d-sm-block">
+      </div>
     </div>
 
-    <div id="past-payments-tab" class="tab-pane fade <%= 'show active' if params[:past] %>">
-      <turbo-frame src="<%= payments_path %>" <% unless params[:past] %>loading="lazy"<% end %> id="past-payments">
-        Loading...
-      </turbo-frame>
+    <div class="tab-content">
+      <div id="active-tab" class="tab-pane fade <%= 'show active' unless params[:past] %>">
+        <%= render Folio::PayAllComponent.new(patron: patron_or_group) %>
+        <% if @fines_and_accruing.any? %>
+          <ul class="fines ps-0">
+            <% @fines_and_accruing.each do |item| %>
+              <%= render Folio::FineComponent.new(fine: item, patron: patron_or_group) %>
+            <% end %>
+          </ul>
+        <% else %>
+          <h2><%= t('dashboard.fines_and_fees.no_fees') %></h2>
+        <% end %>
+        <% if params[:group] && patron.sponsor? %>
+          Fines incurred by proxy borrowers appear in the list of fines under their sponsor's Self tab.
+        <% end %>
+      </div>
+
+      <div id="past-payments-tab" class="tab-pane fade <%= 'show active' if params[:past] %>">
+        <turbo-frame src="<%= payments_path %>" <% unless params[:past] %>loading="lazy"<% end %> id="past-payments">
+          Loading...
+        </turbo-frame>
+      </div>
     </div>
-  </div>
   </div>
 </div>
