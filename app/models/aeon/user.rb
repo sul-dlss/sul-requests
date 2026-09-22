@@ -38,8 +38,8 @@ module Aeon
       @own_requests ||= Aeon::RequestFinders.new(self.class.aeon_client.requests_for(username:))
     end
 
-    # All requests this user can see: own records plus submitted requests
-    # from shared activities (which may be owned by other activity members).
+    # All requests this user can see: own requests plus the activity requests.
+    # Requests from a shared activity may be owned by another activity member.
     def own_and_activity_requests
       @own_and_activity_requests ||= Aeon::RequestFinders.new(
         (own_requests.to_a + activities.flat_map { |a| a.requests.to_a }).uniq(&:id)
