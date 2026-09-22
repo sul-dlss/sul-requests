@@ -61,4 +61,16 @@ RSpec.describe FinesController do
       expect(assigns(:fines_and_accruing)).to eq fines
     end
   end
+
+  context 'with a visitor registered by name and email' do
+    let(:user) { CurrentUser.new(name: 'Some Visitor', email: 'visitor@example.com', otp_authenticated: true) }
+
+    before do
+      warden.set_user(user)
+    end
+
+    it 'redirects to the home page, because a visitor has no FOLIO account' do
+      expect(get(:index)).to redirect_to root_url
+    end
+  end
 end

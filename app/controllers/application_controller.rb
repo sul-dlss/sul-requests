@@ -24,12 +24,16 @@ class ApplicationController < ActionController::Base
     current_user.sso_user?
   end
 
+  def folio_patron?
+    current_user.sso_user? || current_user.library_id_user?
+  end
+
   def request_feature_flags
     @request_feature_flags ||= cookies[:feature_flags].to_s.split(',').map(&:strip)
   end
 
   def authenticate_user!
-    redirect_to root_url unless sso_user?
+    redirect_to root_url unless folio_patron?
   end
 
   helper_method :current_user, :sso_user?, :request_feature_flags
