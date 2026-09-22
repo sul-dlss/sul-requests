@@ -55,13 +55,24 @@ RSpec.describe PaymentsController do
   end
 
   describe '#create' do
-    before do
-      post :create,
-           params: { user_id: '513a9054-5897-11ee-8c99-0242ac120002', amount: '10.00', fine_ids: %w[1 2 3] }
+    let(:create_params) do
+      { user_id: '513a9054-5897-11ee-8c99-0242ac120002', amount: '10.00', fine_ids: %w[1 2 3] }
     end
 
     it 'renders a form to send to cybersource' do
+      post :create, params: create_params
       expect(response).to render_template('cybersource_form')
+    end
+
+    context 'with a patron authenticated by university ID and PIN' do
+      before do
+        warden.set_user(CurrentUser.new(username: '12345678', patron_key: '513a9054-5897-11ee-8c99-0242ac120002'))
+      end
+
+      it 'renders a form to send to cybersource' do
+        post :create, params: create_params
+        expect(response).to render_template('cybersource_form')
+      end
     end
   end
 
@@ -118,8 +129,21 @@ RSpec.describe PaymentsController do
       end
     end
 
+    context 'when the browser comes back from Cybersource without a session' do
+      before do
+        warden.logout
+      end
+
+      it 'still records the payment in the ILS' do
+        post :accept
+        expect(mock_client).to have_received(:pay_fines)
+          .with(user_id: '513a9054-5897-11ee-8c99-0242ac120002', amount: '10.00')
+      end
+    end
+
     context 'when the params sent back from cybersource do not pass validation' do
       before do
+        allow(Honeybadger).to receive(:notify)
         allow(controller).to receive(:cybersource_response).and_raise(Cybersource::Security::InvalidSignature)
       end
 
@@ -127,16 +151,52 @@ RSpec.describe PaymentsController do
         post :accept
         expect(flash[:error]).to include('Payment failed.')
       end
+
+      it 'notifies Honeybadger' do
+        post :accept
+        expect(Honeybadger).to have_received(:notify)
+          .with(instance_of(Cybersource::Security::InvalidSignature), hash_including(:error_message, :context))
+      end
     end
 
     context 'when cybersource rejected the payment' do
       before do
+        allow(Honeybadger).to receive(:notify)
         allow(controller).to receive(:cybersource_response).and_raise(Cybersource::PaymentResponse::PaymentFailed)
       end
 
       it 'flashes an error message' do
         post :accept
         expect(flash[:error]).to include('Payment failed.')
+      end
+
+      it 'does not notify Honeybadger, because a declined card is routine' do
+        post :accept
+        expect(Honeybadger).not_to have_received(:notify)
+      end
+    end
+
+    context 'when cybersource took the money but FOLIO would not record it' do
+      before do
+        allow(Honeybadger).to receive(:notify)
+        allow(mock_client).to receive(:pay_fines).and_raise(FolioClient::Error)
+      end
+
+      it 'flashes an error message' do
+        post :accept
+        expect(flash[:error]).to include('Something went wrong')
+      end
+
+      it 'notifies Honeybadger with enough context to find the transaction' do
+        post :accept, params: { transaction_id: '7900851478246530003165', auth_code: '06841I' }
+
+        expect(Honeybadger).to have_received(:notify).with(
+          instance_of(FolioClient::Error),
+          hash_including(
+            error_message: 'Cybersource accepted a payment that FOLIO did not record',
+            context: hash_including('transaction_id' => '7900851478246530003165', 'auth_code' => '06841I')
+          )
+        )
       end
     end
   end

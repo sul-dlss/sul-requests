@@ -4,15 +4,15 @@
 class PaymentsController < ApplicationController
   include FolioController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:accept, :cancel]
 
   # Cybersource is POSTing back to our controller, so we don't
   # get an authenticity token that the cross-site request
   # forgery protection can use to validate the request
   skip_forgery_protection only: [:accept, :cancel]
 
-  rescue_from Cybersource::Security::InvalidSignature,
-              Cybersource::PaymentResponse::PaymentFailed, with: :payment_failed
+  rescue_from Cybersource::Security::InvalidSignature, with: :invalid_signature
+  rescue_from Cybersource::PaymentResponse::PaymentFailed, with: :payment_failed
   rescue_from FolioClient::Error, with: :ils_request_failed
 
   # Render the payment history page
@@ -83,7 +83,21 @@ class PaymentsController < ApplicationController
     redirect_to fines_path, flash: { error: (t 'mylibrary.fine_payment.payment_failed_html') }
   end
 
-  def ils_request_failed
+  def invalid_signature(exception)
+    Honeybadger.notify(exception, error_message: 'Cybersource sent a payment response we could not verify',
+                                  context: transaction_identifiers)
+
+    payment_failed
+  end
+
+  def ils_request_failed(exception)
+    Honeybadger.notify(exception, error_message: 'Cybersource accepted a payment that FOLIO did not record',
+                                  context: transaction_identifiers)
+
     redirect_to fines_path, flash: { error: (t 'mylibrary.fine_payment.request_failed_html') }
+  end
+
+  def transaction_identifiers
+    params.permit(:transaction_id, :auth_code, :decision, :reason_code, :req_amount, :req_reference_number).to_h
   end
 end
