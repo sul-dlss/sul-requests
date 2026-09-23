@@ -48,15 +48,5 @@ module Cybersource
     def amount
       @fields['req_amount']
     end
-
-    # FOLIO account UUIDs truncated to 7 chars; see PaymentRequest#merchant_defined_data1
-    # Currently used only for reporting purposes for LibSys.
-    def fine_id_stubs
-      fine_id_stubs = []
-      (1..4).each do |n|
-        fine_id_stubs.concat(@fields["req_merchant_defined_data#{n}"]&.split(':')) unless @fields["req_merchant_defined_data#{n}"].nil?
-      end
-      fine_id_stubs
-    end
   end
 end

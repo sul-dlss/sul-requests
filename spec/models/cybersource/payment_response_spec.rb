@@ -44,11 +44,6 @@ RSpec.describe Cybersource::PaymentResponse do
     expect(cybersource_response.amount).to eq('100.00')
   end
 
-  it 'parses the fine id stubs' do
-    expect(cybersource_response.fine_id_stubs).to eq(%w[4085f2b a4aedae a27c153 ab6dc99 8369563 ac87e94 541e219
-                                                        8e86e80])
-  end
-
   it 'validates that the transaction is signed and accepted' do
     expect { cybersource_response.validate! }.not_to raise_error
   end
