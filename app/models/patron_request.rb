@@ -587,10 +587,7 @@ class PatronRequest < ApplicationRecord
   end
 
   def mediator_notification_email_address
-    Rails.application.config.mediator_contact_info.fetch(
-      origin_library_code,
-      Rails.application.config.mediator_contact_info.fetch(origin_location_code, {})
-    )[:email]
+    Settings.mediateable_origins.dig(origin_library_code, 'email') || Settings.mediateable_origins.dig(origin_location_code, 'email')
   end
   # @!endgroup
 
