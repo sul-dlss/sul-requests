@@ -19,19 +19,28 @@ origin_location_admin_groups:
   GRE-HH-SVA: ['sul:requests-sva']
 
 mediateable_origins:
-  ART: {}
-  EDUCATION: {}
+  ART:
+    email: 'sul-requests-art@lists.stanford.edu'
+  EDUCATION:
+    email: 'sul-requests-education@lists.stanford.edu'
   GRE-HH-SVA:
+    email: 'sul-requests-sva@lists.stanford.edu'
     library_override: SVA
-  MARINE-BIO: {}
+  MARINE-BIO:
+    email: 'sul-requests-hopkins@lists.stanford.edu'
   PAGE-MP:
+    email: 'sul-requests-branner@lists.stanford.edu'
     library_override: EARTH-SCI
   SAL3-PAGE-MP:
+    email: 'sul-requests-branner@lists.stanford.edu'
     library_override: EARTH-SCI
   SAL3-PAGE-SP:
+    email: 'sul-requests-spec@lists.stanford.edu'
     library_override: SPEC-COLL
-  RUMSEY-MAP: {}
-  SPEC-COLL: {}
+  RUMSEY-MAP:
+    email: 'sul-requests-rumsey@lists.stanford.edu'
+  SPEC-COLL:
+    email: 'sul-requests-spec@lists.stanford.edu'
 
 contact_email: 'site-admin-sul-requests@lists.stanford.edu'
 
