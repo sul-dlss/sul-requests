@@ -44,8 +44,8 @@
           <% end %>
         <% end %>
         <% if helpers.can? :destroy, request %>
-          <%= render System::DeleteWithConfirmationComponent.new(id: "delete-#{request.id}", button_label: "Delete #{request.title} request", form_url: ill_request_path(request.id)) do |c| %>
-            <% c.with_body do %>
+          <%= render System::DeleteWithConfirmationComponent.new(id: "delete-#{request.id}", button_label: "Delete #{request.title} request", form_url: ill_request_path(request.id)) do |component| %>
+            <% component.with_body do %>
               <div class="text-lagunita-dark"><%= type_label %></div>
 
               <div class="d-flex flex-column gap-1">

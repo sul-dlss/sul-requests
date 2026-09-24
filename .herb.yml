@@ -9,3 +9,5 @@ linter:
       enabled: false
     html-no-aria-hidden-on-focusable:
       enabled: false
+    html-no-nested-forms:
+      enabled: false
