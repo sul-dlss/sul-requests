@@ -50,7 +50,7 @@ class AeonAbility
   end
 
   def past_activity_request?(aeon_user:, request:)
-    request.activity? && aeon_user.activities&.any? { |activity| activity.id == request.activity_id && !activity.active? }
+    request.activity? && aeon_user.activities.past.find(request.activity_id)
   end
 
   def owner?(aeon_user:, record:)
