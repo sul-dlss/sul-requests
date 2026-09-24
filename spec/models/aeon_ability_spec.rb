@@ -109,11 +109,23 @@ RSpec.describe AeonAbility do
       before do
         allow(request).to receive_messages(saved_for_later?: false, cancelled?: false)
         allow(request.appointment).to receive_messages(editable?: true)
-        allow(aeon_user).to receive(:activities).and_return([activity])
+        allow(aeon_user).to receive(:activities).and_return(Aeon::ActivityFinders.new([activity]))
       end
 
       it { is_expected.to be_able_to(:update, request) }
       it { is_expected.to be_able_to(:destroy, request) }
+    end
+
+    context 'with a request attached to a past activity' do
+      let(:request) { build(:aeon_request, username: 'testuser@stanford.edu', activity_id: 42) }
+      let(:activity) { build(:aeon_activity, id: 42, users: [aeon_user], status: 'Completed') }
+
+      before do
+        allow(request).to receive_messages(saved_for_later?: false, cancelled?: false)
+        allow(aeon_user).to receive(:activities).and_return(Aeon::ActivityFinders.new([activity]))
+      end
+
+      it { is_expected.not_to be_able_to(:destroy, request) }
     end
 
     context "with another user's request attached to an activity the current user does not belong to" do
@@ -122,7 +134,7 @@ RSpec.describe AeonAbility do
 
       before do
         allow(request).to receive_messages(saved_for_later?: true, cancelled?: false)
-        allow(aeon_user).to receive(:activities).and_return([other_activity])
+        allow(aeon_user).to receive(:activities).and_return(Aeon::ActivityFinders.new([other_activity]))
       end
 
       it { is_expected.not_to be_able_to(:update, request) }

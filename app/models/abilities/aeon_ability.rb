@@ -22,6 +22,9 @@ class AeonAbility
       owner?(aeon_user:, record: request) || member_of_request_activity?(aeon_user:, request:)
     end
     cannot :destroy, Aeon::Request, &:cancelled?
+    cannot :destroy, Aeon::Request do |request|
+      past_activity_request?(aeon_user:, request:)
+    end
 
     can :update, Aeon::Request do |request|
       (owner?(aeon_user:, record: request) || member_of_request_activity?(aeon_user:, request:)) &&
@@ -44,6 +47,10 @@ class AeonAbility
 
   def member_of_request_activity?(aeon_user:, request:)
     request.activity? && aeon_user.activities&.any? { |activity| activity.id == request.activity_id }
+  end
+
+  def past_activity_request?(aeon_user:, request:)
+    request.activity? && aeon_user.activities.past.find(request.activity_id)
   end
 
   def owner?(aeon_user:, record:)
