@@ -34,7 +34,7 @@
           Switch to personal
         <% end %>
       </button>
-      <%= form_with url: proxy_path do |f| %>
+      <%= form_with url: proxy_path do %>
         <ul class="dropdown-menu px-1">
           <li>
             <%= button_tag name: 'id', value: nil, class: 'dropdown-item text-stanford-black ps-0', disabled: personal? do %>
