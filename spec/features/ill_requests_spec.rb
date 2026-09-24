@@ -115,7 +115,7 @@ RSpec.describe 'ILL Request Page', :js do
       instance_double(IlliadClient, create: true)
     end
 
-    it 'submits the request to ILLiad' do
+    it 'submits the request to ILLiad' do # rubocop:disable RSpec/ExampleLength
       visit new_ill_request_path
 
       choose 'Pickup physical item'
@@ -126,7 +126,12 @@ RSpec.describe 'ILL Request Page', :js do
       fill_in 'Link', with: 'AI told me this exists'
       fill_in 'Date of publication', with: '2032'
       fill_in 'ISBN', with: '1234567890'
+      expect(page).to have_button('Continue', disabled: true)
 
+      choose 'Yes'
+      expect(page).to have_button('Continue', disabled: true)
+
+      choose 'Print only'
       click_on 'Continue'
 
       click_button 'Submit request'
@@ -137,7 +142,8 @@ RSpec.describe 'ILL Request Page', :js do
                                                                loan_author: 'Test Author',
                                                                cited_in: 'AI told me this exists',
                                                                loan_date: '2032',
-                                                               issn: '1234567890'
+                                                               issn: '1234567890',
+                                                               accept_alternate_edition: 'true'
                                                              ))
     end
 
