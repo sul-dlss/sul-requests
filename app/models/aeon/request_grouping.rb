@@ -25,7 +25,7 @@ module Aeon
     def to_key
       return [first.id] unless multi_item_selector?
 
-      [status, title.parameterize, (digital? ? 'digital' : 'reading_room')].compact
+      [status, title&.parameterize || '', (digital? ? 'digital' : 'reading_room')].compact
     end
 
     def appointment_reading_room
