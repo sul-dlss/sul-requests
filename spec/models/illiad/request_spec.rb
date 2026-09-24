@@ -105,4 +105,17 @@ RSpec.describe Illiad::Request do
       expect(scan.expiration_date).to eq(scan.placed_date + 2.months)
     end
   end
+
+  context 'when the request is marked as received in Folio' do
+    subject(:in_folio) { described_class.new(JSON.parse(in_folio_result)) }
+
+    let(:in_folio_result) do
+      '{"CreationDate":"2022-05-11T10:49:41.783",
+        "TransactionStatus":"Received in Folio"}'
+    end
+
+    it 'correctly identifies the request as being in Folio' do
+      expect(in_folio.in_folio?).to be(true)
+    end
+  end
 end
