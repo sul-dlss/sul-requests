@@ -9,7 +9,7 @@ module Illiad
     include RequestSorting
 
     def self.where(user_id:)
-      IlliadClient.new.user_transactions(user_id).reject(&:inactive?)
+      IlliadClient.new.user_transactions(user_id).reject(&:inactive?).reject(&:in_folio?)
     end
 
     def self.from_dynamic(data)
@@ -37,8 +37,12 @@ module Illiad
       @illiad_result['TransactionStatus']
     end
 
+    def in_folio?
+      status == 'Received in Folio'
+    end
+
     def inactive?
-      INACTIVE_REQUEST_STATUSES.include? @illiad_result['TransactionStatus']
+      INACTIVE_REQUEST_STATUSES.include? status
     end
 
     def request_type
