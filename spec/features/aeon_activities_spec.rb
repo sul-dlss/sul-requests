@@ -119,4 +119,15 @@ RSpec.describe 'Activities', :js do
                               href: 'https://archives.stanford.edu/repositories/2/resources/1234')
     expect(page).to have_text('No items have been requested for this activity.', count: 1)
   end
+
+  context 'without any activities' do
+    let(:activities) { [] }
+
+    it 'displays no activities message' do
+      expect(page).to have_text('You have no activities')
+
+      click_button 'Past'
+      expect(page).to have_text('You have no past activities')
+    end
+  end
 end
