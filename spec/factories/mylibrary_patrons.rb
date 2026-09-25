@@ -256,7 +256,7 @@ FactoryBot.define do
                'effectiveLocation' => { 'code' => 'ART-STACKS', 'library' => { 'code' => 'ART' } },
                'permanentLocation' => { 'code' => 'ART-STACKS' } } },
            'loanDate' => '2023-06-03T06:08:45.521+00:00',
-           'dueDate' => '2020-09-27T06:59:59.000+00:00',
+           'dueDate' => '2020-10-27T06:59:59.000+00:00',
            'overdue' => false,
            'details' =>
            { 'renewalCount' => nil,
@@ -268,7 +268,7 @@ FactoryBot.define do
          { 'id' => 'e8d0dd5c-2b69-420f-bd91-075eebbe8eba',
            'item' =>
            { 'title' =>
-             'See this sound',
+             '"See" this sound',
              'author' => 'Daniels, Dieter; Naumann, Sandra; Thoben, Jan',
              'instanceId' => 'abdb8f6a-d3c3-5f7e-921c-0cfc4835f3bc',
              'itemId' => '95acc0f1-d699-5723-a89b-3329279a05d5',
