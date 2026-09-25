@@ -6,7 +6,9 @@
 class RequestsController < ApplicationController
   include FolioController
 
-  def index; end
+  def index
+    render 'home/login' unless current_user.authenticated?
+  end
 
   def new
     mapped_params = { 'instance_hrid' => new_params[:item_id],
