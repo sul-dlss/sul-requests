@@ -19,7 +19,7 @@
     <div id="active-tab" class="tab-pane fade <%= 'show active' unless params[:past] %>">
       <% if @activities.active.any? %>
         <div class="d-flex flex-wrap justify-content-end gap-2 mb-4">
-          <%= render 'filters', activity_types: @activities.active.map(&:activity_type) %>
+          <%= render 'filters', activity_types: @activities.active.map(&:activity_type).uniq %>
           <%= render 'sort' %>
         </div>
 
@@ -34,7 +34,7 @@
     <div id="past-tab" class="tab-pane fade <%= 'show active' if params[:past] %>">
       <% if @activities.past.any? %>
         <div class="d-flex flex-wrap justify-content-end gap-2 mb-4">
-          <%= render 'filters', activity_types: @activities.past.map(&:activity_type) %>
+          <%= render 'filters', activity_types: @activities.past.map(&:activity_type).uniq %>
           <%= render 'sort' %>
         </div>
 
