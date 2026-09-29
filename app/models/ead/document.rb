@@ -146,7 +146,7 @@ module Ead
     # Node represents a c0* component in the EAD hierarchy. It can be a series, subseries, or file depending on its level and children.
     class Node
       def self.from(node)
-        if hierarchical?(node)
+        if hierarchical?(node) && !containers_only_on_self?(node)
           new(node)
         else
           Item.new(node, default_level: 'file')
@@ -155,6 +155,11 @@ module Ead
 
       def self.hierarchical?(node)
         child_components(node).any?
+      end
+
+      def self.containers_only_on_self?(node)
+        node.xpath('did/container').any? &&
+          node.xpath(".//*[starts-with(name(), 'c0')]/did/container").none?
       end
 
       # child_components refers to immediate child/first descendents

@@ -106,6 +106,26 @@ RSpec.describe Ead::DisplayGroup do
       expect(groups.first.contents.first.contents.first).to have_attributes(hierarchy: %w[Papers Correspondence])
     end
 
+    it 'groups components by their own container when their children have no containers' do
+      series = build_node(<<~XML)
+        <c01 level="series">
+          <did><unittitle>Army Specialized Training Program</unittitle></did>
+          <c02 level="file">
+            <did><unittitle>Tests</unittitle><container type="Box">8</container><container type="folder">213</container></did>
+            <c03 level="file"><did><unittitle>Test 1</unittitle></did></c03>
+          </c02>
+          <c02 level="file">
+            <did><unittitle>Reports</unittitle><container type="Box">8</container><container type="folder">214</container></did>
+            <c03 level="file"><did><unittitle>Report 1</unittitle></did></c03>
+          </c02>
+        </c01>
+      XML
+
+      groups = described_class.build_display_groups(series.contents)
+      expect(groups.map(&:title)).to eq(['Box 8'])
+      expect(groups.first.contents.map(&:folder)).to eq(%w[213 214])
+    end
+
     it 'creates a selectable node for items with a physical container' do
       item = build_node(<<~XML)
         <c02 level="file">
