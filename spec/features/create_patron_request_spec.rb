@@ -13,6 +13,7 @@ RSpec.describe 'Creating a request', :js do
     allow(Folio::Patron).to receive(:find_by).with(patron_key: 'generic').and_return(build(:patron))
     allow_any_instance_of(PagingSchedule).to receive(:valid?).with(anything).and_return(true)
     allow_any_instance_of(PagingSchedule).to receive(:earliest_delivery_estimate).and_return({})
+    allow(LibraryHoursApi).to receive(:get).and_return(LibraryHoursApi::Response.new({}))
   end
 
   after do
