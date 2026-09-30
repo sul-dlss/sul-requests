@@ -736,6 +736,34 @@ RSpec.describe 'Requesting an item from an EAD', :js do
     end
   end
 
+  context 'with containers on a folder-level component instead of its child items' do
+    let(:eadxml) do
+      Nokogiri::XML(File.read('spec/fixtures/a0112.xml')).tap(&:remove_namespaces!).tap do |doc|
+        doc.at_xpath('//dsc').replace(<<~XML)
+          <dsc>
+            <c01 level="series">
+              <did><unittitle>Army Specialized Training Program</unittitle></did>
+              <c02 level="file">
+                <did><unittitle>History 133 Tests</unittitle><container type="Box">8</container><container type="folder">213</container></did>
+                <c03 level="file"><did><unittitle>Final examination</unittitle></did></c03>
+              </c02>
+            </c01>
+          </dsc>
+        XML
+      end
+    end
+
+    it 'shows the child items under their folder in the box' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+      choose 'Reading room appointment'
+      click_button 'Continue'
+
+      fill_in 'Search contents', with: 'Final exam'
+      expect(page).to have_text 'Folder 213: History 133 Tests'
+      expect(page).to have_text 'Final examination'
+    end
+  end
+
   context 'without a logged in user' do
     let(:current_user) { CurrentUser.new({}) }
     let(:eadxml) do

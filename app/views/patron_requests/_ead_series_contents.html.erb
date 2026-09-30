@@ -63,6 +63,13 @@
                   <% else %>
                     <%= item.full_title %>
                   <% end %>
+                  <% if item.contents.any? %>
+                    <ul class="list-unstyled small ms-3 mt-1">
+                      <% item.contents.each do |child| %>
+                        <li><%= child.full_title %></li>
+                      <% end %>
+                    </ul>
+                  <% end %>
                 </li>
               <% end %>
             </ul>

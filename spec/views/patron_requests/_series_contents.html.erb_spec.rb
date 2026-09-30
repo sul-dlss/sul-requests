@@ -18,6 +18,7 @@ RSpec.describe 'patron_requests/_ead_series_contents.html.erb' do
                               top_container: 'Box 9',
                               barcode: nil,
                               folder: 'Folder 1',
+                              contents: [],
                               full_title: 'Item 1',
                               title: 'Item 1',
                               level: 'file',
@@ -29,6 +30,7 @@ RSpec.describe 'patron_requests/_ead_series_contents.html.erb' do
                               top_container: 'Box 9',
                               barcode: nil,
                               folder: 'Folder 2',
+                              contents: [],
                               full_title: 'Item 2',
                               title: 'Item 2',
                               level: 'file',
@@ -99,6 +101,7 @@ RSpec.describe 'patron_requests/_ead_series_contents.html.erb' do
                         top_container: 'Box 1',
                         barcode: nil,
                         folder: nil,
+                        contents: [],
                         date: nil,
                         digital_content?: false,
                         id: 'item-5')
