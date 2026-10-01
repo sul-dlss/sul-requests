@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="col-7 mb-3">
+  <div class="col-12 col-lg-7 mb-3">
     <%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-7">
+  <div class="col-12 col-lg-7">
     <%= render AlertComponent.new(type: :warning, icon_classes: ['text-warning'], dismissable: true) do %>
       <div class="fw-bold">Interlibrary loan request</div>
       <div>
@@ -18,7 +18,31 @@
 </div>
 
 <div class="row">
-  <%= form_with model: Illiad::Request.new, id: 'illiad-request-form', url: ill_requests_path, data: { turbo: false, controller: 'accordion-form ill-request' }, class: 'col-7 me-5 accordion' do |f| %>
+  <% library = Settings.libraries.ILL %>
+  <div class="col-12 col-lg-7 me-lg-5">
+    <h1 class="mt-2"> New request </h1>
+    <div class="d-lg-none">
+      <h2 class="fs-5">Contact information</h2>
+      <p class="mb-1">
+        <% if library.reading_room_url %>
+          <%= link_to library.reading_room_url, class: 'fw-semibold' do %>
+            <%= library.label %><i class="bi bi-arrow-up-right ms-1"></i>
+          <% end %>
+        <% else %>
+          <%= library.label %>
+        <% end %>
+      </p>
+      <p class="mb-1">
+        <% if library.contact_info&.phone %>
+          <%= library.contact_info.phone %>
+        <% end %>
+        <% if library.contact_info&.email %>
+          <%= mail_to library.contact_info.email, class: 'ms-2 su-underline' %>
+        <% end %>
+      </p>
+    </div>
+  </div>
+  <%= form_with model: Illiad::Request.new, id: 'illiad-request-form', url: ill_requests_path, data: { turbo: false, controller: 'accordion-form ill-request' }, class: 'col-12 col-lg-7 me-lg-5 accordion' do |f| %>
     <% step_enum = Enumerator.new { |y| n = 0; loop { y << (n += 1) } } %>
     <% scan_or_pickup_step = nil %>
 
@@ -220,8 +244,7 @@
     <% end %>
   <% end %>
 
-  <aside class="col-3">
-    <% library = Settings.libraries.ILL %>
+  <aside class="col-3 d-none d-lg-block">
     <h2>Contact information</h2>
     <div>
         <h3>
