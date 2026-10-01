@@ -1,0 +1,14 @@
+<div class="row flex-column flex-sm-row landing-page mb-3">
+  <div class="col-sm-6">
+    <div class="card">
+      <h2 class="card-header bg-white">Stanford community</h2>
+      <div class="card-body">
+        <%= link_to 'Log in with SUNet ID', login_by_sunetid_url(referrer: new_ill_request_path), data: { turbo: false }, class: 'btn btn-md btn-secondary btn-full mb-2' %>
+        <p>For Stanford faculty, students, staff, postdocs, fellows, visiting scholars, and Graduate Medical Education (GME) staff and fellows with a SUNet ID. <span class="fw-semibold">By using your SUNet ID, you can access more library services, including requesting items from partner libraries or receiving digital scans via email.</span></p>
+        <a href="https://library.stanford.edu/services/borrow-and-request" target="_blank" class="su-underline">
+          Review borrow and request policies<i class="bi bi-arrow-up-right ms-1" aria-hidden></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
