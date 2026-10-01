@@ -65,7 +65,7 @@ module Ead
       if item.respond_to?(:digital_only?) && item.digital_only?
         DigitalItem.new(title: item.full_title, href: item.extref_href, hierarchy: hierarchy)
       else
-        SelectableContainer.new(title: item.title, contents: [], hierarchy: hierarchy, barcode: item.barcode)
+        SelectableContainer.new(title: item.title.presence || item.full_title, contents: [], hierarchy: hierarchy, barcode: item.barcode)
       end
     end
 

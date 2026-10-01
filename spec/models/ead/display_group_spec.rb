@@ -60,6 +60,19 @@ RSpec.describe Ead::DisplayGroup do
       expect(groups.first).to be_selectable
     end
 
+    it 'titles a selectable node by its date when it has no unittitle' do
+      item = build_node(<<~XML)
+        <c02 level="otherlevel">
+          <did>
+            <unitdate>25 Apr. 1901</unitdate>
+          </did>
+        </c02>
+      XML
+
+      groups = described_class.build_display_groups([item])
+      expect(groups.first.title).to eq('25 Apr. 1901')
+    end
+
     it 'creates a selectable node when a hierarchical node has only containerless leaf children' do
       item = build_node(<<~XML)
         <c01 level="series">
