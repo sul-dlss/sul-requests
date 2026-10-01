@@ -55,7 +55,7 @@ module Home
     end
 
     def illiad_digital_requests
-      return [] unless folio? && include_illiad
+      return [] unless folio?
 
       @illiad_digital_requests ||= patron.illiad_requests.select(&:scan?)
     end
