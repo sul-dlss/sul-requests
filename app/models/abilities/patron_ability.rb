@@ -30,7 +30,7 @@ class PatronAbility
     # anyone can start to create an Aeon page
     can [:new, :create], PatronRequest, &:aeon_page?
 
-    can [:new, :create], Illiad::Request
+    can [:new, :create], Illiad::Request if folio_patron.ilb_eligible?
     can :update, Illiad::Request do
       folio_patron.can_modify_requests?
     end

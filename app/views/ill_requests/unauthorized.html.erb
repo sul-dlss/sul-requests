@@ -1,0 +1,9 @@
+<%- contact_info = Settings.libraries.default -%>
+
+<div class="col-lg-8 p-0">
+  <%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>
+</div>
+
+<div class="alert alert-danger text-cardinal mt-4 col-lg-8">
+This item is not available to request for <i><%= current_user&.patron&.patron_group&.desc&.sub(/cardholders?\.?$/, '') || 'Stanford Libraries' %></i> cardholders. If you have questions about library access, please contact <%= mail_to(contact_info[:email], contact_info[:email], class: 'alert-link') %> or call <%= contact_info[:phone] %> for assistance.
+</div>
