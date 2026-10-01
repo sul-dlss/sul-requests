@@ -4,7 +4,8 @@
 class IllRequestsController < ApplicationController
   include FolioController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:new]
+  before_action :authorize_new_request, only: [:new]
 
   before_action :load_requests
   before_action :load_request, only: [:destroy, :edit, :update]
@@ -97,6 +98,15 @@ class IllRequestsController < ApplicationController
   end
 
   private
+
+  # ILL requires both an SSO user + that they have a patron record.
+  def authorize_new_request
+    return if current_user.sso_user? && current_user.patron.present?
+
+    flash.now[:error] = t('sessions.login_by_sunetid.error_html')
+
+    render 'login'
+  end
 
   def updated_fields
     update_params.to_h.compact_blank.filter { |param, value| @request.public_send(param)&.to_s&.strip != value.strip }
