@@ -3,12 +3,11 @@
 module Home
   # Home page presenter wrapping user data for both view variants.
   class Dashboard
-    attr_reader :aeon, :patron, :include_illiad
+    attr_reader :aeon, :patron
 
-    def initialize(aeon:, patron:, include_illiad: false)
+    def initialize(aeon:, patron:)
       @aeon = aeon
       @patron = patron
-      @include_illiad = include_illiad
     end
 
     def folio? = patron.present?
