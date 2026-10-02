@@ -114,8 +114,8 @@ class AeonClient
     handle_response(response, as_class: Aeon::Appointment)
   end
 
-  def cancel_appointment(appointment_id)
-    response = delete("Appointments/#{appointment_id}")
+  def cancel_appointment(appointment)
+    response = delete("Appointments/#{appointment.id}")
 
     case response.status
     when 204, 404
@@ -302,6 +302,7 @@ class AeonClient
       builder.request :json
       builder.request :retry, max: 4, interval: 1, backoff_factor: 2
       builder.response :json
+      builder.response :logger, Rails.logger, { headers: false, bodies: false, errors: true }
 
       default_headers.each do |k, v|
         builder.headers[k] = v
