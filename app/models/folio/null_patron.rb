@@ -72,6 +72,8 @@ module Folio
       true
     end
 
+    def personal_data = {}
+    def primary_address = {}
     def checkouts = []
     def all_accounts = []
     def fines = []

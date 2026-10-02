@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Creating an Aeon patron request', :js do
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true) }
-  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
+  let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default', email_address: user.email_address) }
   let(:folio_instance) { :special_collections_finding_aid_holdings }
   let(:patron) do
     instance_double(Folio::Patron, id: user.patron_key, username: 'auser', display_name: 'A User', exists?: true, email: nil,

@@ -68,6 +68,44 @@ RSpec.describe AeonClient do
     end
   end
 
+  describe '#update_user' do
+    it 'replaces each provided field' do
+      user_data = AeonClient::UserData.with_defaults.with(email_address: 'stub@stanford.edu', sso: true, first_name: 'Stub', address2: nil)
+
+      stub_request(:patch, 'https://aeon.example.com/api/Users/stub%40stanford.edu')
+        .with(body: [
+          { op: 'replace', path: '/authType', value: 'Default' },
+          { op: 'replace', path: '/billingCategory', value: 'Default' },
+          { op: 'replace', path: '/cleared', value: 'Yes' },
+          { op: 'replace', path: '/eMailAddress', value: 'stub@stanford.edu' },
+          { op: 'replace', path: '/firstName', value: 'Stub' },
+          { op: 'replace', path: '/notificationMethod', value: 'Email' }
+        ].to_json)
+        .to_return(status: 200, body: { username: 'stub@stanford.edu', authType: 'Default' }.to_json,
+                   headers: { 'Content-Type' => 'application/json' })
+
+      user = client.update_user(username: 'stub@stanford.edu', user_data:)
+
+      expect(user.username).to eq('stub@stanford.edu')
+    end
+  end
+
+  describe AeonClient::UserData do
+    describe '#clearance' do
+      it 'clears SSO users' do
+        expect(described_class.with_defaults.with(sso: true).clearance).to eq 'Yes'
+      end
+
+      it 'does not clear other users' do
+        expect(described_class.with_defaults.with(sso: false).clearance).to eq 'No'
+      end
+
+      it 'does not clear users when SSO is unknown' do
+        expect(described_class.with_defaults.clearance).to eq 'No'
+      end
+    end
+  end
+
   describe '#requests_for' do
     it 'returns an array of requests for the user' do
       stub_request(:get, 'https://aeon.example.com/api/Users/jdoe/requests?activeOnly=false')

@@ -20,15 +20,25 @@ class AeonUsersController < ApplicationController
   def accept_terms
     params.require(:aeon_terms)
 
-    aeon_client.create_user(user_data: folio_user_data) if aeon_terms_param
+    fill_in_or_create_user if aeon_terms_param
 
-    redirect_back_or_to(params[:referer])
+    redirect_back_or_to(params[:referrer])
   end
 
   private
 
   def aeon_terms_param
     ActiveModel::Type::Boolean.new.cast(params.expect(:aeon_terms))
+  end
+
+  def fill_in_or_create_user
+    aeon_user = current_user.aeon
+
+    if aeon_user.stub?
+      aeon_client.update_user(username: aeon_user.username, user_data: folio_user_data)
+    elsif !aeon_user.persisted?
+      aeon_client.create_user(user_data: folio_user_data)
+    end
   end
 
   def user_data

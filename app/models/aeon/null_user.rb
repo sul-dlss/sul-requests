@@ -31,6 +31,8 @@ module Aeon
       @activities ||= Aeon::ActivityFinders.new([])
     end
 
+    def stub? = false
+
     def present? = false
 
     def persisted? = false

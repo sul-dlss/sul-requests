@@ -15,7 +15,7 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
                                    blocked?: false, proxies: [], sponsors: [], sponsor?: false, proxy?: false,
                                    allowed_request_types: %w[Hold Recall Page])
   end
-  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default') }
+  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default', eMailAddress: user.email_address) }
   let(:reading_room) { StubAeonClient::ReadingRoom.find_by(name: 'Field Reading Room') }
 
   let(:appointment_start_time) { 1.week.from_now }
