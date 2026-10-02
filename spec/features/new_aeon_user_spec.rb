@@ -47,6 +47,29 @@ RSpec.describe 'Creating new accounts for patrons', :js do
     end
   end
 
+  context 'with an SSO user without a FOLIO account' do
+    let(:user) { create(:sso_user) }
+    let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
+
+    before do
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(nil)
+      login_as(current_user)
+    end
+
+    it 'creates an Aeon account when the terms are accepted' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      check('I agree to these terms')
+
+      expect do
+        click_button 'Continue'
+        expect(page).to have_text('New request')
+      end.to change(StubAeonClient::User, :count).by(1)
+
+      expect(StubAeonClient::User.last).to have_attributes(username: user.email, authType: 'Default')
+    end
+  end
+
   context 'with a name/email user' do
     let(:user) { nil }
     let(:current_user) { nil }
