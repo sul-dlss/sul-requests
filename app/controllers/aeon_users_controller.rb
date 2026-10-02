@@ -22,7 +22,7 @@ class AeonUsersController < ApplicationController
 
     aeon_client.create_user(user_data: folio_user_data) if aeon_terms_param
 
-    redirect_back_or_to(params[:referer])
+    redirect_back_or_to(params[:referrer])
   end
 
   private
