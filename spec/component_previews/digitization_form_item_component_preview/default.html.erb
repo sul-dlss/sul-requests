@@ -1,15 +1,14 @@
+<% item_class = Data.define(:id, :callnumber) %>
 <form id="digitized-accordion" class="col-lg-9">
   <div class="accordion digitization-accordion selected-items-container px-0">
     <%=
-      render Aeon::DigitizationFormItemComponent.new(
-        title: 'Item 1',
-        dom_id: 'item_1'
+      render Aeon::DigitizationFormItemComponent.for_selectable_item(
+        item: item_class.new(id: 'item_1', callnumber: 'Item 1')
       ) %>
 
     <%=
-      render Aeon::DigitizationFormItemComponent.new(
-        title: 'Item 2',
-        dom_id: 'item_2'
+      render Aeon::DigitizationFormItemComponent.for_selectable_item(
+        item: item_class.new(id: 'item_2', callnumber: 'Item 2')
       ) %>
   </div>
 </form>
@@ -19,10 +18,9 @@
 <form id="digitized-accordion2" class="col-lg-9">
   <div class="accordion digitization-accordion selected-items-container px-0">
     <%=
-      render Aeon::DigitizationFormItemComponent.new(
+      render Aeon::DigitizationFormItemComponent.for_selectable_item(
         accordion: false,
-        title: 'Item 3',
-        dom_id: 'item_3'
+        item: item_class.new(id: 'item_3', callnumber: 'Item 3')
       ) %>
   </div>
 </form>
