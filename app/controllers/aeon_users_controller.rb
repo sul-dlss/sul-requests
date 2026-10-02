@@ -44,6 +44,9 @@ class AeonUsersController < ApplicationController
   def folio_user_data # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     personal_data = current_user.patron.personal_data
     primary_address = current_user.patron.primary_address
+
+    Honeybadger.notify("Missing FOLIO user data for user #{current_user.email_address}") if personal_data.blank?
+
     AeonClient::UserData.with_defaults.with(
       email_address: current_user.email_address,
       sso: current_user.sso_user?,
@@ -56,6 +59,10 @@ class AeonUsersController < ApplicationController
       state_or_province: primary_address['region'],
       country: primary_address['countryId'],
       zip_code: primary_address['postalCode']
-    )
+    ).tap do |user_data|
+      Rails.logger.info("Created Aeon user data for user #{current_user.email_address}:
+        #{user_data.inspect}
+        from #{current_user.patron.inspect}")
+    end
   end
 end
