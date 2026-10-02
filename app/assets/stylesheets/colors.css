@@ -1,7 +1,4 @@
 :root {
-  --stanford-jungle-green-rgb: 39, 153, 137;
-  --stanford-process-black-50-rgb: 151, 150, 148;
-  --stanford-lagunita-dark-rgb: 0, 107, 129;
   --stanford-poppy-darker-rgb: 175, 85, 11;
 
   --bs-danger: #dc3545;
@@ -85,7 +82,7 @@ input[type="radio"] {
 }
 
 .bg-su-process-black-50 {
-  background-color: rgba(var(--stanford-process-black-50-rgb), 1);
+  background-color: rgba(var(--stanford-50-black-rgb), 1);
 }
 
 .bg-stanford-20-black {
@@ -125,8 +122,8 @@ input[type="radio"] {
  background: rgb(var(--stanford-illuminating-light-rgb));
 }
 
-.bg-jungle-green {
-  background-color: rgba(var(--stanford-jungle-green-rgb), 1);
+.bg-palo-verde {
+  background-color: rgba(var(--stanford-palo-verde-rgb), 1);
 }
 
 .bg-lagunita-dark {
@@ -181,8 +178,8 @@ input[type="radio"] {
   color: rgba(var(--stanford-digital-green-dark-rgb), 1);
 }
 
-.text-jungle-green {
-  color: rgba(var(--stanford-jungle-green-rgb), 1);
+.text-palo-verde {
+  color: rgba(var(--stanford-palo-verde-rgb), 1);
 }
 
 .text-lagunita-dark {
