@@ -12,15 +12,18 @@ module Aeon
     end
 
     def self.from_dynamic(data)
-      new(username: data['username'], auth_type: data['authType'], request_limit: data['requestLimit'])
+      new(username: data['username'], auth_type: data['authType'], request_limit: data['requestLimit'],
+          email_address: data['eMailAddress'], cleared: data['cleared'])
     end
 
-    attr_reader :username, :auth_type, :request_limit
+    attr_reader :username, :auth_type, :request_limit, :email_address, :cleared
 
-    def initialize(username:, auth_type: nil, request_limit: nil)
+    def initialize(username:, auth_type: nil, request_limit: nil, email_address: nil, cleared: nil)
       @username = username
       @auth_type = auth_type
       @request_limit = request_limit
+      @email_address = email_address
+      @cleared = cleared
     end
 
     def ==(other)
@@ -32,6 +35,10 @@ module Aeon
 
     def sso_auth?
       auth_type == 'Default'
+    end
+
+    def stub?
+      sso_auth? && email_address.blank? && %w[B DIS].exclude?(cleared)
     end
 
     def own_requests
