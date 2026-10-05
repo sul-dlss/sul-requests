@@ -50,7 +50,7 @@ RSpec.describe Ability do
     context 'with a request for an item that is not requestable by non-affiliates' do
       let(:request) { PatronRequest.new(instance_hrid: 'a1234', origin_location_code: 'LAW-STACKS1') }
       let(:patron) do
-        instance_double(Folio::Patron, id: '123', patron_group_name: 'staff', allowed_request_types: ['Page'])
+        stub_folio_patron(id: '123', patron_group_name: 'staff', allowed_request_types: ['Page'])
       end
 
       before do

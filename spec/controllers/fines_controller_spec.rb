@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe FinesController do
-  let(:mock_patron) { instance_double(Folio::Patron, key: '513a9054-5897-11ee-8c99-0242ac120002', fines:, checkouts:) }
+  let(:mock_patron) { stub_folio_patron(fines:, checkouts:) }
   let(:checkouts) { [] }
 
   let(:fines) do

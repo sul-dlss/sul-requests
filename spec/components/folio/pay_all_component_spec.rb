@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Folio::PayAllComponent, type: :component do
   let(:patron) do
-    instance_double(Folio::Patron, key: '513a9054-5897-11ee-8c99-0242ac120002', fines:, can_pay_fines?: true)
+    stub_folio_patron(fines:, can_pay_fines?: true)
   end
 
   let(:fines) do
