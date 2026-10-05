@@ -13,10 +13,10 @@
       <%= f.label :request_type, 'Request type:' %>
     <% end %>
     <ul class="<%= searchable ? 'dropdown-menu' : 'list-unstyled' %>">
-      <% Settings.patron_request_type_mapping.sort_by { |type, label| label }.each do |type, label| %>
+      <% Settings.patron_request_type_mapping.sort_by { |type, request_type_label| request_type_label }.each do |type, request_type_label| %>
         <li class="<%= searchable ? 'dropdown-item' : '' %>">
-          <%= check_box_tag "request_type[]", label, params['request_type']&.include?(label), id: "request_type_#{type}" %>
-          <%= label_tag "request_type_#{type}", label %>
+          <%= check_box_tag "request_type[]", request_type_label, params['request_type']&.include?(request_type_label), id: "request_type_#{type}" %>
+          <%= label_tag "request_type_#{type}", request_type_label %>
         </li>
       <% end %>
     </ul>

@@ -4,7 +4,7 @@
   <%= render 'edit_warning' %>
 </div>
 
-<%= form_for(@request, url: ill_request_path(@request.id), method: :patch) do |f| %>
+<%= form_with(model: @request, url: ill_request_path(@request.id), method: :patch) do |f| %>
   <% if @request.scan? %>
     <%= render 'scan_form', f: %>
   <% else %>

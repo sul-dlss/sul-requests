@@ -1,8 +1,8 @@
-<% label = @request ? @request.item_type : nil %>
+<% request_label = @request ? @request.item_type : nil %>
 <div class="mb-3" data-ill-request-target="section">
   <%= f.label :photo_article_title, class: 'form-label fw-semibold required-label' do %>
-    <% if label %>
-      <%= label %> title
+    <% if request_label %>
+      <%= request_label %> title
     <% else %>
       <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">Chapter title</span>
       <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">Article title</span>
@@ -13,8 +13,8 @@
 
 <div class="mb-3" data-ill-request-target="section">
   <%= f.label :photo_article_author, class: 'form-label fw-semibold' do %>
-    <% if label %>
-      <%= label %> author(s)
+    <% if request_label %>
+      <%= request_label %> author(s)
     <% else %>
       <span data-ill-request-target="section" data-ill-request-for-request-subtype="book">Chapter author(s)</span>
       <span data-ill-request-target="section" data-ill-request-for-request-subtype="article">Article author(s)</span>
