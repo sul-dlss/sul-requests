@@ -8,11 +8,11 @@ RSpec.describe 'Creating an Aeon patron request', :js do
   let(:aeon_user) { Aeon::User.new(username: user.email_address, auth_type: 'Default') }
   let(:folio_instance) { :special_collections_finding_aid_holdings }
   let(:patron) do
-    instance_double(Folio::Patron, id: user.patron_key, username: 'auser', display_name: 'A User', exists?: true, email: nil,
-                                   patron_description: 'faculty',
-                                   patron_group_name: 'faculty',
-                                   blocked?: false, proxies: [], sponsors: [], sponsor?: false, proxy?: false,
-                                   allowed_request_types: ['Hold', 'Recall', 'Page'])
+    stub_folio_patron(id: user.patron_key, username: 'auser', display_name: 'A User', exists?: true, email: nil,
+                      patron_description: 'faculty',
+                      patron_group_name: 'faculty',
+                      blocked?: false, proxies: [], sponsors: [], sponsor?: false, proxy?: false,
+                      allowed_request_types: ['Hold', 'Recall', 'Page'])
   end
   let(:reading_rooms) { JSON.load_file('spec/fixtures/reading_rooms.json').map { |room| Aeon::ReadingRoom.from_dynamic(room) } }
   let(:stub_aeon_client) do

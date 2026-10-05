@@ -9,11 +9,11 @@ RSpec.describe 'Creating an Aeon patron request in the redesign', :js do
   let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
   let(:folio_instance) { :special_collections_single_holding }
   let(:patron) do
-    instance_double(Folio::Patron, id: user.patron_key, username: 'auser', display_name: 'A User', exists?: true, email: nil,
-                                   patron_description: 'faculty',
-                                   patron_group_name: 'faculty',
-                                   blocked?: false, proxies: [], sponsors: [], sponsor?: false, proxy?: false,
-                                   allowed_request_types: %w[Hold Recall Page])
+    stub_folio_patron(id: user.patron_key, username: 'auser', display_name: 'A User', exists?: true, email: nil,
+                      patron_description: 'faculty',
+                      patron_group_name: 'faculty',
+                      blocked?: false, proxies: [], sponsors: [], sponsor?: false, proxy?: false,
+                      allowed_request_types: %w[Hold Recall Page])
   end
   let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default') }
   let(:reading_room) { StubAeonClient::ReadingRoom.find_by(name: 'Field Reading Room') }

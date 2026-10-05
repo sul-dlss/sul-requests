@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe FolioRequestsController do
-  let(:mock_patron) { instance_double(Folio::Patron, requests:, key: '513a9054-5897-11ee-8c99-0242ac120002') }
+  let(:mock_patron) { stub_folio_patron(requests:) }
   let(:requests) { [] }
 
   let(:mock_client) { instance_double(FolioClient, ping: true) }
