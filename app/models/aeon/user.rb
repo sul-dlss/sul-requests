@@ -38,7 +38,7 @@ module Aeon
     end
 
     def stub?
-      sso_auth? && email_address.blank? && %w[B DIS].exclude?(cleared)
+      sso_auth? && email_address.blank? && cleared == 'NEW'
     end
 
     def own_requests
