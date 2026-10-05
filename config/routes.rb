@@ -115,6 +115,7 @@ Rails.application.routes.draw do
       get 'Users/:username/requests', to: 'requests#index', constraints: { username: /[^\/]+/ }
       get 'Users/:username/appointments', to: 'appointments#index', constraints: { username: /[^\/]+/ }
       post 'Users', to: 'users#create'
+      patch 'Users/:username', to: 'users#update', constraints: { username: /[^\/]+/ }
 
       get 'Activities', to: 'activities#index'
       get 'Queues', to: 'queues#index'

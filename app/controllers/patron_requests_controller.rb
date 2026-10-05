@@ -66,7 +66,7 @@ class PatronRequestsController < ApplicationController
 
   def require_aeon_terms
     return unless @patron_request.aeon_page?
-    return if current_user.aeon.persisted?
+    return if current_user.aeon.persisted? && !current_user.aeon.stub?
 
     redirect_to new_aeon_user_path(referrer: request.original_url) and return if current_user.name_email_user?
 

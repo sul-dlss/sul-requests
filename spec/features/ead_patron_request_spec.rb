@@ -17,7 +17,7 @@ RSpec.describe 'Requesting an item from an EAD', :js do
   let(:user) { create(:sso_user) }
   let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
 
-  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default') }
+  let(:aeon_user) { StubAeonClient::User.create(username: user.email_address, authType: 'Default', eMailAddress: user.email_address) }
 
   let(:reading_room_spec) { StubAeonClient::ReadingRoom.find_by(name: 'Field Reading Room') }
   let(:reading_room_rumsey) { StubAeonClient::ReadingRoom.find_by(name: 'Rumsey Reading Room') }

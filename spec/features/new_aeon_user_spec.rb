@@ -45,6 +45,78 @@ RSpec.describe 'Creating new accounts for patrons', :js do
 
       expect(page).to have_button('Continue', disabled: false)
     end
+
+    context 'with a stub Aeon account' do
+      before do
+        StubAeonClient::User.create(username: user.email_address, authType: 'Default', cleared: 'NEW')
+      end
+
+      it 'fills in and clears the existing account when the terms are accepted' do
+        visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+        check('I agree to these terms')
+
+        expect do
+          click_button 'Continue'
+          expect(page).to have_text('New request')
+        end.not_to change(StubAeonClient::User, :count)
+
+        expect(StubAeonClient::User.find_by(username: user.email_address)).to have_attributes(
+          eMailAddress: user.email_address,
+          firstName: patron.personal_data['firstName'],
+          cleared: 'Yes'
+        )
+      end
+    end
+
+    context 'with a blocked stub Aeon account' do
+      before do
+        StubAeonClient::User.create(username: user.email_address, authType: 'Default', cleared: 'B')
+      end
+
+      it 'does not render the Aeon terms' do
+        visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+        expect(page).to have_text('New request')
+        expect(page).to have_no_text('I agree to these terms')
+      end
+    end
+
+    context 'with a filled-in Aeon account' do
+      before do
+        StubAeonClient::User.create(username: user.email_address, authType: 'Default', eMailAddress: user.email_address, cleared: 'NEW')
+      end
+
+      it 'does not render the Aeon terms' do
+        visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+        expect(page).to have_text('New request')
+        expect(page).to have_no_text('I agree to these terms')
+      end
+    end
+  end
+
+  context 'with an SSO user without a FOLIO account' do
+    let(:user) { create(:sso_user) }
+    let(:current_user) { CurrentUser.new(username: user.sunetid, patron_key: user.patron_key, shibboleth: true, ldap_attributes: {}) }
+
+    before do
+      allow(Folio::Patron).to receive(:find_by).with(patron_key: user.patron_key).and_return(nil)
+      login_as(current_user)
+    end
+
+    it 'creates an Aeon account when the terms are accepted' do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+      check('I agree to these terms')
+
+      expect do
+        click_button 'Continue'
+        expect(page).to have_text('New request')
+      end.to change(StubAeonClient::User, :count).by(1)
+
+      expect(StubAeonClient::User.last).to have_attributes(username: user.email, authType: 'Default', cleared: 'Yes')
+    end
   end
 
   context 'with a name/email user' do

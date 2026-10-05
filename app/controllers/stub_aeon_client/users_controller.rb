@@ -28,6 +28,17 @@ module StubAeonClient
       end
     end
 
+    def update
+      @user = StubAeonClient::User.find_by!(username: params[:username])
+
+      JSON.parse(request.raw_post).each do |op|
+        @user.data[op['path'].delete_prefix('/')] = op['value'] if op['op'] == 'replace'
+      end
+      @user.save!
+
+      render json: @user
+    end
+
     def create_params # rubocop:disable Metrics/MethodLength
       params.permit(:lastName,
                     :firstName,

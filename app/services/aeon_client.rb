@@ -58,6 +58,16 @@ class AeonClient
     handle_response(response, as_class: Aeon::User)
   end
 
+  def update_user(username:, user_data:)
+    json_patch = user_data.as_json.except(:username).compact.map do |field, value|
+      { op: 'replace', path: "/#{field}", value: }
+    end
+
+    response = patch("Users/#{CGI.escape(username)}", json_patch)
+
+    handle_response(response, as_class: Aeon::User)
+  end
+
   def activities
     @activities ||= begin
       response = get('Activities')
@@ -250,6 +260,8 @@ class AeonClient
                          :phone, :sso, :state_or_province, :zip_code) do
     def omission = '…'
 
+    def clearance = sso != UNSET && sso ? 'Yes' : 'No'
+
     def as_json # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       {
         address: address&.truncate(50, omission:),
@@ -257,7 +269,7 @@ class AeonClient
         authType: sso != UNSET && sso ? 'Default' : 'Aeon',
         billingCategory: 'Default',
         city: city&.truncate(50, omission:),
-        cleared: 'No',
+        cleared: clearance,
         country: country&.truncate(50, omission:),
         eMailAddress: email_address&.truncate(100, omission:),
         firstName: first_name&.truncate(50),
