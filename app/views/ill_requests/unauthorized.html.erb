@@ -1,4 +1,4 @@
-<%- contact_info = Settings.libraries.default -%>
+<%- contact_info = Settings.libraries.default.contact_info -%>
 
 <div class="col-lg-8 p-0">
   <%= render Folio::PatronHeaderComponent.new(patron: current_user&.patron) %>

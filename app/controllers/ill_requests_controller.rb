@@ -103,9 +103,9 @@ class IllRequestsController < ApplicationController
   def authorize_new_request
     return if can?(:create, Illiad::Request)
 
-    render 'unauthorized' and return if current_user.present?
+    flash.now[:error] = t('sessions.login_by_sunetid.error_html') if current_user.authenticated? && current_user.patron.blank?
 
-    flash.now[:error] = t('sessions.login_by_sunetid.error_html')
+    render 'unauthorized' and return if current_user.authenticated?
 
     render 'login'
   end
