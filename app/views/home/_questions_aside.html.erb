@@ -33,7 +33,7 @@
         <p class="mb-1">
           <%= link_to new_ill_request_path, class: 'su-underline' do %>
             Request it from another library
-          <% end %>
+          <% end if can?(:create, Illiad::Request) %>
         </p>
         <p class="mb-1">
           <%= link_to "mailto:#{Settings.libraries.default.contact_info.email}", class: 'su-underline' do %>
