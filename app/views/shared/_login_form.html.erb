@@ -13,13 +13,13 @@
     </div>
   </div>
   <div class="col-sm-6 mt-4 mt-sm-0">
-    <div class="card border-0 mb-2">
+    <div class="card border-0 mb-3">
       <div class="card-header bg-white border-0 d-flex align-items-center gap-3">
         <h2 class="mb-0">Library cardholder</h2>
         <a href="https://library.stanford.edu/about-stanford-libraries/visitor-access#how-to-request-a-library-card" target="_blank" class="small su-underline text-nowrap">Learn more<span class="visually-hidden"> about library cardholder access</span><i class="ms-1 bi bi-arrow-up-right" aria-hidden></i></a>
       </div>
       <div class="card-body pt-0">
-        <p>For people with a purchased or courtesy library card.</p>
+        <p class="mb-2">For people with a purchased or courtesy library card.</p>
         <details data-action="analytics#send" data-analytics-action-param="Library ID" data-analytics-category-param="Login">
           <summary class="btn btn-link p-0 su-underline">Login with Library ID/PIN <i class="bi bi-chevron-right disclosure-icon"></i></summary>
           <%= form_tag login_by_university_id_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
@@ -45,14 +45,14 @@
         </details>
       </div>
     </div>
-    <div class="card border-0 mb-2">
+    <div class="card border-0 mb-3">
       <div class="card-header bg-white border-0 d-flex align-items-center gap-3">
         <h2 class="mb-0">Stanford Medicine</h2>
         <a href="https://library.stanford.edu/about-stanford-libraries/visitor-access#how-to-request-a-library-card" target="_blank" class="small su-underline text-nowrap">Learn more<span class="visually-hidden"> about Stanford Medicine access</span><i class="ms-1 bi bi-arrow-up-right" aria-hidden></i></a>
       </div>
 
       <div class="card-body pt-0">
-        <p>For Stanford Medicine Health Care and Stanford Medicine Children's Health staff.</p>
+        <p class="mb-2">For Stanford Medicine Health Care and Stanford Medicine Children's Health staff.</p>
         <details data-action="analytics#send" data-analytics-action-param="Stanford Medicine" data-analytics-category-param="Login">
           <summary class="btn btn-link p-0 su-underline">Login with Enterprise ID/Library PIN <i class="bi bi-chevron-right disclosure-icon"></i></summary>
           <%= form_tag login_by_university_id_url, method: 'POST', class: 'form p-3', data: { turbo: false } do %>
@@ -78,7 +78,7 @@
         </details>
       </div>
     </div>
-    <div class="card border-0 mt-3 mt-sm-0 mb-2">
+    <div class="card border-0 mt-3 mt-sm-0 mb-3">
       <div class="card-header bg-white border-0 d-flex align-items-center gap-3">
         <h2 class="mb-0">Visitor</h2>
         <a href="https://library.stanford.edu/visitor-access" target="_blank" class="small su-underline text-nowrap">Learn more<span class="visually-hidden"> about visitor access</span><i class="ms-1 bi bi-arrow-up-right" aria-hidden></i></a>
