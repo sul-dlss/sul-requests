@@ -5,7 +5,7 @@ class FolioRequestServicePointOptionsService
   attr_reader :items, :selected_service_point_id, :patron
 
   def initialize(items = [], selected_service_point_id: nil, patron: Folio::NullPatron.new)
-    @items = Array(items)
+    @items = Array(items).compact
     @selected_service_point_id = selected_service_point_id
     @patron = patron
   end
