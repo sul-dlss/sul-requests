@@ -9,9 +9,9 @@ class PatronRequestsController < ApplicationController
   rescue_from EadClient::Error, with: :handle_ead_client_error
   rescue_from EadClient::InvalidDocument, with: :handle_invalid_ead_document
 
-  check_authorization
-
   bot_challenge only: [:new]
+
+  check_authorization
 
   load_resource
   before_action :assign_new_attributes, only: [:new]
