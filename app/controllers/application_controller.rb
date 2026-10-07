@@ -14,10 +14,6 @@ class ApplicationController < ActionController::Base
     @current_user ||= request.env['warden']&.user&.user_object || User.new
   end
 
-  def sso_user?
-    current_user.sso_user?
-  end
-
   def folio_patron?
     current_user.sso_user? || current_user.library_id_user?
   end
@@ -30,7 +26,7 @@ class ApplicationController < ActionController::Base
     redirect_to root_url unless folio_patron?
   end
 
-  helper_method :current_user, :sso_user?, :request_feature_flags
+  helper_method :current_user, :request_feature_flags
 
   private
 
