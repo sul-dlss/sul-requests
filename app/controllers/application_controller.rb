@@ -14,16 +14,12 @@ class ApplicationController < ActionController::Base
     @current_user ||= request.env['warden']&.user&.user_object || User.new
   end
 
-  def folio_patron?
-    current_user.sso_user? || current_user.library_id_user?
-  end
-
   def request_feature_flags
     @request_feature_flags ||= cookies[:feature_flags].to_s.split(',').map(&:strip)
   end
 
   def authenticate_user!
-    redirect_to root_url unless folio_patron?
+    redirect_to root_url unless current_user.authenticated?
   end
 
   helper_method :current_user, :request_feature_flags

@@ -19,7 +19,7 @@ RSpec.describe PaymentsController do
 
   before do
     allow(FolioClient).to receive(:new).and_return(mock_client)
-    allow(controller).to receive_messages(patron_or_group: mock_patron)
+    allow(Folio::Patron).to receive(:find_by).with(patron_key: '513a9054-5897-11ee-8c99-0242ac120002').and_return(mock_patron)
     warden.set_user(user)
   end
 
