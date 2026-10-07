@@ -21,6 +21,7 @@ RSpec.describe 'Date picker keyboard navigation', :js do
   end
 
   def focused_date
+    expect(page).to have_css('.date-picker-popup:has(:focus)')
     page.evaluate_script('document.activeElement.dataset.datePickerDateParam')
   end
 
