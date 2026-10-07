@@ -5,6 +5,8 @@ def stub_folio_instance_json(folio_instance)
 end
 
 def stub_folio_patron(**)
-  instance_double(Folio::Patron, key: '513a9054-5897-11ee-8c99-0242ac120002', fines: [], checkouts: [], requests: [], ilb_eligible?: false,
+  instance_double(Folio::Patron, key: '513a9054-5897-11ee-8c99-0242ac120002', email: 'test@example.com',
+                                 fines: [], checkouts: [], requests: [],
+                                 ilb_eligible?: false,
                                  **)
 end

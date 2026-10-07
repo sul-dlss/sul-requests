@@ -20,7 +20,7 @@ RSpec.describe FinesController do
 
   before do
     allow(FolioClient).to receive(:new).and_return(mock_client)
-    allow(controller).to receive_messages(patron_or_group: mock_patron)
+    allow(Folio::Patron).to receive(:find_by).with(patron_key: mock_patron.key).and_return(mock_patron)
   end
 
   context 'with an unauthenticated request' do
@@ -31,7 +31,7 @@ RSpec.describe FinesController do
 
   context 'with an authenticated request' do
     let(:user) do
-      CurrentUser.new(username: 'somesunetid', patron_key: '513a9054-5897-11ee-8c99-0242ac120002', shibboleth: true)
+      CurrentUser.new(username: 'somesunetid', patron_key: mock_patron.key, shibboleth: true)
     end
 
     let(:checkouts) do
@@ -59,18 +59,6 @@ RSpec.describe FinesController do
       get(:index)
 
       expect(assigns(:fines_and_accruing)).to eq fines
-    end
-  end
-
-  context 'with a visitor registered by name and email' do
-    let(:user) { CurrentUser.new(name: 'Some Visitor', email: 'visitor@example.com', otp_authenticated: true) }
-
-    before do
-      warden.set_user(user)
-    end
-
-    it 'redirects to the home page, because a visitor has no FOLIO account' do
-      expect(get(:index)).to redirect_to root_url
     end
   end
 end

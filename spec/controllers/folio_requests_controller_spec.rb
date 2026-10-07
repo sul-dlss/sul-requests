@@ -10,7 +10,7 @@ RSpec.describe FolioRequestsController do
 
   before do
     allow(FolioClient).to receive(:new).and_return(mock_client)
-    allow(controller).to receive(:patron_or_group).and_return(mock_patron)
+    allow(Folio::Patron).to receive(:find_by).with(patron_key: mock_patron.key).and_return(mock_patron)
   end
 
   context 'with an unauthenticated request' do
@@ -21,7 +21,7 @@ RSpec.describe FolioRequestsController do
 
   context 'with an authenticated request' do
     let(:user) do
-      CurrentUser.new(username: 'somesunetid', patron_key: '513a9054-5897-11ee-8c99-0242ac120002', shibboleth: true)
+      CurrentUser.new(username: 'somesunetid', patron_key: mock_patron.key, shibboleth: true)
     end
 
     let(:requests) do

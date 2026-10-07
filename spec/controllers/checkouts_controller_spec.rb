@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe CheckoutsController do
-  let(:user) { CurrentUser.new(username: 'somesunetid', patron_key: '513a9054-5897-11ee-8c99-0242ac120002', shibboleth: true) }
+  let(:user) { CurrentUser.new(username: 'somesunetid', patron_key: mock_patron.key, shibboleth: true) }
   let(:mock_patron) { stub_folio_patron(checkouts: checkouts) }
   let(:mock_client) { instance_double(FolioClient, ping: true) }
   let(:checkouts) { [] }
 
   before do
     allow(FolioClient).to receive(:new).and_return(mock_client)
-    allow(controller).to receive(:patron_or_group).and_return(mock_patron)
+    allow(Folio::Patron).to receive(:find_by).with(patron_key: mock_patron.key).and_return(mock_patron)
     warden.set_user(user) if user
   end
 
@@ -24,7 +24,7 @@ RSpec.describe CheckoutsController do
 
   context 'with an authenticated request' do
     let(:user) do
-      build(:sso_user)
+      build(:sso_user, patron_key: mock_patron.key)
     end
 
     let(:checkouts) do

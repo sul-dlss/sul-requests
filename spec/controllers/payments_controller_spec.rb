@@ -19,7 +19,7 @@ RSpec.describe PaymentsController do
 
   before do
     allow(FolioClient).to receive(:new).and_return(mock_client)
-    allow(controller).to receive_messages(patron_or_group: mock_patron)
+    allow(Folio::Patron).to receive(:find_by).with(patron_key: mock_patron.key).and_return(mock_patron)
     warden.set_user(user)
   end
 
@@ -66,7 +66,7 @@ RSpec.describe PaymentsController do
 
     context 'with a patron authenticated by university ID and PIN' do
       before do
-        warden.set_user(CurrentUser.new(username: '12345678', patron_key: '513a9054-5897-11ee-8c99-0242ac120002'))
+        warden.set_user(CurrentUser.new(username: '12345678', patron_key: mock_patron.key))
       end
 
       it 'renders a form to send to cybersource' do
@@ -78,7 +78,7 @@ RSpec.describe PaymentsController do
 
   describe '#accept' do
     let(:cybersource_response) do
-      instance_double(Cybersource::PaymentResponse, user_id: '513a9054-5897-11ee-8c99-0242ac120002',
+      instance_double(Cybersource::PaymentResponse, user_id: mock_patron.key,
                                                     amount: '10.00',
                                                     valid?: true,
                                                     payment_success?: true)
@@ -91,7 +91,7 @@ RSpec.describe PaymentsController do
     it 'updates the payment in the ILS' do
       post :accept
       expect(mock_client).to have_received(:pay_fines)
-        .with(user_id: '513a9054-5897-11ee-8c99-0242ac120002', amount: '10.00')
+        .with(user_id: mock_patron.key, amount: '10.00')
     end
 
     it 'redirects to fines page' do
@@ -109,7 +109,7 @@ RSpec.describe PaymentsController do
         {
           signed_field_names: 'signed_field_names,decision,req_reference_number,req_amount',
           decision: 'ACCEPT',
-          req_reference_number: '513a9054-5897-11ee-8c99-0242ac120002',
+          req_reference_number: mock_patron.key,
           req_amount: '10.00'
         }
       end
@@ -125,7 +125,7 @@ RSpec.describe PaymentsController do
         post :accept, params: callback_params
 
         expect(mock_client).to have_received(:pay_fines)
-          .with(user_id: '513a9054-5897-11ee-8c99-0242ac120002', amount: '10.00')
+          .with(user_id: mock_patron.key, amount: '10.00')
       end
     end
 
@@ -137,7 +137,7 @@ RSpec.describe PaymentsController do
       it 'still records the payment in the ILS' do
         post :accept
         expect(mock_client).to have_received(:pay_fines)
-          .with(user_id: '513a9054-5897-11ee-8c99-0242ac120002', amount: '10.00')
+          .with(user_id: mock_patron.key, amount: '10.00')
       end
     end
 

@@ -150,7 +150,7 @@ class AdminController < ApplicationController
   end
 
   def rescue_can_can(*)
-    return super if sso_user? || params[:action] == 'approve_item'
+    return super if current_user&.sso_user? || params[:action] == 'approve_item'
 
     redirect_to login_by_sunetid_path(referrer: request.original_url)
   end
