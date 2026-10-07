@@ -38,7 +38,7 @@ module Illiad
     end
 
     def in_folio?
-      status == 'Received in Folio'
+      status&.downcase == 'received in folio'
     end
 
     def inactive?
