@@ -7,6 +7,7 @@ class CheckoutsController < ApplicationController
   include FolioController
 
   before_action :authenticate_user!
+  check_authorization
 
   before_action :load_checkouts
   before_action :load_checkout, except: [:index, :renew_eligible]
@@ -15,7 +16,9 @@ class CheckoutsController < ApplicationController
   #
   # GET /checkouts
   # GET /checkouts.json
-  def index; end
+  def index
+    authorize! :read, Folio::Checkout
+  end
 
   def renew # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize! :renew, @checkout

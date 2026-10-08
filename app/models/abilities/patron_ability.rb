@@ -77,14 +77,18 @@ class PatronAbility
       end
     end
 
-    can :renew, Folio::Checkout do |checkout|
-      next false unless checkout.renewable?
+    if folio_patron.present? # rubocop:disable Style/GuardClause
+      can :read, Folio::Checkout
 
-      owning_patron = folio_patron if checkout.renew_patron_key == folio_patron.id
-      owning_patron ||= folio_patron.sponsors.find { |s| s.id == checkout.renew_patron_key }
-      owning_patron ||= folio_patron
+      can :renew, Folio::Checkout do |checkout|
+        next false unless checkout.renewable?
 
-      owning_patron&.can_renew?
+        owning_patron = folio_patron if checkout.renew_patron_key == folio_patron.id
+        owning_patron ||= folio_patron.sponsors.find { |s| s.id == checkout.renew_patron_key }
+        owning_patron ||= folio_patron
+
+        owning_patron&.can_renew?
+      end
     end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/MethodLength
