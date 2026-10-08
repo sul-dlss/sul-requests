@@ -7,19 +7,22 @@ class CheckoutsController < ApplicationController
   include FolioController
 
   before_action :authenticate_user!
+  check_authorization
 
   before_action :load_checkouts
   before_action :load_checkout, except: [:index, :renew_eligible]
-
-  before_action :authorize_renew!, only: [:renew]
 
   # Render a list of checkouts for the patron
   #
   # GET /checkouts
   # GET /checkouts.json
-  def index; end
+  def index
+    authorize! :read, Folio::Checkout
+  end
 
   def renew # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    authorize! :renew, @checkout
+
     @response = FolioClient.new.renew_checkout(@checkout)
     update_checkouts([@response.updated_checkout]) if @response.success?
 
@@ -39,8 +42,10 @@ class CheckoutsController < ApplicationController
   # Renew all eligible items for a patron
   #
   # POST /checkouts/renew_eligible
-  def renew_eligible # rubocop:disable Metrics/AbcSize
-    eligible_renewals = @checkouts.select(&:renewable?)
+  def renew_eligible # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    authorize! :renew, Folio::Checkout
+
+    eligible_renewals = @checkouts.select { |checkout| can?(:renew, checkout) }
     @responses = eligible_renewals.map { |checkout| FolioClient.new.renew_checkout(checkout) }
     update_checkouts(@responses.select(&:success?).map(&:updated_checkout))
 
@@ -90,11 +95,5 @@ class CheckoutsController < ApplicationController
                            items: tag.ul(safe_join(responses.collect do |renewal|
                                                      tag.li(renewal.checkout.title.truncate_words(7))
                                                    end, '')))
-  end
-
-  # Make sure the checkout belongs to the user trying to do the renewal
-  # and make sure the item is renewable
-  def authorize_renew!
-    raise CheckoutException, 'Error' if @checkout.item_category_non_renewable?
   end
 end

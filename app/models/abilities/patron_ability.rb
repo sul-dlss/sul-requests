@@ -67,13 +67,27 @@ class PatronAbility
       end
     end
 
-    if in_scan_pilot_group?(folio_patron) # rubocop:disable Style/GuardClause
+    if in_scan_pilot_group?(folio_patron)
       can :scan, Folio::Item, &:scannable?
 
       can :request_scan, PatronRequest do |request|
         request.selectable_items.any? do |item|
           can? :scan, item
         end
+      end
+    end
+
+    if folio_patron.present? # rubocop:disable Style/GuardClause
+      can :read, Folio::Checkout
+
+      can :renew, Folio::Checkout do |checkout|
+        next false unless checkout.renewable?
+
+        owning_patron = folio_patron if checkout.renew_patron_key == folio_patron.id
+        owning_patron ||= folio_patron.sponsors.find { |s| s.id == checkout.renew_patron_key }
+        owning_patron ||= folio_patron
+
+        owning_patron&.can_renew?
       end
     end
   end
