@@ -15,7 +15,7 @@
         <span class="text-80-black"><%= header_message %></span>
       </div>
     </div>
-     <% if patron.can_renew? && renewable? %>
+     <% if can?(:renew, checkout) %>
       <%= form_tag renew_checkout_path(checkout.item_id), method: :post do %>
         <%= hidden_field_tag :item_id, checkout.item_id %>
         <%= hidden_field_tag :title, checkout.title %>
