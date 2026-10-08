@@ -17,7 +17,7 @@ class AeonRequestsController < ApplicationController
   def index
     authorize! :read, Aeon::Request unless params[:async]
 
-    render 'async' and return if params[:async]
+    request.variant = :async if params[:async]
   end
 
   def save_for_later

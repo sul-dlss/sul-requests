@@ -7,7 +7,7 @@ class MediatedRequestsController < ApplicationController
   before_action :load_requests
 
   def index
-    render 'async' and return if params[:async]
+    request.variant = :async if params[:async]
   end
 
   def load_requests
