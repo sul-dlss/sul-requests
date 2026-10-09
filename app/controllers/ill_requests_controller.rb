@@ -16,7 +16,7 @@ class IllRequestsController < ApplicationController
   # GET /ill_requests
   # GET /ill_requests.json
   def index
-    render 'async' and return if params[:async]
+    request.variant = :async if params[:async]
   end
 
   def new
