@@ -76,11 +76,13 @@ module Aeon
     end
 
     def self.sites(location)
-      location_mapping = { 'ARS' => ['ARS'], 'David Rumsey Map Center' => ['RUMSEY'], 'East Asia Library' => ['EASTASIA'],
-                           nil => %w[ARS RUMSEY EASTASIA SPECUA] }
-      return location_mapping[location] if location_mapping.key?(location)
-
-      ['SPECUA']
+      case location
+      when nil then %w[ARS RUMSEY EASTASIA SPECUA]
+      when /\A(ARS|ARS Reading Room|Archive of Recorded Sound)\z/i then ['ARS']
+      when 'David Rumsey Map Center' then ['RUMSEY']
+      when 'East Asia Library' then ['EASTASIA']
+      else ['SPECUA']
+      end
     end
   end
 end

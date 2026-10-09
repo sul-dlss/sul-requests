@@ -56,4 +56,12 @@ RSpec.describe Aeon::Activity do
       expect(activity).not_to be_in_progress
     end
   end
+
+  describe '.sites' do
+    it 'maps the ARS Reading Room locations to ARS' do
+      expect(described_class.sites('ARS')).to eq ['ARS']
+      expect(described_class.sites('ARS Reading Room')).to eq ['ARS']
+      expect(described_class.sites('Archive of Recorded Sound')).to eq ['ARS']
+    end
+  end
 end
