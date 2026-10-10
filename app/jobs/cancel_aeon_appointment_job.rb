@@ -10,7 +10,7 @@ class CancelAeonAppointmentJob < ApplicationJob
     appointment.requests.each do |request|
       move_request_to_saved_for_later(request, status:)
     end
-    aeon_client.cancel_appointment(appointment.id)
+    aeon_client.cancel_appointment(appointment)
   end
 
   def request_status(cancel)
