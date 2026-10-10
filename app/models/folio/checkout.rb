@@ -127,17 +127,21 @@ module Folio
       SHORT_TERM_LOAN_PERIODS.include?(loan_policy_interval)
     end
 
+    def title_no_punctuation
+      title&.gsub(/[^\w\s]/, '')
+    end
+
     # rubocop:disable Metrics/MethodLength
     def sort_key(key)
       sort_key = case key
                  when :status
-                   [status_sort_key, title, author, shelf_key]
+                   [status_sort_key, title_no_punctuation, author, shelf_key]
                  when :due_date
-                   [due_date_sort_value, title, author, shelf_key]
+                   [due_date_sort_value, title_no_punctuation, author, shelf_key]
                  when :title
-                   [title, author, shelf_key]
+                   [title_no_punctuation, author, shelf_key]
                  when :author
-                   [author, title, shelf_key]
+                   [author, title_no_punctuation, shelf_key]
                  when :call_number
                    [shelf_key]
                  end
