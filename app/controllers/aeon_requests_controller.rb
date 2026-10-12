@@ -8,6 +8,8 @@ class AeonRequestsController < ApplicationController
   include AeonFilterable
   include AeonSortable
 
+  check_authorization
+
   before_action :load_aeon_requests
   before_action :filter_and_sort_aeon_requests, only: [:index]
   before_action :load_aeon_request_groups

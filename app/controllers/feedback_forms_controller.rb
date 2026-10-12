@@ -4,6 +4,8 @@
 #  Controller to handle feedback from app
 ###
 class FeedbackFormsController < ApplicationController
+  skip_authorization_check
+
   def new; end
 
   def create

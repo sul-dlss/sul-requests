@@ -2,6 +2,8 @@
 
 # :nodoc:
 class SessionsController < ApplicationController
+  skip_authorization_check
+
   before_action :logout_user, only: [:login_by_university_id, :login_by_sunetid, :register_visitor]
   before_action :verify_recaptcha_challenge, only: :register_visitor
 

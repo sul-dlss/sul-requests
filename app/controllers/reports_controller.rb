@@ -4,6 +4,8 @@
 #  Controller for creating csv reports on requests
 ###
 class ReportsController < ApplicationController
+  check_authorization
+
   def index
     authorize! :read, :admin
 

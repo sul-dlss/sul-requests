@@ -6,6 +6,8 @@
 class AeonUsersController < ApplicationController
   include AeonController
 
+  check_authorization
+
   before_action do
     authorize! :create, Aeon::User
   end

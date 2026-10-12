@@ -7,6 +7,8 @@ class AeonActivitiesController < ApplicationController
   ALLOWED_SORTS = %w[sort_key name activity_type].freeze
   include AeonController
 
+  check_authorization
+
   before_action :authorize_activity
   before_action :load_activities
 

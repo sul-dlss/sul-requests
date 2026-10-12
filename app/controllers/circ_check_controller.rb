@@ -5,6 +5,7 @@
 ###
 class CircCheckController < ApplicationController
   layout false
+  skip_authorization_check
 
   rescue_from StandardError, with: :render_error
 

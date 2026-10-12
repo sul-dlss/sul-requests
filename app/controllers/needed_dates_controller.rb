@@ -4,6 +4,7 @@
 #  Enables one to update the needed date property on a mediated request.
 ###
 class NeededDatesController < ApplicationController
+  check_authorization
   load_and_authorize_resource :patron_request
 
   def show; end

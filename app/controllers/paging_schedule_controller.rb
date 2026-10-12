@@ -4,6 +4,8 @@
 #  Controller for returning the paging schedule for async requests
 ###
 class PagingScheduleController < ApplicationController
+  skip_authorization_check
+
   rescue_from PagingSchedule::ScheduleNotFound do
     turbo_frame = helpers.content_tag('turbo-frame', style: 'display:none', id: 'earliestAvailable') { 'No date/time estimate' }
     turbo_frame += helpers.content_tag('body') { 'Schedule not found' }

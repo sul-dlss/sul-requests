@@ -2,6 +2,8 @@
 
 # Controller for reseting a Barcode+PIN user's PIN
 class ResetPinsController < ApplicationController
+  skip_authorization_check
+
   rescue_from ActiveSupport::MessageEncryptor::InvalidMessage, with: :invalid_token
   rescue_from FolioClient::Error, with: :request_failed
 

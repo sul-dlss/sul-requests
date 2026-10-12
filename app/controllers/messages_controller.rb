@@ -3,6 +3,7 @@
 ##
 # Allow administrators to add special broadcast messages to request forms
 class MessagesController < ApplicationController
+  check_authorization
   load_and_authorize_resource
 
   # GET /messages

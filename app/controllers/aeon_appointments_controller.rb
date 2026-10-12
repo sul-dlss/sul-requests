@@ -6,6 +6,8 @@
 class AeonAppointmentsController < ApplicationController
   include AeonController
 
+  check_authorization
+
   before_action :load_aeon_requests, only: [:index, :items, :update]
   before_action :load_appointments
   before_action :load_appointment, only: [:edit, :update, :destroy, :items]

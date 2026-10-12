@@ -2,6 +2,8 @@
 
 # :nodoc:
 class FeatureFlagsController < ApplicationController
+  check_authorization
+
   def index
     authorize! :toggle, :feature_flags
   end
@@ -12,6 +14,8 @@ class FeatureFlagsController < ApplicationController
 
     redirect_back_or_to(root_path)
   end
+
+  private
 
   def rescue_can_can(*)
     redirect_to login_by_sunetid_path(referrer: request.original_url) and return unless current_user.authenticated?
