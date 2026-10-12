@@ -124,17 +124,18 @@ RSpec.describe 'Creating new accounts for patrons', :js do
     let(:current_user) { nil }
 
     it 'makes the user provide all the information needed to create an Aeon user' do # rubocop:disable RSpec/ExampleLength
-      allow(SendOtpJob).to receive(:perform_later)
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
       find('summary', text: 'Proceed as visitor').click
       fill_in 'Name', with: 'Test User'
       fill_in 'Email', with: 'test@localhost'
 
-      click_button 'Continue'
+      expect do
+        click_button 'Continue'
+      end.to enqueue_job(SendOtpJob).with('test@localhost')
 
       expect(page).to have_text('Verify email address')
-      expect(SendOtpJob).to have_received(:perform_later).with('test@localhost')
+
       6.times do |i|
         fill_in "Digit #{i + 1}", with: '0'
       end
