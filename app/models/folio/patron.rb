@@ -6,8 +6,8 @@ module Folio
     def self.find_by(sunetid: nil, library_id: nil, patron_key: nil, **_kwargs) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       user_info = folio_client.find_user_by_id(patron_key) if patron_key.present?
       user_info ||= folio_client.find_user_by_barcode(library_id) if library_id.present?
-      user_info ||= folio_client.find_user_by_university_id(library_id) if library_id.present?
       user_info ||= folio_client.find_user_by_legacy_barcode(library_id) if library_id.present?
+      user_info ||= folio_client.find_user_by_university_id(library_id) if library_id.present?
       user_info ||= folio_client.find_user_by_sunetid(sunetid) if sunetid.present?
 
       Folio::Patron.new(user_info) if user_info
