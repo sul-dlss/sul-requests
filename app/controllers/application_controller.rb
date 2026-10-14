@@ -42,6 +42,16 @@ class ApplicationController < ActionController::Base
   end
 
   def post_action_redirect_url
-    params[:referrer].presence || root_url
+    referrer = URI.parse(params[:referrer].to_s)
+    return params[:referrer].presence || root_url unless referrer.host || referrer.scheme
+    return root_url if referrer.path.blank?
+
+    path_on_this_host(referrer)
+  rescue URI::InvalidURIError
+    root_url
+  end
+
+  def path_on_this_host(url)
+    URI::Generic.build(path: url.path.sub(%r{\A/+}, '/'), query: url.query, fragment: url.fragment).to_s
   end
 end

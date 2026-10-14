@@ -26,6 +26,12 @@ RSpec.describe SessionsController do
       expect(flash[:error]).to eq 'Unable to register visitor. Both name and email are required.'
     end
 
+    it 'redirects to the path of a full URL referrer with a doubled slash' do
+      allow(request.env['warden']).to receive(:authenticate).and_return(true)
+      get :login_by_sunetid, params: { referrer: 'https://requests.stanford.edu//patron_requests/new' }
+      expect(response).to redirect_to('/patron_requests/new')
+    end
+
     it 'redirects back when there is no provided referrer' do
       allow(request.env['warden']).to receive(:authenticate).and_return(true)
       get :login_by_sunetid

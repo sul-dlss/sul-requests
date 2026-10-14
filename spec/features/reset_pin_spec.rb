@@ -88,6 +88,18 @@ RSpec.describe 'Reset PIN workflow' do
       end
     end
 
+    context 'when the referrer is a full URL on another host' do
+      before do
+        visit change_pin_with_token_path(token: 'foo', referrer: "https://requests.stanford.edu#{request_path}")
+        fill_in('pin', with: 'newpin')
+        click_on 'Change PIN'
+      end
+
+      it 'redirects to the same page on this host' do
+        expect(page).to have_current_path(request_path)
+      end
+    end
+
     context 'when the token is invalid' do
       before do
         allow(mock_client).to receive(:change_pin).and_raise(ActiveSupport::MessageEncryptor::InvalidMessage)
