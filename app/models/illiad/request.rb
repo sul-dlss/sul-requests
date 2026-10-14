@@ -134,7 +134,8 @@ module Illiad
     def parse_expiration_date(illiad_date)
       # Some dates will be in mm/dd/yyyy or m/d/yyyy format, and Time.zone.parse will throw an error
       date_regex = %r{\d{1,2}/\d{1,2}/\d{4}}
-      date_to_parse = illiad_date.match?(date_regex) ? Date.strptime(illiad_date, '%m/%d/%Y').to_s : illiad_date
+      leading_zeros = /\b0+(?=\d)/
+      date_to_parse = illiad_date.match?(date_regex) ? Date.strptime(illiad_date.gsub(leading_zeros, ''), '%m/%d/%Y').to_s : illiad_date
       # We still want to return a date that provides a time portion/is consistent with the other results
       Time.zone.parse(date_to_parse)
     rescue ArgumentError => e

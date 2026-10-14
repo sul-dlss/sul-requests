@@ -81,6 +81,12 @@ RSpec.describe Illiad::Request do
       expect(expiration_hold.expiration_date.to_s).to start_with('2022-07-15')
     end
 
+    it 'handles an ILLIAD expiration date with an extra leading zero in the month' do
+      leading_zero_hold = described_class.new({ 'CreationDate' => '2026-10-11T10:49:41.783', 'NotWantedAfter' => '012/15/2026' })
+
+      expect(leading_zero_hold.expiration_date.to_s).to start_with('2026-12-15')
+    end
+
     it 'handles an empty ILLIAD expiration date and returns a date two months after placed date' do
       expect(expiration_empty_hold.expiration_date.to_s).to eq('2022-07-11 10:49:41 -0700')
     end
