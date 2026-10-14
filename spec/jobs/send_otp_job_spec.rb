@@ -29,4 +29,16 @@ RSpec.describe SendOtpJob do
       expect(user.reload.totp.verify(code)).to be_truthy
     end
   end
+
+  context 'with a SUNet user' do
+    before { User.create!(email:, sunetid: 'jdoe') }
+
+    it 'does not raise an error that would retry the job' do
+      expect { described_class.perform_now(email) }.not_to raise_error
+    end
+
+    it 'does not send an OTP challenge email' do
+      expect { described_class.perform_now(email) }.not_to send_email
+    end
+  end
 end
