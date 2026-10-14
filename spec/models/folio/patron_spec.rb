@@ -15,6 +15,21 @@ RSpec.describe Folio::Patron do
   let(:extended_user_info) { nil }
   let(:patron_graphql_response) { nil }
 
+  describe '.find_by' do
+    let(:folio_client) { instance_double(FolioClient, find_user_by_barcode: nil) }
+
+    before do
+      allow(described_class).to receive(:folio_client).and_return(folio_client)
+      allow(folio_client).to receive(:find_user_by_university_id).and_raise(ActiveRecord::RecordNotFound)
+    end
+
+    it 'finds a patron by legacy barcode' do
+      allow(folio_client).to receive(:find_user_by_legacy_barcode).with('12345').and_return({ 'id' => 'xyz' })
+
+      expect(described_class.find_by(library_id: '12345').id).to eq 'xyz'
+    end
+  end
+
   describe '#id' do
     context 'with a Patron from the FOLIO APIs' do
       let(:fields) { { 'id' => 'xyz' } }
