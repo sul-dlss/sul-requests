@@ -264,7 +264,7 @@ module Ead
       def top_container
         return nil unless containers
 
-        top = containers.find { |c| PARENT_CONTAINER_TYPES.include?(c.type) }
+        top = containers.find { |c| PARENT_CONTAINER_TYPES.any? { |type| type.casecmp?(c.type) } }
         return nil unless top
 
         # e.g. Folder 1
