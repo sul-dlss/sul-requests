@@ -131,5 +131,20 @@ RSpec.describe Ead::Document do
         expect(item.extref_href).to be_nil
       end
     end
+
+    describe '#top_container' do
+      it 'returns the oversize box rather than the folder inside it' do
+        item = build_item(<<~XML)
+          <c03 level="file">
+            <did>
+              <unittitle>Clippings</unittitle>
+              <container id="box130" label="Mixed Materials" type="oversize-box">130</container>
+              <container parent="box130" type="folder">1</container>
+            </did>
+          </c03>
+        XML
+        expect(item.top_container).to eq('Oversize-box 130')
+      end
+    end
   end
 end
