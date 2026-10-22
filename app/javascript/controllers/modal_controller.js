@@ -13,6 +13,7 @@ export default class extends Controller {
 
     const modal = this.createModal({backdrop: containingModal == null})
     modal.querySelector('.modal-header h1').innerHTML = event.currentTarget.dataset.modalHeader || ''
+    modal.querySelector('.modal-dialog').classList.toggle('modal-dialog-scrollable', 'modalScrollable' in event.currentTarget.dataset)
 
     const url = new URL(event.currentTarget.href)
 
