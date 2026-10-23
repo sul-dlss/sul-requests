@@ -35,9 +35,7 @@
       <% end %>
     </ul>
 
-    <template id="appointmentTemplate">
-      <%= render Aeon::AppointmentFormItemComponent.template(reading_room_id: f.object.aeon_reading_room.id, appointments: appointments) %>
-    </template>
+    <%= render 'patron_requests/appointment_template', reading_room_id: f.object.aeon_reading_room.id, appointments: appointments %>
   </div>
 
   <div id="additional-information" class="mb-2" data-controller="char-counter" data-char-counter-default-class="text-body-tertiary" data-char-counter-warning-class="text-cardinal">

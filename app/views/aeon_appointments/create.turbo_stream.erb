@@ -4,6 +4,10 @@
   <%= render Aeon::AppointmentOptionComponent.new(appointment: @appointment, data: { 'appointment-select-target': 'option' }, data_action: 'appointment-select#select') %>
 <% end %>
 
+<%= turbo_stream.replace 'appointmentTemplate' do %>
+  <%= render 'patron_requests/appointment_template', reading_room_id: @appointment.reading_room.id, appointments: @other_reading_room_appointments %>
+<% end %>
+
 <%= turbo_stream.replace_all(".sidebar-custom-select[data-reading-room-id='#{@appointment.reading_room.id}']") do %>
   <%= render 'aeon_appointments/dropdown', appointments: @other_reading_room_appointments, reading_room_id: @appointment.reading_room.id %>
 <% end %>

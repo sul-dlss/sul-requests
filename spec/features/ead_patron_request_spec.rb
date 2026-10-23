@@ -285,6 +285,44 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       expect(page).to have_button('Submit request', disabled: false)
     end
 
+    context 'when the user has no appointments' do
+      let(:appointments) { [] }
+
+      it 'offers an appointment created in the reading room step to items added afterward' do # rubocop:disable RSpec/ExampleLength
+        visit new_archives_request_path(value: 'http://example.com/ead.xml')
+
+        choose 'Reading room appointment'
+        click_button 'Continue'
+
+        click_link 'Computers and Typesetting'
+        click_link 'Legal size documents'
+        check 'Box 12'
+        click_button 'Continue'
+
+        within('[data-content-id]', text: 'Box 12') { click_link 'Create new appointment' }
+        within '.modal' do
+          click_on 'Select a date'
+          click_on 'Next month'
+          first('td[role="gridcell"]:not(:has(button:disabled))').click
+          click_on 'Save'
+        end
+        expect(page).to have_no_css '.modal'
+        expect(page).to have_css '.badge', text: '1 item'
+
+        within('#items-accordion') { click_button 'Edit' }
+        click_link 'Volume A, The TeXbook'
+        check 'Box 13'
+        click_button 'Continue'
+
+        created_start_time = Time.zone.parse(StubAeonClient::Appointment.last.startTime)
+        within('[data-content-id]', text: 'Box 13') do
+          click_button 'Select appointment'
+          click_button created_start_time.strftime('%b %-d')
+        end
+        expect(page).to have_css '.badge', text: '2 items'
+      end
+    end
+
     it 'allows the user to submit a request with activites selected' do
       visit new_archives_request_path(value: 'http://example.com/ead.xml')
 
