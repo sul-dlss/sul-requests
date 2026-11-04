@@ -14,7 +14,8 @@ RSpec.describe FeedbackMailer do
           viewport: 'width:100 height:50'
         }
       end
-      let(:mail) { described_class.submit_feedback(params, ip) }
+      let(:host) { 'mylibrary.stanford.edu' }
+      let(:mail) { described_class.submit_feedback(params, ip, host) }
 
       it 'has the correct to field' do
         expect(mail.to).to eq ['yolo@example.com']
@@ -41,7 +42,7 @@ RSpec.describe FeedbackMailer do
       end
 
       it 'has the right host' do
-        expect(mail.body).to have_text 'Host: foo.example.com'
+        expect(mail.body).to have_text 'Host: mylibrary.stanford.edu'
       end
 
       it 'has the right IP' do
@@ -56,7 +57,8 @@ RSpec.describe FeedbackMailer do
     describe 'without name and email' do
       let(:ip) { '123.43.54.123' }
       let(:params) { {} }
-      let(:mail) { described_class.submit_feedback(params, ip) }
+      let(:host) { 'mylibrary.stanford.edu' }
+      let(:mail) { described_class.submit_feedback(params, ip, host) }
 
       it 'has the right email' do
         expect(mail.body).to have_text 'Name: No name given'
