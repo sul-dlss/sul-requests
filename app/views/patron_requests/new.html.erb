@@ -152,7 +152,7 @@
                 <ul data-item-selector-target="selectedItems" data-template="#selectedItemsTemplate" data-status-filter="unavailable" class="list-unstyled d-flex flex-wrap gap-2 p-3 m-0"></ul>
                 <hr class="styled-hr">
                 <%= render 'request_preferences', f: %>
-                <% if f.object.holdable_recallable_items.any? && !f.object.mediateable? %>
+                <% if f.object.holdable_or_recallable_items.any? && !f.object.mediateable? %>
                   <%= render 'not_needed_after_date', f: %>
                 <% end %>
               </div>
