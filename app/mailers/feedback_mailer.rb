@@ -2,12 +2,13 @@
 
 # FeedbackMailer
 class FeedbackMailer < ApplicationMailer
-  def submit_feedback(params, ip)
+  def submit_feedback(params, ip, host) # rubocop:disable Metrics/MethodLength
     @name = params[:name].presence || 'No name given'
     @email = params[:to].presence || 'No email given'
     @message = params[:message]
     @url = params[:url]
     @ip = ip
+    @host = host
     @user_agent = params[:user_agent]
     @viewport = params[:viewport]
 

@@ -6,8 +6,8 @@
 class FeedbackFormsController < ApplicationController
   def new; end
 
-  def create
-    FeedbackMailer.submit_feedback(params, request.remote_ip).deliver_now if valid?
+  def create # rubocop:disable Metrics/AbcSize
+    FeedbackMailer.submit_feedback(params, request.remote_ip, request.host).deliver_now if valid?
 
     respond_to do |format|
       format.json { render json: feedback_flash_messages }

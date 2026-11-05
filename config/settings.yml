@@ -447,7 +447,6 @@ RECAPTCHA:
   SITE_KEY: 6Lc6BAAAAAAAAChqRbQZcn_yyyyyyyyyyyyyyyyy
   SECRET_KEY: 6Lc6BAAAAAAAAKN3DRm6VA_xxxxxxxxxxxxxxxxx
 EMAIL_TO: yolo@example.com
-HOSTNAME: foo.example.com
 
 
 # paging schedule:
