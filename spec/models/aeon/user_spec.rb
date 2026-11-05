@@ -39,4 +39,18 @@ RSpec.describe Aeon::User do
       it { is_expected.not_to be_stub }
     end
   end
+
+  describe '#name' do
+    it 'joins the first and last names from Aeon' do
+      user = described_class.from_dynamic('username' => 'jstanford', 'firstName' => 'Jane', 'lastName' => 'Stanford')
+
+      expect(user.name).to eq 'Jane Stanford'
+    end
+
+    it 'omits a missing last name' do
+      user = described_class.from_dynamic('username' => 'test', 'firstName' => 'Testing McTesterson', 'lastName' => nil)
+
+      expect(user.name).to eq 'Testing McTesterson'
+    end
+  end
 end
