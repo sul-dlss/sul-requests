@@ -50,6 +50,10 @@ module Aeon
       @queue_type.downcase.to_sym
     end
 
+    def label
+      display_name.presence || queue_name
+    end
+
     def cancelled?
       cancelled_by_user? || cancelled_by_staff?
     end

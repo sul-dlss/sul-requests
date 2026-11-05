@@ -12,4 +12,10 @@
         <% end %>
       </turbo-frame>
     </div>
+    <% if request.activity? %>
+    <div class="small mb-1">
+      <span class="fw-semibold">Aeon Status:</span>
+      <span><%= request.transaction_queue&.label %></span>
+    </div>
+    <% end %>
 <% end %>

@@ -239,6 +239,12 @@ module Aeon
       id.present? ? id.hash : super
     end
 
+    def transaction_queue
+      return @transaction_queue if defined?(@transaction_queue)
+
+      @transaction_queue = Aeon::Queue.find_by(id: transaction_status)
+    end
+
     private
 
     def within_persist_completed_request_as_submitted_period?
@@ -258,12 +264,6 @@ module Aeon
       return @photoduplication_queue if defined?(@photoduplication_queue)
 
       @photoduplication_queue = Aeon::Queue.find_by(id: photoduplication_status, type: :photoduplication)
-    end
-
-    def transaction_queue
-      return @transaction_queue if defined?(@transaction_queue)
-
-      @transaction_queue = Aeon::Queue.find_by(id: transaction_status)
     end
   end
 end
