@@ -1,3 +1,11 @@
+<% if activity.grouped_requests.any? %>
+  <div class="d-flex justify-content-end mb-3">
+    <%= link_to aeon_activity_path(activity.id, format: :csv), class: 'btn btn-outline-primary btn-sm' do %>
+      <i class="bi bi-download me-1"></i>Download CSV
+    <% end %>
+  </div>
+<% end %>
+
 <%= render Aeon::AppointmentRequestGroupComponent.with_collection(activity.grouped_requests,
                                                                   classes: %w[activity-request-group card rounded-0 px-3 py-2 mb-2],
                                                                   show_item_link: true) %>

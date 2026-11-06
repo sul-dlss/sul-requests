@@ -13,17 +13,26 @@ module Aeon
 
     def self.from_dynamic(data)
       new(username: data['username'], auth_type: data['authType'], request_limit: data['requestLimit'],
-          email_address: data['eMailAddress'], cleared: data['cleared'])
+          email_address: data['eMailAddress'], cleared: data['cleared'],
+          first_name: data['firstName'], last_name: data['lastName'])
     end
 
-    attr_reader :username, :auth_type, :request_limit, :email_address, :cleared
+    attr_reader :username, :auth_type, :request_limit, :email_address, :cleared, :first_name, :last_name
 
-    def initialize(username:, auth_type: nil, request_limit: nil, email_address: nil, cleared: nil)
+    def initialize(username:, auth_type: nil, request_limit: nil, email_address: nil, cleared: nil, # rubocop:disable Metrics/ParameterLists
+                   first_name: nil, last_name: nil)
       @username = username
       @auth_type = auth_type
       @request_limit = request_limit
       @email_address = email_address
       @cleared = cleared
+      @first_name = first_name
+      @last_name = last_name
+    end
+
+    def name
+      # preferredName is ignored because no prod Aeon user had one set (checked 2026-10-02)
+      [first_name, last_name].compact_blank.join(' ')
     end
 
     def ==(other)

@@ -119,6 +119,7 @@ RSpec.describe 'Activities', :js do
     expect(page).to have_link('View in Archival Collections at Stanford',
                               href: 'https://archives.stanford.edu/repositories/2/resources/1234')
     expect(page).to have_text('No items have been requested for this activity.', count: 1)
+    expect(page).to have_link('Download CSV', href: aeon_activity_path(1, format: :csv))
   end
 
   context 'without any activities' do
