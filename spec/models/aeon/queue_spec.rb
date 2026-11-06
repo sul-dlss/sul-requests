@@ -33,6 +33,19 @@ RSpec.describe Aeon::Queue do
     end
   end
 
+  describe '#label' do
+    it 'returns the display name when present' do
+      queue = described_class.new(id: 10, queue_name: 'Awaiting Activity Processing', display_name: 'awaiting staff processing',
+                                  queue_type: 'Transaction')
+      expect(queue.label).to eq 'awaiting staff processing'
+    end
+
+    it 'falls back to the queue name when the display name is blank' do
+      queue = described_class.new(id: 2, queue_name: 'Submitted by User', display_name: nil, queue_type: 'Transaction')
+      expect(queue.label).to eq 'Submitted by User'
+    end
+  end
+
   describe '#cancelled?' do
     it 'returns true when queue_name is in the configured cancelled list' do
       queue = described_class.new(id: 5, queue_name: 'Cancelled by User', queue_type: 'Transaction')

@@ -113,6 +113,7 @@ RSpec.describe 'Activities', :js do
     expect(page).to have_css('h3', text: 'title1', count: 1)
     expect(page).to have_link('View in SearchWorks', href: 'https://searchworks.stanford.edu/view/12345678')
     expect(page).to have_text('Call number: SC1234 View in SearchWorks', normalize_ws: true)
+    expect(page).to have_text('Aeon Status: Web Request Created', normalize_ws: true)
     expect(page).to have_no_text('title2')
     expect(page).to have_css('h3', text: 'title3', count: 1)
     expect(page).to have_link('View in Archival Collections at Stanford',
