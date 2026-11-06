@@ -158,6 +158,8 @@ RSpec.describe 'Creating new accounts for patrons', :js do
         click_button 'Submit'
       end.to change(StubAeonClient::User, :count).by(1)
 
+      expect(page).to have_text('New request')
+
       expect(StubAeonClient::User.last).to have_attributes(
         username: 'test@localhost',
         cleared: 'No',

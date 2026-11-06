@@ -14,7 +14,7 @@ class AeonUsersController < ApplicationController
 
   def create
     aeon_client.create_user(user_data:) if aeon_terms_param
-    redirect_back_or_to(params[:referrer])
+    redirect_to params[:referrer]
   end
 
   def accept_terms
