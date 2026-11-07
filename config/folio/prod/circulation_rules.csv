@@ -94,6 +94,7 @@ visitor,periodical,,,,,SAL3-PAGE-MU-CIRC,No loan,Allow paging,Default notice,No 
 sul-purchased or courtesy or program-short-term or sul-contractprograms or sul-guest or lane-hospital staff,periodical,,,,,SAL3-PAGE-MU-CIRC,7day-1renew-3daygrace,Allow paging/hold,Default notice,No fines,$65 lost fee
 any,periodical,,,,,SAL-TEMP or SAL-LOCKED-PAGE-EA or SAL-PAGE-EA or SAL-PAGE-GR,No loan,Allow paging,Default notice,No fines,$75 lost fee
 visitor,periodical,,,,,MUS-INPROCESS or MUS-PROCESSING-CIRC,No loan,No requests allowed,Default notice,No fines,$500 lost fee
+any,periodical,,,,,ENG-STK-NONCIRC or ENG-TERM-COLL or ENG-TIMO-COLL,No loan,No requests allowed,Default notice,No fines,$300 lost fee
 visitor,periodical,,,,,EAL-EXHIBIT,No loan,No requests allowed,Default notice,No fines,$500 lost fee
 visitor,periodical,,,,,EAR-SCANLAB,No loan,No requests allowed,Default notice,No fines,$500 lost fee
 visitor,periodical,,,,,EAR-ATCIRCDESK or EAR-DISPLAY-CIRC,No loan,No requests allowed,Default notice,No fines,$500 lost fee
