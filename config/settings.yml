@@ -535,6 +535,8 @@ library_pull_schedule:
   GREEN:
     - 7:30am
     - 3pm
+  GREEN-BASEMENT:
+    - 3pm
   LANE: 9am
   LAW: 12pm
   MARINE-BIO: 9am
