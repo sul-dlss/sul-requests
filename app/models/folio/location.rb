@@ -39,5 +39,9 @@ module Folio
     def paging_schedule_origin_library_code
       details['pagingSchedule'] || library&.code
     end
+
+    def paging_schedule_pull_schedule_key
+      details['pagingSchedulePullScheduleKey']
+    end
   end
 end

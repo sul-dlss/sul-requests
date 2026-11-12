@@ -584,6 +584,7 @@ class FolioGraphqlClient
             name
           }
           pagingSchedule
+          pagingSchedulePullScheduleKey
           scanServicePointCode
           searchworksTreatTemporaryLocationAsPermanentLocation
         }
