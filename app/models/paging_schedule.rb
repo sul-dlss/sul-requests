@@ -120,14 +120,11 @@ class PagingSchedule
   # Workflow steps
   ##
 
-  def shelf_pull_schedule
-    @shelf_pull_schedule ||= Array(Settings.library_pull_schedule[from&.paging_schedule_pull_schedule_key || origin_library_code])
-  end
-
   # Step 1: Physically pulling material from the shelves at the origin library
   def shelf_pull_for_origin_library(steps, after: time)
+    pull_schedule = Array(Settings.library_pull_schedule[origin_library_code])
     origin_open_days = business_days_for(origin_library_code, after: after)
-    steps[:shelf_pull] = next_action_time(origin_open_days, shelf_pull_schedule, after: after)
+    steps[:shelf_pull] = next_action_time(origin_open_days, pull_schedule, after: after)
 
     raise ScheduleNotFound unless steps[:shelf_pull]
   end
