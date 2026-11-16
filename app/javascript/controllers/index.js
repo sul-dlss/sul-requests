@@ -108,3 +108,6 @@ application.register("checkouts", Checkoutscontroller)
 
 import SubmitGateController from "./submit_gate_controller"
 application.register("submit-gate", SubmitGateController)
+
+import PopoverController from "./popover_controller"
+application.register("popover", PopoverController)

@@ -282,6 +282,10 @@ summary .disclosure-icon::before {
   transform: rotate(90deg);
 }
 
+.ead-access-popover {
+  --bs-popover-body-padding-y: 0.75rem;
+}
+
 .accordion-button[aria-expanded="true"] .accordion-header-icon::before,
 .accordion-button[aria-expanded="true"] ~ .accordion-header-icon::before,
 .accordion-header[aria-expanded="true"] .accordion-header-icon::before {

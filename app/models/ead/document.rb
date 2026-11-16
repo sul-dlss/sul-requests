@@ -91,6 +91,10 @@ module Ead
                                        doc.xpath('//accessrestrict').first&.text&.strip
     end
 
+    def collection_access_notes
+      AccessNotes.new(doc.xpath('/ead/archdesc/accessrestrict')).restrictions
+    end
+
     def cite_as
       # citation information
       @cite_as ||= doc.xpath('//prefercite/p').first&.text&.strip ||
@@ -201,6 +205,10 @@ module Ead
 
       def contents
         @contents ||= child_components.map { |x| Node.from(x) }.select(&:displayable?)
+      end
+
+      def access_notes
+        @access_notes ||= AccessNotes.new(node.xpath('accessrestrict')).restrictions
       end
 
       def top_container

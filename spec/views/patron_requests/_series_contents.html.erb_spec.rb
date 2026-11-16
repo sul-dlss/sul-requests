@@ -19,6 +19,7 @@ RSpec.describe 'patron_requests/_ead_series_contents.html.erb' do
                               barcode: nil,
                               folder: 'Folder 1',
                               contents: [],
+                              access_notes: [],
                               full_title: 'Item 1',
                               title: 'Item 1',
                               level: 'file',
@@ -31,6 +32,7 @@ RSpec.describe 'patron_requests/_ead_series_contents.html.erb' do
                               barcode: nil,
                               folder: 'Folder 2',
                               contents: [],
+                              access_notes: [],
                               full_title: 'Item 2',
                               title: 'Item 2',
                               level: 'file',
@@ -63,6 +65,7 @@ RSpec.describe 'patron_requests/_ead_series_contents.html.erb' do
                               level: 'file',
                               top_container: nil,
                               contents: [],
+                              access_notes: [],
                               date: nil,
                               id: 'item-3')
       item2 = instance_double(Ead::Document::Item,
@@ -73,6 +76,7 @@ RSpec.describe 'patron_requests/_ead_series_contents.html.erb' do
                               level: 'file',
                               top_container: nil,
                               contents: [],
+                              access_notes: [],
                               date: nil,
                               id: 'item-4')
       items = [item1, item2]
@@ -102,6 +106,7 @@ RSpec.describe 'patron_requests/_ead_series_contents.html.erb' do
                         barcode: nil,
                         folder: nil,
                         contents: [],
+                        access_notes: [],
                         date: nil,
                         digital_content?: false,
                         id: 'item-5')
@@ -116,6 +121,7 @@ RSpec.describe 'patron_requests/_ead_series_contents.html.erb' do
                                   date: nil,
                                   level: 'subseries',
                                   contents: subseries_items,
+                                  access_notes: [],
                                   id: nil)
       items = [subseries]
       display_groups = Ead::DisplayGroup.build_display_groups(items)

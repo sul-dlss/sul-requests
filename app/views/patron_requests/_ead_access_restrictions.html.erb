@@ -1,0 +1,16 @@
+<% if access_notes.any? %>
+  <%= tag.div class: classes do %>
+    <i class="bi bi-lock-fill me-1 text-digital-red" aria-hidden="true"></i><span class="fs-15 text-80-black"><%= access_restrictions_label(level) %></span>
+    <%= button_tag 'Access and use details',
+                   type: 'button',
+                   class: 'btn btn-link su-underline fs-15 p-0 ms-1 align-baseline',
+                   data: {
+                     controller: 'popover',
+                     action: 'blur->popover#hide click@document->popover#hideOutside',
+                     bs_custom_class: 'ead-access-popover',
+                     bs_content: safe_join(access_notes.map { |note| access_note_body(note) }),
+                     bs_html: true,
+                     bs_placement: 'bottom'
+                   } %>
+  <% end %>
+<% end %>
