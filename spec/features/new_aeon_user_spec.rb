@@ -132,9 +132,8 @@ RSpec.describe 'Creating new accounts for patrons', :js do
 
       expect do
         click_button 'Continue'
+        expect(page).to have_text('Verify email address')
       end.to enqueue_job(SendOtpJob).with('test@localhost')
-
-      expect(page).to have_text('Verify email address')
 
       6.times do |i|
         fill_in "Digit #{i + 1}", with: '0'
@@ -156,9 +155,8 @@ RSpec.describe 'Creating new accounts for patrons', :js do
 
       expect do
         click_button 'Submit'
+        expect(page).to have_text('New request')
       end.to change(StubAeonClient::User, :count).by(1)
-
-      expect(page).to have_text('New request')
 
       expect(StubAeonClient::User.last).to have_attributes(
         username: 'test@localhost',
