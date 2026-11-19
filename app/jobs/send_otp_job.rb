@@ -8,7 +8,7 @@ class SendOtpJob < ApplicationJob
   def perform(email)
     user = User.find_or_create_by(email: email)
 
-    if user.sunetid || user.library_id
+    if user.sunetid.present? || user.library_id.present?
       Honeybadger.notify('Unable to send OTP challenge for authenticated users')
       return
     end
