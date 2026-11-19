@@ -528,6 +528,28 @@ RSpec.describe 'Creating a request', :js do
                                                     patron_request_items: contain_exactly(have_attributes(item_id: '87654321')))
     end
 
+    context 'when the patron may only place holds' do
+      before do
+        allow(patron).to receive(:allowed_request_types).and_return(%w[Hold])
+      end
+
+      it 'allows the user to hold the checked out item' do
+        visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
+
+        expect(page).to have_css 'h2', text: 'Select item(s)'
+        check 'ABC 321'
+        click_on 'Continue'
+        expect do
+          perform_enqueued_jobs do
+            click_on 'Submit request'
+          end
+          expect(page).to have_text 'We received your pickup request'
+        end.to change(PatronRequest, :count).by(1)
+
+        expect(PatronRequest.last).to have_attributes(patron_request_items: contain_exactly(have_attributes(item_id: '87654321')))
+      end
+    end
+
     it 'allows the user to select both items' do
       visit new_patron_request_path(instance_hrid: 'a1234', origin_location_code: 'SAL3-STACKS')
 
