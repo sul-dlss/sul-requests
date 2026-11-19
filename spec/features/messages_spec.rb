@@ -24,6 +24,7 @@ RSpec.describe 'Viewing all requests' do
 
       it 'is forbidden' do
         visit messages_path
+        expect(page.html).to have_css('h1', text: 'Login')
         expect(page.status_code).to eq 403
       end
     end
@@ -58,6 +59,7 @@ RSpec.describe 'Viewing all requests' do
 
       it 'is forbidden' do
         visit new_message_path
+        expect(page.html).to have_css('h1', text: 'Login')
         expect(page.status_code).to eq 403
       end
     end
@@ -96,6 +98,7 @@ RSpec.describe 'Viewing all requests' do
 
       it 'is forbidden' do
         visit edit_message_path(message)
+        expect(page.html).to have_css('h1', text: 'Login')
         expect(page.status_code).to eq 403
       end
     end
