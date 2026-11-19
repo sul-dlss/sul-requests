@@ -783,7 +783,11 @@ RSpec.describe 'Requesting an item from an EAD', :js do
               <did><unittitle>Army Specialized Training Program</unittitle></did>
               <c02 level="file">
                 <did><unittitle>History 133 Tests</unittitle><container type="Box">8</container><container type="folder">213</container></did>
-                <c03 level="file"><did><unittitle>Final examination</unittitle></did></c03>
+                <c03 level="file"><did><unittitle>Examinations</unittitle></did>
+                  <c04 level="file"><did><unittitle>Final examination</unittitle></did>
+                    <accessrestrict><p>Handle this examination carefully.</p></accessrestrict>
+                  </c04>
+                </c03>
               </c02>
             </c01>
           </dsc>
@@ -799,6 +803,103 @@ RSpec.describe 'Requesting an item from an EAD', :js do
       fill_in 'Search contents', with: 'Final exam'
       expect(page).to have_text 'Folder 213: History 133 Tests'
       expect(page).to have_text 'Final examination'
+      expect(page).to have_text 'Access restrictions apply to 1 item'
+      expect(page).to have_text 'Final examination — Handle this examination carefully.'
+    end
+  end
+
+  context 'with access notes on a series and its components' do
+    let(:eadxml) do
+      Nokogiri::XML(File.read('spec/fixtures/a0112.xml')).tap(&:remove_namespaces!).tap do |doc|
+        doc.at_xpath('//dsc').replace(<<~XML)
+          <dsc><c01 level="series">
+            <did><unittitle>Audio recordings</unittitle></did>
+            <accessrestrict><head>Information about Access</head>
+              <p>Audio recordings require a digital surrogate.</p>
+              <p>Please <extref href="https://library.stanford.edu/contact">contact public services</extref>.</p>
+            </accessrestrict>
+            <c02><did><unittitle>Recording C</unittitle><container type="box">2</container></did>
+              <accessrestrict><head>Access Restrictions</head>
+                <p>Materials must be requested at least 48 hours in advance of intended use. Restricted until 2055.</p>
+              </accessrestrict>
+            </c02>
+            <c02><did><unittitle>Recording D</unittitle><container type="box">2</container></did>
+              <accessrestrict><p>Restricted until 2055.</p></accessrestrict>
+            </c02>
+            <c02><did><unittitle>Fragile tapes</unittitle></did>
+              <accessrestrict><p>Handle these tapes carefully.</p></accessrestrict>
+              <c03><did><unittitle>Rare recording</unittitle><container type="box">4</container></did></c03>
+            </c02>
+          </c01>
+          <c01><did><unittitle>Loose papers</unittitle><container type="box">3</container></did>
+            <accessrestrict><p>Open for research.</p></accessrestrict>
+          </c01>
+          <c01 level="file"><did><unittitle>Correspondence</unittitle></did>
+            <accessrestrict><p>Restricted to staff.</p></accessrestrict>
+            <c02 level="item"><did><unittitle>Letter 1</unittitle></did></c02>
+          </c01>
+          </dsc>
+        XML
+      end
+    end
+
+    before do
+      visit new_archives_request_path(value: 'http://example.com/ead.xml')
+      choose 'Reading room appointment'
+      click_button 'Continue'
+    end
+
+    it 'shows a file-level note after the file title' do
+      expect(page).to have_text('Correspondence — Restricted to staff.')
+      expect(page).to have_no_text('File restrictions')
+    end
+
+    it 'shows the collection note in a popover' do
+      expect(page).to have_text('Collection restrictions', count: 1)
+      expect(page).to have_no_text('Audio-visual materials are not available in original format')
+      click_button 'Access and use details', match: :first
+      within('.popover') do
+        expect(page).to have_text('Audio-visual materials are not available in original format')
+        expect(page).to have_no_text('Conditions Governing Access')
+      end
+      find('body').click
+      expect(page).to have_no_css('.popover')
+    end
+
+    it 'reveals series and subseries restrictions when searching directly for their contents' do
+      expect(page).to have_no_text('Series restrictions')
+      fill_in 'Search contents', with: 'Rare recording'
+      expect(page).to have_text('1 of 1 matches')
+      expect(page).to have_text('Series restrictions', count: 2)
+    end
+
+    it 'shows series notes in a popover and item notes under each box' do # rubocop:disable RSpec/ExampleLength
+      click_link 'Audio recordings'
+
+      expect(page).to have_text('Series restrictions', count: 1)
+      expect(page).to have_no_text('Audio recordings require a digital surrogate.')
+      within('.series-contents-container') { click_button 'Access and use details' }
+      within('.popover') do
+        expect(page).to have_text('Audio recordings require a digital surrogate.')
+        expect(page).to have_link('contact public services', href: 'https://library.stanford.edu/contact')
+        expect(page).to have_no_text('Information about Access')
+      end
+      find('body').click
+      expect(page).to have_no_css('.popover')
+
+      expect(page).to have_text('Access restrictions apply', count: 1)
+      checkbox = find_field('Box 2')
+      expect(page).to have_css("##{checkbox['aria-describedby']}", text: 'Access restrictions apply to 2 items')
+      within(checkbox.find(:xpath, '..')) do
+        expect(page).to have_no_text('Restricted until 2055.')
+        expect(page).to have_css('[data-bs-toggle="collapse"]', count: 1)
+        find('[data-bs-toggle="collapse"]').click
+        expect(page).to have_text('Recording C — Restricted until 2055.')
+        expect(page).to have_text('Recording D — Restricted until 2055.')
+      end
+      check 'Box 2'
+      click_button 'Continue'
+      expect(page).to have_css('.selected-item-title', text: 'Box 2')
     end
   end
 

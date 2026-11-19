@@ -58,6 +58,7 @@
   <%= render AccordionStepComponent.new(id: 'items', step_index: step_enum.next, form_id: f.id) do |component| %>
     <% component.with_title.with_content('Items') %>
     <% component.with_body do %>
+      <%= render 'ead_access_restrictions', level: 'collection', access_notes: f.object.ead_doc.collection_access_notes, classes: 'mt-1 mb-3' %>
       <% if f.object.ead_doc.series_and_subseries.present? %>
         <div data-controller="archives-series ead-search">
           <div class="mb-2 d-flex flex-wrap gap-2 align-items-center">

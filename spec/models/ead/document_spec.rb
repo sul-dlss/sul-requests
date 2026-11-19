@@ -9,6 +9,44 @@ RSpec.describe Ead::Document do
     Nokogiri::XML(File.read('spec/fixtures/sc0097.xml')).tap(&:remove_namespaces!)
   end
 
+  describe 'component access notes' do
+    let(:eadxml) do
+      Nokogiri::XML(<<~XML)
+        <ead><archdesc>
+          <accessrestrict><p>Collection access</p></accessrestrict>
+          <dsc><c01><did><unittitle>Series</unittitle></did>
+            <accessrestrict><p>Series access</p></accessrestrict>
+            <accessrestrict><p>Additional series note</p></accessrestrict>
+            <c02 id="own"><did><unittitle>Own note</unittitle></did>
+              <accessrestrict><p>Component access</p></accessrestrict>
+            </c02>
+            <c02 id="inherited"><did><unittitle>Inherited note</unittitle></did></c02>
+          </c01>
+          <c01 id="another"><did><unittitle>Another series</unittitle></did></c01>
+          </dsc>
+        </archdesc></ead>
+      XML
+    end
+
+    def notes_for(id)
+      described_class::Node.from(eadxml.at_xpath("//*[@id='#{id}']")).access_notes.map(&:text)
+    end
+
+    it 'returns notes directly attached to the component' do
+      expect(notes_for('own')).to eq(['Component access'])
+    end
+
+    it 'keeps series notes on the series instead of passing them to descendants' do
+      expect(document.series_and_subseries.first.access_notes.map(&:text)).to eq(['Series access', 'Additional series note'])
+      expect(notes_for('inherited')).to be_empty
+    end
+
+    it 'exposes collection notes separately without repeating them on components' do
+      expect(document.collection_access_notes.map(&:text)).to eq(['Collection access'])
+      expect(notes_for('another')).to be_empty
+    end
+  end
+
   describe '#date' do
     it 'extracts the inclusive date' do
       expect(document.date).to eq('1962-2018')

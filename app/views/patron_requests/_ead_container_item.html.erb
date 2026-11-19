@@ -1,0 +1,22 @@
+<li class="mb-1">
+  <% if item.respond_to?(:folder) && item.folder %>
+    <small class="text-muted">Folder <%= item.folder %>:</small>
+  <% end %>
+  <% if item.access_notes.any? %><i class="bi bi-lock-fill me-1 text-digital-red" aria-hidden="true"></i><% end %>
+  <% if item.respond_to?(:digital_content?) && item.digital_content? %>
+    <%= link_to item.extref_href, target: '_blank', rel: 'noopener noreferrer' do %>
+      <%= item.full_title %>
+      <%= render Icons::OnlineComponent.new classes: 'ms-1 align-text-bottom text-digital-blue' %>
+    <% end %>
+  <% else %>
+    <%= item.full_title %>
+  <% end %>
+  <% if item.access_notes.any? %>
+    &mdash; <%= tag.span safe_join(item.access_notes.map { |note| access_note_body(note, paragraph_class: 'd-inline') }, ' '), class: 'small' %>
+  <% end %>
+  <% if item.contents.any? %>
+    <ul class="list-unstyled small ms-3 mt-1">
+      <%= render partial: 'ead_container_item', collection: item.contents, as: :item %>
+    </ul>
+  <% end %>
+</li>

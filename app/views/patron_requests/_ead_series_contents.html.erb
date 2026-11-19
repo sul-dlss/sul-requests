@@ -9,6 +9,8 @@
     <% 
       checkbox_id = volume_checkbox_id(*display_group.hierarchy, display_group.title)
       content_id = "container-items-#{checkbox_id}"
+      restricted_items_count = display_group.restricted_items_count
+      restrictions_summary_id = "#{checkbox_id}-access-notes"
     %>
     <div class="mb-2 d-flex align-items-start gap-2">
       <%# Chevron button to expand/collapse folder list %>
@@ -28,7 +30,7 @@
       <%# Checkbox to select entire container %>
       <% checked = f.object.patron_request_items.any? { |x| x.item_id == checkbox_id } %>
       <%= f.check_box :item_ids,
-            { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, checked: checked,
+            { multiple: true, class: 'form-check-input mt-1', id: checkbox_id, checked: checked, aria: { describedby: (restrictions_summary_id if restricted_items_count.positive?) },
               data: { action: 'item-selector#change', 'item-selector-target': 'item', 'item-selector-title-parts-param': (display_group.hierarchy + [display_group.title]).to_json, 'item-selector-id-param': checkbox_id } },
             checkbox_id,
             nil %>
@@ -43,35 +45,31 @@
         <% end %>
       <% end %>
       <div class="flex-grow-1">
-        <%= label_tag checkbox_id, display_group.title, class: 'form-check-label' %>
+        <% if display_group.item_access_notes.any? %>
+          <%= label_tag checkbox_id, class: 'form-check-label' do %>
+            <i class="bi bi-lock-fill me-1 text-digital-red" aria-hidden="true"></i><%= display_group.title %>
+          <% end %>
+          &mdash; <%= tag.span safe_join(display_group.item_access_notes.map { |note| access_note_body(note, paragraph_class: 'd-inline') }, ' '), class: 'small' %>
+        <% else %>
+          <%= label_tag checkbox_id, display_group.title, class: 'form-check-label' %>
+        <% end %>
 
         <% if display_group.contents.any? %>
           <span class="badge bg-dark-subtle text-dark fw-normal rounded-pill"><%= display_group.contents.count %></span>
+        <% end %>
+
+        <% if restricted_items_count.positive? %>
+          <span id="<%= restrictions_summary_id %>" class="small ms-2">
+            <i class="bi bi-lock-fill me-1 text-digital-red" aria-hidden="true"></i>Access restrictions apply to <%= pluralize(restricted_items_count, 'item') %>
+          </span>
+        <% end %>
+        <%= render 'ead_access_restrictions', level: display_group.level, access_notes: display_group.group_access_notes, classes: 'mt-1' %>
+
+        <% if display_group.contents.any? %>
           <%# Collapsible list of items in this container %>
           <div id="<%= content_id %>" class="collapse" data-archives-series-target="content">
             <ul class="container-content list-unstyled ms-2 my-2">
-              <% display_group.contents.each do |item| %>
-                <li class="mb-1">
-                  <% if item.folder %>
-                    <small class="text-muted">Folder <%= item.folder %>:</small>
-                  <% end %>
-                  <% if item.digital_content? %>
-                    <%= link_to item.extref_href, target: '_blank', rel: 'noopener noreferrer' do %>
-                      <%= item.full_title %>
-                      <%= render Icons::OnlineComponent.new classes: 'ms-1 align-text-bottom text-digital-blue' %>
-                    <% end %>
-                  <% else %>
-                    <%= item.full_title %>
-                  <% end %>
-                  <% if item.contents.any? %>
-                    <ul class="list-unstyled small ms-3 mt-1">
-                      <% item.contents.each do |child| %>
-                        <li><%= child.full_title %></li>
-                      <% end %>
-                    </ul>
-                  <% end %>
-                </li>
-              <% end %>
+              <%= render partial: 'ead_container_item', collection: display_group.contents, as: :item %>
             </ul>
           </div>
         <% end %>
@@ -119,6 +117,7 @@
       <% end %>
       <%# Subseries content (recursive) %>
       <div id="<%= subseries_id %>" class="collapse mt-2 ms-3" data-archives-series-target="content">
+        <%= render 'ead_access_restrictions', level: display_group.level, access_notes: display_group.access_notes, classes: 'mb-2 ms-3' %>
         <%= render partial: 'ead_series_contents', locals: { contents: display_group.contents, f: f } %>
       </div>
     </div>
