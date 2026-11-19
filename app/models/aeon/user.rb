@@ -3,6 +3,8 @@
 module Aeon
   # Model for working with Aeon user information
   class User
+    include ActiveModel::Model
+
     def self.find_by(email_address:)
       aeon_client.find_user(username: email_address)
     end
