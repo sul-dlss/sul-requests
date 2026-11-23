@@ -19,7 +19,7 @@
     <%= render RecordHeaderComponent.new(record: @patron_request.bib_record) %>
     <%= render 'contact_brief' %>
 
-    <%= form_for(@patron_request,
+    <%= form_with(model: @patron_request,
                  data: {
                    controller: 'patron-request accordion-form item-selector save-for-later view-container-contents',
                    action: 'item-selector:changed->patron-request#showItemSelector item-selector:changed->accordion-form#typeValueChanged manual-items:changed->item-selector#syncFromManualItems manual-items:changed->accordion-form#reenableNextButtons',

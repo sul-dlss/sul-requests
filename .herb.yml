@@ -1,3 +1,4 @@
+framework: actionview
 linter:
   enabled: true
   rules:
@@ -10,4 +11,10 @@ linter:
     html-no-aria-hidden-on-focusable:
       enabled: false
     html-no-nested-forms:
+      enabled: false
+    actionview-prefer-qualified-partial-path:
+      enabled: false
+    actionview-no-implicit-partial:
+      enabled: false
+    erb-no-multiple-statements:
       enabled: false
