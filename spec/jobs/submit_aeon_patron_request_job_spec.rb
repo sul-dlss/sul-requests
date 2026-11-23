@@ -14,7 +14,7 @@ RSpec.describe SubmitAeonPatronRequestJob do
   let(:data) { {} }
   let(:folio_instance) { build(:special_collections_single_holding) }
   let(:stub_aeon_client) { instance_double(AeonClient, find_user: stub_aeon_user, create_request: Aeon::Request.new, update_request_route: nil) }
-  let(:stub_aeon_user) { instance_double(Aeon::User, username: 'aeon_user') }
+  let(:stub_aeon_user) { Aeon::User.new(username: 'aeon_user') }
 
   before do
     stub_folio_instance_json(folio_instance)
