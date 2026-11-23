@@ -621,7 +621,6 @@ illiad:
     - "In Transit from Customer"
     - "Item Checked In"
     - "Lost"
-    - "SearchWorks Hold Recall Processing"
     - "Cancelled by Customer"
     - "Cancelled by ILL Staff"
     - "Delivered to Web"
