@@ -16,7 +16,7 @@
 
     <div class="message">
       <% if message.scheduled? %>
-        <div class="status <%= 'active' if message.active? %> <%= 'text-jungle-green' if message.active? %>">
+        <div class="status <%= 'active' if message.active? %> <%= 'text-palo-verde' if message.active? %>">
         <% if message.active? %>
           Active <%= time_tag message.start_at.to_date, :short %> through <%= time_tag message.end_at.to_date, :short %>
         <% else %>
