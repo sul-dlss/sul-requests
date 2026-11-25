@@ -126,10 +126,6 @@ class PatronRequest < ApplicationRecord
   def folio_scan?
     scan? && !aeon_page?
   end
-
-  def aeon_digitization?
-    aeon_page? && scan?
-  end
   # @!endgroup
 
   # @!group Origin + destination accessors
