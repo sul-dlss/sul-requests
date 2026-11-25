@@ -101,14 +101,6 @@ class FolioClient
 
   delegate :extended_user_info, :extended_patron_info, to: :folio_graphql_client
 
-  def patron_account(patron_key)
-    get_json("/patron/account/#{CGI.escape(patron_key)}", params: {
-               includeLoans: true,
-               includeCharges: true,
-               includeHolds: true
-             })
-  end
-
   # Defines the hold request data for Folio
   # [String] pickup_location_id the UUID of the pickup location
   # [String] patron_comments
