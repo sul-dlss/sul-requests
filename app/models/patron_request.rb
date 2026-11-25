@@ -442,12 +442,6 @@ class PatronRequest < ApplicationRecord
     end
   end
 
-  def aeon_form_target
-    return unless aeon_page?
-
-    finding_aid? ? finding_aid : Settings.aeon_ere_url
-  end
-
   def aeon_reading_room
     return unless aeon_site
     return @aeon_reading_room if defined?(@aeon_reading_room)
