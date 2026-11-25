@@ -101,14 +101,6 @@ class FolioClient
 
   delegate :extended_user_info, :extended_patron_info, to: :folio_graphql_client
 
-  def patron_account(patron_key)
-    get_json("/patron/account/#{CGI.escape(patron_key)}", params: {
-               includeLoans: true,
-               includeCharges: true,
-               includeHolds: true
-             })
-  end
-
   # Defines the hold request data for Folio
   # [String] pickup_location_id the UUID of the pickup location
   # [String] patron_comments
@@ -155,13 +147,6 @@ class FolioClient
     end
   end
 
-  def circulation_request_policy(item_type_id:, loan_type_id:, patron_type_id:, location_id:)
-    response = get('/circulation/rules/request-policy', params: { item_type_id:, loan_type_id:, patron_type_id:, location_id: }.as_json)
-    check_response(response, title: 'Request policy', context: { item_type_id:, loan_type_id:, patron_type_id:, location_id: })
-
-    parse_json(response).fetch('requestPolicyId', nil)
-  end
-
   # @param [HoldRequestData] request_data
   def create_circulation_request(request_data)
     response = post('/circulation/requests', json: request_data.as_json)
@@ -196,12 +181,6 @@ class FolioClient
     check_response(response, title: 'Hold request', context: { user_id:, item_id: })
 
     parse_json(response)
-  end
-
-  def get_service_point(code)
-    response = get_json('/service-points', params: { query: CqlQuery.new(code:).to_query })
-
-    response.dig('servicepoints', 0)
   end
 
   def find_instance_by(hrid:)
