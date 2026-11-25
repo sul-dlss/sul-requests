@@ -191,12 +191,6 @@ class FolioClient
     parse_json(response)
   end
 
-  def get_service_point(code)
-    response = get_json('/service-points', params: { query: CqlQuery.new(code:).to_query })
-
-    response.dig('servicepoints', 0)
-  end
-
   def find_instance_by(hrid:)
     folio_graphql_client.instance(hrid:)
   end
