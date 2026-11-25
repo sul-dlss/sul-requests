@@ -103,14 +103,6 @@ class PatronRequestsController < ApplicationController
     render 'login'
   end
 
-  def redirect_aeon_finding_aid_requests
-    ead_url = params[:Value].presence || params[:value].presence || params[:ead_url].presence
-
-    return if ead_url.blank?
-
-    redirect_to Settings.aeon_archives_url + "&Value=#{ead_url}", allow_other_host: true
-  end
-
   def redirect_finding_aid_pages
     return unless @patron_request.finding_aid?
 
